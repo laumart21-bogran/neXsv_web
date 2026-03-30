@@ -1,174 +1,155 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NeXsv | Conecta, compra y crece</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeXsv | Red de negocios</title>
 
-  <!-- SEO -->
-  <meta name="description" content="Red de negocios para padres de colegios privados en El Salvador. Conecta, compra y crece con NeXsv.">
-  <meta name="keywords" content="negocios El Salvador, marketplace padres, emprendimientos, servicios escolares">
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      text-align: center;
-    }
+header {
+    background: #3f5177;
+    padding: 15px;
+    text-align: center;
+}
 
-    header {
-      background: #3f5477;
-      padding: 20px;
-    }
+header img {
+    height: 60px;
+}
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      color: white;
-      font-size: 18px;
-    }
+nav {
+    background: #3f5177;
+    text-align: center;
+    padding-bottom: 10px;
+}
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-    .logo {
-      margin-top: 10px;
-    }
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: #f5f5f5;
+}
 
-    .logo img {
-      width: 180px;
-      height: auto;
-      background: transparent;
-      mix-blend-mode: multiply;
-    }
+.hero h1 {
+    font-size: 40px;
+    color: #3f5177;
+}
 
-    .hero {
-      padding: 60px 20px;
-    }
+.hero p {
+    font-size: 18px;
+}
 
-    .hero h1 {
-      font-size: 40px;
-      color: #3f5477;
-    }
+.btn {
+    background: #6aa58b;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 20px;
+}
 
-    .hero p {
-      font-size: 20px;
-      color: #555;
-    }
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
 
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 25px;
-      background: #6da58f;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 18px;
-    }
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
 
-    .marketplace {
-      padding: 50px 20px;
-    }
+.card {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    width: 250px;
+}
 
-    .cards {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+.card h3 {
+    margin-top: 0;
+}
 
-    .card {
-      background: white;
-      padding: 20px;
-      width: 280px;
-      border-radius: 12px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-    }
-
-    .card h3 {
-      margin-bottom: 10px;
-    }
-
-    footer {
-      margin-top: 50px;
-      padding: 20px;
-      background: #3f5477;
-      color: white;
-    }
-  </style>
+footer {
+    background: #3f5177;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#nosotros">Nosotros</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-
-  <div class="logo">
-    <img src="logo.png" alt="NeXsv Logo">
-  </div>
+    <img src="logo.png" alt="NeXsv">
 </header>
 
+<nav>
+    <a href="#">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#negocios">Negocios</a>
+    <a href="#contacto">Contacto</a>
+</nav>
+
 <section class="hero">
-  <h1>Conecta, compra y crece</h1>
-  <p>Red de negocios para padres de colegios privados en El Salvador</p>
+    <h1>Conecta, compra y crece</h1>
+    <p>Red de negocios para padres de colegios privados en El Salvador</p>
 
-  <!-- BOTÓN FORMULARIO (CORREGIDO) -->
-  <a href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank" class="btn">
-    Únete ahora
-  </a>
+    <!-- BOTÓN WHATSAPP -->
+    <a class="btn" href="https://wa.me/50377448261" target="_blank">
+        Escríbenos por WhatsApp
+    </a>
 </section>
 
-<section class="marketplace" id="servicios">
-  <h2>Negocios de la comunidad</h2>
+<section id="negocios" class="section">
+    <h2>Negocios de la comunidad</h2>
 
-  <div class="cards">
+    <div class="cards">
+        <div class="card">
+            <h3>Postres Dulce Amor</h3>
+            <p>Postres personalizados</p>
+            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
+        </div>
 
-    <div class="card">
-      <h3>Postres Dulce Amor</h3>
-      <p>Postres personalizados para eventos</p>
-      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
+        <div class="card">
+            <h3>Beauty Studio SV</h3>
+            <p>Servicios de belleza</p>
+            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
+        </div>
+
+        <div class="card">
+            <h3>Asesoría Legal Pro</h3>
+            <p>Servicios legales</p>
+            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
+        </div>
     </div>
-
-    <div class="card">
-      <h3>Beauty Studio SV</h3>
-      <p>Servicios de belleza y cuidado personal</p>
-      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
-    </div>
-
-    <div class="card">
-      <h3>Asesoría Legal Pro</h3>
-      <p>Servicios legales para emprendedores</p>
-      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
-    </div>
-
-  </div>
 </section>
 
-<section class="hero" id="nosotros">
-  <h2>Sobre NeXsv</h2>
-  <p>Somos una comunidad que conecta padres emprendedores para impulsar sus negocios.</p>
-</section>
+<section id="contacto" class="section">
+    <h2>Únete a NeXsv</h2>
+    <p>Registra tu negocio aquí:</p>
 
-<section class="hero" id="contacto">
-  <h2>Contáctanos</h2>
-  <a href="https://wa.me/50377448261" target="_blank" class="btn">
-    Escríbenos por WhatsApp
-  </a>
+    <!-- FORMULARIO CORRECTO -->
+    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
+        Registrarme
+    </a>
 </section>
 
 <footer>
-  <p>© 2026 NeXsv - Todos los derechos reservados</p>
+    <p>© 2026 NeXsv</p>
 </footer>
 
 </body>
