@@ -1,206 +1,175 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeXsv | Conecta, compra y crece</title>
 
-<title>NeXsv | Red de Negocios</title>
+  <!-- SEO -->
+  <meta name="description" content="Red de negocios para padres de colegios privados en El Salvador. Conecta, compra y crece con NeXsv.">
+  <meta name="keywords" content="negocios El Salvador, marketplace padres, emprendimientos, servicios escolares">
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #F4F6F8;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      text-align: center;
+    }
 
-/* NAV */
-nav {
-    background-color: #2A4B7C;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    header {
+      background: #3f5477;
+      padding: 20px;
+    }
 
-.menu a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      color: white;
+      font-size: 18px;
+    }
 
-.logo {
-    width: 150px;
-}
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background-color: white;
-}
+    .logo {
+      margin-top: 10px;
+    }
 
-.hero h1 {
-    color: #2A4B7C;
-    font-size: 40px;
-}
+    .logo img {
+      width: 180px;
+      height: auto;
+      background: transparent;
+      mix-blend-mode: multiply;
+    }
 
-.hero p {
-    font-size: 20px;
-}
+    .hero {
+      padding: 60px 20px;
+    }
 
-/* BOTÓN */
-.btn {
-    background-color: #34A88E;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    display: inline-block;
-}
+    .hero h1 {
+      font-size: 40px;
+      color: #3f5477;
+    }
 
-/* SECCIONES */
-.section {
-    padding: 60px 20px;
-    text-align: center;
-}
+    .hero p {
+      font-size: 20px;
+      color: #555;
+    }
 
-/* TARJETAS */
-.cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      background: #6da58f;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 18px;
+    }
 
-.card {
-    background: white;
-    padding: 20px;
-    width: 250px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
-}
+    .marketplace {
+      padding: 50px 20px;
+    }
 
-.card:hover {
-    transform: translateY(-5px);
-}
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
 
-/* FILTROS */
-.filtros button {
-    margin: 5px;
-    border: none;
-    cursor: pointer;
-}
+    .card {
+      background: white;
+      padding: 20px;
+      width: 280px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
 
-/* FOOTER */
-footer {
-    background-color: #2A4B7C;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-</style>
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      background: #3f5477;
+      color: white;
+    }
+  </style>
 </head>
 
 <body>
 
-<nav>
-    <img src="logo.png" class="logo">
-    <div class="menu">
-        <a href="#inicio">Inicio</a>
-        <a href="#servicios">Servicios</a>
-        <a href="#directorio">Directorio</a>
-        <a href="#contacto">Únete</a>
-    </div>
-</nav>
+<header>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#servicios">Servicios</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
 
-<!-- HERO -->
-<section id="inicio" class="hero">
-    <h1>Conecta, compra y crece</h1>
-    <p>Red de negocios para padres en El Salvador</p>
+  <div class="logo">
+    <img src="logo.png" alt="NeXsv Logo">
+  </div>
+</header>
 
-    <a href="https://wa.me/50377448261?text=Hola,%20quiero%20unirme%20a%20NeXsv" class="btn">
-        Únete por WhatsApp
-    </a>
+<section class="hero">
+  <h1>Conecta, compra y crece</h1>
+  <p>Red de negocios para padres de colegios privados en El Salvador</p>
+
+  <!-- BOTÓN FORMULARIO (CORREGIDO) -->
+  <a href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank" class="btn">
+    Únete ahora
+  </a>
 </section>
 
-<!-- SERVICIOS -->
-<section id="servicios" class="section">
-    <h2>¿Qué puedes hacer?</h2>
+<section class="marketplace" id="servicios">
+  <h2>Negocios de la comunidad</h2>
 
-    <div class="cards">
-        <div class="card"><h3>Promociona tu negocio</h3></div>
-        <div class="card"><h3>Compra con confianza</h3></div>
-        <div class="card"><h3>Conecta con otros padres</h3></div>
-    </div>
-</section>
+  <div class="cards">
 
-<!-- MARKETPLACE -->
-<section id="directorio" class="section">
-    <h2>Explora negocios de la comunidad</h2>
-
-    <!-- FILTROS -->
-    <div class="filtros">
-        <button onclick="filtrar('todos')" class="btn">Todos</button>
-        <button onclick="filtrar('comida')" class="btn">Comida</button>
-        <button onclick="filtrar('belleza')" class="btn">Belleza</button>
-        <button onclick="filtrar('servicios')" class="btn">Servicios</button>
+    <div class="card">
+      <h3>Postres Dulce Amor</h3>
+      <p>Postres personalizados para eventos</p>
+      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
     </div>
 
-    <div class="cards">
-
-        <div class="card" data-categoria="comida">
-            <h3>Postres Dulce Amor</h3>
-            <p>Postres personalizados</p>
-            <a href="https://wa.me/50377448261" class="btn">Contactar</a>
-        </div>
-
-        <div class="card" data-categoria="belleza">
-            <h3>Beauty Studio SV</h3>
-            <p>Servicios de belleza</p>
-            <a href="https://wa.me/50377448261" class="btn">Contactar</a>
-        </div>
-
-        <div class="card" data-categoria="servicios">
-            <h3>Asesoría Legal Pro</h3>
-            <p>Servicios legales</p>
-            <a href="https://wa.me/50377448261" class="btn">Contactar</a>
-        </div>
-
+    <div class="card">
+      <h3>Beauty Studio SV</h3>
+      <p>Servicios de belleza y cuidado personal</p>
+      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
     </div>
+
+    <div class="card">
+      <h3>Asesoría Legal Pro</h3>
+      <p>Servicios legales para emprendedores</p>
+      <a href="https://wa.me/50377448261" target="_blank" class="btn">Contactar</a>
+    </div>
+
+  </div>
 </section>
 
-<!-- FORMULARIO -->
-<section id="contacto" class="section">
-    <h2>Únete a NeXsv</h2>
-
-    <iframe src="TU_LINK_DEL_FORMULARIO_AQUI" width="100%" height="600" style="border:none;"></iframe>
+<section class="hero" id="nosotros">
+  <h2>Sobre NeXsv</h2>
+  <p>Somos una comunidad que conecta padres emprendedores para impulsar sus negocios.</p>
 </section>
 
-<!-- FOOTER -->
+<section class="hero" id="contacto">
+  <h2>Contáctanos</h2>
+  <a href="https://wa.me/50377448261" target="_blank" class="btn">
+    Escríbenos por WhatsApp
+  </a>
+</section>
+
 <footer>
-    <p>© 2026 NeXsv</p>
+  <p>© 2026 NeXsv - Todos los derechos reservados</p>
 </footer>
-
-<!-- SCRIPT FILTRO -->
-<script>
-function filtrar(categoria) {
-    let cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-        if (categoria === 'todos') {
-            card.style.display = 'block';
-        } else {
-            if (card.getAttribute('data-categoria') === categoria) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        }
-    });
-}
-</script>
 
 </body>
 </html>
