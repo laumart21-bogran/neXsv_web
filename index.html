@@ -78,10 +78,6 @@ nav a {
     width: 250px;
 }
 
-.card h3 {
-    margin-top: 0;
-}
-
 footer {
     background: #3f5177;
     color: white;
@@ -99,7 +95,6 @@ footer {
 
 <nav>
     <a href="#">Inicio</a>
-    <a href="#servicios">Servicios</a>
     <a href="#negocios">Negocios</a>
     <a href="#contacto">Contacto</a>
 </nav>
@@ -108,7 +103,6 @@ footer {
     <h1>Conecta, compra y crece</h1>
     <p>Red de negocios para padres de colegios privados en El Salvador</p>
 
-    <!-- BOTÓN WHATSAPP -->
     <a class="btn" href="https://wa.me/50377448261" target="_blank">
         Escríbenos por WhatsApp
     </a>
@@ -117,32 +111,14 @@ footer {
 <section id="negocios" class="section">
     <h2>Negocios de la comunidad</h2>
 
-    <div class="cards">
-        <div class="card">
-            <h3>Postres Dulce Amor</h3>
-            <p>Postres personalizados</p>
-            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
-        </div>
-
-        <div class="card">
-            <h3>Beauty Studio SV</h3>
-            <p>Servicios de belleza</p>
-            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
-        </div>
-
-        <div class="card">
-            <h3>Asesoría Legal Pro</h3>
-            <p>Servicios legales</p>
-            <a class="btn" href="https://wa.me/50377448261">Contactar</a>
-        </div>
-    </div>
+    <!-- CONTENEDOR DINÁMICO -->
+    <div class="cards" id="negocios-container"></div>
 </section>
 
 <section id="contacto" class="section">
     <h2>Únete a NeXsv</h2>
     <p>Registra tu negocio aquí:</p>
 
-    <!-- FORMULARIO CORRECTO -->
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
         Registrarme
     </a>
@@ -151,6 +127,36 @@ footer {
 <footer>
     <p>© 2026 NeXsv</p>
 </footer>
+
+<!-- SCRIPT DINÁMICO -->
+<script>
+const URL = "https://opensheet.elk.sh/1EJmCEirmXAXKQFpYpCR93pTfAcv1K3fpvJP_9y3iAGA/Hoja1";
+
+fetch(URL)
+.then(res => res.json())
+.then(data => {
+    const container = document.getElementById("negocios-container");
+
+    data.forEach(item => {
+
+        const nombre = item["Nombre del negocio"] || "Negocio";
+        const descripcion = item["Descripción"] || "";
+        const telefono = item["WhatsApp"] || "";
+
+        const card = `
+        <div class="card">
+            <h3>${nombre}</h3>
+            <p>${descripcion}</p>
+            <a class="btn" href="https://wa.me/${telefono}" target="_blank">
+                Contactar
+            </a>
+        </div>
+        `;
+
+        container.innerHTML += card;
+    });
+});
+</script>
 
 </body>
 </html>
