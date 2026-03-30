@@ -11,8 +11,9 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* HEADER */
 header {
-    background: #3f5177;
+    background: #2A4B7C;
     padding: 15px;
     text-align: center;
 }
@@ -21,8 +22,9 @@ header img {
     height: 60px;
 }
 
+/* NAV */
 nav {
-    background: #3f5177;
+    background: #2A4B7C;
     text-align: center;
     padding-bottom: 10px;
 }
@@ -34,23 +36,25 @@ nav a {
     font-weight: bold;
 }
 
+/* HERO */
 .hero {
     text-align: center;
     padding: 80px 20px;
-    background: #f5f5f5;
+    background: #F4F6F8;
 }
 
 .hero h1 {
     font-size: 40px;
-    color: #3f5177;
+    color: #2A4B7C;
 }
 
 .hero p {
     font-size: 18px;
 }
 
+/* BOTÓN */
 .btn {
-    background: #6aa58b;
+    background: #34A88E;
     color: white;
     padding: 12px 25px;
     border-radius: 8px;
@@ -59,11 +63,20 @@ nav a {
     margin-top: 20px;
 }
 
+/* SECCIÓN */
 .section {
     padding: 60px 20px;
     text-align: center;
 }
 
+/* FILTROS */
+.filtros button {
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/* TARJETAS */
 .cards {
     display: flex;
     flex-wrap: wrap;
@@ -72,14 +85,21 @@ nav a {
 }
 
 .card {
-    background: #f5f5f5;
+    background: white;
     padding: 20px;
-    border-radius: 10px;
-    width: 250px;
+    border-radius: 12px;
+    width: 260px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
 }
 
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* FOOTER */
 footer {
-    background: #3f5177;
+    background: #2A4B7C;
     color: white;
     text-align: center;
     padding: 20px;
@@ -96,12 +116,12 @@ footer {
 <nav>
     <a href="#">Inicio</a>
     <a href="#negocios">Negocios</a>
-    <a href="#contacto">Contacto</a>
+    <a href="#contacto">Únete</a>
 </nav>
 
 <section class="hero">
     <h1>Conecta, compra y crece</h1>
-    <p>Red de negocios para padres de colegios privados en El Salvador</p>
+    <p>Red de negocios para padres en El Salvador</p>
 
     <a class="btn" href="https://wa.me/50377448261" target="_blank">
         Escríbenos por WhatsApp
@@ -111,16 +131,23 @@ footer {
 <section id="negocios" class="section">
     <h2>Negocios de la comunidad</h2>
 
-    <!-- CONTENEDOR DINÁMICO -->
+    <!-- FILTROS -->
+    <div class="filtros">
+        <button onclick="filtrar('todos')" class="btn">Todos</button>
+        <button onclick="filtrar('Comida')" class="btn">Comida</button>
+        <button onclick="filtrar('Belleza')" class="btn">Belleza</button>
+        <button onclick="filtrar('Servicios')" class="btn">Servicios</button>
+    </div>
+
+    <!-- CONTENEDOR -->
     <div class="cards" id="negocios-container"></div>
 </section>
 
 <section id="contacto" class="section">
     <h2>Únete a NeXsv</h2>
-    <p>Registra tu negocio aquí:</p>
 
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
-        Registrarme
+        Registrar mi negocio
     </a>
 </section>
 
@@ -130,21 +157,30 @@ footer {
 
 <!-- SCRIPT DINÁMICO -->
 <script>
-const URL = "https://opensheet.elk.sh/1EJmCEirmXAXKQFpYpCR93pTfAcv1K3fpvJP_9y3iAGA/Hoja1";
+const URL = "https://script.google.com/macros/s/AKfycbwiyqC2dKyBcVQTuyUNoUk--cW_U_sTYdQXBLTPWjvpHMo-PLUR7BwHGDKwxHWv4Bej/exec";
+
+let datosGlobales = [];
 
 fetch(URL)
 .then(res => res.json())
 .then(data => {
+    datosGlobales = data;
+    mostrarNegocios(data);
+});
+
+function mostrarNegocios(data) {
     const container = document.getElementById("negocios-container");
+    container.innerHTML = "";
 
     data.forEach(item => {
 
         const nombre = item["Nombre del negocio"] || "Negocio";
         const descripcion = item["Descripción"] || "";
         const telefono = item["WhatsApp"] || "";
+        const categoria = item["Categoría"] || "";
 
         const card = `
-        <div class="card">
+        <div class="card" data-categoria="${categoria}">
             <h3>${nombre}</h3>
             <p>${descripcion}</p>
             <a class="btn" href="https://wa.me/${telefono}" target="_blank">
@@ -155,7 +191,16 @@ fetch(URL)
 
         container.innerHTML += card;
     });
-});
+}
+
+function filtrar(categoria) {
+    if (categoria === 'todos') {
+        mostrarNegocios(datosGlobales);
+    } else {
+        const filtrados = datosGlobales.filter(item => item["Categoría"] === categoria);
+        mostrarNegocios(filtrados);
+    }
+}
 </script>
 
 </body>
