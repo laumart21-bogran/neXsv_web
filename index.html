@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeXsv | Red de negocios</title>
+<title>NeXsv | Marketplace</title>
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
+    background: #F4F6F8;
 }
 
 /* HEADER */
@@ -22,87 +23,67 @@ header img {
     height: 60px;
 }
 
-/* NAV */
-nav {
-    background: #2A4B7C;
-    text-align: center;
-    padding-bottom: 10px;
-}
-
-nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
 /* HERO */
 .hero {
     text-align: center;
-    padding: 80px 20px;
-    background: #F4F6F8;
+    padding: 60px 20px;
 }
 
 .hero h1 {
-    font-size: 40px;
     color: #2A4B7C;
 }
 
-.hero p {
-    font-size: 18px;
-}
-
-/* BOTÓN */
-.btn {
-    background: #34A88E;
-    color: white;
-    padding: 12px 25px;
-    border-radius: 8px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-}
-
-/* SECCIÓN */
-.section {
-    padding: 60px 20px;
+/* BUSCADOR */
+.search {
     text-align: center;
+    margin: 20px;
 }
 
-/* FILTROS */
-.filtros button {
-    margin: 5px;
-    border: none;
-    cursor: pointer;
+.search input {
+    width: 80%;
+    max-width: 400px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }
 
 /* TARJETAS */
 .cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 
 .card {
     background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 260px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.card:hover {
-    transform: translateY(-5px);
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
 }
 
-/* FOOTER */
-footer {
-    background: #2A4B7C;
+.card-content {
+    padding: 15px;
+}
+
+.card h3 {
+    margin: 0;
+}
+
+.btn {
+    display: inline-block;
+    background: #34A88E;
     color: white;
-    text-align: center;
-    padding: 20px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -110,97 +91,69 @@ footer {
 <body>
 
 <header>
-    <img src="logo.png" alt="NeXsv">
+    <img src="logo.png">
 </header>
 
-<nav>
-    <a href="#">Inicio</a>
-    <a href="#negocios">Negocios</a>
-    <a href="#contacto">Únete</a>
-</nav>
-
 <section class="hero">
-    <h1>Conecta, compra y crece</h1>
-    <p>Red de negocios para padres en El Salvador</p>
-
-    <a class="btn" href="https://wa.me/50377448261" target="_blank">
-        Escríbenos por WhatsApp
-    </a>
-</section>
-
-<section id="negocios" class="section">
-    <h2>Negocios de la comunidad</h2>
-
-    <!-- FILTROS -->
-    <div class="filtros">
-        <button onclick="filtrar('todos')" class="btn">Todos</button>
-        <button onclick="filtrar('Comida')" class="btn">Comida</button>
-        <button onclick="filtrar('Belleza')" class="btn">Belleza</button>
-        <button onclick="filtrar('Servicios')" class="btn">Servicios</button>
-    </div>
-
-    <!-- CONTENEDOR -->
-    <div class="cards" id="negocios-container"></div>
-</section>
-
-<section id="contacto" class="section">
-    <h2>Únete a NeXsv</h2>
+    <h1>Marketplace NeXsv</h1>
+    <p>Apoya negocios de padres</p>
 
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
         Registrar mi negocio
     </a>
 </section>
 
-<footer>
-    <p>© 2026 NeXsv</p>
-</footer>
+<!-- BUSCADOR -->
+<div class="search">
+    <input type="text" id="buscador" placeholder="Buscar negocio...">
+</div>
 
-<!-- SCRIPT DINÁMICO -->
+<!-- NEGOCIOS -->
+<div class="cards" id="contenedor"></div>
+
 <script>
 const URL = "https://script.google.com/macros/s/AKfycbwiyqC2dKyBcVQTuyUNoUk--cW_U_sTYdQXBLTPWjvpHMo-PLUR7BwHGDKwxHWv4Bej/exec";
 
-let datosGlobales = [];
+let datos = [];
 
 fetch(URL)
 .then(res => res.json())
 .then(data => {
-    datosGlobales = data;
-    mostrarNegocios(data);
+    datos = data;
+    render(data);
 });
 
-function mostrarNegocios(data) {
-    const container = document.getElementById("negocios-container");
-    container.innerHTML = "";
+function render(lista) {
+    const contenedor = document.getElementById("contenedor");
+    contenedor.innerHTML = "";
 
-    data.forEach(item => {
-
-        const nombre = item["Nombre del negocio"] || "Negocio";
-        const descripcion = item["Descripción"] || "";
-        const telefono = item["WhatsApp"] || "";
-        const categoria = item["Categoría"] || "";
-
+    lista.forEach(item => {
         const card = `
-        <div class="card" data-categoria="${categoria}">
-            <h3>${nombre}</h3>
-            <p>${descripcion}</p>
-            <a class="btn" href="https://wa.me/${telefono}" target="_blank">
-                Contactar
-            </a>
+        <div class="card">
+            <img src="${item["Imagen"] || 'https://via.placeholder.com/300'}">
+            <div class="card-content">
+                <h3>${item["Nombre del negocio"]}</h3>
+                <p>${item["Descripción"]}</p>
+                <a class="btn" href="https://wa.me/${item["WhatsApp"]}" target="_blank">
+                    Contactar
+                </a>
+            </div>
         </div>
         `;
-
-        container.innerHTML += card;
+        contenedor.innerHTML += card;
     });
 }
 
-function filtrar(categoria) {
-    if (categoria === 'todos') {
-        mostrarNegocios(datosGlobales);
-    } else {
-        const filtrados = datosGlobales.filter(item => item["Categoría"] === categoria);
-        mostrarNegocios(filtrados);
-    }
-}
+// BUSCADOR
+document.getElementById("buscador").addEventListener("input", e => {
+    const texto = e.target.value.toLowerCase();
+
+    const filtrados = datos.filter(item =>
+        (item["Nombre del negocio"] || "").toLowerCase().includes(texto)
+    );
+
+    render(filtrados);
+});
 </script>
 
 </body>
