@@ -15,16 +15,35 @@ body {
 header {
   background: #2A4B7C;
   color: white;
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
 }
 
 .logo {
-  height: 60px;
+  height: 100px; /* 🔥 MÁS GRANDE */
   margin-bottom: 10px;
 }
 
-/* BOTÓN REGISTRO */
+/* HERO (COVER) */
+.hero {
+  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f');
+  background-size: cover;
+  background-position: center;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.hero h2 {
+  background: rgba(0,0,0,0.5);
+  padding: 15px 25px;
+  border-radius: 10px;
+}
+
+/* BOTÓN */
 .btn {
   display: inline-block;
   margin: 20px;
@@ -33,6 +52,12 @@ header {
   color: white;
   border-radius: 8px;
   text-decoration: none;
+}
+
+/* FILTRO */
+#filtro {
+  padding: 10px;
+  border-radius: 8px;
 }
 
 /* GRID */
@@ -54,6 +79,12 @@ header {
 
 .card:hover {
   transform: translateY(-5px);
+}
+
+/* DESTACADO */
+.destacado {
+  border: 3px solid gold;
+  transform: scale(1.03);
 }
 
 /* IMAGEN */
@@ -100,9 +131,20 @@ header {
   <p>Conecta. Crece. Apoya.</p>
 </header>
 
+<!-- 🔥 HERO SECTION -->
+<div class="hero">
+  <h2>Descubre negocios cerca de ti 🚀</h2>
+</div>
+
 <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
 Registrar negocio
 </a>
+
+<br>
+
+<select id="filtro">
+  <option value="todos">Todas las categorías</option>
+</select>
 
 <div id="contenedor" class="grid"></div>
 
@@ -110,27 +152,60 @@ Registrar negocio
 
 const URL = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
+let datosGlobales = [];
+
 fetch(URL)
 .then(res => res.json())
 .then(data => {
+  datosGlobales = data;
+  cargarCategorias(data);
+  render(data);
+});
 
-  const contenedor = document.getElementById("contenedor");
+function cargarCategorias(data) {
+  const filtro = document.getElementById("filtro");
+  let categorias = new Set();
 
-  if (!data || data.length === 0) {
-    contenedor.innerHTML = "<p>No hay negocios aún</p>";
-    return;
+  data.forEach(item => {
+    const cat = item["Categoría de tu negocio "] || "Otros";
+    categorias.add(cat);
+  });
+
+  categorias.forEach(cat => {
+    filtro.innerHTML += `<option value="${cat}">${cat}</option>`;
+  });
+
+  filtro.addEventListener("change", () => {
+    filtrar(filtro.value);
+  });
+}
+
+function filtrar(categoria) {
+  if (categoria === "todos") {
+    render(datosGlobales);
+  } else {
+    const filtrados = datosGlobales.filter(item =>
+      item["Categoría de tu negocio "] === categoria
+    );
+    render(filtrados);
   }
+}
+
+function render(data) {
+  const contenedor = document.getElementById("contenedor");
+  contenedor.innerHTML = "";
+
+  // ⭐ ORDEN PREMIUM
+  data.sort((a, b) => (b["Publicado"] === "SI") - (a["Publicado"] === "SI"));
 
   data.forEach(item => {
 
     const nombre = item["  Nombre de tu negocio  "] || "Negocio";
     const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
 
-    // 🔥 LIMPIAR WHATSAPP
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
 
-    // 🔥 IMAGEN CORREGIDA
     let imagen = item["Link de imagen de tu negocio "] || "";
 
     const match = imagen.match(/[-\w]{25,}/);
@@ -142,8 +217,10 @@ fetch(URL)
       imagen = "https://picsum.photos/300";
     }
 
+    const destacado = item["Publicado"] === "SI";
+
     const card = `
-      <div class="card">
+      <div class="card ${destacado ? 'destacado' : ''}">
         <img src="${imagen}">
         <h3>${nombre}</h3>
         <p>${descripcion}</p>
@@ -155,12 +232,7 @@ fetch(URL)
 
     contenedor.innerHTML += card;
   });
-
-})
-.catch(error => {
-  console.error("Error:", error);
-  document.getElementById("contenedor").innerHTML = "<p style='color:red'>Error cargando datos</p>";
-});
+}
 
 </script>
 
