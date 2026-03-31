@@ -95,8 +95,8 @@ header img {
 </header>
 
 <section class="hero">
-    <h1>Marketplace NeXsv</h1>
-    <p>Apoya negocios de padres</p>
+    <h1>Conecta. Crece. Apoya.</h1>
+    <p>Marketplace de negocios entre padres</p>
 
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
         Registrar mi negocio
@@ -108,7 +108,7 @@ header img {
     <input type="text" id="buscador" placeholder="Buscar negocio...">
 </div>
 
-<!-- NEGOCIOS -->
+<!-- CONTENEDOR -->
 <div class="cards" id="contenedor"></div>
 
 <script>
@@ -128,29 +128,52 @@ function render(lista) {
     contenedor.innerHTML = "";
 
     lista.forEach(item => {
+
+        // 🔥 AJUSTE AUTOMÁTICO A DISTINTOS NOMBRES
+        const nombre = item["Nombre del negocio"] 
+            || item["Nombre del negocio o emprendimiento"] 
+            || "Negocio";
+
+        const descripcion = item["Descripción"] 
+            || item["Describe tu negocio"] 
+            || "";
+
+        const telefono = item["WhatsApp"] 
+            || item["Número de WhatsApp"] 
+            || "";
+
+        const imagen = item["Imagen"] 
+            || item["Link de imagen del negocio"] 
+            || "https://picsum.photos/300";
+
         const card = `
         <div class="card">
-            <img src="${item["Imagen"] || 'https://via.placeholder.com/300'}">
+            <img src="${imagen}" onerror="this.src='https://picsum.photos/300'">
             <div class="card-content">
-                <h3>${item["Nombre del negocio"]}</h3>
-                <p>${item["Descripción"]}</p>
-                <a class="btn" href="https://wa.me/${item["WhatsApp"]}" target="_blank">
+                <h3>${nombre}</h3>
+                <p>${descripcion}</p>
+                <a class="btn" href="https://wa.me/${telefono}" target="_blank">
                     Contactar
                 </a>
             </div>
         </div>
         `;
+
         contenedor.innerHTML += card;
     });
 }
 
-// BUSCADOR
+// 🔍 BUSCADOR
 document.getElementById("buscador").addEventListener("input", e => {
     const texto = e.target.value.toLowerCase();
 
-    const filtrados = datos.filter(item =>
-        (item["Nombre del negocio"] || "").toLowerCase().includes(texto)
-    );
+    const filtrados = datos.filter(item => {
+        const nombre = item["Nombre del negocio"] 
+            || item["Nombre del negocio o emprendimiento"] 
+            || "";
+
+        return nombre.toLowerCase().includes(texto);
+    });
 
     render(filtrados);
 });
