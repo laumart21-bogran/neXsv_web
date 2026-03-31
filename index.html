@@ -1,86 +1,187 @@
-<script>
-const URL = "https://script.google.com/macros/s/AKfycbwiyqC2dKyBcVQTuyUNoUk--cW_U_sTYdQXBLTPWjvpHMo-PLUR7BwHGDKwxHWv4Bej/exec";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>NeXsv</title>
 
-let datos = [];
-
-// CARGAR DATOS
-fetch(URL)
-.then(res => res.json())
-.then(data => {
-    datos = data;
-    render(data);
-})
-.catch(error => {
-    console.error("Error cargando datos:", error);
-});
-
-// FUNCIÓN RENDER
-function render(lista) {
-    const contenedor = document.getElementById("contenedor");
-    contenedor.innerHTML = "";
-
-    lista.forEach(item => {
-
-        // FILTRO OPCIONAL
-        if(item["Estado"] === "Inactivo") return;
-
-        // DATOS
-        const nombre = item["Nombre de tu negocio"] || "Negocio";
-
-        const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
-
-        let telefono = item["WhatsApp del nego"] 
-            || item["Número de WhatsApp"] 
-            || item["WhatsApp"] 
-            || "";
-
-        let imagen = item["Link de imagen de tu"] 
-            || item["Link de imagen del negocio"] 
-            || "";
-
-        // FIX IMAGEN DRIVE
-        if(imagen && imagen.includes("drive.google.com")){
-            const id = imagen.split("/d/")[1]?.split("/")[0];
-            if(id){
-                imagen = `https://drive.google.com/uc?export=view&id=${id}`;
-            }
-        }
-
-        // FALLBACK IMAGEN
-        if(!imagen){
-            imagen = "https://picsum.photos/300";
-        }
-
-        // LIMPIAR TELÉFONO (SEGURO)
-        telefono = String(telefono || "").replace(/\D/g, "");
-
-        // TARJETA
-        const card = `
-        <div class="card">
-            <img src="${imagen}" onerror="this.src='https://picsum.photos/300'">
-            <div class="card-content">
-                <h3>${nombre}</h3>
-                <p>${descripcion}</p>
-                <a class="btn" href="https://wa.me/${telefono}" target="_blank">
-                    Contactar
-                </a>
-            </div>
-        </div>
-        `;
-
-        contenedor.innerHTML += card;
-    });
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f5f5;
+  text-align: center;
 }
 
-// BUSCADOR
-document.getElementById("buscador").addEventListener("input", e => {
-    const texto = e.target.value.toLowerCase();
+h1 {
+  margin-top: 40px;
+  color: #2c3e50;
+}
 
-    const filtrados = datos.filter(item => {
-        const nombre = item["Nombre de tu negocio"] || "";
-        return nombre.toLowerCase().includes(texto);
+p {
+  color: #555;
+}
+
+.btn {
+  background: #5fa38b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+input {
+  padding: 12px;
+  width: 300px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 40px;
+}
+
+.card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  text-align: left;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 10px 0;
+}
+
+.card a {
+  display: inline-block;
+  background: #5fa38b;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>Conecta. Crece. Apoya.</h1>
+<p>Marketplace de negocios entre padres</p>
+
+<a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
+Registrar mi negocio
+</a>
+
+<br>
+
+<input type="text" id="buscador" placeholder="Buscar negocio...">
+
+<div id="contenedor-negocios" class="grid"></div>
+
+<script>
+
+const URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
+
+async function cargarDatos() {
+  try {
+    const res = await fetch(URL);
+    const data = await res.json();
+
+    console.log("DATOS:", data);
+
+    render(data);
+
+    document.getElementById("buscador").addEventListener("input", (e) => {
+      const texto = e.target.value.toLowerCase();
+
+      const filtrados = data.filter(n =>
+        (n["Nombre de tu negocio"] || "").toLowerCase().includes(texto)
+      );
+
+      render(filtrados);
     });
 
-    render(filtrados);
-});
+  } catch (error) {
+    console.error("Error cargando datos:", error);
+  }
+}
+
+function convertirImagen(url) {
+  if (!url) return "https://via.placeholder.com/400x200";
+
+  if (url.includes("drive.google.com")) {
+    const id = url.match(/[-\w]{25,}/);
+    if (id) {
+      return `https://drive.google.com/uc?export=view&id=${id[0]}`;
+    }
+  }
+
+  return url;
+}
+
+function render(data) {
+  const contenedor = document.getElementById("contenedor-negocios");
+
+  if (!contenedor) {
+    console.error("No existe el contenedor");
+    return;
+  }
+
+  contenedor.innerHTML = "";
+
+  data.forEach(n => {
+
+    const nombre = n["Nombre de tu negocio"] || "Negocio";
+    const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "";
+    const whatsapp = n["WhatsApp del negocio"] || "";
+    const imagen = convertirImagen(n["Link de imagen de tu negocio"]);
+
+    const card = `
+      <div class="card">
+        <img src="${imagen}">
+        <div class="card-content">
+          <h3>${nombre}</h3>
+          <p>${descripcion}</p>
+          <a href="https://wa.me/${whatsapp.replace('+','')}" target="_blank">
+            Contactar
+          </a>
+        </div>
+      </div>
+    `;
+
+    contenedor.innerHTML += card;
+  });
+}
+
+cargarDatos();
+
 </script>
+
+</body>
+</html>
