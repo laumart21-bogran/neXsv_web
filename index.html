@@ -11,20 +11,27 @@ body {
   background: #f4f6f8;
 }
 
-/* HEADER */
-header {
+/* HEADER DELGADO */
+.header {
   background: #2A4B7C;
   color: white;
-  padding: 30px 20px;
+  padding: 10px 20px;
   text-align: center;
 }
 
 .logo {
-  height: 100px; /* 🔥 MÁS GRANDE */
-  margin-bottom: 10px;
+  height: 70px;
 }
 
-/* HERO (COVER) */
+.slogan {
+  margin: 5px 0 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: lowercase;
+  opacity: 0.9;
+}
+
+/* HERO */
 .hero {
   background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f');
   background-size: cover;
@@ -68,7 +75,7 @@ header {
   padding: 30px;
 }
 
-/* TARJETA */
+/* TARJETAS */
 .card {
   background: white;
   border-radius: 15px;
@@ -81,7 +88,7 @@ header {
   transform: translateY(-5px);
 }
 
-/* DESTACADO */
+/* DESTACADOS */
 .destacado {
   border: 3px solid gold;
   transform: scale(1.03);
@@ -126,12 +133,11 @@ header {
 
 <body>
 
-<header>
+<header class="header">
   <img src="logo.png" alt="NeXsv Logo" class="logo">
-  <p>Conecta. Crece. Apoya.</p>
+  <p class="slogan">conecta, crece, apoya</p>
 </header>
 
-<!-- 🔥 HERO SECTION -->
 <div class="hero">
   <h2>Descubre negocios cerca de ti 🚀</h2>
 </div>
@@ -195,7 +201,7 @@ function render(data) {
   const contenedor = document.getElementById("contenedor");
   contenedor.innerHTML = "";
 
-  // ⭐ ORDEN PREMIUM
+  // ORDEN PREMIUM
   data.sort((a, b) => (b["Publicado"] === "SI") - (a["Publicado"] === "SI"));
 
   data.forEach(item => {
