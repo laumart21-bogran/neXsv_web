@@ -1,37 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>NeXsv</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>NeXsv</h1>
+
+<p>Si ves esto, la página carga correctamente</p>
+
+<div id="contenedor" class="grid"></div>
+
 <script>
+
+// 🔴 PRUEBA 1: Ver si JS funciona
+console.log("JS cargado");
+
+// 🔴 PRUEBA 2: Ver si contenedor existe
+const contenedor = document.getElementById("contenedor");
+
+if (!contenedor) {
+  document.body.innerHTML += "<p style='color:red'>ERROR: No existe el contenedor</p>";
+} else {
+  console.log("Contenedor OK");
+}
+
+// 🔴 URL API
 const URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
 
+// 🔴 PRUEBA 3: Fetch seguro
 fetch(URL)
 .then(res => res.json())
 .then(data => {
 
-  const contenedor = document.getElementById("contenedor");
+  console.log("Datos recibidos:", data);
+
+  if (!data || data.length === 0) {
+    contenedor.innerHTML = "<p>No hay datos</p>";
+    return;
+  }
 
   data.forEach(item => {
 
-    const nombre = item["  Nombre de tu negocio  "] || "";
-    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
+    const nombre = item["  Nombre de tu negocio  "] || "Sin nombre";
+    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
     const whatsapp = item["WhatsApp del negocio"] || "";
-
-    let imagen = item["Link de imagen de tu negocio "] || "";
-
-    // 🔒 PROTECCIÓN TOTAL (NO ROMPE NUNCA)
-    if (imagen && imagen.includes("drive.google.com")) {
-      try {
-        const id = imagen.split("/d/")[1].split("/")[0];
-        imagen = "https://drive.google.com/uc?export=view&id=" + id;
-      } catch(e) {
-        imagen = "";
-      }
-    }
-
-    if (!imagen) {
-      imagen = "https://via.placeholder.com/300";
-    }
 
     const card = `
       <div class="card">
-        <img src="${imagen}" style="width:100%; height:150px; object-fit:cover;">
         <h3>${nombre}</h3>
         <p>${descripcion}</p>
         <a href="https://wa.me/${whatsapp}">Contactar</a>
@@ -43,6 +83,11 @@ fetch(URL)
 
 })
 .catch(error => {
-  console.error("Error:", error);
+  console.error("ERROR FETCH:", error);
+  contenedor.innerHTML = "<p style='color:red'>Error cargando datos</p>";
 });
+
 </script>
+
+</body>
+</html>
