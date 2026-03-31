@@ -1,31 +1,48 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Test NeXsv</title>
-</head>
-
-<body>
-
-<h1>Prueba de conexión</h1>
-
-<div id="estado">Cargando...</div>
-<pre id="debug"></pre>
-
 <script>
 const URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
 
 fetch(URL)
-.then(res => res.text()) // 👈 usamos text para ver TODO
-.then(text => {
-  document.getElementById("estado").innerText = "Respuesta recibida ✅";
-  document.getElementById("debug").innerText = text;
+.then(res => res.json())
+.then(data => {
+
+  const contenedor = document.getElementById("contenedor");
+
+  data.forEach(item => {
+
+    const nombre = item["  Nombre de tu negocio  "] || "";
+    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
+    const whatsapp = item["WhatsApp del negocio"] || "";
+
+    let imagen = item["Link de imagen de tu negocio "] || "";
+
+    // 🔒 PROTECCIÓN TOTAL (NO ROMPE NUNCA)
+    if (imagen && imagen.includes("drive.google.com")) {
+      try {
+        const id = imagen.split("/d/")[1].split("/")[0];
+        imagen = "https://drive.google.com/uc?export=view&id=" + id;
+      } catch(e) {
+        imagen = "";
+      }
+    }
+
+    if (!imagen) {
+      imagen = "https://via.placeholder.com/300";
+    }
+
+    const card = `
+      <div class="card">
+        <img src="${imagen}" style="width:100%; height:150px; object-fit:cover;">
+        <h3>${nombre}</h3>
+        <p>${descripcion}</p>
+        <a href="https://wa.me/${whatsapp}">Contactar</a>
+      </div>
+    `;
+
+    contenedor.innerHTML += card;
+  });
+
 })
-.catch(err => {
-  document.getElementById("estado").innerText = "ERROR ❌";
-  document.getElementById("debug").innerText = err;
+.catch(error => {
+  console.error("Error:", error);
 });
 </script>
-
-</body>
-</html>
