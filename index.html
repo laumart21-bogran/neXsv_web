@@ -1,72 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Test NeXsv</title>
+</head>
+
+<body>
+
+<h1>Prueba de conexión</h1>
+
+<div id="estado">Cargando...</div>
+<pre id="debug"></pre>
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
+const URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
 
-async function cargarNegocios() {
-  try {
-    const res = await fetch(API_URL);
-    const data = await res.json();
-
-    console.log("DATA:", data);
-
-    render(data);
-
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-function limpiarTexto(texto) {
-  if (!texto) return "";
-  return texto.toString().trim();
-}
-
-function convertirDrive(url) {
-  if (!url) return "https://via.placeholder.com/400x200";
-
-  // Convierte link de Drive a imagen visible
-  if (url.includes("drive.google.com")) {
-    const id = url.split("/d/")[1]?.split("/")[0];
-    return `https://drive.google.com/uc?export=view&id=${id}`;
-  }
-
-  return url;
-}
-
-function render(data) {
-  const container = document.getElementById("contenedor");
-
-  if (!container) {
-    console.error("No existe #contenedor");
-    return;
-  }
-
-  container.innerHTML = "";
-
-  data.forEach(item => {
-
-    const nombre = limpiarTexto(item["  Nombre de tu negocio  "]);
-    const descripcion = limpiarTexto(item["¿Qué vendes o qué servicio ofreces?"]);
-    const whatsapp = limpiarTexto(item["WhatsApp del negocio"]);
-    const imagen = convertirDrive(limpiarTexto(item["Link de imagen de tu negocio "])); // 👈 ojo espacio final
-
-    if (!nombre) return; // evita tarjetas vacías
-
-    const card = `
-      <div class="card">
-        <img src="${imagen}" alt="${nombre}">
-        <div class="card-content">
-          <h3>${nombre}</h3>
-          <p>${descripcion}</p>
-          <a href="https://wa.me/${whatsapp.replace('+','')}" target="_blank">
-            <button>Contactar</button>
-          </a>
-        </div>
-      </div>
-    `;
-
-    container.innerHTML += card;
-  });
-}
-
-cargarNegocios();
+fetch(URL)
+.then(res => res.text()) // 👈 usamos text para ver TODO
+.then(text => {
+  document.getElementById("estado").innerText = "Respuesta recibida ✅";
+  document.getElementById("debug").innerText = text;
+})
+.catch(err => {
+  document.getElementById("estado").innerText = "ERROR ❌";
+  document.getElementById("debug").innerText = err;
+});
 </script>
+
+</body>
+</html>
