@@ -1,121 +1,9 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeXsv | Marketplace</title>
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #F4F6F8;
-}
-
-/* HEADER */
-header {
-    background: #2A4B7C;
-    padding: 15px;
-    text-align: center;
-}
-
-header img {
-    height: 60px;
-}
-
-/* HERO */
-.hero {
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.hero h1 {
-    color: #2A4B7C;
-}
-
-/* BUSCADOR */
-.search {
-    text-align: center;
-    margin: 20px;
-}
-
-.search input {
-    width: 80%;
-    max-width: 400px;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
-
-/* TARJETAS */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.card-content {
-    padding: 15px;
-}
-
-.card h3 {
-    margin: 0;
-}
-
-.btn {
-    display: inline-block;
-    background: #34A88E;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 6px;
-    text-decoration: none;
-    margin-top: 10px;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-    <img src="logo.png">
-</header>
-
-<section class="hero">
-    <h1>Conecta. Crece. Apoya.</h1>
-    <p>Marketplace de negocios entre padres</p>
-
-    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
-        Registrar mi negocio
-    </a>
-</section>
-
-<!-- BUSCADOR -->
-<div class="search">
-    <input type="text" id="buscador" placeholder="Buscar negocio...">
-</div>
-
-<!-- CONTENEDOR -->
-<div class="cards" id="contenedor"></div>
-
 <script>
 const URL = "https://script.google.com/macros/s/AKfycbwiyqC2dKyBcVQTuyUNoUk--cW_U_sTYdQXBLTPWjvpHMo-PLUR7BwHGDKwxHWv4Bej/exec";
 
 let datos = [];
 
+// CARGAR DATOS
 fetch(URL)
 .then(res => res.json())
 .then(data => {
@@ -123,20 +11,47 @@ fetch(URL)
     render(data);
 });
 
+// FUNCIÓN RENDER
 function render(lista) {
     const contenedor = document.getElementById("contenedor");
     contenedor.innerHTML = "";
 
     lista.forEach(item => {
 
+        // 🟢 FILTRO OPCIONAL (OCULTAR INACTIVOS)
+        if(item["Estado"] === "Inactivo") return;
+
+        // 📌 DATOS DESDE GOOGLE SHEETS
         const nombre = item["Nombre de tu negocio"] || "Negocio";
 
         const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
 
-        const telefono = item["Número de WhatsApp"] || item["WhatsApp"] || "";
+        const telefono = item["WhatsApp del nego"] 
+            || item["Número de WhatsApp"] 
+            || item["WhatsApp"] 
+            || "";
 
-        const imagen = item["Link de imagen del negocio"] || "https://picsum.photos/300";
+        let imagen = item["Link de imagen de tu"] 
+            || item["Link de imagen del negocio"] 
+            || "";
 
+        // 🧠 CORREGIR IMAGEN DE GOOGLE DRIVE
+        if(imagen.includes("drive.google.com")){
+            const id = imagen.split("/d/")[1]?.split("/")[0];
+            if(id){
+                imagen = `https://drive.google.com/uc?export=view&id=${id}`;
+            }
+        }
+
+        // 🔁 IMAGEN POR DEFECTO
+        if(!imagen){
+            imagen = "https://picsum.photos/300";
+        }
+
+        // 📲 LIMPIAR TELÉFONO
+        telefono = telefono.toString().replace(/\D/g, "");
+
+        // 🧱 TARJETA
         const card = `
         <div class="card">
             <img src="${imagen}" onerror="this.src='https://picsum.photos/300'">
@@ -154,7 +69,7 @@ function render(lista) {
     });
 }
 
-// BUSCADOR
+// 🔍 BUSCADOR
 document.getElementById("buscador").addEventListener("input", e => {
     const texto = e.target.value.toLowerCase();
 
@@ -166,6 +81,3 @@ document.getElementById("buscador").addEventListener("input", e => {
     render(filtrados);
 });
 </script>
-
-</body>
-</html>
