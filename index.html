@@ -19,7 +19,7 @@ header {
   text-align: center;
 }
 
-/* BOTÓN */
+/* BOTÓN REGISTRO */
 .btn {
   display: inline-block;
   margin: 20px;
@@ -58,7 +58,7 @@ header {
   object-fit: cover;
 }
 
-/* CONTENIDO */
+/* TEXTO */
 .card h3 {
   margin: 15px;
 }
@@ -71,11 +71,18 @@ header {
 .card a {
   display: block;
   margin: 15px;
-  padding: 10px;
-  background: #2A4B7C;
+  padding: 12px;
+  background: #25D366;
   color: white;
   border-radius: 8px;
   text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.card a:hover {
+  background: #1ebe5d;
 }
 </style>
 
@@ -113,19 +120,19 @@ fetch(URL)
 
     const nombre = item["  Nombre de tu negocio  "] || "Negocio";
     const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
-    const whatsapp = item["WhatsApp del negocio"] || "";
 
+    // 🔥 LIMPIAR WHATSAPP
+    let whatsapp = item["WhatsApp del negocio"] || "";
+    whatsapp = whatsapp.replace(/\D/g, "");
+
+    // 🔥 IMAGEN CORREGIDA
     let imagen = item["Link de imagen de tu negocio "] || "";
 
-    // 🔥 FIX GOOGLE DRIVE (DEFINITIVO)
-    if (imagen && imagen.includes("drive.google.com")) {
-      const match = imagen.match(/[-\w]{25,}/);
-      if (match) {
-        imagen = `https://drive.google.com/uc?export=view&id=${match[0]}`;
-      }
+    const match = imagen.match(/[-\w]{25,}/);
+    if (match) {
+      imagen = `https://lh3.googleusercontent.com/d/${match[0]}`;
     }
 
-    // fallback imagen
     if (!imagen) {
       imagen = "https://picsum.photos/300";
     }
@@ -135,7 +142,7 @@ fetch(URL)
         <img src="${imagen}">
         <h3>${nombre}</h3>
         <p>${descripcion}</p>
-        <a href="https://wa.me/${whatsapp.replace('+','')}" target="_blank">
+        <a href="https://wa.me/${whatsapp}" target="_blank">
           Contactar
         </a>
       </div>
