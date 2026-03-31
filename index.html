@@ -9,6 +9,9 @@ fetch(URL)
 .then(data => {
     datos = data;
     render(data);
+})
+.catch(error => {
+    console.error("Error cargando datos:", error);
 });
 
 // FUNCIÓN RENDER
@@ -18,15 +21,15 @@ function render(lista) {
 
     lista.forEach(item => {
 
-        // 🟢 FILTRO OPCIONAL (OCULTAR INACTIVOS)
+        // FILTRO OPCIONAL
         if(item["Estado"] === "Inactivo") return;
 
-        // 📌 DATOS DESDE GOOGLE SHEETS
+        // DATOS
         const nombre = item["Nombre de tu negocio"] || "Negocio";
 
         const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
 
-        const telefono = item["WhatsApp del nego"] 
+        let telefono = item["WhatsApp del nego"] 
             || item["Número de WhatsApp"] 
             || item["WhatsApp"] 
             || "";
@@ -35,23 +38,23 @@ function render(lista) {
             || item["Link de imagen del negocio"] 
             || "";
 
-        // 🧠 CORREGIR IMAGEN DE GOOGLE DRIVE
-        if(imagen.includes("drive.google.com")){
+        // FIX IMAGEN DRIVE
+        if(imagen && imagen.includes("drive.google.com")){
             const id = imagen.split("/d/")[1]?.split("/")[0];
             if(id){
                 imagen = `https://drive.google.com/uc?export=view&id=${id}`;
             }
         }
 
-        // 🔁 IMAGEN POR DEFECTO
+        // FALLBACK IMAGEN
         if(!imagen){
             imagen = "https://picsum.photos/300";
         }
 
-        // 📲 LIMPIAR TELÉFONO
-        telefono = telefono.toString().replace(/\D/g, "");
+        // LIMPIAR TELÉFONO (SEGURO)
+        telefono = String(telefono || "").replace(/\D/g, "");
 
-        // 🧱 TARJETA
+        // TARJETA
         const card = `
         <div class="card">
             <img src="${imagen}" onerror="this.src='https://picsum.photos/300'">
@@ -69,7 +72,7 @@ function render(lista) {
     });
 }
 
-// 🔍 BUSCADOR
+// BUSCADOR
 document.getElementById("buscador").addEventListener("input", e => {
     const texto = e.target.value.toLowerCase();
 
