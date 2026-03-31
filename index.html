@@ -1,187 +1,72 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>NeXsv</title>
-
-<style>
-body {
-  font-family: Arial;
-  margin: 0;
-  background: #f5f5f5;
-  text-align: center;
-}
-
-h1 {
-  margin-top: 40px;
-  color: #2c3e50;
-}
-
-p {
-  color: #555;
-}
-
-.btn {
-  background: #5fa38b;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  display: inline-block;
-  margin: 20px 0;
-}
-
-input {
-  padding: 12px;
-  width: 300px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-top: 20px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
-  padding: 40px;
-}
-
-.card {
-  background: white;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  text-align: left;
-  transition: transform 0.2s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-.card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.card-content {
-  padding: 15px;
-}
-
-.card h3 {
-  margin: 0;
-}
-
-.card p {
-  margin: 10px 0;
-}
-
-.card a {
-  display: inline-block;
-  background: #5fa38b;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-}
-</style>
-
-</head>
-
-<body>
-
-<h1>Conecta. Crece. Apoya.</h1>
-<p>Marketplace de negocios entre padres</p>
-
-<a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
-Registrar mi negocio
-</a>
-
-<br>
-
-<input type="text" id="buscador" placeholder="Buscar negocio...">
-
-<div id="contenedor-negocios" class="grid"></div>
-
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
 
-const URL = "https://script.google.com/macros/s/AKfycbyrIEZSG8v1nX8q2AUBkcnFDyGq8LyqZ2Wi60uar3w2CVWTdFudxkYkoQ8Tcww_i0Xa/exec";
-
-async function cargarDatos() {
+async function cargarNegocios() {
   try {
-    const res = await fetch(URL);
+    const res = await fetch(API_URL);
     const data = await res.json();
 
-    console.log("DATOS:", data);
+    console.log("DATA:", data);
 
     render(data);
 
-    document.getElementById("buscador").addEventListener("input", (e) => {
-      const texto = e.target.value.toLowerCase();
-
-      const filtrados = data.filter(n =>
-        (n["Nombre de tu negocio"] || "").toLowerCase().includes(texto)
-      );
-
-      render(filtrados);
-    });
-
   } catch (error) {
-    console.error("Error cargando datos:", error);
+    console.error("Error:", error);
   }
 }
 
-function convertirImagen(url) {
+function limpiarTexto(texto) {
+  if (!texto) return "";
+  return texto.toString().trim();
+}
+
+function convertirDrive(url) {
   if (!url) return "https://via.placeholder.com/400x200";
 
+  // Convierte link de Drive a imagen visible
   if (url.includes("drive.google.com")) {
-    const id = url.match(/[-\w]{25,}/);
-    if (id) {
-      return `https://drive.google.com/uc?export=view&id=${id[0]}`;
-    }
+    const id = url.split("/d/")[1]?.split("/")[0];
+    return `https://drive.google.com/uc?export=view&id=${id}`;
   }
 
   return url;
 }
 
 function render(data) {
-  const contenedor = document.getElementById("contenedor-negocios");
+  const container = document.getElementById("contenedor");
 
-  if (!contenedor) {
-    console.error("No existe el contenedor");
+  if (!container) {
+    console.error("No existe #contenedor");
     return;
   }
 
-  contenedor.innerHTML = "";
+  container.innerHTML = "";
 
-  data.forEach(n => {
+  data.forEach(item => {
 
-    const nombre = n["Nombre de tu negocio"] || "Negocio";
-    const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "";
-    const whatsapp = n["WhatsApp del negocio"] || "";
-    const imagen = convertirImagen(n["Link de imagen de tu negocio"]);
+    const nombre = limpiarTexto(item["  Nombre de tu negocio  "]);
+    const descripcion = limpiarTexto(item["¿Qué vendes o qué servicio ofreces?"]);
+    const whatsapp = limpiarTexto(item["WhatsApp del negocio"]);
+    const imagen = convertirDrive(limpiarTexto(item["Link de imagen de tu negocio "])); // 👈 ojo espacio final
+
+    if (!nombre) return; // evita tarjetas vacías
 
     const card = `
       <div class="card">
-        <img src="${imagen}">
+        <img src="${imagen}" alt="${nombre}">
         <div class="card-content">
           <h3>${nombre}</h3>
           <p>${descripcion}</p>
           <a href="https://wa.me/${whatsapp.replace('+','')}" target="_blank">
-            Contactar
+            <button>Contactar</button>
           </a>
         </div>
       </div>
     `;
 
-    contenedor.innerHTML += card;
+    container.innerHTML += card;
   });
 }
 
-cargarDatos();
-
+cargarNegocios();
 </script>
-
-</body>
-</html>
