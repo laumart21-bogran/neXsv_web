@@ -14,7 +14,7 @@ body{
 /* HEADER */
 header{
   background:#3f5b8a;
-  padding:10px 30px;
+  padding:12px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -24,35 +24,62 @@ header img{
   height:60px;
 }
 
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+  font-weight:500;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 18px;
+  border-radius:8px;
+  color:white;
+  text-decoration:none;
+  margin-left:20px;
+  font-weight:bold;
+}
+
 /* HERO */
 .hero{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:60px;
+  padding:80px 60px;
+  gap:40px;
 }
 
 .hero-text{
-  max-width:500px;
+  max-width:550px;
+  animation:fadeUp 1s ease;
 }
 
 .hero h1{
-  font-size:48px;
+  font-size:56px;
+  margin-bottom:10px;
 }
 
-.hero img{
-  width:400px;
+.hero p{
+  font-size:18px;
+  color:#555;
 }
 
-/* BOTÓN */
 .btn{
   background:#4CAF50;
   color:white;
-  padding:12px 20px;
-  border-radius:8px;
+  padding:14px 24px;
+  border-radius:10px;
   text-decoration:none;
   display:inline-block;
-  margin-top:10px;
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.hero img{
+  width:100%;
+  max-width:650px;
+  animation:fadeRight 1.2s ease;
 }
 
 /* GRID */
@@ -68,20 +95,25 @@ header img{
 /* TARJETAS */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
 .card{
   background:white;
-  border-radius:10px;
+  border-radius:12px;
   padding:15px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 .card img{
   width:100%;
-  height:150px;
+  height:160px;
   object-fit:cover;
   border-radius:8px;
 }
@@ -100,24 +132,26 @@ header img{
   margin-top:10px;
   background:#25D366;
   color:white;
-  padding:8px 15px;
-  border-radius:6px;
+  padding:10px 16px;
+  border-radius:8px;
   text-decoration:none;
+  font-weight:bold;
 }
 
 /* SIDEBAR */
 .box{
   background:white;
   padding:20px;
-  border-radius:10px;
+  border-radius:12px;
   margin-bottom:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
 }
 
 .check{
   color:white;
   background:#4CAF50;
   border-radius:50%;
-  padding:5px;
+  padding:6px;
   margin-right:10px;
 }
 
@@ -128,6 +162,29 @@ footer{
   text-align:center;
   padding:20px;
 }
+
+/* ANIMACIONES */
+@keyframes fadeUp{
+  from{opacity:0; transform:translateY(30px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeRight{
+  from{opacity:0; transform:translateX(50px);}
+  to{opacity:1; transform:translateX(0);}
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .main{
+    flex-direction:column;
+  }
+}
 </style>
 
 </head>
@@ -135,6 +192,13 @@ footer{
 
 <header>
   <img src="logo.png">
+
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Cómo funciona</a>
+    <a href="#">Beneficios</a>
+    <a class="nav-btn" href="#">Únete</a>
+  </nav>
 </header>
 
 <section class="hero">
@@ -146,7 +210,6 @@ footer{
     <p>Más de 50 negocios ya se han unido a NeXsv</p>
   </div>
 
-  <!-- 🔥 IMAGEN CORRECTA -->
   <img src="hero.png">
 
 </section>
@@ -171,7 +234,7 @@ footer{
 
     <div class="box">
       <img src="https://randomuser.me/api/portraits/women/44.jpg" width="80">
-      <p>"Gracias a NeXsv he conseguido clientes"</p>
+      <p>"Gracias a NeXsv he conseguido clientes confiables"</p>
     </div>
 
   </div>
@@ -193,14 +256,12 @@ fetch(url)
 
   data.forEach(n => {
 
-    // 🔥 CLAVES EXACTAS
-    const nombre = n["  Nombre de tu negocio  "] || "Negocio";
+    const nombre = n["Nombre de tu negocio"] || "Negocio";
     const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
     const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
 
-    let img = n["Link de imagen de tu negocio "] || "";
+    let img = n["Link de imagen de tu negocio"] || "";
 
-    // 🔥 FIX GOOGLE DRIVE
     if(img.includes("drive.google.com")){
       const id = img.match(/[-\w]{25,}/);
       img = id ? `https://drive.google.com/uc?export=view&id=${id[0]}` : "";
