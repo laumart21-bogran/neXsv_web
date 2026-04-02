@@ -11,14 +11,16 @@ body {
   background: #f4f6fb;
 }
 
-/* NAVBAR */
-.navbar {
+/* HEADER */
+.header {
   background: linear-gradient(90deg, #2A4B7C, #3b5c94);
-  padding: 10px 40px;
+  padding: 12px 40px;
+  display: flex;
+  align-items: center;
 }
 
-.navbar img {
-  height: 70px;
+.header img {
+  height: 60px;
 }
 
 /* HERO */
@@ -27,16 +29,20 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 60px;
-  background: #eef2f7;
+  background: linear-gradient(135deg, #eef2f7, #dfe6f1);
 }
 
 .hero h1 {
-  font-size: 40px;
+  font-size: 42px;
   text-transform: lowercase;
 }
 
+.hero p {
+  color: #555;
+}
+
 .hero img {
-  width: 300px;
+  width: 380px;
 }
 
 .btn {
@@ -52,27 +58,47 @@ body {
 .grid {
   padding: 40px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
 }
 
-/* TARJETAS */
+/* TARJETAS PRO */
 .card {
   background: white;
-  border-radius: 15px;
-  padding: 18px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+/* IMAGEN */
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* CONTENIDO */
+.card-content {
+  padding: 15px;
 }
 
 .card h3 {
-  margin-bottom: 5px;
+  margin: 0;
+  font-size: 18px;
 }
 
 .card p {
   font-size: 14px;
   color: #555;
+  margin-top: 6px;
 }
 
+/* BOTÓN */
 .btn-whatsapp {
   display: inline-block;
   margin-top: 12px;
@@ -81,6 +107,7 @@ body {
   color: white;
   border-radius: 10px;
   text-decoration: none;
+  font-size: 14px;
 }
 
 </style>
@@ -88,8 +115,8 @@ body {
 
 <body>
 
-<!-- NAVBAR -->
-<div class="navbar">
+<!-- HEADER -->
+<div class="header">
   <img src="logo.png">
 </div>
 
@@ -101,8 +128,7 @@ body {
     <a class="btn" href="#">unirme ahora</a>
   </div>
 
-  <!-- IMAGEN CORRECTA -->
-  <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png">
+  <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png">
 </div>
 
 <!-- TARJETAS -->
@@ -129,15 +155,31 @@ fetch(URL)
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
 
+    // 🔥 IMAGEN DESDE GOOGLE DRIVE
+    let imagen = item["Link de imagen de tu negocio"] || "";
+
+    if (imagen.includes("drive.google.com")) {
+      const id = imagen.split("/d/")[1]?.split("/")[0];
+      if (id) {
+        imagen = `https://drive.google.com/uc?export=view&id=${id}`;
+      }
+    }
+
     const card = `
       <div class="card">
-        <h3>${nombre}</h3>
 
-        <p>${descripcion}</p>
+        <img src="${imagen || 'https://via.placeholder.com/400'}">
 
-        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">
-          contactar
-        </a>
+        <div class="card-content">
+          <h3>${nombre}</h3>
+
+          <p>${descripcion}</p>
+
+          <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">
+            contactar
+          </a>
+        </div>
+
       </div>
     `;
 
