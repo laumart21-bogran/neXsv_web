@@ -5,75 +5,235 @@
 <title>NeXsv</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f5f7fb;}
-header{background:#3f5b8a;padding:12px 40px;display:flex;justify-content:space-between;align-items:center;}
-header img{height:60px;}
-nav a{color:white;margin-left:20px;text-decoration:none;}
-.nav-btn{background:#4CAF50;padding:10px 18px;border-radius:8px;color:white;text-decoration:none;}
+body{
+  margin:0;
+  font-family: Arial;
+  background:#f5f7fb;
+}
 
-.hero{display:flex;justify-content:space-between;align-items:center;padding:80px 60px;}
-.hero-text{max-width:550px;}
-.hero h1{font-size:56px;}
-.btn{background:#4CAF50;color:white;padding:14px 24px;border-radius:10px;text-decoration:none;}
+/* HEADER */
+header{
+  background:#3f5b8a;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-.main{display:flex;gap:20px;padding:40px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
+header img{
+  height:70px;
+}
 
-.card{background:white;border-radius:12px;padding:15px;box-shadow:0 4px 12px rgba(0,0,0,0.08);cursor:pointer;}
-.card img{width:100%;height:160px;object-fit:cover;border-radius:8px;}
-.estrellas{color:#f5a623;}
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+}
 
-footer{background:#3f5b8a;color:white;text-align:center;padding:20px;}
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 18px;
+  border-radius:8px;
+  color:white;
+  text-decoration:none;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:80px 60px;
+}
+
+.hero-text{
+  max-width:550px;
+}
+
+.hero h1{
+  font-size:56px;
+}
+
+.hero img{
+  width:100%;
+  max-width:600px;
+}
+
+/* CATEGORÍAS */
+.categorias{
+  padding:0 60px;
+}
+
+.categorias button{
+  margin:5px;
+  padding:8px 15px;
+  border:1px solid #3f5b8a;
+  background:none;
+  border-radius:20px;
+}
+
+/* MAIN */
+.main{
+  display:flex;
+  gap:20px;
+  padding:40px;
+}
+
+.left{
+  flex:3;
+}
+
+.right{
+  flex:1;
+}
+
+/* TARJETAS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:white;
+  border-radius:12px;
+  padding:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  cursor:pointer;
+}
+
+.card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+.estrellas{
+  color:#f5a623;
+}
+
+.whatsapp{
+  display:inline-block;
+  margin-top:10px;
+  background:#25D366;
+  color:white;
+  padding:10px 16px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* SIDEBAR */
+.box{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+}
+
+.check{
+  background:#4CAF50;
+  color:white;
+  border-radius:50%;
+  padding:5px 7px;
+  margin-right:8px;
+}
+
+/* FOOTER */
+footer{
+  background:#3f5b8a;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 
 /* MODAL */
-#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
-.modal-content{background:white;padding:20px;border-radius:10px;width:90%;max-width:500px;}
-.modal-content img{width:100%;margin-top:10px;border-radius:8px;}
-</style>
+#modal{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+}
 
+.modal-content{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  width:90%;
+  max-width:500px;
+}
+
+.modal-content img{
+  width:100%;
+  margin-top:10px;
+  border-radius:8px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
-<img src="logo.png">
-<nav>
-<a href="#inicio">Inicio</a>
-<a href="#negocios">Negocios</a>
-<a class="nav-btn">Únete</a>
-</nav>
+  <img src="logo.png">
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#negocios">Negocios</a>
+    <a class="nav-btn">Únete</a>
+  </nav>
 </header>
 
 <section id="inicio" class="hero">
-<div class="hero-text">
-<h1>conecta, compra y crece</h1>
-<p>red de negocios entre padres en el salvador</p>
-<a class="btn">únete ahora</a>
-</div>
-<img src="hero.png">
+  <div class="hero-text">
+    <h1>conecta, compra y crece</h1>
+    <p>red de negocios entre padres en el salvador</p>
+  </div>
+  <img src="hero.png">
 </section>
 
+<div class="categorias">
+  <button>Todos</button>
+  <button>Servicios</button>
+  <button>Comida</button>
+  <button>Belleza</button>
+</div>
+
 <section id="negocios" class="main">
-<div class="grid" id="contenedor"></div>
+  <div class="left">
+    <h2>Negocios disponibles</h2>
+    <div class="grid" id="contenedor"></div>
+  </div>
+
+  <div class="right">
+    <div class="box">
+      <h3>Beneficios</h3>
+      <p><span class="check">✔</span>Clientes confiables</p>
+      <p><span class="check">✔</span>Comunidad privada</p>
+    </div>
+  </div>
 </section>
 
 <footer>© 2026 NeXsv</footer>
 
 <!-- MODAL -->
 <div id="modal">
-<div class="modal-content">
-<h2 id="m_nombre"></h2>
-<p id="m_desc"></p>
-<p id="m_zona"></p>
-<p id="m_tel"></p>
-<p id="m_mail"></p>
+  <div class="modal-content">
+    <h2 id="m_nombre"></h2>
+    <p id="m_desc"></p>
+    <p id="m_zona"></p>
+    <p id="m_tel"></p>
+    <p id="m_mail"></p>
 
-<img id="m_img1">
-<img id="m_img2">
-<img id="m_img3">
+    <img id="m_img1">
+    <img id="m_img2">
+    <img id="m_img3">
 
-<button onclick="cerrarModal()">Cerrar</button>
-</div>
+    <button onclick="cerrarModal()">Cerrar</button>
+  </div>
 </div>
 
 <script>
@@ -85,6 +245,7 @@ fetch(url)
 .then(data => {
 
 const contenedor = document.getElementById("contenedor");
+contenedor.innerHTML = "";
 
 data.forEach(n => {
 
@@ -97,24 +258,39 @@ return acc;
 if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
 const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || "Sin descripción";
+const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
 const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
 const zona = keys["¿En qué zona resides?"] || "";
 const email = keys["Correo del negocio"] || "";
 
-let img = keys["Imagen_final"] || "https://via.placeholder.com/300";
+let img = keys["Imagen_final"] || keys["Link de imagen de tu negocio"] || "";
+
+// FIX GOOGLE DRIVE
+if(img.includes("drive.google.com")){
+let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
+if(match){
+img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+}
+}
+
+if(!img){
+img = "https://via.placeholder.com/300x150";
+}
 
 const img2 = keys["Imagen2"] || img;
 const img3 = keys["Imagen3"] || img;
 
+const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
+
 const card = `
-<div class="card" onclick='abrirModal(${JSON.stringify({
-nombre, descripcion, telefono, zona, email, img, img2, img3
-})})'>
-<img src="${img}">
+<div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+<img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
 <h3>${nombre} ✔</h3>
 <p class="estrellas">★★★★★</p>
+<p><strong>📍 ${zona}</strong></p>
 <p>${descripcion}</p>
+<a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">💬 contactar</a>
 </div>
 `;
 
@@ -124,7 +300,6 @@ contenedor.innerHTML += card;
 
 });
 
-// MODAL
 function abrirModal(data){
 document.getElementById("modal").style.display = "flex";
 
