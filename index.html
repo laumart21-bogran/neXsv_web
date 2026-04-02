@@ -13,21 +13,24 @@ body {
 
 /* HEADER */
 .header {
-  background: linear-gradient(90deg, #2A4B7C, #3b5c94);
-  padding: 12px 40px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  padding: 15px 40px;
+  background: linear-gradient(90deg, #2A4B7C, #3b5c94);
+  color: white;
 }
 
-.header img {
-  height: 60px;
+.menu a {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
 }
 
 /* HERO */
 .hero {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   padding: 60px;
   background: linear-gradient(135deg, #eef2f7, #dfe6f1);
 }
@@ -37,77 +40,85 @@ body {
   text-transform: lowercase;
 }
 
-.hero p {
-  color: #555;
-}
-
 .hero img {
   width: 380px;
 }
 
+/* BOTÓN */
 .btn {
-  margin-top: 20px;
-  padding: 12px 20px;
   background: #34A88E;
+  padding: 12px 18px;
   color: white;
   border-radius: 10px;
   text-decoration: none;
 }
 
+/* CONTENEDOR */
+.container {
+  display: flex;
+  padding: 40px;
+  gap: 30px;
+}
+
 /* GRID */
 .grid {
-  padding: 40px;
+  flex: 3;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
 }
 
-/* TARJETAS PRO */
+/* CARD */
 .card {
   background: white;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-}
-
-/* IMAGEN */
-.card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-}
-
-/* CONTENIDO */
-.card-content {
+  border-radius: 15px;
   padding: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  display: flex;
+  gap: 10px;
+}
+
+.card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 .card h3 {
   margin: 0;
-  font-size: 18px;
 }
 
 .card p {
   font-size: 14px;
   color: #555;
-  margin-top: 6px;
 }
 
-/* BOTÓN */
-.btn-whatsapp {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 10px 14px;
+/* BOTÓN WHATSAPP */
+.btn-wsp {
   background: #25D366;
   color: white;
-  border-radius: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
   text-decoration: none;
-  font-size: 14px;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  flex: 1;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.stars {
+  color: gold;
 }
 
 </style>
@@ -117,7 +128,13 @@ body {
 
 <!-- HEADER -->
 <div class="header">
-  <img src="logo.png">
+  <h2>NeXsv</h2>
+  <div class="menu">
+    <a href="#">Inicio</a>
+    <a href="#">Cómo funciona</a>
+    <a href="#">Beneficios</a>
+    <a href="#">Negocios</a>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -131,8 +148,28 @@ body {
   <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png">
 </div>
 
-<!-- TARJETAS -->
-<div class="grid" id="contenedor"></div>
+<!-- CONTENIDO -->
+<div class="container">
+
+  <div class="grid" id="contenedor"></div>
+
+  <div class="sidebar">
+
+    <div class="box">
+      <h3>Beneficios de unirte</h3>
+      <p>✔ Clientes confiables</p>
+      <p>✔ Comunidad privada</p>
+      <p>✔ Más ventas sin publicidad</p>
+    </div>
+
+    <div class="box">
+      <h3>Testimonio</h3>
+      <p>"Gracias a NeXsv aumenté mis ventas"</p>
+    </div>
+
+  </div>
+
+</div>
 
 <script>
 
@@ -146,7 +183,7 @@ fetch(URL)
 
   data.forEach(item => {
 
-    const nombre = item["Nombre de tu negocio"] || "negocio";
+    const nombre = item["Nombre de tu negocio"] || "Negocio";
 
     const descripcion = item["Describe tu negocio en 1-2 líneas"]
       || item["¿Qué vendes o qué servicio ofreces?"]
@@ -155,27 +192,26 @@ fetch(URL)
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
 
-    // 🔥 IMAGEN DESDE GOOGLE DRIVE
     let imagen = item["Link de imagen de tu negocio"] || "";
 
     if (imagen.includes("drive.google.com")) {
       const id = imagen.split("/d/")[1]?.split("/")[0];
-      if (id) {
-        imagen = `https://drive.google.com/uc?export=view&id=${id}`;
-      }
+      imagen = `https://drive.google.com/uc?export=view&id=${id}`;
     }
 
     const card = `
       <div class="card">
 
-        <img src="${imagen || 'https://via.placeholder.com/400'}">
+        <img src="${imagen || 'https://via.placeholder.com/80'}">
 
-        <div class="card-content">
+        <div>
           <h3>${nombre}</h3>
 
           <p>${descripcion}</p>
 
-          <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">
+          <div class="stars">★★★★★</div>
+
+          <a class="btn-wsp" href="https://wa.me/${whatsapp}" target="_blank">
             contactar
           </a>
         </div>
@@ -187,9 +223,6 @@ fetch(URL)
 
   });
 
-})
-.catch(() => {
-  document.body.innerHTML += "<p style='color:red'>Error cargando datos</p>";
 });
 
 </script>
