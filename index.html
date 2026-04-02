@@ -90,13 +90,22 @@ nav a{
   cursor:pointer;
 }
 
-/* GRID */
+/* MAIN */
 .main{
   display:flex;
   gap:20px;
   padding:40px;
 }
 
+.left{
+  flex:3;
+}
+
+.right{
+  flex:1;
+}
+
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -137,12 +146,54 @@ nav a{
   text-decoration:none;
 }
 
+/* SIDEBAR */
+.box{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.check{
+  background:#4CAF50;
+  color:white;
+  border-radius:50%;
+  padding:5px 7px;
+  margin-right:8px;
+  font-size:12px;
+}
+
+.testimonio{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.testimonio img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+
 /* FOOTER */
 footer{
   background:#3f5b8a;
   color:white;
   text-align:center;
   padding:20px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .main{
+    flex-direction:column;
+  }
 }
 </style>
 
@@ -170,7 +221,6 @@ footer{
   <img src="hero.png">
 </section>
 
-<!-- 🔥 CATEGORÍAS -->
 <div class="categorias">
   <button>Todos</button>
   <button>Servicios</button>
@@ -180,12 +230,37 @@ footer{
 </div>
 
 <section class="main">
-  <div style="width:100%">
-    <h2 style="padding:0 20px;">Negocios disponibles</h2>
-    <p style="padding:0 20px;">Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
+
+  <!-- IZQUIERDA -->
+  <div class="left">
+    <h2>Negocios disponibles</h2>
+    <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
 
     <div class="grid" id="contenedor"></div>
   </div>
+
+  <!-- DERECHA -->
+  <div class="right">
+
+    <div class="box">
+      <h3>Beneficios</h3>
+      <p><span class="check">✔</span>Clientes confiables</p>
+      <p><span class="check">✔</span>Comunidad privada</p>
+      <p><span class="check">✔</span>Más ventas sin publicidad</p>
+    </div>
+
+    <div class="box">
+      <div class="testimonio">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg">
+        <div>
+          <strong>María López</strong>
+          <p>"Gracias a NeXsv conseguí nuevos clientes rápidamente"</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </section>
 
 <footer>
@@ -204,7 +279,6 @@ fetch(url)
 
   data.forEach(n => {
 
-    // 🔥 LIMPIAR HEADERS AUTOMÁTICAMENTE
     const keys = Object.keys(n).reduce((acc, key) => {
       acc[key.trim()] = n[key];
       return acc;
@@ -216,7 +290,6 @@ fetch(url)
 
     let img = (keys["Link de imagen de tu negocio"] || "").trim();
 
-    // 🔥 CONVERSIÓN GOOGLE DRIVE
     if(img.includes("drive.google.com")){
       let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if(!match){
@@ -227,7 +300,6 @@ fetch(url)
       }
     }
 
-    // 🔥 FALLBACK
     if(!img){
       img = "https://via.placeholder.com/300x150";
     }
@@ -246,9 +318,6 @@ fetch(url)
     contenedor.innerHTML += card;
   });
 
-})
-.catch(() => {
-  document.getElementById("contenedor").innerHTML = "Error cargando datos";
 });
 </script>
 
