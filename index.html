@@ -17,24 +17,12 @@ body {
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(90deg, #2A4B7C, #3b5c94);
-  padding: 15px 40px;
+  padding: 12px 40px;
   color: white;
 }
 
 .navbar img {
-  height: 55px;
-}
-
-.navbar a {
-  color: white;
-  margin-left: 25px;
-  text-decoration: none;
-}
-
-.btn-nav {
-  background: #34A88E;
-  padding: 10px 18px;
-  border-radius: 10px;
+  height: 60px;
 }
 
 /* HERO */
@@ -47,21 +35,19 @@ body {
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin-bottom: 10px;
+  font-size: 40px;
+  text-transform: lowercase;
 }
 
 .hero p {
   color: #555;
-  font-size: 18px;
 }
 
 .hero img {
-  width: 350px;
+  width: 400px;
 }
 
 .btn {
-  display: inline-block;
   margin-top: 20px;
   padding: 12px 20px;
   background: #34A88E;
@@ -70,36 +56,17 @@ body {
   text-decoration: none;
 }
 
-/* SECCIÓN */
+/* SECTION */
 .section {
   padding: 40px;
 }
 
-/* FILTROS */
-.filtros {
-  margin-bottom: 20px;
-}
-
-.filtros button {
-  padding: 10px 15px;
-  margin-right: 10px;
-  border: none;
-  border-radius: 10px;
-  background: #e4e7ec;
-  cursor: pointer;
-}
-
-.filtros button.activo {
-  background: #34A88E;
-  color: white;
-}
-
-/* LAYOUT */
 .container {
   display: flex;
   gap: 30px;
 }
 
+/* GRID */
 .grid {
   flex: 3;
   display: grid;
@@ -113,26 +80,15 @@ body {
   border-radius: 15px;
   padding: 15px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transition: 0.3s;
 }
 
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.card-header img {
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card h3 {
-  margin: 0;
-}
-
-.card small {
-  color: #777;
+  margin-bottom: 5px;
 }
 
 .card p {
@@ -183,39 +139,25 @@ body {
 <!-- NAVBAR -->
 <div class="navbar">
   <img src="logo.png">
-  <div>
-    <a href="#">Inicio</a>
-    <a href="#">Cómo funciona</a>
-    <a href="#">Beneficios</a>
-    <a href="#">Negocios</a>
-    <a class="btn-nav" href="https://forms.gle/KGV4895NqmrPmi9S8">Unirme ahora</a>
-  </div>
 </div>
 
 <!-- HERO -->
 <div class="hero">
   <div>
-    <h1>Conecta, compra y crece</h1>
-    <p>Red de negocios para padres de colegios privados en El Salvador</p>
-    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">Unirme ahora</a>
+    <h1>conecta, compra y crece</h1>
+    <p>red de negocios entre padres en el salvador</p>
+    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">unirme ahora</a>
   </div>
-  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+  <!-- NUEVA IMAGEN NETWORKING -->
+  <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png">
 </div>
 
 <!-- CONTENIDO -->
 <div class="section">
 
-<h2>Negocios Disponibles</h2>
-<p>Conoce y apoya los emprendimientos de otros padres</p>
-
-<!-- FILTROS -->
-<div class="filtros">
-  <button class="activo">Todos</button>
-  <button>Alimentos</button>
-  <button>Servicios</button>
-  <button>Salud & Belleza</button>
-  <button>Otros</button>
-</div>
+<h2>negocios disponibles</h2>
+<p>apoya emprendimientos de la comunidad</p>
 
 <div class="container">
 
@@ -224,19 +166,18 @@ body {
 <div class="sidebar">
 
   <div class="box">
-    <h3>Beneficios</h3>
+    <h3>beneficios</h3>
     <ul>
-      <li>Clientes confiables</li>
-      <li>Comunidad privada</li>
-      <li>Más ventas sin publicidad</li>
+      <li>clientes reales</li>
+      <li>comunidad privada</li>
+      <li>más ventas sin publicidad</li>
     </ul>
   </div>
 
   <div class="box testimonio">
     <img src="https://randomuser.me/api/portraits/women/44.jpg">
-    <h4>Laura González</h4>
-    <small>Colegio San José</small>
-    <p>"Gracias a NeXsv he conseguido más clientes"</p>
+    <h4>cliente feliz</h4>
+    <p>"he conseguido más ventas gracias a la red"</p>
   </div>
 
 </div>
@@ -257,28 +198,20 @@ fetch(URL)
 
   data.forEach(item => {
 
-    const nombre = item["  Nombre de tu negocio  "] || "Negocio";
-    const desc = item["¿Qué vendes o qué servicio ofreces?"] || "";
-    const colegio = item["  ¿A qué colegio perteneces?  "] || "";
-    const rating = Math.floor(Math.random() * 5) + 3;
+    const nombre = item["  Nombre de tu negocio  "] || "negocio";
+    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "sin descripción";
 
-    let estrellas = "⭐".repeat(rating);
+    let estrellas = "⭐⭐⭐⭐⭐";
 
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
 
     const card = `
       <div class="card">
-        <div class="card-header">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg">
-          <div>
-            <h3>${nombre}</h3>
-            <small>${colegio}</small>
-          </div>
-        </div>
-        <p>${desc}</p>
+        <h3>${nombre}</h3>
+        <p>${descripcion}</p>
         <div class="estrellas">${estrellas}</div>
-        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">Contactar</a>
+        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">contactar</a>
       </div>
     `;
 
@@ -287,8 +220,8 @@ fetch(URL)
   });
 
 })
-.catch(err => {
-  document.body.innerHTML += "<p style='color:red'>Error cargando datos</p>";
+.catch(() => {
+  document.body.innerHTML += "<p style='color:red'>error cargando datos</p>";
 });
 
 </script>
