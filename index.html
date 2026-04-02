@@ -32,15 +32,19 @@ header img{
   padding:60px;
 }
 
+.hero-text{
+  max-width:500px;
+}
+
 .hero h1{
-  font-size:50px;
+  font-size:48px;
 }
 
-.hero p{
-  font-size:18px;
-  color:#555;
+.hero img{
+  width:400px;
 }
 
+/* BOTÓN */
 .btn{
   background:#4CAF50;
   color:white;
@@ -58,13 +62,8 @@ header img{
   padding:40px;
 }
 
-.left{
-  flex:3;
-}
-
-.right{
-  flex:1;
-}
+.left{ flex:3; }
+.right{ flex:1; }
 
 /* TARJETAS */
 .grid{
@@ -135,30 +134,30 @@ footer{
 <body>
 
 <header>
-  <!-- 🔥 LOGO LOCAL -->
   <img src="logo.png">
 </header>
 
 <section class="hero">
-  <div>
+  
+  <div class="hero-text">
     <h1>conecta, compra y crece</h1>
-    <p>Red de negocios entre padres de familia en el salvador</p>
+    <p>red de negocios entre padres en el salvador</p>
     <a class="btn">unirme ahora</a>
     <p>Más de 50 negocios ya se han unido a NeXsv</p>
   </div>
 
-  <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" width="300">
+  <!-- 🔥 IMAGEN CORRECTA -->
+  <img src="hero.png">
+
 </section>
 
 <section class="main">
 
   <div class="left">
-
     <h2>Negocios disponibles</h2>
     <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
 
     <div class="grid" id="contenedor"></div>
-
   </div>
 
   <div class="right">
@@ -194,8 +193,9 @@ fetch(url)
 
   data.forEach(n => {
 
+    // 🔥 CLAVES EXACTAS
     const nombre = n["  Nombre de tu negocio  "] || "Negocio";
-    const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "";
+    const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
     const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
 
     let img = n["Link de imagen de tu negocio "] || "";
