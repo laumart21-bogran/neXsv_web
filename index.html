@@ -13,11 +13,8 @@ body {
 
 /* NAVBAR */
 .navbar {
-  display: flex;
-  align-items: center;
   background: linear-gradient(90deg, #2A4B7C, #3b5c94);
   padding: 10px 40px;
-  color: white;
 }
 
 .navbar img {
@@ -30,7 +27,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 60px;
-  background: linear-gradient(135deg, #eef2f7, #dfe6f1);
+  background: #eef2f7;
 }
 
 .hero h1 {
@@ -38,12 +35,8 @@ body {
   text-transform: lowercase;
 }
 
-.hero p {
-  color: #555;
-}
-
 .hero img {
-  width: 380px;
+  width: 300px;
 }
 
 .btn {
@@ -55,19 +48,9 @@ body {
   text-decoration: none;
 }
 
-/* SECTION */
-.section {
-  padding: 40px;
-}
-
-.container {
-  display: flex;
-  gap: 30px;
-}
-
 /* GRID */
 .grid {
-  flex: 3;
+  padding: 40px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
@@ -79,11 +62,6 @@ body {
   border-radius: 15px;
   padding: 18px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
 }
 
 .card h3 {
@@ -93,12 +71,6 @@ body {
 .card p {
   font-size: 14px;
   color: #555;
-  margin-top: 5px;
-}
-
-.estrellas {
-  color: gold;
-  margin-top: 8px;
 }
 
 .btn-whatsapp {
@@ -109,28 +81,6 @@ body {
   color: white;
   border-radius: 10px;
   text-decoration: none;
-  font-size: 14px;
-}
-
-/* SIDEBAR */
-.sidebar {
-  flex: 1;
-}
-
-.box {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-}
-
-.testimonio {
-  text-align: center;
-}
-
-.testimonio img {
-  width: 80px;
-  border-radius: 50%;
 }
 
 </style>
@@ -148,45 +98,15 @@ body {
   <div>
     <h1>conecta, compra y crece</h1>
     <p>red de negocios entre padres en el salvador</p>
-    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">unirme ahora</a>
+    <a class="btn" href="#">unirme ahora</a>
   </div>
 
-  <!-- NUEVA IMAGEN -->
-  <img src="https://cdn.dribbble.com/users/1787323/screenshots/14753139/media/8e6c0f79f05de7975cdc8e90d518d4b7.png">
+  <!-- IMAGEN CORRECTA -->
+  <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png">
 </div>
 
-<!-- CONTENIDO -->
-<div class="section">
-
-<h2>negocios disponibles</h2>
-<p>apoya emprendimientos de la comunidad</p>
-
-<div class="container">
-
+<!-- TARJETAS -->
 <div class="grid" id="contenedor"></div>
-
-<div class="sidebar">
-
-  <div class="box">
-    <h3>beneficios</h3>
-    <ul>
-      <li>clientes reales</li>
-      <li>comunidad privada</li>
-      <li>más ventas sin publicidad</li>
-    </ul>
-  </div>
-
-  <div class="box testimonio">
-    <img src="https://randomuser.me/api/portraits/women/44.jpg">
-    <h4>cliente feliz</h4>
-    <p>"he conseguido más ventas gracias a la red"</p>
-  </div>
-
-</div>
-
-</div>
-
-</div>
 
 <script>
 
@@ -200,13 +120,11 @@ fetch(URL)
 
   data.forEach(item => {
 
-    const nombre = item["  Nombre de tu negocio  "] || "negocio";
+    const nombre = item["Nombre de tu negocio"] || "negocio";
 
-    const descripcion = item["Describe tu negocio en 1-2 líneas"] 
-      || item["¿Qué vendes o qué servicio ofreces?"] 
+    const descripcion = item["Describe tu negocio en 1-2 líneas"]
+      || item["¿Qué vendes o qué servicio ofreces?"]
       || "sin descripción";
-
-    let estrellas = "⭐⭐⭐⭐⭐";
 
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
@@ -215,11 +133,7 @@ fetch(URL)
       <div class="card">
         <h3>${nombre}</h3>
 
-        <p>
-          ${descripcion}
-        </p>
-
-        <div class="estrellas">${estrellas}</div>
+        <p>${descripcion}</p>
 
         <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">
           contactar
@@ -233,7 +147,7 @@ fetch(URL)
 
 })
 .catch(() => {
-  document.body.innerHTML += "<p style='color:red'>error cargando datos</p>";
+  document.body.innerHTML += "<p style='color:red'>Error cargando datos</p>";
 });
 
 </script>
