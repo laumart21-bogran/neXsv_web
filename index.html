@@ -56,9 +56,38 @@ nav a{
   font-size:56px;
 }
 
+.hero p{
+  font-size:18px;
+}
+
+.btn{
+  background:#4CAF50;
+  color:white;
+  padding:14px 24px;
+  border-radius:10px;
+  text-decoration:none;
+  display:inline-block;
+  margin-top:15px;
+}
+
 .hero img{
   width:100%;
   max-width:650px;
+}
+
+/* CATEGORÍAS */
+.categorias{
+  padding:0 60px;
+  margin-top:20px;
+}
+
+.categorias button{
+  margin:5px;
+  padding:8px 15px;
+  border:1px solid #3f5b8a;
+  background:none;
+  border-radius:20px;
+  cursor:pointer;
 }
 
 /* GRID */
@@ -68,15 +97,13 @@ nav a{
   padding:40px;
 }
 
-.left{ flex:3; }
-.right{ flex:1; }
-
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
+/* TARJETAS */
 .card{
   background:white;
   border-radius:12px;
@@ -91,6 +118,15 @@ nav a{
   border-radius:8px;
 }
 
+.card h3{
+  margin:10px 0 5px;
+}
+
+.card p{
+  font-size:14px;
+  color:#555;
+}
+
 .whatsapp{
   display:inline-block;
   margin-top:10px;
@@ -101,6 +137,7 @@ nav a{
   text-decoration:none;
 }
 
+/* FOOTER */
 footer{
   background:#3f5b8a;
   color:white;
@@ -114,7 +151,6 @@ footer{
 
 <header>
   <img src="logo.png">
-
   <nav>
     <a href="#">Inicio</a>
     <a href="#">Cómo funciona</a>
@@ -126,15 +162,28 @@ footer{
 <section class="hero">
   <div class="hero-text">
     <h1>conecta, compra y crece</h1>
-    <p>Red de negocios entre padres de familia de colegios en el salvador</p>
+    <p>red de negocios entre padres en el salvador</p>
+    <a class="btn">únete ahora</a>
+    <p>Más de 50 negocios ya se han unido a NeXsv</p>
   </div>
 
   <img src="hero.png">
 </section>
 
+<!-- 🔥 CATEGORÍAS -->
+<div class="categorias">
+  <button>Todos</button>
+  <button>Servicios</button>
+  <button>Comida</button>
+  <button>Belleza</button>
+  <button>Educación</button>
+</div>
+
 <section class="main">
-  <div class="left">
-    <h2>Negocios disponibles</h2>
+  <div style="width:100%">
+    <h2 style="padding:0 20px;">Negocios disponibles</h2>
+    <p style="padding:0 20px;">Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
+
     <div class="grid" id="contenedor"></div>
   </div>
 </section>
@@ -151,32 +200,41 @@ fetch(url)
 .then(data => {
 
   const contenedor = document.getElementById("contenedor");
+  contenedor.innerHTML = "";
 
   data.forEach(n => {
 
-    // 🔥 DATOS LIMPIOS
-    const nombre = n["Nombre de tu negocio"] || "Negocio";
-    const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
-    const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
+    // 🔥 LIMPIAR HEADERS AUTOMÁTICAMENTE
+    const keys = Object.keys(n).reduce((acc, key) => {
+      acc[key.trim()] = n[key];
+      return acc;
+    }, {});
 
-    let img = n["Link de imagen de tu negocio"] || "";
+    const nombre = (keys["Nombre de tu negocio"] || "Negocio").trim();
+    const descripcion = (keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción").trim();
+    const telefono = (keys["WhatsApp del negocio"] || "").replace("+","").trim();
 
-    // 🔥 CONVERSIÓN AUTOMÁTICA GOOGLE DRIVE
+    let img = (keys["Link de imagen de tu negocio"] || "").trim();
+
+    // 🔥 CONVERSIÓN GOOGLE DRIVE
     if(img.includes("drive.google.com")){
-      const id = img.match(/[-\w]{25,}/);
-      if(id){
-        img = `https://drive.google.com/uc?export=view&id=${id[0]}`;
+      let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if(!match){
+        match = img.match(/id=([a-zA-Z0-9_-]+)/);
+      }
+      if(match){
+        img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
       }
     }
 
-    // 🔥 SI NO HAY IMAGEN
+    // 🔥 FALLBACK
     if(!img){
       img = "https://via.placeholder.com/300x150";
     }
 
     const card = `
       <div class="card">
-        <img src="${img}">
+        <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
         <h3>${nombre}</h3>
         <p>${descripcion}</p>
         <a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
