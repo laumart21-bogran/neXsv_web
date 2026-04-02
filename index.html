@@ -131,9 +131,21 @@ nav a{
   margin:10px 0 5px;
 }
 
+.card h3 span{
+  background:#e6f4ea;
+  padding:3px 6px;
+  border-radius:6px;
+  font-size:12px;
+}
+
 .card p{
   font-size:14px;
   color:#555;
+}
+
+.estrellas{
+  color:#f5a623;
+  font-size:14px;
 }
 
 .whatsapp{
@@ -213,7 +225,7 @@ footer{
 <section class="hero">
   <div class="hero-text">
     <h1>conecta, compra y crece</h1>
-    <p>red de negocios entre padres en el salvador</p>
+    <p>Red de negocios entre padres de familias de Colegios en el salvador</p>
     <a class="btn">únete ahora</a>
     <p>Más de 50 negocios ya se han unido a NeXsv</p>
   </div>
@@ -231,7 +243,6 @@ footer{
 
 <section class="main">
 
-  <!-- IZQUIERDA -->
   <div class="left">
     <h2>Negocios disponibles</h2>
     <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
@@ -239,7 +250,6 @@ footer{
     <div class="grid" id="contenedor"></div>
   </div>
 
-  <!-- DERECHA -->
   <div class="right">
 
     <div class="box">
@@ -287,6 +297,7 @@ fetch(url)
     const nombre = (keys["Nombre de tu negocio"] || "Negocio").trim();
     const descripcion = (keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción").trim();
     const telefono = (keys["WhatsApp del negocio"] || "").replace("+","").trim();
+    const zona = (keys["¿En qué zona resides?"] || "San Salvador").trim();
 
     let img = (keys["Link de imagen de tu negocio"] || "").trim();
 
@@ -307,10 +318,12 @@ fetch(url)
     const card = `
       <div class="card">
         <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
-        <h3>${nombre}</h3>
+        <h3>${nombre} <span>✔ verificado</span></h3>
+        <p class="estrellas">★★★★★</p>
+        <p><strong>📍 ${zona}</strong></p>
         <p>${descripcion}</p>
         <a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
-          Contactar
+          💬 contactar
         </a>
       </div>
     `;
