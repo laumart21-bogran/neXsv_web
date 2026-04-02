@@ -8,52 +8,65 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #f4f6f8;
+  background: #f5f7fb;
 }
 
-/* HEADER DELGADO */
-.header {
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #2A4B7C;
+  padding: 15px 30px;
   color: white;
-  padding: 10px 20px;
-  text-align: center;
 }
 
-.logo {
-  height: 70px;
+.navbar img {
+  height: 50px;
 }
 
-.slogan {
-  margin: 5px 0 0;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: lowercase;
-  opacity: 0.9;
+.navbar a {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+.btn-nav {
+  background: #34A88E;
+  padding: 10px 15px;
+  border-radius: 8px;
 }
 
 /* HERO */
 .hero {
-  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f');
-  background-size: cover;
-  background-position: center;
-  height: 250px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
+  padding: 50px;
+  background: linear-gradient(135deg, #eef2f7, #dfe6f1);
 }
 
-.hero h2 {
-  background: rgba(0,0,0,0.5);
-  padding: 15px 25px;
-  border-radius: 10px;
+.hero-text {
+  max-width: 500px;
+}
+
+.hero h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #555;
+}
+
+.hero img {
+  width: 300px;
 }
 
 /* BOTÓN */
 .btn {
   display: inline-block;
-  margin: 20px;
+  margin-top: 20px;
   padding: 12px 20px;
   background: #34A88E;
   color: white;
@@ -61,184 +74,172 @@ body {
   text-decoration: none;
 }
 
-/* FILTRO */
-#filtro {
-  padding: 10px;
-  border-radius: 8px;
+/* CONTENIDO */
+.container {
+  display: flex;
+  padding: 30px;
+  gap: 30px;
 }
 
 /* GRID */
 .grid {
+  flex: 3;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-  padding: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
 }
 
 /* TARJETAS */
 .card {
   background: white;
   border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+  padding: 15px;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
 }
 
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* DESTACADOS */
-.destacado {
-  border: 3px solid gold;
-  transform: scale(1.03);
-}
-
-/* IMAGEN */
 .card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }
 
-/* TEXTO */
 .card h3 {
-  margin: 15px;
+  margin: 10px 0 5px;
 }
 
 .card p {
-  margin: 0 15px 15px;
+  font-size: 14px;
+  color: #555;
 }
 
-/* BOTÓN WHATSAPP */
+.estrellas {
+  color: gold;
+}
+
 .card a {
-  display: block;
-  margin: 15px;
-  padding: 12px;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px;
   background: #25D366;
   color: white;
   border-radius: 8px;
-  text-align: center;
-  font-weight: bold;
   text-decoration: none;
-  transition: 0.2s;
 }
 
-.card a:hover {
-  background: #1ebe5d;
+/* SIDEBAR */
+.sidebar {
+  flex: 1;
 }
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+.box ul {
+  padding-left: 20px;
+}
+
+.testimonio {
+  text-align: center;
+}
+
+.testimonio img {
+  width: 80px;
+  border-radius: 50%;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<header class="header">
-  <img src="logo.png" alt="NeXsv Logo" class="logo">
-  <p class="slogan">conecta, crece, apoya</p>
-</header>
-
-<div class="hero">
-  <h2>Descubre negocios cerca de ti 🚀</h2>
+<!-- NAVBAR -->
+<div class="navbar">
+  <img src="logo.png">
+  <div>
+    <a href="#">Inicio</a>
+    <a href="#">Cómo funciona</a>
+    <a href="#">Beneficios</a>
+    <a href="#">Negocios</a>
+    <a class="btn-nav" href="https://forms.gle/KGV4895NqmrPmi9S8">Unirme ahora</a>
+  </div>
 </div>
 
-<a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8" target="_blank">
-Registrar negocio
-</a>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>Conecta, compra y crece</h1>
+    <p>Red de negocios para padres de colegios privados en El Salvador</p>
+    <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">Unirme ahora</a>
+  </div>
+  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+</div>
 
-<br>
+<!-- CONTENIDO -->
+<div class="container">
 
-<select id="filtro">
-  <option value="todos">Todas las categorías</option>
-</select>
+  <div class="grid" id="contenedor"></div>
 
-<div id="contenedor" class="grid"></div>
+  <div class="sidebar">
+
+    <div class="box">
+      <h3>Beneficios</h3>
+      <ul>
+        <li>Clientes confiables</li>
+        <li>Comunidad privada</li>
+        <li>Más ventas</li>
+      </ul>
+    </div>
+
+    <div class="box testimonio">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg">
+      <h4>Laura González</h4>
+      <p>"Gracias a NeXsv encontré clientes reales"</p>
+    </div>
+
+  </div>
+
+</div>
 
 <script>
 
 const URL = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
-let datosGlobales = [];
-
 fetch(URL)
 .then(res => res.json())
 .then(data => {
-  datosGlobales = data;
-  cargarCategorias(data);
-  render(data);
-});
 
-function cargarCategorias(data) {
-  const filtro = document.getElementById("filtro");
-  let categorias = new Set();
-
-  data.forEach(item => {
-    const cat = item["Categoría de tu negocio "] || "Otros";
-    categorias.add(cat);
-  });
-
-  categorias.forEach(cat => {
-    filtro.innerHTML += `<option value="${cat}">${cat}</option>`;
-  });
-
-  filtro.addEventListener("change", () => {
-    filtrar(filtro.value);
-  });
-}
-
-function filtrar(categoria) {
-  if (categoria === "todos") {
-    render(datosGlobales);
-  } else {
-    const filtrados = datosGlobales.filter(item =>
-      item["Categoría de tu negocio "] === categoria
-    );
-    render(filtrados);
-  }
-}
-
-function render(data) {
   const contenedor = document.getElementById("contenedor");
-  contenedor.innerHTML = "";
-
-  // ORDEN PREMIUM
-  data.sort((a, b) => (b["Publicado"] === "SI") - (a["Publicado"] === "SI"));
 
   data.forEach(item => {
 
     const nombre = item["  Nombre de tu negocio  "] || "Negocio";
-    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "";
+    const desc = item["¿Qué vendes o qué servicio ofreces?"] || "";
+    const rating = parseInt(item["Calificación"]) || 0;
+
+    let estrellas = "⭐".repeat(rating);
 
     let whatsapp = item["WhatsApp del negocio"] || "";
     whatsapp = whatsapp.replace(/\D/g, "");
 
-    let imagen = item["Link de imagen de tu negocio "] || "";
-
-    const match = imagen.match(/[-\w]{25,}/);
-    if (match) {
-      imagen = `https://lh3.googleusercontent.com/d/${match[0]}`;
-    }
-
-    if (!imagen) {
-      imagen = "https://picsum.photos/300";
-    }
-
-    const destacado = item["Publicado"] === "SI";
-
     const card = `
-      <div class="card ${destacado ? 'destacado' : ''}">
-        <img src="${imagen}">
+      <div class="card">
+        <img src="https://randomuser.me/api/portraits/men/32.jpg">
         <h3>${nombre}</h3>
-        <p>${descripcion}</p>
-        <a href="https://wa.me/${whatsapp}" target="_blank">
-          Contactar
-        </a>
+        <p>${desc}</p>
+        <div class="estrellas">${estrellas}</div>
+        <a href="https://wa.me/${whatsapp}" target="_blank">Contactar</a>
       </div>
     `;
 
     contenedor.innerHTML += card;
   });
-}
+
+});
 
 </script>
 
