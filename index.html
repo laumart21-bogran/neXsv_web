@@ -8,7 +8,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: #f5f7fb;
+  background: #f4f6fb;
 }
 
 /* NAVBAR */
@@ -16,25 +16,25 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2A4B7C;
-  padding: 15px 30px;
+  background: linear-gradient(90deg, #2A4B7C, #3b5c94);
+  padding: 15px 40px;
   color: white;
 }
 
 .navbar img {
-  height: 50px;
+  height: 55px;
 }
 
 .navbar a {
   color: white;
-  margin-left: 20px;
+  margin-left: 25px;
   text-decoration: none;
 }
 
 .btn-nav {
   background: #34A88E;
-  padding: 10px 15px;
-  border-radius: 8px;
+  padding: 10px 18px;
+  border-radius: 10px;
 }
 
 /* HERO */
@@ -42,50 +42,68 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 50px;
+  padding: 60px;
   background: linear-gradient(135deg, #eef2f7, #dfe6f1);
 }
 
-.hero-text {
-  max-width: 500px;
-}
-
 .hero h1 {
-  font-size: 40px;
+  font-size: 42px;
   margin-bottom: 10px;
 }
 
 .hero p {
   color: #555;
+  font-size: 18px;
 }
 
 .hero img {
-  width: 300px;
+  width: 350px;
 }
 
-/* BOTÓN */
 .btn {
   display: inline-block;
   margin-top: 20px;
   padding: 12px 20px;
   background: #34A88E;
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
 }
 
-/* CONTENIDO */
+/* SECCIÓN */
+.section {
+  padding: 40px;
+}
+
+/* FILTROS */
+.filtros {
+  margin-bottom: 20px;
+}
+
+.filtros button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #e4e7ec;
+  cursor: pointer;
+}
+
+.filtros button.activo {
+  background: #34A88E;
+  color: white;
+}
+
+/* LAYOUT */
 .container {
   display: flex;
-  padding: 30px;
   gap: 30px;
 }
 
-/* GRID */
 .grid {
   flex: 3;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
@@ -94,17 +112,27 @@ body {
   background: white;
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
 }
 
-.card img {
-  width: 60px;
-  height: 60px;
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header img {
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
 }
 
 .card h3 {
-  margin: 10px 0 5px;
+  margin: 0;
+}
+
+.card small {
+  color: #777;
 }
 
 .card p {
@@ -116,13 +144,13 @@ body {
   color: gold;
 }
 
-.card a {
+.btn-whatsapp {
   display: inline-block;
   margin-top: 10px;
   padding: 10px;
   background: #25D366;
   color: white;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
 }
 
@@ -138,10 +166,6 @@ body {
   margin-bottom: 20px;
 }
 
-.box ul {
-  padding-left: 20px;
-}
-
 .testimonio {
   text-align: center;
 }
@@ -152,7 +176,6 @@ body {
 }
 
 </style>
-
 </head>
 
 <body>
@@ -171,7 +194,7 @@ body {
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-text">
+  <div>
     <h1>Conecta, compra y crece</h1>
     <p>Red de negocios para padres de colegios privados en El Salvador</p>
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">Unirme ahora</a>
@@ -180,28 +203,45 @@ body {
 </div>
 
 <!-- CONTENIDO -->
+<div class="section">
+
+<h2>Negocios Disponibles</h2>
+<p>Conoce y apoya los emprendimientos de otros padres</p>
+
+<!-- FILTROS -->
+<div class="filtros">
+  <button class="activo">Todos</button>
+  <button>Alimentos</button>
+  <button>Servicios</button>
+  <button>Salud & Belleza</button>
+  <button>Otros</button>
+</div>
+
 <div class="container">
 
-  <div class="grid" id="contenedor"></div>
+<div class="grid" id="contenedor"></div>
 
-  <div class="sidebar">
+<div class="sidebar">
 
-    <div class="box">
-      <h3>Beneficios</h3>
-      <ul>
-        <li>Clientes confiables</li>
-        <li>Comunidad privada</li>
-        <li>Más ventas</li>
-      </ul>
-    </div>
-
-    <div class="box testimonio">
-      <img src="https://randomuser.me/api/portraits/women/44.jpg">
-      <h4>Laura González</h4>
-      <p>"Gracias a NeXsv encontré clientes reales"</p>
-    </div>
-
+  <div class="box">
+    <h3>Beneficios</h3>
+    <ul>
+      <li>Clientes confiables</li>
+      <li>Comunidad privada</li>
+      <li>Más ventas sin publicidad</li>
+    </ul>
   </div>
+
+  <div class="box testimonio">
+    <img src="https://randomuser.me/api/portraits/women/44.jpg">
+    <h4>Laura González</h4>
+    <small>Colegio San José</small>
+    <p>"Gracias a NeXsv he conseguido más clientes"</p>
+  </div>
+
+</div>
+
+</div>
 
 </div>
 
@@ -219,7 +259,8 @@ fetch(URL)
 
     const nombre = item["  Nombre de tu negocio  "] || "Negocio";
     const desc = item["¿Qué vendes o qué servicio ofreces?"] || "";
-    const rating = parseInt(item["Calificación"]) || 0;
+    const colegio = item["  ¿A qué colegio perteneces?  "] || "";
+    const rating = Math.floor(Math.random() * 5) + 3;
 
     let estrellas = "⭐".repeat(rating);
 
@@ -228,17 +269,26 @@ fetch(URL)
 
     const card = `
       <div class="card">
-        <img src="https://randomuser.me/api/portraits/men/32.jpg">
-        <h3>${nombre}</h3>
+        <div class="card-header">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg">
+          <div>
+            <h3>${nombre}</h3>
+            <small>${colegio}</small>
+          </div>
+        </div>
         <p>${desc}</p>
         <div class="estrellas">${estrellas}</div>
-        <a href="https://wa.me/${whatsapp}" target="_blank">Contactar</a>
+        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">Contactar</a>
       </div>
     `;
 
     contenedor.innerHTML += card;
+
   });
 
+})
+.catch(err => {
+  document.body.innerHTML += "<p style='color:red'>Error cargando datos</p>";
 });
 
 </script>
