@@ -14,15 +14,14 @@ body {
 /* NAVBAR */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background: linear-gradient(90deg, #2A4B7C, #3b5c94);
-  padding: 12px 40px;
+  padding: 10px 40px;
   color: white;
 }
 
 .navbar img {
-  height: 60px;
+  height: 70px;
 }
 
 /* HERO */
@@ -44,7 +43,7 @@ body {
 }
 
 .hero img {
-  width: 400px;
+  width: 380px;
 }
 
 .btn {
@@ -78,7 +77,7 @@ body {
 .card {
   background: white;
   border-radius: 15px;
-  padding: 15px;
+  padding: 18px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.08);
   transition: 0.3s;
 }
@@ -94,20 +93,23 @@ body {
 .card p {
   font-size: 14px;
   color: #555;
+  margin-top: 5px;
 }
 
 .estrellas {
   color: gold;
+  margin-top: 8px;
 }
 
 .btn-whatsapp {
   display: inline-block;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 12px;
+  padding: 10px 14px;
   background: #25D366;
   color: white;
   border-radius: 10px;
   text-decoration: none;
+  font-size: 14px;
 }
 
 /* SIDEBAR */
@@ -149,8 +151,8 @@ body {
     <a class="btn" href="https://forms.gle/KGV4895NqmrPmi9S8">unirme ahora</a>
   </div>
 
-  <!-- NUEVA IMAGEN NETWORKING -->
-  <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png">
+  <!-- NUEVA IMAGEN -->
+  <img src="https://cdn.dribbble.com/users/1787323/screenshots/14753139/media/8e6c0f79f05de7975cdc8e90d518d4b7.png">
 </div>
 
 <!-- CONTENIDO -->
@@ -199,7 +201,10 @@ fetch(URL)
   data.forEach(item => {
 
     const nombre = item["  Nombre de tu negocio  "] || "negocio";
-    const descripcion = item["¿Qué vendes o qué servicio ofreces?"] || "sin descripción";
+
+    const descripcion = item["Describe tu negocio en 1-2 líneas"] 
+      || item["¿Qué vendes o qué servicio ofreces?"] 
+      || "sin descripción";
 
     let estrellas = "⭐⭐⭐⭐⭐";
 
@@ -209,9 +214,16 @@ fetch(URL)
     const card = `
       <div class="card">
         <h3>${nombre}</h3>
-        <p>${descripcion}</p>
+
+        <p>
+          ${descripcion}
+        </p>
+
         <div class="estrellas">${estrellas}</div>
-        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">contactar</a>
+
+        <a class="btn-whatsapp" href="https://wa.me/${whatsapp}" target="_blank">
+          contactar
+        </a>
       </div>
     `;
 
