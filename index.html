@@ -5,166 +5,214 @@
 <title>NeXsv</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #f4f6fb;
+body{
+  margin:0;
+  font-family: Arial;
+  background:#f5f7fb;
 }
 
 /* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 40px;
-  background: linear-gradient(90deg, #2A4B7C, #3b5c94);
-  color: white;
+header{
+  background:#3f5b8a;
+  padding:10px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:white;
 }
 
-.menu a {
-  margin: 0 10px;
-  color: white;
-  text-decoration: none;
+header img{
+  height:50px;
+}
+
+nav a{
+  color:white;
+  margin:0 15px;
+  text-decoration:none;
 }
 
 /* HERO */
-.hero {
-  display: flex;
-  justify-content: space-between;
-  padding: 60px;
-  background: linear-gradient(135deg, #eef2f7, #dfe6f1);
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:60px;
 }
 
-.hero h1 {
-  font-size: 42px;
-  text-transform: lowercase;
+.hero h1{
+  font-size:48px;
 }
 
-.hero img {
-  width: 380px;
+.hero p{
+  font-size:18px;
+  color:#555;
 }
 
-/* BOTÓN */
-.btn {
-  background: #34A88E;
-  padding: 12px 18px;
-  color: white;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-/* CONTENEDOR */
-.container {
-  display: flex;
-  padding: 40px;
-  gap: 30px;
+.btn{
+  background:#4CAF50;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+  display:inline-block;
+  margin-top:10px;
 }
 
 /* GRID */
-.grid {
-  flex: 3;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.container{
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap:20px;
+  padding:40px;
 }
 
-/* CARD */
-.card {
-  background: white;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-  display: flex;
-  gap: 10px;
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
 }
 
-.card img {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-  object-fit: cover;
+.card{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-.card h3 {
-  margin: 0;
+.card img{
+  width:100%;
+  height:150px;
+  object-fit:cover;
+  border-radius:10px;
 }
 
-.card p {
-  font-size: 14px;
-  color: #555;
+.card h3{
+  margin:10px 0 5px;
 }
 
-/* BOTÓN WHATSAPP */
-.btn-wsp {
-  background: #25D366;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  display: inline-block;
-  margin-top: 5px;
+.card p{
+  color:#555;
+  font-size:14px;
 }
 
-/* SIDEBAR */
-.sidebar {
-  flex: 1;
+.whatsapp{
+  background:#25D366;
+  color:white;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+  margin-top:10px;
+  text-decoration:none;
+  display:block;
 }
 
-.box {
-  background: white;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
+/* SIDE */
+.side{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
 }
 
-.stars {
-  color: gold;
+.box{
+  background:white;
+  padding:20px;
+  border-radius:12px;
 }
 
+/* CHECKS */
+.check{
+  display:flex;
+  align-items:center;
+  margin:10px 0;
+}
+
+.check span{
+  background:#4CAF50;
+  color:white;
+  border-radius:50%;
+  width:20px;
+  height:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-right:10px;
+}
+
+/* TESTIMONIO */
+.testimonio img{
+  width:60px;
+  border-radius:50%;
+}
+
+/* CATEGORIAS */
+.categorias button{
+  border:1px solid #ccc;
+  background:none;
+  padding:8px 12px;
+  border-radius:20px;
+  margin-right:5px;
+  cursor:pointer;
+}
 </style>
+
 </head>
 
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <h2>NeXsv</h2>
-  <div class="menu">
+<header>
+  <img src="https://i.imgur.com/yourlogo.png">
+  <nav>
     <a href="#">Inicio</a>
     <a href="#">Cómo funciona</a>
     <a href="#">Beneficios</a>
     <a href="#">Negocios</a>
-  </div>
-</div>
+  </nav>
+</header>
 
-<!-- HERO -->
-<div class="hero">
+<section class="hero">
   <div>
     <h1>conecta, compra y crece</h1>
-    <p>red de negocios entre padres en el salvador</p>
-    <a class="btn" href="#">unirme ahora</a>
+    <p>Red de negocios entre padres en El Salvador</p>
+    <a class="btn">Unirme ahora</a>
+    <p>Más de 50 negocios ya se han unido a NeXsv</p>
   </div>
 
-  <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png">
+  <!-- AVATAR CORRECTO -->
+  <img src="https://cdn-icons-png.flaticon.com/512/4140/4140048.png" width="300">
+</section>
+
+<div style="padding:0 40px">
+  <h2>Negocios disponibles</h2>
+  <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
+
+  <div class="categorias">
+    <button>Todos</button>
+    <button>Alimentos</button>
+    <button>Servicios</button>
+    <button>Salud</button>
+    <button>Otros</button>
+  </div>
 </div>
 
-<!-- CONTENIDO -->
 <div class="container">
 
-  <div class="grid" id="contenedor"></div>
+  <!-- CARDS -->
+  <div class="cards" id="contenedor"></div>
 
-  <div class="sidebar">
+  <!-- LADO DERECHO -->
+  <div class="side">
 
     <div class="box">
       <h3>Beneficios de unirte</h3>
-      <p>✔ Clientes confiables</p>
-      <p>✔ Comunidad privada</p>
-      <p>✔ Más ventas sin publicidad</p>
+      <div class="check"><span>✔</span>Clientes confiables</div>
+      <div class="check"><span>✔</span>Comunidad privada</div>
+      <div class="check"><span>✔</span>Más ventas sin publicidad</div>
     </div>
 
-    <div class="box">
-      <h3>Testimonio</h3>
-      <p>"Gracias a NeXsv aumenté mis ventas"</p>
+    <div class="box testimonio">
+      <img src="https://randomuser.me/api/portraits/women/44.jpg">
+      <h4>Laura González</h4>
+      <p>"Gracias a NeXsv conseguí más clientes sin publicidad"</p>
     </div>
 
   </div>
@@ -173,56 +221,43 @@ body {
 
 <script>
 
-const URL = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
+const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
-fetch(URL)
+fetch(url)
 .then(res => res.json())
 .then(data => {
 
   const contenedor = document.getElementById("contenedor");
 
-  data.forEach(item => {
+  data.forEach(n => {
 
-    const nombre = item["Nombre de tu negocio"] || "Negocio";
+    let img = n["Link de imagen de tu negocio "] || "";
 
-    const descripcion = item["Describe tu negocio en 1-2 líneas"]
-      || item["¿Qué vendes o qué servicio ofreces?"]
-      || "sin descripción";
-
-    let whatsapp = item["WhatsApp del negocio"] || "";
-    whatsapp = whatsapp.replace(/\D/g, "");
-
-    let imagen = item["Link de imagen de tu negocio"] || "";
-
-    if (imagen.includes("drive.google.com")) {
-      const id = imagen.split("/d/")[1]?.split("/")[0];
-      imagen = `https://drive.google.com/uc?export=view&id=${id}`;
+    if(img.includes("drive.google.com")){
+      const id = img.match(/[-\w]{25,}/);
+      img = id ? `https://drive.google.com/uc?export=view&id=${id[0]}` : "";
     }
 
     const card = `
       <div class="card">
+        <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
 
-        <img src="${imagen || 'https://via.placeholder.com/80'}">
+        <h3>${n["  Nombre de tu negocio  "] || "Negocio"}</h3>
 
-        <div>
-          <h3>${nombre}</h3>
+        <p>${n["¿Qué vendes o qué servicio ofreces?"] || ""}</p>
 
-          <p>${descripcion}</p>
-
-          <div class="stars">★★★★★</div>
-
-          <a class="btn-wsp" href="https://wa.me/${whatsapp}" target="_blank">
-            contactar
-          </a>
-        </div>
-
+        <a class="whatsapp" href="https://wa.me/${(n["WhatsApp del negocio"] || "").replace("+","")}">
+          Contactar
+        </a>
       </div>
     `;
 
     contenedor.innerHTML += card;
-
   });
 
+})
+.catch(e => {
+  document.getElementById("contenedor").innerHTML = "Error cargando datos";
 });
 
 </script>
