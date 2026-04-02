@@ -5,333 +5,144 @@
 <title>NeXsv</title>
 
 <style>
-body{
-  margin:0;
-  font-family: Arial;
-  background:#f5f7fb;
-}
+body{margin:0;font-family:Arial;background:#f5f7fb;}
+header{background:#3f5b8a;padding:12px 40px;display:flex;justify-content:space-between;align-items:center;}
+header img{height:60px;}
+nav a{color:white;margin-left:20px;text-decoration:none;}
+.nav-btn{background:#4CAF50;padding:10px 18px;border-radius:8px;color:white;text-decoration:none;}
 
-/* HEADER */
-header{
-  background:#3f5b8a;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+.hero{display:flex;justify-content:space-between;align-items:center;padding:80px 60px;}
+.hero-text{max-width:550px;}
+.hero h1{font-size:56px;}
+.btn{background:#4CAF50;color:white;padding:14px 24px;border-radius:10px;text-decoration:none;}
 
-header img{
-  height:60px;
-}
+.main{display:flex;gap:20px;padding:40px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;}
 
-nav a{
-  color:white;
-  margin-left:20px;
-  text-decoration:none;
-}
+.card{background:white;border-radius:12px;padding:15px;box-shadow:0 4px 12px rgba(0,0,0,0.08);cursor:pointer;}
+.card img{width:100%;height:160px;object-fit:cover;border-radius:8px;}
+.estrellas{color:#f5a623;}
 
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 18px;
-  border-radius:8px;
-  color:white;
-  text-decoration:none;
-  margin-left:20px;
-  font-weight:bold;
-}
+footer{background:#3f5b8a;color:white;text-align:center;padding:20px;}
 
-/* HERO */
-.hero{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:80px 60px;
-}
-
-.hero-text{
-  max-width:550px;
-}
-
-.hero h1{
-  font-size:56px;
-}
-
-.hero p{
-  font-size:18px;
-}
-
-.btn{
-  background:#4CAF50;
-  color:white;
-  padding:14px 24px;
-  border-radius:10px;
-  text-decoration:none;
-  display:inline-block;
-  margin-top:15px;
-}
-
-.hero img{
-  width:100%;
-  max-width:650px;
-}
-
-/* CATEGORÍAS */
-.categorias{
-  padding:0 60px;
-  margin-top:20px;
-}
-
-.categorias button{
-  margin:5px;
-  padding:8px 15px;
-  border:1px solid #3f5b8a;
-  background:none;
-  border-radius:20px;
-  cursor:pointer;
-}
-
-/* MAIN */
-.main{
-  display:flex;
-  gap:20px;
-  padding:40px;
-}
-
-.left{
-  flex:3;
-}
-
-.right{
-  flex:1;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
-}
-
-/* TARJETAS */
-.card{
-  background:white;
-  border-radius:12px;
-  padding:15px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
-.card h3{
-  margin:10px 0 5px;
-}
-
-.card h3 span{
-  background:#e6f4ea;
-  padding:3px 6px;
-  border-radius:6px;
-  font-size:12px;
-}
-
-.card p{
-  font-size:14px;
-  color:#555;
-}
-
-.estrellas{
-  color:#f5a623;
-  font-size:14px;
-}
-
-.whatsapp{
-  display:inline-block;
-  margin-top:10px;
-  background:#25D366;
-  color:white;
-  padding:10px 16px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* SIDEBAR */
-.box{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
-}
-
-.check{
-  background:#4CAF50;
-  color:white;
-  border-radius:50%;
-  padding:5px 7px;
-  margin-right:8px;
-  font-size:12px;
-}
-
-.testimonio{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.testimonio img{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-}
-
-/* FOOTER */
-footer{
-  background:#3f5b8a;
-  color:white;
-  text-align:center;
-  padding:20px;
-}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero{
-    flex-direction:column;
-    text-align:center;
-  }
-
-  .main{
-    flex-direction:column;
-  }
-}
+/* MODAL */
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;}
+.modal-content{background:white;padding:20px;border-radius:10px;width:90%;max-width:500px;}
+.modal-content img{width:100%;margin-top:10px;border-radius:8px;}
 </style>
 
 </head>
+
 <body>
 
 <header>
-  <img src="logo.png">
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#">Cómo funciona</a>
-    <a href="#">Beneficios</a>
-    <a class="nav-btn">Únete</a>
-  </nav>
+<img src="logo.png">
+<nav>
+<a href="#inicio">Inicio</a>
+<a href="#negocios">Negocios</a>
+<a class="nav-btn">Únete</a>
+</nav>
 </header>
 
-<section class="hero">
-  <div class="hero-text">
-    <h1>conecta, compra y crece</h1>
-    <p>Red de negocios entre padres de familias de Colegios en el salvador</p>
-    <a class="btn">únete ahora</a>
-    <p>Más de 50 negocios ya se han unido a NeXsv</p>
-  </div>
-
-  <img src="hero.png">
+<section id="inicio" class="hero">
+<div class="hero-text">
+<h1>conecta, compra y crece</h1>
+<p>red de negocios entre padres en el salvador</p>
+<a class="btn">únete ahora</a>
+</div>
+<img src="hero.png">
 </section>
 
-<div class="categorias">
-  <button>Todos</button>
-  <button>Servicios</button>
-  <button>Comida</button>
-  <button>Belleza</button>
-  <button>Educación</button>
+<section id="negocios" class="main">
+<div class="grid" id="contenedor"></div>
+</section>
+
+<footer>© 2026 NeXsv</footer>
+
+<!-- MODAL -->
+<div id="modal">
+<div class="modal-content">
+<h2 id="m_nombre"></h2>
+<p id="m_desc"></p>
+<p id="m_zona"></p>
+<p id="m_tel"></p>
+<p id="m_mail"></p>
+
+<img id="m_img1">
+<img id="m_img2">
+<img id="m_img3">
+
+<button onclick="cerrarModal()">Cerrar</button>
+</div>
 </div>
 
-<section class="main">
-
-  <div class="left">
-    <h2>Negocios disponibles</h2>
-    <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
-
-    <div class="grid" id="contenedor"></div>
-  </div>
-
-  <div class="right">
-
-    <div class="box">
-      <h3>Beneficios</h3>
-      <p><span class="check">✔</span>Clientes confiables</p>
-      <p><span class="check">✔</span>Comunidad privada</p>
-      <p><span class="check">✔</span>Más ventas sin publicidad</p>
-    </div>
-
-    <div class="box">
-      <div class="testimonio">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg">
-        <div>
-          <strong>María López</strong>
-          <p>"Gracias a NeXsv conseguí nuevos clientes rápidamente"</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-<footer>
-  © 2026 NeXsv - Todos los derechos reservados
-</footer>
-
 <script>
+
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
-  const contenedor = document.getElementById("contenedor");
-  contenedor.innerHTML = "";
+const contenedor = document.getElementById("contenedor");
 
-  data.forEach(n => {
+data.forEach(n => {
 
-    const keys = Object.keys(n).reduce((acc, key) => {
-      acc[key.trim()] = n[key];
-      return acc;
-    }, {});
+const keys = Object.keys(n).reduce((acc, key) => {
+acc[key.trim()] = n[key];
+return acc;
+}, {});
 
-    const nombre = (keys["Nombre de tu negocio"] || "Negocio").trim();
-    const descripcion = (keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción").trim();
-    const telefono = (keys["WhatsApp del negocio"] || "").replace("+","").trim();
-    const zona = (keys["¿En qué zona resides?"] || "San Salvador").trim();
+// SOLO PUBLICADOS
+if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
-    let img = (keys["Link de imagen de tu negocio"] || "").trim();
+const nombre = keys["Nombre de tu negocio"] || "Negocio";
+const descripcion = keys["Descripcion_final"] || "Sin descripción";
+const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const zona = keys["¿En qué zona resides?"] || "";
+const email = keys["Correo del negocio"] || "";
 
-    if(img.includes("drive.google.com")){
-      let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if(!match){
-        match = img.match(/id=([a-zA-Z0-9_-]+)/);
-      }
-      if(match){
-        img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-      }
-    }
+let img = keys["Imagen_final"] || "https://via.placeholder.com/300";
 
-    if(!img){
-      img = "https://via.placeholder.com/300x150";
-    }
+const img2 = keys["Imagen2"] || img;
+const img3 = keys["Imagen3"] || img;
 
-    const card = `
-      <div class="card">
-        <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
-        <h3>${nombre} <span>✔ verificado</span></h3>
-        <p class="estrellas">★★★★★</p>
-        <p><strong>📍 ${zona}</strong></p>
-        <p>${descripcion}</p>
-        <a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
-          💬 contactar
-        </a>
-      </div>
-    `;
+const card = `
+<div class="card" onclick='abrirModal(${JSON.stringify({
+nombre, descripcion, telefono, zona, email, img, img2, img3
+})})'>
+<img src="${img}">
+<h3>${nombre} ✔</h3>
+<p class="estrellas">★★★★★</p>
+<p>${descripcion}</p>
+</div>
+`;
 
-    contenedor.innerHTML += card;
-  });
+contenedor.innerHTML += card;
 
 });
+
+});
+
+// MODAL
+function abrirModal(data){
+document.getElementById("modal").style.display = "flex";
+
+document.getElementById("m_nombre").innerText = data.nombre;
+document.getElementById("m_desc").innerText = data.descripcion;
+document.getElementById("m_zona").innerText = "📍 " + data.zona;
+document.getElementById("m_tel").innerText = "📞 " + data.telefono;
+document.getElementById("m_mail").innerText = "📧 " + data.email;
+
+document.getElementById("m_img1").src = data.img;
+document.getElementById("m_img2").src = data.img2;
+document.getElementById("m_img3").src = data.img3;
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display = "none";
+}
+
 </script>
 
 </body>
