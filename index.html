@@ -28,7 +28,6 @@ nav a{
   color:white;
   margin-left:20px;
   text-decoration:none;
-  font-weight:500;
 }
 
 .nav-btn{
@@ -47,39 +46,19 @@ nav a{
   justify-content:space-between;
   align-items:center;
   padding:80px 60px;
-  gap:40px;
 }
 
 .hero-text{
   max-width:550px;
-  animation:fadeUp 1s ease;
 }
 
 .hero h1{
   font-size:56px;
-  margin-bottom:10px;
-}
-
-.hero p{
-  font-size:18px;
-  color:#555;
-}
-
-.btn{
-  background:#4CAF50;
-  color:white;
-  padding:14px 24px;
-  border-radius:10px;
-  text-decoration:none;
-  display:inline-block;
-  margin-top:15px;
-  font-weight:bold;
 }
 
 .hero img{
   width:100%;
   max-width:650px;
-  animation:fadeRight 1.2s ease;
 }
 
 /* GRID */
@@ -92,7 +71,6 @@ nav a{
 .left{ flex:3; }
 .right{ flex:1; }
 
-/* TARJETAS */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -104,11 +82,6 @@ nav a{
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
 }
 
 .card img{
@@ -116,15 +89,6 @@ nav a{
   height:160px;
   object-fit:cover;
   border-radius:8px;
-}
-
-.card h3{
-  margin:10px 0 5px;
-}
-
-.card p{
-  font-size:14px;
-  color:#555;
 }
 
 .whatsapp{
@@ -135,55 +99,13 @@ nav a{
   padding:10px 16px;
   border-radius:8px;
   text-decoration:none;
-  font-weight:bold;
 }
 
-/* SIDEBAR */
-.box{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
-}
-
-.check{
-  color:white;
-  background:#4CAF50;
-  border-radius:50%;
-  padding:6px;
-  margin-right:10px;
-}
-
-/* FOOTER */
 footer{
   background:#3f5b8a;
   color:white;
   text-align:center;
   padding:20px;
-}
-
-/* ANIMACIONES */
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(30px);}
-  to{opacity:1; transform:translateY(0);}
-}
-
-@keyframes fadeRight{
-  from{opacity:0; transform:translateX(50px);}
-  to{opacity:1; transform:translateX(0);}
-}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .hero{
-    flex-direction:column;
-    text-align:center;
-  }
-
-  .main{
-    flex-direction:column;
-  }
 }
 </style>
 
@@ -197,48 +119,24 @@ footer{
     <a href="#">Inicio</a>
     <a href="#">Cómo funciona</a>
     <a href="#">Beneficios</a>
-    <a class="nav-btn" href="#">Únete</a>
+    <a class="nav-btn">Únete</a>
   </nav>
 </header>
 
 <section class="hero">
-  
   <div class="hero-text">
     <h1>conecta, compra y crece</h1>
-    <p>red de negocios entre padres en el salvador</p>
-    <a class="btn">unirme ahora</a>
-    <p>Más de 50 negocios ya se han unido a NeXsv</p>
+    <p>Red de negocios entre padres de familia de colegios en el salvador</p>
   </div>
 
   <img src="hero.png">
-
 </section>
 
 <section class="main">
-
   <div class="left">
     <h2>Negocios disponibles</h2>
-    <p>Conoce y apoya los emprendimientos de otros padres en la red NeXsv</p>
-
     <div class="grid" id="contenedor"></div>
   </div>
-
-  <div class="right">
-
-    <div class="box">
-      <h3>Beneficios de unirte</h3>
-      <p><span class="check">✔</span>Clientes confiables</p>
-      <p><span class="check">✔</span>Comunidad privada</p>
-      <p><span class="check">✔</span>Más ventas sin publicidad</p>
-    </div>
-
-    <div class="box">
-      <img src="https://randomuser.me/api/portraits/women/44.jpg" width="80">
-      <p>"Gracias a NeXsv he conseguido clientes confiables"</p>
-    </div>
-
-  </div>
-
 </section>
 
 <footer>
@@ -256,20 +154,29 @@ fetch(url)
 
   data.forEach(n => {
 
+    // 🔥 DATOS LIMPIOS
     const nombre = n["Nombre de tu negocio"] || "Negocio";
     const descripcion = n["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
     const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
 
     let img = n["Link de imagen de tu negocio"] || "";
 
+    // 🔥 CONVERSIÓN AUTOMÁTICA GOOGLE DRIVE
     if(img.includes("drive.google.com")){
       const id = img.match(/[-\w]{25,}/);
-      img = id ? `https://drive.google.com/uc?export=view&id=${id[0]}` : "";
+      if(id){
+        img = `https://drive.google.com/uc?export=view&id=${id[0]}`;
+      }
+    }
+
+    // 🔥 SI NO HAY IMAGEN
+    if(!img){
+      img = "https://via.placeholder.com/300x150";
     }
 
     const card = `
       <div class="card">
-        <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
+        <img src="${img}">
         <h3>${nombre}</h3>
         <p>${descripcion}</p>
         <a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
