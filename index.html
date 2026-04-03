@@ -54,29 +54,6 @@ nav a{
   font-size:56px;
 }
 
-.hero p{
-  font-size:18px;
-}
-
-/* BOTÓN HERO */
-.hero-btn{
-  display:inline-block;
-  margin-top:20px;
-  background:#4CAF50;
-  color:white;
-  padding:14px 25px;
-  border-radius:10px;
-  text-decoration:none;
-  font-size:18px;
-}
-
-/* FRASE DE CONFIANZA */
-.social-proof{
-  margin-top:15px;
-  font-size:16px;
-  color:#555;
-}
-
 .hero img{
   width:100%;
   max-width:600px;
@@ -125,7 +102,6 @@ nav a{
   cursor:pointer;
 }
 
-/* 🔥 IMAGEN HORIZONTAL */
 .card img{
   width:100%;
   height:180px;
@@ -192,10 +168,25 @@ footer{
   max-width:500px;
 }
 
-.modal-content img{
-  width:100%;
+/* 🔥 CARRUSEL HORIZONTAL */
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  scroll-snap-type:x mandatory;
   margin-top:10px;
+}
+
+.carousel img{
+  min-width:100%;
+  height:220px;
+  object-fit:cover;
   border-radius:8px;
+  scroll-snap-align:center;
+}
+
+.carousel::-webkit-scrollbar{
+  display:none;
 }
 </style>
 </head>
@@ -210,26 +201,15 @@ footer{
     <a href="#inicio">Beneficios</a>
     <a href="#negocios">Negocios</a>
     <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-      Únete
-    </a>
+  Únete
+</a>
   </nav>
 </header>
 
 <section id="inicio" class="hero">
   <div class="hero-text">
     <h1>conecta compra y crece</h1>
-    <p>Red de negocios entre padres de familia de Colegios en El Salvador</p>
-
-    <!-- BOTÓN -->
-    <a class="hero-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-      Únete ahora
-    </a>
-
-    <!-- FRASE DE CONFIANZA -->
-    <p class="social-proof">
-      Más de 20 negocios ya están generando ingresos dentro de NeXsv 🚀
-    </p>
-
+    <p>Red de negocios entre padres de familia de Colegios en el salvador</p>
   </div>
   <img src="hero.png">
 </section>
@@ -268,9 +248,8 @@ footer{
     <p id="m_tel"></p>
     <p id="m_mail"></p>
 
-    <img id="m_img1">
-    <img id="m_img2">
-    <img id="m_img3">
+    <!-- 🔥 CARRUSEL -->
+    <div class="carousel" id="carousel"></div>
 
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
@@ -297,12 +276,12 @@ return acc;
 if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
 const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || "Sin descripción";
+const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
 const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
 const zona = keys["¿En qué zona resides?"] || "";
 const email = keys["Correo del negocio"] || "";
 
-let img = keys["Imagen_final"] || "";
+let img = keys["Imagen_final"] || keys["Link de imagen de tu negocio"] || "";
 
 if(!img){
 img = "https://via.placeholder.com/300x150";
@@ -339,9 +318,14 @@ document.getElementById("m_zona").innerText = "📍 " + data.zona;
 document.getElementById("m_tel").innerText = "📞 " + data.telefono;
 document.getElementById("m_mail").innerText = "📧 " + data.email;
 
-document.getElementById("m_img1").src = data.img;
-document.getElementById("m_img2").src = data.img2;
-document.getElementById("m_img3").src = data.img3;
+/* 🔥 CARRUSEL CON TIP PRO (SIN DUPLICADOS) */
+let images = [data.img, data.img2, data.img3];
+images = images.filter(img => img && img.trim() !== "");
+images = [...new Set(images)];
+
+const carousel = document.getElementById("carousel");
+carousel.innerHTML = images.map(img => `<img src="${img}">`).join("");
+
 }
 
 function cerrarModal(){
