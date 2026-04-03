@@ -20,9 +20,7 @@ header{
   align-items:center;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:white;
@@ -35,7 +33,6 @@ nav a{
   padding:10px 18px;
   border-radius:8px;
   color:white;
-  text-decoration:none;
 }
 
 /* HERO */
@@ -46,19 +43,10 @@ nav a{
   padding:80px 60px;
 }
 
-.hero-text{
-  max-width:550px;
-}
+.hero-text{ max-width:550px; }
 
-.hero h1{
-  font-size:56px;
-}
+.hero h1{ font-size:56px; }
 
-.hero p{
-  font-size:18px;
-}
-
-/* BOTÓN HERO */
 .hero-btn{
   display:inline-block;
   margin-top:20px;
@@ -67,13 +55,10 @@ nav a{
   padding:14px 25px;
   border-radius:10px;
   text-decoration:none;
-  font-size:18px;
 }
 
-/* FRASE DE CONFIANZA */
 .social-proof{
   margin-top:15px;
-  font-size:16px;
   color:#555;
 }
 
@@ -81,17 +66,14 @@ nav a{
   width:100%;
   max-width:600px;
 }
-  
+
 /* CATEGORÍAS */
-.categorias{
-  padding:0 60px;
-}
+.categorias{ padding:0 60px; }
 
 .categorias button{
   margin:5px;
   padding:8px 15px;
   border:1px solid #3f5b8a;
-  background:none;
   border-radius:20px;
 }
 
@@ -102,13 +84,8 @@ nav a{
   padding:40px;
 }
 
-.left{
-  flex:3;
-}
-
-.right{
-  flex:1;
-}
+.left{ flex:3; }
+.right{ flex:1; }
 
 /* TARJETAS */
 .grid{
@@ -125,7 +102,6 @@ nav a{
   cursor:pointer;
 }
 
-/* 🔥 IMAGEN HORIZONTAL */
 .card img{
   width:100%;
   height:180px;
@@ -133,9 +109,7 @@ nav a{
   border-radius:8px;
 }
 
-.estrellas{
-  color:#f5a623;
-}
+.estrellas{ color:#f5a623; }
 
 .whatsapp{
   display:inline-block;
@@ -153,14 +127,6 @@ nav a{
   padding:20px;
   border-radius:12px;
   margin-bottom:20px;
-}
-
-.check{
-  background:#4CAF50;
-  color:white;
-  border-radius:50%;
-  padding:5px 7px;
-  margin-right:8px;
 }
 
 /* FOOTER */
@@ -189,13 +155,28 @@ footer{
   padding:20px;
   border-radius:10px;
   width:90%;
-  max-width:500px;
+  max-width:600px;
 }
 
-.modal-content img{
-  width:100%;
-  margin-top:10px;
+/* 🔥 CARRUSEL */
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  scroll-snap-type:x mandatory;
+}
+
+.carousel img{
+  min-width:100%;
+  height:220px;
+  object-fit:cover;
   border-radius:8px;
+  scroll-snap-align:center;
+}
+
+/* quitar scrollbar */
+.carousel::-webkit-scrollbar{
+  display:none;
 }
 </style>
 </head>
@@ -205,72 +186,38 @@ footer{
 <header>
   <img src="logo.png">
   <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#inicio">Cómo funciona</a>
-    <a href="#inicio">Beneficios</a>
-    <a href="#negocios">Negocios</a>
-    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-      Únete
-    </a>
+    <a href="#">Inicio</a>
+    <a href="#">Negocios</a>
   </nav>
 </header>
 
-<section id="inicio" class="hero">
+<section class="hero">
   <div class="hero-text">
     <h1>conecta compra y crece</h1>
-    <p>Red de negocios entre padres de familia de Colegios en El Salvador</p>
+    <p>Red de negocios entre padres de familia</p>
 
-    <!-- BOTÓN -->
-    <a class="hero-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-      Únete ahora
-    </a>
-
-    <!-- FRASE DE CONFIANZA -->
-    <p class="social-proof">
-      Más de 20 negocios ya están generando ingresos dentro de NeXsv 🚀
-    </p>
-
+    <a class="hero-btn" href="#" target="_blank">Únete ahora</a>
+    <p class="social-proof">Más de 20 negocios ya están generando ingresos 🚀</p>
   </div>
   <img src="hero.png">
 </section>
 
-<div class="categorias">
-  <button>Todos</button>
-  <button>Servicios</button>
-  <button>Comida</button>
-  <button>Belleza</button>
-</div>
-
-<section id="negocios" class="main">
+<section class="main">
   <div class="left">
-    <h2>Negocios disponibles</h2>
     <div class="grid" id="contenedor"></div>
   </div>
-
-  <div class="right">
-    <div class="box">
-      <h3>Beneficios</h3>
-      <p><span class="check">✔</span>Clientes confiables</p>
-      <p><span class="check">✔</span>Comunidad privada</p>
-      <p><span class="check">✔</span>Mas ventas sin publicidad</p>
-    </div>
-  </div>
 </section>
-
-<footer>© 2026 NeXsv</footer>
 
 <!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
+
+    <div class="carousel" id="carousel"></div>
+
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
     <p id="m_tel"></p>
-    <p id="m_mail"></p>
-
-    <img id="m_img1">
-    <img id="m_img2">
-    <img id="m_img3">
 
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
@@ -278,49 +225,32 @@ footer{
 
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
+const url = "TU URL";
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
 const contenedor = document.getElementById("contenedor");
-contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = Object.keys(n).reduce((acc, key) => {
-acc[key.trim()] = n[key];
-return acc;
-}, {});
+const nombre = n["Nombre de tu negocio"] || "Negocio";
+const descripcion = n["Descripcion_final"] || "";
+const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
+const zona = n["¿En qué zona resides?"] || "";
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+const img1 = n["Imagen_final"] || "";
+const img2 = n["Imagen2"] || img1;
+const img3 = n["Imagen3"] || img1;
 
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || "Sin descripción";
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
-const email = keys["Correo del negocio"] || "";
-
-let img = keys["Imagen_final"] || "";
-
-if(!img){
-img = "https://via.placeholder.com/300x150";
-}
-
-const img2 = keys["Imagen2"] || img;
-const img3 = keys["Imagen3"] || img;
-
-const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
+const dataModal = {nombre,descripcion,telefono,zona,img1,img2,img3};
 
 const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
-<img src="${img}" loading="lazy">
-<h3>${nombre} ✔</h3>
-<p class="estrellas">★★★★★</p>
-<p><strong>📍 ${zona}</strong></p>
-<p>${descripcion}</p>
-<a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">💬 contactar</a>
+<img src="${img1}">
+<h3>${nombre}</h3>
+<p>${zona}</p>
 </div>
 `;
 
@@ -331,17 +261,22 @@ contenedor.innerHTML += card;
 });
 
 function abrirModal(data){
+
 document.getElementById("modal").style.display = "flex";
 
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = "📍 " + data.zona;
-document.getElementById("m_tel").innerText = "📞 " + data.telefono;
-document.getElementById("m_mail").innerText = "📧 " + data.email;
+document.getElementById("m_zona").innerText = data.zona;
+document.getElementById("m_tel").innerText = data.telefono;
 
-document.getElementById("m_img1").src = data.img;
-document.getElementById("m_img2").src = data.img2;
-document.getElementById("m_img3").src = data.img3;
+/* 🔥 CARRUSEL DINÁMICO */
+const carousel = document.getElementById("carousel");
+carousel.innerHTML = `
+<img src="${data.img1}">
+<img src="${data.img2}">
+<img src="${data.img3}">
+`;
+
 }
 
 function cerrarModal(){
