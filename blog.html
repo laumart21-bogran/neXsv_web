@@ -2,40 +2,204 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Blog</title>
+<title>Blog - NeXsv</title>
 
 <style>
-body{font-family:Arial; background:#f5f7fb;}
-.container{max-width:900px; margin:auto; padding:40px;}
-.card{background:white; padding:20px; margin-bottom:20px; border-radius:10px;}
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+}
+
+/* HEADER */
+header{
+  background:#3f5b8a;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header img{ height:60px; }
+
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
+}
+
+/* CONTENIDO */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.sub{
+  text-align:center;
+  color:#666;
+  margin-bottom:40px;
+}
+
+/* BLOG GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:20px;
+}
+
+.post{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.08);
+  transition:0.2s;
+}
+
+.post:hover{
+  transform:translateY(-5px);
+}
+
+.post h3{
+  margin-top:0;
+}
+
+.post p{
+  color:#555;
+}
+
+/* CTA */
+.cta{
+  background:#3f5b8a;
+  color:white;
+  padding:30px;
+  border-radius:12px;
+  margin-top:40px;
+  text-align:center;
+}
+
+.btn{
+  background:#4CAF50;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  background:#3f5b8a;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+}
 </style>
 </head>
 
 <body>
 
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+       target="_blank">
+       Únete
+    </a>
+  </nav>
+</header>
+
 <div class="container">
 
-<h1>Blog</h1>
+<h1>Aprende a vender mejor</h1>
+<p class="sub">Estrategias reales para conseguir clientes dentro de una comunidad confiable</p>
 
-<div class="card">
-<h3>Cómo conseguir clientes</h3>
-<p>Las comunidades privadas son clave para vender más.</p>
+<div class="grid">
+
+<!-- POST 1 -->
+<div class="post">
+<h3>¿Por qué no estás vendiendo lo que esperas?</h3>
+<p>
+Muchos negocios no fallan por su producto, sino porque no están frente a las personas correctas. 
+Si tu cliente ideal no te ve, simplemente no existes para él.
+</p>
+<p><strong>👉 En NeXsv ya estás frente a clientes listos para comprar.</strong></p>
 </div>
 
-<div class="card">
-<h3>Errores comunes</h3>
-<p>No responder rápido te hace perder ventas.</p>
+<!-- POST 2 -->
+<div class="post">
+<h3>El error de depender solo de redes sociales</h3>
+<p>
+Publicar en redes no garantiza ventas. El alcance es limitado y dependes de algoritmos. 
+Además, compites con miles de negocios al mismo tiempo.
+</p>
+<p><strong>👉 Una comunidad cerrada convierte mucho mejor.</strong></p>
 </div>
 
-<div class="card">
-<h3>El poder del boca a boca</h3>
-<p>Las recomendaciones venden más.</p>
+<!-- POST 3 -->
+<div class="post">
+<h3>Cómo vender sin pagar publicidad</h3>
+<p>
+Las recomendaciones y la confianza generan más ventas que cualquier anuncio. 
+Las comunidades privadas aceleran este proceso.
+</p>
+<p><strong>👉 NeXsv funciona bajo este principio.</strong></p>
 </div>
 
-<a href="negocios.html">Ver negocios</a><br><br>
-<a href="index.html">Volver al inicio</a>
+<!-- POST 4 -->
+<div class="post">
+<h3>La importancia de la confianza en las ventas</h3>
+<p>
+Las personas compran a quien les genera seguridad. 
+Cuando perteneces a un mismo entorno, la confianza es automática.
+</p>
+<p><strong>👉 Eso es exactamente lo que construye NeXsv.</strong></p>
+</div>
 
 </div>
+
+<!-- CTA FINAL -->
+<div class="cta">
+
+<h2>¿Quieres más clientes sin complicarte?</h2>
+
+<p>
+Forma parte de una red donde las oportunidades ya existen.
+</p>
+
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Unirme a NeXsv
+</a>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 NeXsv
+</footer>
 
 </body>
 </html>
