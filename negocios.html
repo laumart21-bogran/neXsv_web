@@ -40,8 +40,15 @@ nav a{
 /* MAIN */
 .main{
   padding:40px;
+  max-width:1200px;
+  margin:auto;
 }
 
+h2{
+  margin-bottom:20px;
+}
+
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -55,6 +62,11 @@ nav a{
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 .card img{
@@ -62,6 +74,21 @@ nav a{
   height:180px;
   object-fit:cover;
   border-radius:8px;
+}
+
+.card p{
+  font-size:14px;
+  color:#555;
+}
+
+.whatsapp{
+  display:inline-block;
+  margin-top:10px;
+  background:#25D366;
+  color:white;
+  padding:8px 12px;
+  border-radius:6px;
+  text-decoration:none;
 }
 
 /* MODAL */
@@ -90,6 +117,7 @@ nav a{
   display:flex;
   overflow-x:auto;
   gap:10px;
+  margin-top:10px;
 }
 
 .carousel img{
@@ -97,6 +125,15 @@ nav a{
   height:220px;
   object-fit:cover;
   border-radius:8px;
+}
+
+/* FOOTER */
+footer{
+  background:#3f5b8a;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
 }
 </style>
 </head>
@@ -143,6 +180,11 @@ nav a{
   </div>
 </div>
 
+<!-- FOOTER -->
+<footer>
+© 2026 NeXsv
+</footer>
+
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
@@ -156,32 +198,51 @@ contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const nombre = n["Nombre de tu negocio"] || "Negocio";
-const descripcion = n["Descripcion_final"] || "";
-const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
-const zona = n["¿En qué zona resides?"] || "";
-const email = n["Correo del negocio"] || "";
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
 
-const img = n["Imagen_final"] || "https://via.placeholder.com/300x150";
-const img2 = n["Imagen2"] || img;
-const img3 = n["Imagen3"] || img;
+// SOLO PUBLICADOS
+if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+
+const nombre = keys["Nombre de tu negocio"] || "Negocio";
+const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "";
+const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const zona = keys["¿En qué zona resides?"] || "";
+const email = keys["Correo del negocio"] || "";
+
+// IMAGEN PRINCIPAL
+let img = keys["Imagen_final"] || keys["Link de imagen de tu negocio"] || "";
+
+// FIX GOOGLE DRIVE
+if(img.includes("drive.google.com")){
+  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
+  if(match){
+    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+}
+
+if(!img){
+  img = "https://via.placeholder.com/300x150";
+}
+
+const img2 = keys["Imagen2"] || img;
+const img3 = keys["Imagen3"] || img;
 
 const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
 const card = `
-const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
-<img src="${img}">
-<h3>${nombre}</h3>
+  <img src="${img}" onerror="this.src='https://via.placeholder.com/300x150'">
+  <h3>${nombre}</h3>
+  <p><strong>📍 ${zona}</strong></p>
+  <p>${descripcion.substring(0,80)}...</p>
 
-<p><strong>📍 ${zona}</strong></p>
-
-<p>${descripcion.substring(0,80)}...</p>
-
-<a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
-💬 contactar
-</a>
-
+  <a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
+  💬 contactar
+  </a>
 </div>
 `;
 
