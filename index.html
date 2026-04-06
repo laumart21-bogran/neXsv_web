@@ -11,15 +11,48 @@ body{
   background:#f5f7fb;
 }
 
+/* HEADER */
+header{
+  background:#3f5b8a;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header img{ height:60px; }
+
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
+}
+
+/* HERO */
+.hero{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:60px;
+}
+
+.hero img{
+  width:450px;
+}
+
 .container{
   max-width:1100px;
   margin:auto;
-  padding:40px 20px;
-  text-align:center;
 }
 
-h1{ font-size:42px; }
-
+/* BOTONES */
 .btn{
   display:inline-block;
   background:#4CAF50;
@@ -27,14 +60,15 @@ h1{ font-size:42px; }
   padding:12px 20px;
   border-radius:8px;
   text-decoration:none;
-  margin:10px;
+  margin-top:10px;
 }
 
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
-  margin-top:30px;
+  padding:40px;
 }
 
 .card{
@@ -42,41 +76,95 @@ h1{ font-size:42px; }
   padding:20px;
   border-radius:12px;
 }
+
+/* TESTIMONIOS */
+.testimonial{
+  background:white;
+  padding:20px;
+  border-left:5px solid #3f5b8a;
+  border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+  background:#3f5b8a;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header>
+  <img src="logo.png">
 
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">Únete</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero container">
+
+<div>
 <h1>Conecta, compra y crece</h1>
-<p>Marketplace exclusivo entre padres de familia</p>
+<p>Red de negocios entre padres de familia en El Salvador</p>
 
 <a class="btn" href="negocios.html">Ver negocios</a>
 <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
 Unirme
 </a>
+</div>
 
-<div class="grid">
+<img src="hero.png">
+
+</section>
+
+<!-- BENEFICIOS -->
+<div class="grid container">
 
 <div class="card">
 <h3>Clientes reales</h3>
-<p>Accede a compradores con poder adquisitivo</p>
+<p>Accede a compradores con poder adquisitivo.</p>
 </div>
 
 <div class="card">
 <h3>Comunidad privada</h3>
-<p>Confianza y recomendaciones</p>
+<p>Confianza y recomendaciones.</p>
 </div>
 
 <div class="card">
 <h3>Más ventas</h3>
-<p>Contactos directos por WhatsApp</p>
+<p>Contactos directos por WhatsApp.</p>
 </div>
 
 </div>
 
+<!-- TESTIMONIOS -->
+<div class="grid container">
+
+<div class="testimonial">
+<p>"Gracias a NeXsv conseguí mis primeros clientes en menos de una semana"</p>
+<strong>- Emprendedora</strong>
 </div>
+
+<div class="testimonial">
+<p>"Es mucho más fácil vender dentro de una comunidad confiable"</p>
+<strong>- Profesional independiente</strong>
+</div>
+
+</div>
+
+<footer>
+© 2026 NeXsv
+</footer>
 
 </body>
 </html>
