@@ -20,14 +20,13 @@ header{
   align-items:center;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:white;
   margin-left:20px;
   text-decoration:none;
+  cursor:pointer;
 }
 
 .nav-btn{
@@ -35,7 +34,17 @@ nav a{
   padding:10px 18px;
   border-radius:8px;
   color:white;
-  text-decoration:none;
+}
+
+/* SECCIONES */
+.seccion{
+  display:none;
+  min-height:100vh;
+  padding:60px;
+}
+
+.activa{
+  display:block;
 }
 
 /* HERO */
@@ -43,51 +52,9 @@ nav a{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:80px 60px;
 }
 
-.hero-text{
-  max-width:550px;
-}
-
-.hero h1{
-  font-size:56px;
-}
-
-.hero img{
-  width:100%;
-  max-width:600px;
-}
-  
-/* CATEGORÍAS */
-.categorias{
-  padding:0 60px;
-}
-
-.categorias button{
-  margin:5px;
-  padding:8px 15px;
-  border:1px solid #3f5b8a;
-  background:none;
-  border-radius:20px;
-}
-
-/* MAIN */
-.main{
-  display:flex;
-  gap:20px;
-  padding:40px;
-}
-
-.left{
-  flex:3;
-}
-
-.right{
-  flex:1;
-}
-
-/* TARJETAS */
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
@@ -109,42 +76,11 @@ nav a{
   border-radius:8px;
 }
 
-.estrellas{
-  color:#f5a623;
-}
-
-.whatsapp{
-  display:inline-block;
-  margin-top:10px;
-  background:#25D366;
-  color:white;
-  padding:10px 16px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* SIDEBAR */
-.box{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-}
-
-.check{
-  background:#4CAF50;
-  color:white;
-  border-radius:50%;
-  padding:5px 7px;
-  margin-right:8px;
-}
-
-/* FOOTER */
-footer{
-  background:#3f5b8a;
-  color:white;
-  text-align:center;
-  padding:20px;
+/* BLOG */
+.blog-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+  gap:20px;
 }
 
 /* MODAL */
@@ -168,25 +104,16 @@ footer{
   max-width:500px;
 }
 
-/* 🔥 CARRUSEL HORIZONTAL */
+/* CARRUSEL */
 .carousel{
   display:flex;
   overflow-x:auto;
-  gap:10px;
-  scroll-snap-type:x mandatory;
-  margin-top:10px;
 }
 
 .carousel img{
   min-width:100%;
   height:220px;
   object-fit:cover;
-  border-radius:8px;
-  scroll-snap-align:center;
-}
-
-.carousel::-webkit-scrollbar{
-  display:none;
 }
 </style>
 </head>
@@ -196,67 +123,97 @@ footer{
 <header>
   <img src="logo.png">
   <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#inicio">Cómo funciona</a>
-    <a href="#inicio">Beneficios</a>
-    <a href="#negocios">Negocios</a>
-    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-  Únete
-</a>
+    <a onclick="mostrarSeccion('inicio')">Inicio</a>
+    <a onclick="mostrarSeccion('como')">Cómo funciona</a>
+    <a onclick="mostrarSeccion('beneficios')">Beneficios</a>
+    <a onclick="mostrarSeccion('negocios')">Negocios</a>
+    <a onclick="mostrarSeccion('blog')">Blog</a>
+    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">Únete</a>
   </nav>
 </header>
 
-<section id="inicio" class="hero">
-  <div class="hero-text">
+<!-- INICIO -->
+<section id="inicio" class="seccion activa hero">
+  <div>
     <h1>conecta compra y crece</h1>
-    <p>Red de negocios entre padres de familia de Colegios en el salvador</p>
+    <p>Red de negocios entre padres de familia</p>
   </div>
-  <img src="hero.png">
+  <img src="hero.png" width="400">
 </section>
 
-<div class="categorias">
-  <button>Todos</button>
-  <button>Servicios</button>
-  <button>Comida</button>
-  <button>Belleza</button>
-</div>
+<!-- COMO -->
+<section id="como" class="seccion">
+  <h2>¿Cómo funciona?</h2>
+  <p>1. Te registras</p>
+  <p>2. Publicas tu negocio</p>
+  <p>3. Conectas con clientes reales</p>
+  <p>4. Generas ingresos</p>
+</section>
 
-<section id="negocios" class="main">
-  <div class="left">
-    <h2>Negocios disponibles</h2>
-    <div class="grid" id="contenedor"></div>
-  </div>
+<!-- BENEFICIOS -->
+<section id="beneficios" class="seccion">
+  <h2>Beneficios</h2>
+  <p>✔ Clientes con poder adquisitivo</p>
+  <p>✔ Comunidad privada</p>
+  <p>✔ Sin pagar publicidad</p>
+  <p>✔ Contacto directo</p>
+</section>
 
-  <div class="right">
-    <div class="box">
-      <h3>Beneficios</h3>
-      <p><span class="check">✔</span>Clientes confiables</p>
-      <p><span class="check">✔</span>Comunidad privada</p>
-      <p><span class="check">✔</span>Mas ventas sin publicidad</p>
+<!-- BLOG -->
+<section id="blog" class="seccion">
+  <h2>Aprende y crece</h2>
+
+  <div class="blog-grid">
+
+    <div class="card">
+      <h3>Cómo conseguir clientes sin pagar publicidad</h3>
+      <p>Estrategias reales para vender dentro de comunidades.</p>
     </div>
+
+    <div class="card">
+      <h3>Errores que hacen perder ventas</h3>
+      <p>Evita fallas comunes.</p>
+    </div>
+
+    <div class="card">
+      <h3>El poder del boca a boca</h3>
+      <p>Cómo aprovechar redes cerradas.</p>
+    </div>
+
   </div>
 </section>
 
-<footer>© 2026 NeXsv</footer>
+<!-- NEGOCIOS -->
+<section id="negocios" class="seccion">
+  <h2>Negocios disponibles</h2>
+  <div class="grid" id="contenedor"></div>
+</section>
 
 <!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
-    <p id="m_zona"></p>
-    <p id="m_tel"></p>
-    <p id="m_mail"></p>
-
-    <!-- 🔥 CARRUSEL -->
     <div class="carousel" id="carousel"></div>
-
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
 
 <script>
 
+function mostrarSeccion(id){
+
+document.querySelectorAll(".seccion").forEach(sec=>{
+  sec.classList.remove("activa");
+});
+
+document.getElementById(id).classList.add("activa");
+
+/* 🔥 SCROLL TOP */
+window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* FETCH */
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
 fetch(url)
@@ -264,42 +221,19 @@ fetch(url)
 .then(data => {
 
 const contenedor = document.getElementById("contenedor");
-contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = Object.keys(n).reduce((acc, key) => {
-acc[key.trim()] = n[key];
-return acc;
-}, {});
+const nombre = n["Nombre de tu negocio"] || "Negocio";
+const descripcion = n["Descripcion_final"] || "";
+const img = n["Imagen_final"] || "https://via.placeholder.com/300x150";
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
-
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "Sin descripción";
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
-const email = keys["Correo del negocio"] || "";
-
-let img = keys["Imagen_final"] || keys["Link de imagen de tu negocio"] || "";
-
-if(!img){
-img = "https://via.placeholder.com/300x150";
-}
-
-const img2 = keys["Imagen2"] || img;
-const img3 = keys["Imagen3"] || img;
-
-const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
+const dataModal = {nombre,descripcion,img};
 
 const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
-<img src="${img}" loading="lazy">
-<h3>${nombre} ✔</h3>
-<p class="estrellas">★★★★★</p>
-<p><strong>📍 ${zona}</strong></p>
-<p>${descripcion}</p>
-<a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">💬 contactar</a>
+<img src="${img}">
+<h3>${nombre}</h3>
 </div>
 `;
 
@@ -310,26 +244,16 @@ contenedor.innerHTML += card;
 });
 
 function abrirModal(data){
-document.getElementById("modal").style.display = "flex";
+document.getElementById("modal").style.display="flex";
+document.getElementById("m_nombre").innerText=data.nombre;
+document.getElementById("m_desc").innerText=data.descripcion;
 
-document.getElementById("m_nombre").innerText = data.nombre;
-document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = "📍 " + data.zona;
-document.getElementById("m_tel").innerText = "📞 " + data.telefono;
-document.getElementById("m_mail").innerText = "📧 " + data.email;
-
-/* 🔥 CARRUSEL CON TIP PRO (SIN DUPLICADOS) */
-let images = [data.img, data.img2, data.img3];
-images = images.filter(img => img && img.trim() !== "");
-images = [...new Set(images)];
-
-const carousel = document.getElementById("carousel");
-carousel.innerHTML = images.map(img => `<img src="${img}">`).join("");
-
+document.getElementById("carousel").innerHTML =
+`<img src="${data.img}">`;
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display = "none";
+document.getElementById("modal").style.display="none";
 }
 
 </script>
