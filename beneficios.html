@@ -2,30 +2,225 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Beneficios</title>
+<title>Beneficios - NeXsv</title>
 
 <style>
-body{font-family:Arial; background:#f5f7fb;}
-.container{max-width:900px; margin:auto; padding:40px;}
-.card{background:white; padding:20px; margin-bottom:15px; border-radius:10px;}
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+}
+
+/* HEADER */
+header{
+  background:#3f5b8a;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header img{ height:60px; }
+
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
+}
+
+/* CONTENIDO */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.sub{
+  text-align:center;
+  color:#666;
+  margin-bottom:40px;
+}
+
+/* BENEFICIOS */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:white;
+  padding:25px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:60px;
+  margin-bottom:15px;
+}
+
+/* BLOQUE DESTACADO */
+.highlight{
+  background:#3f5b8a;
+  color:white;
+  padding:30px;
+  border-radius:12px;
+  margin-top:40px;
+  text-align:center;
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+  margin-top:40px;
+}
+
+.btn{
+  background:#4CAF50;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  background:#3f5b8a;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+}
 </style>
 </head>
 
 <body>
 
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+       target="_blank">
+       Únete
+    </a>
+  </nav>
+</header>
+
 <div class="container">
 
-<h1>Beneficios</h1>
+<h1>¿Por qué formar parte de NeXsv?</h1>
+<p class="sub">No es solo un marketplace. Es una red de oportunidades reales.</p>
 
-<div class="card">✔ Clientes con poder adquisitivo</div>
-<div class="card">✔ Comunidad privada</div>
-<div class="card">✔ Más ventas sin publicidad</div>
-<div class="card">✔ Contacto directo</div>
+<div class="grid">
 
-<a href="negocios.html">Ver negocios</a><br><br>
-<a href="index.html">Volver al inicio</a>
+<!-- BENEFICIO 1 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+<h3>Acceso a clientes con poder adquisitivo</h3>
+<p>
+Conéctate con familias que ya están dispuestas a comprar. 
+Aquí no empiezas desde cero, entras a un mercado activo.
+</p>
+</div>
+
+<!-- BENEFICIO 2 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/747/747376.png">
+<h3>Comunidad privada y confiable</h3>
+<p>
+Todos los miembros pertenecen a un entorno validado. 
+Esto genera confianza inmediata y facilita las ventas.
+</p>
+</div>
+
+<!-- BENEFICIO 3 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
+<h3>Más ventas sin invertir en publicidad</h3>
+<p>
+Olvídate de pagar anuncios sin resultados. 
+Aquí los clientes llegan por conexión y recomendación.
+</p>
+</div>
+
+<!-- BENEFICIO 4 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/597/597177.png">
+<h3>Contacto directo y rápido</h3>
+<p>
+Habla directamente con tus clientes por WhatsApp. 
+Sin intermediarios, sin procesos complicados.
+</p>
+</div>
+
+<!-- BENEFICIO 5 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
+<h3>Mayor visibilidad para tu negocio</h3>
+<p>
+Tu marca estará frente a una audiencia relevante, 
+lo que aumenta tus probabilidades de venta.
+</p>
+</div>
+
+<!-- BENEFICIO 6 -->
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
+<h3>Posicionamiento dentro de la comunidad</h3>
+<p>
+Construye reputación y conviértete en una opción recomendada 
+dentro de tu red.
+</p>
+</div>
 
 </div>
+
+<!-- BLOQUE DE IMPACTO -->
+<div class="highlight">
+<h2>Ya hay negocios generando ingresos dentro de NeXsv</h2>
+<p>
+No estás entrando a una idea, estás entrando a un ecosistema que ya está en movimiento.
+</p>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+<a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
+Quiero formar parte
+</a>
+</div>
+
+</div>
+
+<footer>
+© 2026 NeXsv
+</footer>
 
 </body>
 </html>
