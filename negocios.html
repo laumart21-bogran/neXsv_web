@@ -169,10 +169,19 @@ const img3 = n["Imagen3"] || img;
 const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
 const card = `
+const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
 <img src="${img}">
 <h3>${nombre}</h3>
-<p>${zona}</p>
+
+<p><strong>📍 ${zona}</strong></p>
+
+<p>${descripcion.substring(0,80)}...</p>
+
+<a class="whatsapp" href="https://wa.me/${telefono}" target="_blank">
+💬 contactar
+</a>
+
 </div>
 `;
 
