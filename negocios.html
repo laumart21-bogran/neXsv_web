@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>NeXsv</title>
+<title>NeXsv - Negocios</title>
 
 <style>
 body{
@@ -20,13 +20,14 @@ header{
   align-items:center;
 }
 
-header img{ height:70px; }
+header img{
+  height:60px;
+}
 
 nav a{
   color:white;
   margin-left:20px;
   text-decoration:none;
-  cursor:pointer;
 }
 
 .nav-btn{
@@ -36,31 +37,18 @@ nav a{
   color:white;
 }
 
-/* SECCIONES */
-.seccion{
-  display:none;
-  min-height:100vh;
-  padding:60px;
+/* MAIN */
+.main{
+  padding:40px;
 }
 
-.activa{
-  display:block;
-}
-
-/* HERO */
-.hero{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
+/* TARJETAS */
 .card{
   background:white;
   border-radius:12px;
@@ -74,13 +62,6 @@ nav a{
   height:180px;
   object-fit:cover;
   border-radius:8px;
-}
-
-/* BLOG */
-.blog-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:20px;
 }
 
 /* MODAL */
@@ -108,83 +89,41 @@ nav a{
 .carousel{
   display:flex;
   overflow-x:auto;
+  gap:10px;
 }
 
 .carousel img{
   min-width:100%;
   height:220px;
   object-fit:cover;
+  border-radius:8px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
   <img src="logo.png">
+
   <nav>
-    <a onclick="mostrarSeccion('inicio')">Inicio</a>
-    <a onclick="mostrarSeccion('como')">Cómo funciona</a>
-    <a onclick="mostrarSeccion('beneficios')">Beneficios</a>
-    <a onclick="mostrarSeccion('negocios')">Negocios</a>
-    <a onclick="mostrarSeccion('blog')">Blog</a>
-    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">Únete</a>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+       target="_blank">
+       Únete
+    </a>
   </nav>
 </header>
 
-<!-- INICIO -->
-<section id="inicio" class="seccion activa hero">
-  <div>
-    <h1>conecta compra y crece</h1>
-    <p>Red de negocios entre padres de familia</p>
-  </div>
-  <img src="hero.png" width="400">
-</section>
-
-<!-- COMO -->
-<section id="como" class="seccion">
-  <h2>¿Cómo funciona?</h2>
-  <p>1. Te registras</p>
-  <p>2. Publicas tu negocio</p>
-  <p>3. Conectas con clientes reales</p>
-  <p>4. Generas ingresos</p>
-</section>
-
-<!-- BENEFICIOS -->
-<section id="beneficios" class="seccion">
-  <h2>Beneficios</h2>
-  <p>✔ Clientes con poder adquisitivo</p>
-  <p>✔ Comunidad privada</p>
-  <p>✔ Sin pagar publicidad</p>
-  <p>✔ Contacto directo</p>
-</section>
-
-<!-- BLOG -->
-<section id="blog" class="seccion">
-  <h2>Aprende y crece</h2>
-
-  <div class="blog-grid">
-
-    <div class="card">
-      <h3>Cómo conseguir clientes sin pagar publicidad</h3>
-      <p>Estrategias reales para vender dentro de comunidades.</p>
-    </div>
-
-    <div class="card">
-      <h3>Errores que hacen perder ventas</h3>
-      <p>Evita fallas comunes.</p>
-    </div>
-
-    <div class="card">
-      <h3>El poder del boca a boca</h3>
-      <p>Cómo aprovechar redes cerradas.</p>
-    </div>
-
-  </div>
-</section>
-
-<!-- NEGOCIOS -->
-<section id="negocios" class="seccion">
+<!-- CONTENIDO -->
+<section class="main">
   <h2>Negocios disponibles</h2>
   <div class="grid" id="contenedor"></div>
 </section>
@@ -194,26 +133,18 @@ nav a{
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
+    <p id="m_zona"></p>
+    <p id="m_tel"></p>
+    <p id="m_mail"></p>
+
     <div class="carousel" id="carousel"></div>
+
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
 
 <script>
 
-function mostrarSeccion(id){
-
-document.querySelectorAll(".seccion").forEach(sec=>{
-  sec.classList.remove("activa");
-});
-
-document.getElementById(id).classList.add("activa");
-
-/* 🔥 SCROLL TOP */
-window.scrollTo({top:0, behavior:"smooth"});
-}
-
-/* FETCH */
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
 fetch(url)
@@ -221,19 +152,27 @@ fetch(url)
 .then(data => {
 
 const contenedor = document.getElementById("contenedor");
+contenedor.innerHTML = "";
 
 data.forEach(n => {
 
 const nombre = n["Nombre de tu negocio"] || "Negocio";
 const descripcion = n["Descripcion_final"] || "";
-const img = n["Imagen_final"] || "https://via.placeholder.com/300x150";
+const telefono = (n["WhatsApp del negocio"] || "").replace("+","");
+const zona = n["¿En qué zona resides?"] || "";
+const email = n["Correo del negocio"] || "";
 
-const dataModal = {nombre,descripcion,img};
+const img = n["Imagen_final"] || "https://via.placeholder.com/300x150";
+const img2 = n["Imagen2"] || img;
+const img3 = n["Imagen3"] || img;
+
+const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
 const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
 <img src="${img}">
 <h3>${nombre}</h3>
+<p>${zona}</p>
 </div>
 `;
 
@@ -244,16 +183,23 @@ contenedor.innerHTML += card;
 });
 
 function abrirModal(data){
-document.getElementById("modal").style.display="flex";
-document.getElementById("m_nombre").innerText=data.nombre;
-document.getElementById("m_desc").innerText=data.descripcion;
+document.getElementById("modal").style.display = "flex";
+
+document.getElementById("m_nombre").innerText = data.nombre;
+document.getElementById("m_desc").innerText = data.descripcion;
+document.getElementById("m_zona").innerText = "📍 " + data.zona;
+document.getElementById("m_tel").innerText = "📞 " + data.telefono;
+document.getElementById("m_mail").innerText = "📧 " + data.email;
+
+let images = [data.img, data.img2, data.img3];
+images = [...new Set(images)];
 
 document.getElementById("carousel").innerHTML =
-`<img src="${data.img}">`;
+images.map(i => `<img src="${i}">`).join("");
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display="none";
+document.getElementById("modal").style.display = "none";
 }
 
 </script>
