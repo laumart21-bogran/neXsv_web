@@ -20,7 +20,13 @@ header{
   align-items:center;
 }
 
-header img{ height:60px; }
+/* 🔥 MEJORA DEL LOGO (sin mover nada) */
+header img{ 
+  height:60px;
+  filter: 
+    drop-shadow(0px 2px 4px rgba(0,0,0,0.6))
+    drop-shadow(0 0 2px white);
+}
 
 nav a{
   color:white;
@@ -28,13 +34,11 @@ nav a{
   text-decoration:none;
 }
 
-/* BOTÓN HEADER (ajuste para nuevo sistema) */
-.cta .btn{
+.nav-btn{
   background:#4CAF50;
   padding:10px 15px;
   border-radius:8px;
   color:white;
-  text-decoration:none;
 }
 
 /* HERO */
@@ -55,7 +59,7 @@ nav a{
   margin:auto;
 }
 
-/* BOTONES GENERALES */
+/* BOTONES */
 .btn{
   display:inline-block;
   background:#4CAF50;
@@ -107,7 +111,7 @@ footer{
 <section class="hero container">
 
 <div>
-<h1>Conecta, Compra y Crece</h1>
+<h1>Conecta, compra y crece</h1>
 <p>Red privada de conexión entre padres de familia y negocios dentro de su misma comunidad.</p>
 
 <a class="btn" href="negocios.html">Explorar negocios</a>
