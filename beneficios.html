@@ -20,7 +20,13 @@ header{
   align-items:center;
 }
 
-header img{ height:60px; }
+/* 🔥 MEJORA DEL LOGO (sin mover nada) */
+header img{ 
+  height:60px;
+  filter: 
+    drop-shadow(0px 2px 4px rgba(0,0,0,0.6))
+    drop-shadow(0 0 2px white);
+}
 
 nav a{
   color:white;
@@ -114,23 +120,8 @@ footer{
 
 <body>
 
-<header>
-  <img src="logo.png">
-
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-       target="_blank">
-       Únete
-    </a>
-  </nav>
-</header>
+<!-- ✅ HEADER DINÁMICO -->
+<script src="components/header.js"></script>
 
 <div class="container">
 
