@@ -11,7 +11,7 @@ body{
   background:#f5f7fb;
 }
 
-/* HEADER (IGUAL AL INDEX) */
+/* HEADER */
 header{
   background:white;
   padding:12px 40px;
@@ -192,6 +192,7 @@ let dataGlobal = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
+  console.log("DATA:", data); // DEBUG
   dataGlobal = data;
   renderizar(data);
 });
@@ -208,19 +209,34 @@ const keys = Object.keys(n).reduce((acc, key) => {
   return acc;
 }, {});
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+// ✅ FILTRO INTELIGENTE
+const publicado = (keys["Publicado"] || "").toString().toLowerCase().trim();
+if(!(publicado === "si" || publicado === "sí" || publicado === "yes")) return;
 
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || "";
+// ✅ CAMPOS FLEXIBLES
+const nombre =
+  keys["Nombre de tu negocio"] ||
+  keys["Nombre"] ||
+  "Negocio";
+
+const descripcion =
+  keys["Descripcion_final"] ||
+  keys["Descripción"] ||
+  keys["¿Qué vendes o qué servicio ofreces?"] ||
+  "";
+
 const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
 
-// 📍 UBICACIÓN DINÁMICA
+const zona =
+  keys["¿En qué zona resides?"] ||
+  keys["Zona"] ||
+  "";
+
+// 📍 UBICACIÓN
 const ubicacionLink =
   keys["Ubicación del Negocio (Link de Google Maps)"] ||
   keys["Ubicacion"] || "";
 
-// 🔗 SI EXISTE LINK → CLICKEABLE
 const zonaHTML = ubicacionLink
   ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
   : zona;
@@ -228,7 +244,7 @@ const zonaHTML = ubicacionLink
 // 🖼 IMAGEN
 let img = keys["Imagen_final"] || "";
 
-if(img.includes("drive.google.com")){
+if(img && img.includes("drive.google.com")){
   let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
   if(match){
@@ -285,7 +301,7 @@ return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
 renderizar(filtrados);
 }
 
-// 📲 MODAL + TRACK
+// 📲 MODAL + ANALÍTICA
 function abrirModal(nombre,desc,zona){
 
 document.getElementById("modal").style.display = "flex";
@@ -305,7 +321,7 @@ function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
-// 📲 WHATSAPP TRACK
+// 📲 WHATSAPP
 function trackWhatsApp(nombre,telefono){
 
 fetch(ANALYTICS,{
