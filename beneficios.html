@@ -13,7 +13,29 @@ body{
 
 /* HEADER */
 header{
-<script src="components/header.js"></script>
+  background:white;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
+
+header img{
+  height:70px;
+}
+
+nav a{
+  color:#2f4ea2;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
 }
 
 /* CONTENIDO */
@@ -23,56 +45,28 @@ header{
   padding:40px 20px;
 }
 
-h1{
-  text-align:center;
-}
-
-.sub{
-  text-align:center;
-  color:#666;
-  margin-bottom:40px;
-}
-
-/* GRID */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
 }
 
 .card{
   background:white;
-  padding:25px;
+  padding:20px;
   border-radius:12px;
 }
 
 .card img{
-  width:80px;
-  margin-bottom:15px;
+  width:70px;
   filter: invert(23%) sepia(32%) saturate(1400%) hue-rotate(190deg);
 }
 
-/* CTA */
-.cta{
-  text-align:center;
-  margin-top:40px;
-}
-
-.btn{
-  background:#4CAF50;
-  color:white;
-  padding:12px 20px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* FOOTER */
 footer{
   background:#2f4ea2;
   color:white;
   text-align:center;
   padding:20px;
-  margin-top:40px;
 }
 </style>
 </head>
@@ -90,64 +84,34 @@ footer{
     <a href="blog.html">Blog</a>
 
     <a class="nav-btn"
-       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-       target="_blank">
-       Únete
+    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+    target="_blank">
+    Solicitar acceso
     </a>
   </nav>
 </header>
 
 <div class="container">
 
-<h1>¿Por qué usar NeXsv?</h1>
-<p class="sub">Una red privada diseñada para generar oportunidades reales.</p>
+<h1>Beneficios</h1>
 
 <div class="grid">
 
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-<h3>Clientes reales</h3>
-<p>Conecta con personas listas para comprar.</p>
+<p>Clientes reales</p>
 </div>
 
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png">
-<h3>Comunidad confiable</h3>
-<p>Entorno validado que genera confianza.</p>
+<p>Comunidad confiable</p>
 </div>
 
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
-<h3>Más ventas</h3>
-<p>Sin depender de publicidad.</p>
+<p>Más ventas</p>
 </div>
 
-<div class="card">
-<img src="https://cdn-icons-png.flaticon.com/512/597/597177.png">
-<h3>Contacto directo</h3>
-<p>Sin intermediarios.</p>
-</div>
-
-<div class="card">
-<img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
-<h3>Mayor visibilidad</h3>
-<p>Llega a una audiencia relevante.</p>
-</div>
-
-<div class="card">
-<img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
-<h3>Posicionamiento</h3>
-<p>Construye reputación dentro de la comunidad.</p>
-</div>
-
-</div>
-
-<div class="cta">
-<a class="btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-Quiero formar parte
-</a>
 </div>
 
 </div>
