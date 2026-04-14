@@ -11,29 +11,29 @@ body{
   background:#f5f7fb;
 }
 
-/* HEADER */
+/* HEADER (IGUAL AL INDEX) */
 header{
-  background:linear-gradient(135deg,#2f4ea2,#4CAF50);
+  background:white;
   padding:12px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
+  border-bottom:1px solid #eee;
 }
 
 header img{
-  height:80px;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+  height:70px;
 }
 
 nav a{
-  color:white;
+  color:#2f4ea2;
   margin-left:20px;
   text-decoration:none;
 }
 
 .nav-btn{
   background:#4CAF50;
-  padding:10px 18px;
+  padding:10px 15px;
   border-radius:8px;
   color:white;
 }
@@ -49,7 +49,7 @@ nav a{
 #buscador{
   width:100%;
   padding:12px;
-  margin:20px 0;
+  margin-bottom:20px;
   border-radius:10px;
   border:1px solid #ccc;
 }
@@ -67,7 +67,11 @@ nav a{
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  position:relative;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 .card img{
@@ -76,6 +80,11 @@ nav a{
   object-fit:cover;
   border-radius:8px;
   cursor:pointer;
+}
+
+.card p{
+  font-size:14px;
+  color:#555;
 }
 
 /* BOTONES */
@@ -118,6 +127,7 @@ nav a{
   max-width:500px;
 }
 
+/* FOOTER */
 footer{
   background:#2f4ea2;
   color:white;
@@ -142,7 +152,9 @@ footer{
 
     <a class="nav-btn"
     href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">Únete</a>
+    target="_blank">
+    Solicitar acceso
+    </a>
   </nav>
 </header>
 
@@ -150,7 +162,7 @@ footer{
 
 <h2>Negocios disponibles</h2>
 
-<input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscar()">
+<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
 
 <div class="grid" id="contenedor"></div>
 
@@ -173,107 +185,135 @@ footer{
 <script>
 
 const url = "TU_URL_GOOGLE_SCRIPT";
-const ANALYTICS = "https://script.google.com/macros/s/AKfycbxl8JBi6pug6ND7YfMngMhkQG5WrpcK_gKfztX-R6KimjjAVUWOXY0unZL72x1mknrJ9Q/exec";
+const ANALYTICS = "TU_URL_ANALYTICS";
 
 let dataGlobal = [];
 
 fetch(url)
-.then(res=>res.json())
-.then(data=>{
+.then(res => res.json())
+.then(data => {
   dataGlobal = data;
-  render(data);
+  renderizar(data);
 });
 
-function render(data){
+function renderizar(data){
 
-const cont = document.getElementById("contenedor");
-cont.innerHTML = "";
+const contenedor = document.getElementById("contenedor");
+contenedor.innerHTML = "";
 
-data.sort((a,b)=> (b["Destacado"]==="si") - (a["Destacado"]==="si"));
+data.forEach(n => {
 
-data.forEach(n=>{
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
 
-const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});
+if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
-if((k["Publicado"]||"").toLowerCase()!=="si") return;
+const nombre = keys["Nombre de tu negocio"] || "Negocio";
+const descripcion = keys["Descripcion_final"] || "";
+const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const zona = keys["¿En qué zona resides?"] || "";
 
-const nombre = k["Nombre de tu negocio"];
-const desc = k["Descripcion_final"]||"";
-const tel = (k["WhatsApp del negocio"]||"").replace("+","");
-const zona = k["¿En qué zona resides?"]||"";
+// 📍 UBICACIÓN DINÁMICA
+const ubicacionLink =
+  keys["Ubicación del Negocio (Link de Google Maps)"] ||
+  keys["Ubicacion"] || "";
 
-const ubicacion =
-k["Ubicación del Negocio (Link de Google Maps)"]||
-k["Ubicacion"]||"";
+// 🔗 SI EXISTE LINK → CLICKEABLE
+const zonaHTML = ubicacionLink
+  ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+  : zona;
 
-const linkMapa = ubicacion
-? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2;">${zona}</a>`
-: zona;
+// 🖼 IMAGEN
+let img = keys["Imagen_final"] || "";
 
+if(img.includes("drive.google.com")){
+  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
+  if(match){
+    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+}
+
+if(!img){
+  img = "https://via.placeholder.com/300x150";
+}
+
+// 🧩 CARD
 const card = `
 <div class="card">
 
-<img src="${k["Imagen_final"]}" onclick='openModal("${nombre}","${desc}","${zona}")'>
+<img src="${img}" onclick='abrirModal("${nombre}","${descripcion}","${zona}")'>
 
 <h3>${nombre}</h3>
-<p><strong>📍</strong> ${linkMapa}</p>
-<p>${desc.substring(0,80)}...</p>
 
-<div style="display:flex; gap:10px;">
+<p><strong>📍</strong> ${zonaHTML}</p>
 
-<a href="#" onclick="trackW('${nombre}','${tel}')" class="btn btn-w">WhatsApp</a>
+<p>${descripcion.substring(0,80)}...</p>
 
-<button onclick='openModal("${nombre}","${desc}","${zona}")' class="btn btn-v">Ver más</button>
+<div style="display:flex; gap:10px; margin-top:10px;">
+
+<a href="#" onclick="trackWhatsApp('${nombre}','${telefono}')" class="btn btn-w">
+WhatsApp
+</a>
+
+<button onclick='abrirModal("${nombre}","${descripcion}","${zona}")' class="btn btn-v">
+Ver más
+</button>
 
 </div>
 
 </div>
 `;
 
-cont.innerHTML += card;
+contenedor.innerHTML += card;
 
 });
 
 }
 
+// 🔍 BUSCADOR
 function buscar(){
-const t = document.getElementById("buscador").value.toLowerCase();
+const texto = document.getElementById("buscador").value.toLowerCase();
 
-const f = dataGlobal.filter(n=>{
+const filtrados = dataGlobal.filter(n => {
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});
-return (k["Nombre de tu negocio"]||"").toLowerCase().includes(t);
+return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
 });
 
-render(f);
+renderizar(filtrados);
 }
 
-function openModal(n,d,z){
+// 📲 MODAL + TRACK
+function abrirModal(nombre,desc,zona){
 
-document.getElementById("modal").style.display="flex";
+document.getElementById("modal").style.display = "flex";
 
 fetch(ANALYTICS,{
 method:"POST",
-body:JSON.stringify({tipo:"vista",negocio:n})
+body:JSON.stringify({tipo:"vista",negocio:nombre})
 });
 
-document.getElementById("m_nombre").innerText=n;
-document.getElementById("m_desc").innerText=d;
-document.getElementById("m_zona").innerText=z;
+document.getElementById("m_nombre").innerText = nombre;
+document.getElementById("m_desc").innerText = desc;
+document.getElementById("m_zona").innerText = zona;
 
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display="none";
+document.getElementById("modal").style.display = "none";
 }
 
-function trackW(n,t){
+// 📲 WHATSAPP TRACK
+function trackWhatsApp(nombre,telefono){
 
 fetch(ANALYTICS,{
 method:"POST",
-body:JSON.stringify({tipo:"whatsapp",negocio:n})
+body:JSON.stringify({tipo:"whatsapp",negocio:nombre})
 });
 
-window.open("https://wa.me/"+t,"_blank");
+window.open("https://wa.me/" + telefono, "_blank");
 
 }
 
