@@ -60,7 +60,6 @@ body{
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  cursor:pointer;
   transition:0.2s;
 }
 
@@ -73,11 +72,38 @@ body{
   height:180px;
   object-fit:cover;
   border-radius:8px;
+  cursor:pointer;
+}
+
+.card h3{
+  margin:10px 0 5px;
 }
 
 .card p{
   font-size:14px;
   color:#555;
+}
+
+/* BOTONES */
+.btn{
+  text-align:center;
+  padding:10px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:bold;
+}
+
+.btn-whatsapp{
+  background:#4CAF50;
+  color:white;
+}
+
+.btn-ver{
+  background:#2f4ea2;
+  color:white;
+  border:none;
+  cursor:pointer;
 }
 
 /* MODAL */
@@ -144,7 +170,7 @@ footer{
     <button onclick="filtrar('Legal')">Legal</button>
   </div>
 
-  <!-- 🔥 BUSCADOR -->
+  <!-- BUSCADOR -->
   <input 
     type="text" 
     id="buscador" 
@@ -184,10 +210,8 @@ let negociosData = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
-
-negociosData = data;
-renderizar(data);
-
+  negociosData = data;
+  renderizar(data);
 });
 
 function renderizar(data){
@@ -210,6 +234,7 @@ const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
 const zona = keys["¿En qué zona resides?"] || "";
 const email = keys["Correo del negocio"] || "";
 const categoria = keys["Categoria"] || "Otros";
+const ubicacionLink = keys["Ubicacion"] || "";
 
 let img = keys["Imagen_final"] || "";
 
@@ -228,14 +253,41 @@ if(!img){
 const img2 = keys["Imagen2"] || img;
 const img3 = keys["Imagen3"] || img;
 
+// 📍 Ubicación clickeable
+const zonaHTML = ubicacionLink
+  ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; text-decoration:none;">${zona}</a>`
+  : zona;
+
+// 📲 WhatsApp
+const whatsappLink = telefono 
+  ? `https://wa.me/${telefono}`
+  : "#";
+
 const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
 const card = `
-<div class="card" data-cat="${categoria}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
-  <img src="${img}">
+<div class="card">
+
+  <img src="${img}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+
   <h3>${nombre}</h3>
-  <p><strong>📍 ${zona}</strong></p>
+
+  <p><strong>📍</strong> ${zonaHTML}</p>
+
   <p>${descripcion.substring(0,80)}...</p>
+
+  <div style="margin-top:10px; display:flex; gap:10px;">
+
+    <a href="${whatsappLink}" target="_blank" class="btn btn-whatsapp">
+      WhatsApp
+    </a>
+
+    <button onclick='abrirModal(${JSON.stringify(dataModal)})' class="btn btn-ver">
+      Ver más
+    </button>
+
+  </div>
+
 </div>
 `;
 
