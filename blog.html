@@ -5,181 +5,40 @@
 <title>Blog - NeXsv</title>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
-}
-
-/* HEADER */
-header{
- <script src="components/header.js"></script>
-}
-
-nav a{
-  color:white;
-  margin-left:20px;
-  text-decoration:none;
-}
-
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
-}
-
-/* CONTENIDO */
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:40px 20px;
-}
-
-h1{
-  text-align:center;
-  margin-bottom:10px;
-}
-
-.sub{
-  text-align:center;
-  color:#666;
-  margin-bottom:40px;
-}
-
-/* BLOG GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:20px;
-}
+body{font-family:Arial;background:#f5f7fb;margin:0;}
 
 .post{
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
-  transition:0.2s;
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+cursor:pointer;
 }
 
-.post:hover{
-  transform:translateY(-5px);
-}
+.contenido{display:none;}
 
-.post h3{
-  margin-top:0;
-}
-
-.post p{
-  color:#555;
-}
-
-/* CTA */
-.cta{
-  background:#3f5b8a;
-  color:white;
-  padding:30px;
-  border-radius:12px;
-  margin-top:40px;
-  text-align:center;
-}
-
-.btn{
-  background:#4CAF50;
-  color:white;
-  padding:12px 20px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* FOOTER */
-footer{
-  background:#3f5b8a;
-  color:white;
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-}
+.post.activo .contenido{display:block;}
 </style>
 </head>
 
 <body>
 
-<!-- ✅ HEADER DINÁMICO -->
-<script src="components/header.js"></script>
+<div class="post" onclick="toggle(this)">
+<h3>¿Por qué no vendes?</h3>
 
-<div class="container">
-
-<h1>Aprende a vender mejor</h1>
-<p class="sub">Estrategias reales para conseguir clientes dentro de una comunidad confiable</p>
-
-<div class="grid">
-
-<!-- POST 1 -->
-<div class="post">
-<h3>¿Por qué no estás vendiendo lo que esperas?</h3>
-<p>
-Muchos negocios no fallan por su producto, sino porque no están frente a las personas correctas. 
-Si tu cliente ideal no te ve, simplemente no existes para él.
-</p>
-<p><strong>👉 En NeXsv ya estás frente a clientes listos para comprar.</strong></p>
-</div>
-
-<!-- POST 2 -->
-<div class="post">
-<h3>El error de depender solo de redes sociales</h3>
-<p>
-Publicar en redes no garantiza ventas. El alcance es limitado y dependes de algoritmos. 
-Además, compites con miles de negocios al mismo tiempo.
-</p>
-<p><strong>👉 Una comunidad cerrada convierte mucho mejor.</strong></p>
-</div>
-
-<!-- POST 3 -->
-<div class="post">
-<h3>Cómo vender sin pagar publicidad</h3>
-<p>
-Las recomendaciones y la confianza generan más ventas que cualquier anuncio. 
-Las comunidades privadas aceleran este proceso.
-</p>
-<p><strong>👉 NeXsv funciona bajo este principio.</strong></p>
-</div>
-
-<!-- POST 4 -->
-<div class="post">
-<h3>La importancia de la confianza en las ventas</h3>
-<p>
-Las personas compran a quien les genera seguridad. 
-Cuando perteneces a un mismo entorno, la confianza es automática.
-</p>
-<p><strong>👉 Eso es exactamente lo que construye NeXsv.</strong></p>
+<div class="contenido">
+<p>Tu problema no es el producto...</p>
+<img src="https://via.placeholder.com/400">
+<p>Es la visibilidad correcta...</p>
 </div>
 
 </div>
 
-<!-- CTA FINAL -->
-<div class="cta">
-
-<h2>¿Quieres más clientes sin complicarte?</h2>
-
-<p>
-Forma parte de una red donde las oportunidades ya existen.
-</p>
-
-<a class="btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-Unirme a NeXsv
-</a>
-
-</div>
-
-</div>
-
-<footer>
-© 2026 NeXsv | 
-<a href="terminos.html" style="color:white;">Términos y condiciones</a>
-</footer>
+<script>
+function toggle(el){
+el.classList.toggle("activo");
+}
+</script>
 
 </body>
 </html>
