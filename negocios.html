@@ -11,24 +11,6 @@ body{
   background:#f5f7fb;
 }
 
-/* HEADER */
-header{
- <script src="components/header.js"></script>
-}
-
-nav a{
-  color:white;
-  margin-left:20px;
-  text-decoration:none;
-}
-
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 18px;
-  border-radius:8px;
-  color:white;
-}
-
 /* MAIN */
 .main{
   padding:40px;
@@ -38,7 +20,7 @@ nav a{
 
 /* CATEGORIAS */
 .categorias{
-  margin-bottom:20px;
+  margin-bottom:10px;
 }
 
 .categorias button{
@@ -53,6 +35,16 @@ nav a{
 .categorias button:hover{
   background:#3f5b8a;
   color:white;
+}
+
+/* BUSCADOR */
+#buscador{
+  width:100%;
+  padding:12px;
+  margin:15px 0 25px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
 }
 
 /* GRID */
@@ -137,7 +129,7 @@ footer{
 
 <body>
 
-<!-- ✅ HEADER DINÁMICO -->
+<!-- HEADER -->
 <script src="components/header.js"></script>
 
 <section class="main">
@@ -151,6 +143,14 @@ footer{
     <button onclick="filtrar('Belleza')">Belleza</button>
     <button onclick="filtrar('Legal')">Legal</button>
   </div>
+
+  <!-- 🔥 BUSCADOR -->
+  <input 
+    type="text" 
+    id="buscador" 
+    placeholder="Buscar por negocio, categoría o zona..."
+    onkeyup="buscarNegocios()"
+  >
 
   <div class="grid" id="contenedor"></div>
 </section>
@@ -258,6 +258,35 @@ const filtrados = negociosData.filter(n => {
 });
 
 renderizar(filtrados);
+}
+
+function buscarNegocios(){
+
+const texto = document.getElementById("buscador").value.toLowerCase();
+
+const filtrados = negociosData.filter(n => {
+
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
+
+const nombre = (keys["Nombre de tu negocio"] || "").toLowerCase();
+const descripcion = (keys["Descripcion_final"] || "").toLowerCase();
+const categoria = (keys["Categoria"] || "").toLowerCase();
+const zona = (keys["¿En qué zona resides?"] || "").toLowerCase();
+
+return (
+  nombre.includes(texto) ||
+  descripcion.includes(texto) ||
+  categoria.includes(texto) ||
+  zona.includes(texto)
+);
+
+});
+
+renderizar(filtrados);
+
 }
 
 function abrirModal(data){
