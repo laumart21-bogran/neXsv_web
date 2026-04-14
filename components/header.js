@@ -23,17 +23,17 @@ document.write(`
        target="_blank"
        style="
         margin-left:25px;
-        background:#2e8c59;
+        background:#4CAF50;
         color:white;
         padding:12px 20px;
         border-radius:10px;
         text-decoration:none;
         font-weight:bold;
-        box-shadow:0 6px 15px rgba(46,140,89,0.4);
+        box-shadow:0 4px 10px rgba(76,175,80,0.3);
         transition:0.3s;
        "
-       onmouseover="this.style.background='#1f6d45'"
-       onmouseout="this.style.background='#2e8c59'"
+       onmouseover="this.style.background='#43a047'; this.style.transform='translateY(-2px)'"
+       onmouseout="this.style.background='#4CAF50'; this.style.transform='translateY(0)'"
     >
       Solicitar acceso →
     </a>
