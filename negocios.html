@@ -11,56 +11,63 @@ body{
   background:#f5f7fb;
 }
 
+/* HEADER */
+header{
+  background:linear-gradient(135deg,#2f4ea2,#4CAF50);
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header img{
+  height:80px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+}
+
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 18px;
+  border-radius:8px;
+  color:white;
+}
+
+/* MAIN */
 .main{
   padding:40px;
   max-width:1200px;
   margin:auto;
 }
 
-.categorias{
-  margin-bottom:10px;
-}
-
-.categorias button{
-  margin:5px;
-  padding:8px 15px;
-  border:1px solid #3f5b8a;
-  background:white;
-  border-radius:20px;
-  cursor:pointer;
-}
-
-.categorias button:hover{
-  background:#3f5b8a;
-  color:white;
-}
-
+/* BUSCADOR */
 #buscador{
   width:100%;
   padding:12px;
-  margin:15px 0 25px 0;
+  margin:20px 0;
   border-radius:10px;
   border:1px solid #ccc;
-  font-size:16px;
 }
 
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
+/* CARD */
 .card{
   background:white;
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:0.2s;
   position:relative;
-}
-
-.card:hover{
-  transform:translateY(-5px);
 }
 
 .card img{
@@ -71,36 +78,26 @@ body{
   cursor:pointer;
 }
 
-.card h3{
-  margin:10px 0 5px;
-}
-
-.card p{
-  font-size:14px;
-  color:#555;
-}
-
+/* BOTONES */
 .btn{
+  flex:1;
   text-align:center;
   padding:10px;
   border-radius:8px;
   text-decoration:none;
-  font-size:14px;
-  font-weight:bold;
+  color:white;
 }
 
-.btn-whatsapp{
+.btn-w{
   background:#4CAF50;
-  color:white;
 }
 
-.btn-ver{
+.btn-v{
   background:#2f4ea2;
-  color:white;
   border:none;
-  cursor:pointer;
 }
 
+/* MODAL */
 #modal{
   display:none;
   position:fixed;
@@ -121,22 +118,8 @@ body{
   max-width:500px;
 }
 
-.carousel{
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  margin-top:10px;
-}
-
-.carousel img{
-  min-width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:8px;
-}
-
 footer{
-  background:#3f5b8a;
+  background:#2f4ea2;
   color:white;
   text-align:center;
   padding:20px;
@@ -147,216 +130,151 @@ footer{
 
 <body>
 
-<script src="components/header.js"></script>
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+    target="_blank">Únete</a>
+  </nav>
+</header>
 
 <section class="main">
-  <h2>Negocios disponibles</h2>
 
-  <div class="categorias">
-    <button onclick="filtrar('Todos')">Todos</button>
-    <button onclick="filtrar('Servicios')">Servicios</button>
-    <button onclick="filtrar('Comida')">Comida</button>
-    <button onclick="filtrar('Belleza')">Belleza</button>
-    <button onclick="filtrar('Legal')">Legal</button>
-  </div>
+<h2>Negocios disponibles</h2>
 
-  <input 
-    type="text" 
-    id="buscador" 
-    placeholder="Buscar por negocio, categoría o zona..."
-    onkeyup="buscarNegocios()"
-  >
+<input type="text" id="buscador" placeholder="Buscar..." onkeyup="buscar()">
 
-  <div class="grid" id="contenedor"></div>
+<div class="grid" id="contenedor"></div>
+
 </section>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
-    <p id="m_tel"></p>
-    <p id="m_mail"></p>
-    <div class="carousel" id="carousel"></div>
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
 
 <footer>
-© 2026 NeXsv | 
-<a href="terminos.html" style="color:white;">Términos y condiciones</a>
+© 2026 NeXsv
 </footer>
 
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
+const url = "TU_URL_GOOGLE_SCRIPT";
+const ANALYTICS = "TU_URL_ANALYTICS";
 
-let negociosData = [];
+let dataGlobal = [];
 
 fetch(url)
-.then(res => res.json())
-.then(data => {
-  negociosData = data;
-  renderizar(data);
+.then(res=>res.json())
+.then(data=>{
+  dataGlobal = data;
+  render(data);
 });
 
-function renderizar(data){
+function render(data){
 
-const contenedor = document.getElementById("contenedor");
-contenedor.innerHTML = "";
+const cont = document.getElementById("contenedor");
+cont.innerHTML = "";
 
-// ⭐ ordenar destacados
-data.sort((a,b)=>{
-  const aDest = (a["Destacado"] || "").toLowerCase() === "si";
-  const bDest = (b["Destacado"] || "").toLowerCase() === "si";
-  return bDest - aDest;
-});
+data.sort((a,b)=> (b["Destacado"]==="si") - (a["Destacado"]==="si"));
 
-data.forEach(n => {
+data.forEach(n=>{
 
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+if((k["Publicado"]||"").toLowerCase()!=="si") return;
 
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "";
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
-const email = keys["Correo del negocio"] || "";
-const ubicacionLink = keys["Ubicación del Negocio (Link de Google Maps)"] || "";
+const nombre = k["Nombre de tu negocio"];
+const desc = k["Descripcion_final"]||"";
+const tel = (k["WhatsApp del negocio"]||"").replace("+","");
+const zona = k["¿En qué zona resides?"]||"";
 
-const esDestacado = (keys["Destacado"] || "").toLowerCase() === "si";
-const esNuevo = (keys["Nuevo"] || "").toLowerCase() === "si";
+const ubicacion =
+k["Ubicación del Negocio (Link de Google Maps)"]||
+k["Ubicacion"]||"";
 
-let img = keys["Imagen_final"] || "";
-
-if(img.includes("drive.google.com")){
-  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
-  if(match){
-    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
-}
-
-if(!img){
-  img = "https://via.placeholder.com/300x150";
-}
-
-const img2 = keys["Imagen2"] || img;
-const img3 = keys["Imagen3"] || img;
-
-const zonaHTML = ubicacionLink
-  ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; text-decoration:none;">${zona}</a>`
-  : zona;
-
-const whatsappLink = telefono 
-  ? `https://wa.me/${telefono}`
-  : "#";
-
-const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
-
-const badgeDestacado = esDestacado 
-  ? `<span style="position:absolute; top:10px; left:10px; background:#e6b84a; color:white; padding:5px 10px; border-radius:20px; font-size:12px;">⭐ Destacado</span>`
-  : "";
-
-const badgeNuevo = esNuevo 
-  ? `<span style="position:absolute; top:10px; right:10px; background:#4CAF50; color:white; padding:5px 10px; border-radius:20px; font-size:12px;">Nuevo</span>`
-  : "";
+const linkMapa = ubicacion
+? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2;">${zona}</a>`
+: zona;
 
 const card = `
-<div class="card" style="${esDestacado ? 'border:2px solid #e6b84a;' : ''}">
+<div class="card">
 
-  ${badgeDestacado}
-  ${badgeNuevo}
+<img src="${k["Imagen_final"]}" onclick='openModal("${nombre}","${desc}","${zona}")'>
 
-  <img src="${img}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+<h3>${nombre}</h3>
+<p><strong>📍</strong> ${linkMapa}</p>
+<p>${desc.substring(0,80)}...</p>
 
-  <h3>${nombre}</h3>
+<div style="display:flex; gap:10px;">
 
-  <p><strong>📍</strong> ${zonaHTML}</p>
+<a href="#" onclick="trackW('${nombre}','${tel}')" class="btn btn-w">WhatsApp</a>
 
-  <p>${descripcion.substring(0,80)}...</p>
+<button onclick='openModal("${nombre}","${desc}","${zona}")' class="btn btn-v">Ver más</button>
 
-  <div style="margin-top:10px; display:flex; gap:10px;">
-
-    <a href="${whatsappLink}" target="_blank" class="btn btn-whatsapp">
-      WhatsApp
-    </a>
-
-    <button onclick='abrirModal(${JSON.stringify(dataModal)})' class="btn btn-ver">
-      Ver más
-    </button>
-
-  </div>
+</div>
 
 </div>
 `;
 
-contenedor.innerHTML += card;
+cont.innerHTML += card;
 
 });
 
 }
 
-function filtrar(cat){
-if(cat === "Todos"){
-  renderizar(negociosData);
-  return;
-}
+function buscar(){
+const t = document.getElementById("buscador").value.toLowerCase();
 
-const filtrados = negociosData.filter(n => {
-  const categoria = (n["Categoria"] || "").toLowerCase();
-  return categoria === cat.toLowerCase();
+const f = dataGlobal.filter(n=>{
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});
+return (k["Nombre de tu negocio"]||"").toLowerCase().includes(t);
 });
 
-renderizar(filtrados);
+render(f);
 }
 
-function buscarNegocios(){
-const texto = document.getElementById("buscador").value.toLowerCase();
+function openModal(n,d,z){
 
-const filtrados = negociosData.filter(n => {
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
+document.getElementById("modal").style.display="flex";
 
-const nombre = (keys["Nombre de tu negocio"] || "").toLowerCase();
-const descripcion = (keys["Descripcion_final"] || "").toLowerCase();
-const categoria = (keys["Categoria"] || "").toLowerCase();
-const zona = (keys["¿En qué zona resides?"] || "").toLowerCase();
-
-return (
-  nombre.includes(texto) ||
-  descripcion.includes(texto) ||
-  categoria.includes(texto) ||
-  zona.includes(texto)
-);
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({tipo:"vista",negocio:n})
 });
 
-renderizar(filtrados);
-}
+document.getElementById("m_nombre").innerText=n;
+document.getElementById("m_desc").innerText=d;
+document.getElementById("m_zona").innerText=z;
 
-function abrirModal(data){
-document.getElementById("modal").style.display = "flex";
-document.getElementById("m_nombre").innerText = data.nombre;
-document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = "📍 " + data.zona;
-document.getElementById("m_tel").innerText = "📞 " + data.telefono;
-document.getElementById("m_mail").innerText = "📧 " + data.email;
-
-let images = [data.img, data.img2, data.img3];
-images = [...new Set(images)];
-
-document.getElementById("carousel").innerHTML =
-images.map(i => `<img src="${i}">`).join("");
 }
 
 function cerrarModal(){
-document.getElementById("modal").style.display = "none";
+document.getElementById("modal").style.display="none";
+}
+
+function trackW(n,t){
+
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({tipo:"whatsapp",negocio:n})
+});
+
+window.open("https://wa.me/"+t,"_blank");
+
 }
 
 </script>
