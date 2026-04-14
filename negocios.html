@@ -11,14 +11,12 @@ body{
   background:#f5f7fb;
 }
 
-/* MAIN */
 .main{
   padding:40px;
   max-width:1200px;
   margin:auto;
 }
 
-/* CATEGORIAS */
 .categorias{
   margin-bottom:10px;
 }
@@ -37,7 +35,6 @@ body{
   color:white;
 }
 
-/* BUSCADOR */
 #buscador{
   width:100%;
   padding:12px;
@@ -47,20 +44,19 @@ body{
   font-size:16px;
 }
 
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
-/* TARJETAS */
 .card{
   background:white;
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   transition:0.2s;
+  position:relative;
 }
 
 .card:hover{
@@ -84,7 +80,6 @@ body{
   color:#555;
 }
 
-/* BOTONES */
 .btn{
   text-align:center;
   padding:10px;
@@ -106,7 +101,6 @@ body{
   cursor:pointer;
 }
 
-/* MODAL */
 #modal{
   display:none;
   position:fixed;
@@ -127,7 +121,6 @@ body{
   max-width:500px;
 }
 
-/* CARRUSEL */
 .carousel{
   display:flex;
   overflow-x:auto;
@@ -142,7 +135,6 @@ body{
   border-radius:8px;
 }
 
-/* FOOTER */
 footer{
   background:#3f5b8a;
   color:white;
@@ -155,13 +147,11 @@ footer{
 
 <body>
 
-<!-- HEADER -->
 <script src="components/header.js"></script>
 
 <section class="main">
   <h2>Negocios disponibles</h2>
 
-  <!-- CATEGORIAS -->
   <div class="categorias">
     <button onclick="filtrar('Todos')">Todos</button>
     <button onclick="filtrar('Servicios')">Servicios</button>
@@ -170,7 +160,6 @@ footer{
     <button onclick="filtrar('Legal')">Legal</button>
   </div>
 
-  <!-- BUSCADOR -->
   <input 
     type="text" 
     id="buscador" 
@@ -181,7 +170,6 @@ footer{
   <div class="grid" id="contenedor"></div>
 </section>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
@@ -189,9 +177,7 @@ footer{
     <p id="m_zona"></p>
     <p id="m_tel"></p>
     <p id="m_mail"></p>
-
     <div class="carousel" id="carousel"></div>
-
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
@@ -219,6 +205,13 @@ function renderizar(data){
 const contenedor = document.getElementById("contenedor");
 contenedor.innerHTML = "";
 
+// ⭐ ordenar destacados
+data.sort((a,b)=>{
+  const aDest = (a["Destacado"] || "").toLowerCase() === "si";
+  const bDest = (b["Destacado"] || "").toLowerCase() === "si";
+  return bDest - aDest;
+});
+
 data.forEach(n => {
 
 const keys = Object.keys(n).reduce((acc, key) => {
@@ -233,8 +226,10 @@ const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué serv
 const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
 const zona = keys["¿En qué zona resides?"] || "";
 const email = keys["Correo del negocio"] || "";
-const categoria = keys["Categoria"] || "Otros";
-const ubicacionLink = keys["Ubicacion"] || "";
+const ubicacionLink = keys["Ubicación del Negocio (Link de Google Maps)"] || "";
+
+const esDestacado = (keys["Destacado"] || "").toLowerCase() === "si";
+const esNuevo = (keys["Nuevo"] || "").toLowerCase() === "si";
 
 let img = keys["Imagen_final"] || "";
 
@@ -253,20 +248,29 @@ if(!img){
 const img2 = keys["Imagen2"] || img;
 const img3 = keys["Imagen3"] || img;
 
-// 📍 Ubicación clickeable
 const zonaHTML = ubicacionLink
   ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; text-decoration:none;">${zona}</a>`
   : zona;
 
-// 📲 WhatsApp
 const whatsappLink = telefono 
   ? `https://wa.me/${telefono}`
   : "#";
 
 const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
+const badgeDestacado = esDestacado 
+  ? `<span style="position:absolute; top:10px; left:10px; background:#e6b84a; color:white; padding:5px 10px; border-radius:20px; font-size:12px;">⭐ Destacado</span>`
+  : "";
+
+const badgeNuevo = esNuevo 
+  ? `<span style="position:absolute; top:10px; right:10px; background:#4CAF50; color:white; padding:5px 10px; border-radius:20px; font-size:12px;">Nuevo</span>`
+  : "";
+
 const card = `
-<div class="card">
+<div class="card" style="${esDestacado ? 'border:2px solid #e6b84a;' : ''}">
+
+  ${badgeDestacado}
+  ${badgeNuevo}
 
   <img src="${img}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
 
@@ -298,7 +302,6 @@ contenedor.innerHTML += card;
 }
 
 function filtrar(cat){
-
 if(cat === "Todos"){
   renderizar(negociosData);
   return;
@@ -313,11 +316,9 @@ renderizar(filtrados);
 }
 
 function buscarNegocios(){
-
 const texto = document.getElementById("buscador").value.toLowerCase();
 
 const filtrados = negociosData.filter(n => {
-
 const keys = Object.keys(n).reduce((acc, key) => {
   acc[key.trim()] = n[key];
   return acc;
@@ -334,16 +335,13 @@ return (
   categoria.includes(texto) ||
   zona.includes(texto)
 );
-
 });
 
 renderizar(filtrados);
-
 }
 
 function abrirModal(data){
 document.getElementById("modal").style.display = "flex";
-
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
 document.getElementById("m_zona").innerText = "📍 " + data.zona;
