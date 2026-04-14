@@ -5,31 +5,89 @@
 <title>Blog - NeXsv</title>
 
 <style>
-body{font-family:Arial;background:#f5f7fb;margin:0;}
-
-.post{
-background:white;
-margin:20px;
-padding:20px;
-border-radius:10px;
-cursor:pointer;
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
 }
 
-.contenido{display:none;}
+header{
+  background:white;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
 
-.post.activo .contenido{display:block;}
+header img{
+  height:70px;
+}
+
+nav a{
+  color:#2f4ea2;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
+}
+
+.post{
+  background:white;
+  margin:20px;
+  padding:20px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.contenido{
+  display:none;
+}
+
+.post.activo .contenido{
+  display:block;
+}
+
+footer{
+  background:#2f4ea2;
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 </style>
 </head>
 
 <body>
 
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+    target="_blank">
+    Solicitar acceso
+    </a>
+  </nav>
+</header>
+
 <div class="post" onclick="toggle(this)">
 <h3>¿Por qué no vendes?</h3>
 
 <div class="contenido">
-<p>Tu problema no es el producto...</p>
-<img src="https://via.placeholder.com/400">
-<p>Es la visibilidad correcta...</p>
+<p>Tu problema no es el producto, es la visibilidad.</p>
+<p>Cuando estás frente a la audiencia correcta, las ventas suceden.</p>
 </div>
 
 </div>
@@ -39,6 +97,10 @@ function toggle(el){
 el.classList.toggle("activo");
 }
 </script>
+
+<footer>
+© 2026 NeXsv
+</footer>
 
 </body>
 </html>
