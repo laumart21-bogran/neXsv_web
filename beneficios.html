@@ -13,7 +13,16 @@ body{
 
 /* HEADER */
 header{
- <script src="components/header.js"></script>
+  background:linear-gradient(135deg,#2f4ea2,#4CAF50);
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header img{
+  height:80px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
 }
 
 nav a{
@@ -38,7 +47,6 @@ nav a{
 
 h1{
   text-align:center;
-  margin-bottom:10px;
 }
 
 .sub{
@@ -47,7 +55,7 @@ h1{
   margin-bottom:40px;
 }
 
-/* BENEFICIOS */
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -58,27 +66,12 @@ h1{
   background:white;
   padding:25px;
   border-radius:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:0.2s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
 }
 
 .card img{
-  width:60px;
+  width:80px;
   margin-bottom:15px;
-}
-
-/* BLOQUE DESTACADO */
-.highlight{
-  background:#3f5b8a;
-  color:white;
-  padding:30px;
-  border-radius:12px;
-  margin-top:40px;
-  text-align:center;
+  filter: invert(23%) sepia(32%) saturate(1400%) hue-rotate(190deg);
 }
 
 /* CTA */
@@ -97,7 +90,7 @@ h1{
 
 /* FOOTER */
 footer{
-  background:#3f5b8a;
+  background:#2f4ea2;
   color:white;
   text-align:center;
   padding:20px;
@@ -108,89 +101,73 @@ footer{
 
 <body>
 
-<!-- ✅ HEADER DINÁMICO -->
-<script src="components/header.js"></script>
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+       target="_blank">
+       Únete
+    </a>
+  </nav>
+</header>
 
 <div class="container">
 
-<h1>¿Por qué formar parte de NeXsv?</h1>
-<p class="sub">No es solo un marketplace. Es una red de oportunidades reales.</p>
+<h1>¿Por qué usar NeXsv?</h1>
+<p class="sub">Una red privada diseñada para generar oportunidades reales.</p>
 
 <div class="grid">
 
-<!-- BENEFICIO 1 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-<h3>Acceso a clientes con poder adquisitivo</h3>
-<p>
-Conéctate con familias que ya están dispuestas a comprar. 
-Aquí no empiezas desde cero, entras a un mercado activo.
-</p>
+<h3>Clientes reales</h3>
+<p>Conecta con personas listas para comprar.</p>
 </div>
 
-<!-- BENEFICIO 2 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png">
-<h3>Comunidad privada y confiable</h3>
-<p>
-Todos los miembros pertenecen a un entorno validado. 
-Esto genera confianza inmediata y facilita las ventas.
-</p>
+<h3>Comunidad confiable</h3>
+<p>Entorno validado que genera confianza.</p>
 </div>
 
-<!-- BENEFICIO 3 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
-<h3>Más ventas sin invertir en publicidad</h3>
-<p>
-Olvídate de pagar anuncios sin resultados. 
-Aquí los clientes llegan por conexión y recomendación.
-</p>
+<h3>Más ventas</h3>
+<p>Sin depender de publicidad.</p>
 </div>
 
-<!-- BENEFICIO 4 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/597/597177.png">
-<h3>Contacto directo y rápido</h3>
-<p>
-Habla directamente con tus clientes por WhatsApp. 
-Sin intermediarios, sin procesos complicados.
-</p>
+<h3>Contacto directo</h3>
+<p>Sin intermediarios.</p>
 </div>
 
-<!-- BENEFICIO 5 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
-<h3>Mayor visibilidad para tu negocio</h3>
-<p>
-Tu marca estará frente a una audiencia relevante, 
-lo que aumenta tus probabilidades de venta.
-</p>
+<h3>Mayor visibilidad</h3>
+<p>Llega a una audiencia relevante.</p>
 </div>
 
-<!-- BENEFICIO 6 -->
 <div class="card">
 <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png">
-<h3>Posicionamiento dentro de la comunidad</h3>
-<p>
-Construye reputación y conviértete en una opción recomendada 
-dentro de tu red.
-</p>
+<h3>Posicionamiento</h3>
+<p>Construye reputación dentro de la comunidad.</p>
 </div>
 
 </div>
 
-<!-- BLOQUE DE IMPACTO -->
-<div class="highlight">
-<h2>Ya hay negocios generando ingresos dentro de NeXsv</h2>
-<p>
-No estás entrando a una idea, estás entrando a un ecosistema que ya está en movimiento.
-</p>
-</div>
-
-<!-- CTA -->
 <div class="cta">
-<a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
 Quiero formar parte
 </a>
 </div>
@@ -198,8 +175,7 @@ Quiero formar parte
 </div>
 
 <footer>
-© 2026 NeXsv | 
-<a href="terminos.html" style="color:white;">Términos y condiciones</a>
+© 2026 NeXsv
 </footer>
 
 </body>
