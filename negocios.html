@@ -11,7 +11,6 @@ body{
   background:#f5f7fb;
 }
 
-/* HEADER */
 header{
   background:white;
   padding:12px 40px;
@@ -21,9 +20,7 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:#2f4ea2;
@@ -38,14 +35,12 @@ nav a{
   color:white;
 }
 
-/* MAIN */
 .main{
   padding:40px;
   max-width:1200px;
   margin:auto;
 }
 
-/* BUSCADOR */
 #buscador{
   width:100%;
   padding:12px;
@@ -54,24 +49,17 @@ nav a{
   border:1px solid #ccc;
 }
 
-/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
-/* CARD */
 .card{
   background:white;
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:0.2s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
 }
 
 .card img{
@@ -82,12 +70,6 @@ nav a{
   cursor:pointer;
 }
 
-.card p{
-  font-size:14px;
-  color:#555;
-}
-
-/* BOTONES */
 .btn{
   flex:1;
   text-align:center;
@@ -97,16 +79,9 @@ nav a{
   color:white;
 }
 
-.btn-w{
-  background:#4CAF50;
-}
+.btn-w{ background:#4CAF50; }
+.btn-v{ background:#2f4ea2; }
 
-.btn-v{
-  background:#2f4ea2;
-  border:none;
-}
-
-/* MODAL */
 #modal{
   display:none;
   position:fixed;
@@ -127,7 +102,6 @@ nav a{
   max-width:500px;
 }
 
-/* FOOTER */
 footer{
   background:#2f4ea2;
   color:white;
@@ -142,17 +116,13 @@ footer{
 
 <header>
   <img src="logo.png">
-
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
     <a href="beneficios.html">Beneficios</a>
     <a href="negocios.html">Negocios</a>
     <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
+    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
     Solicitar acceso
     </a>
   </nav>
@@ -168,7 +138,6 @@ footer{
 
 </section>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
@@ -185,18 +154,16 @@ footer{
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbw2SdQtBKD9FUmsUH-dG5X0DkXEQAx7zwt8SYnnF91F7MG_IVEgkMfps8J6DDr5AlASqQ/exec";
-const ANALYTICS = url;
 
 let dataGlobal = [];
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  console.log("DATA OK:", data);
+  console.log("DATA:", data);
   dataGlobal = data;
   renderizar(data);
-})
-.catch(err => console.error("ERROR:", err));
+});
 
 function limpiarKeys(obj){
   let nuevo = {};
@@ -215,9 +182,10 @@ data.forEach(n => {
 
 const keys = limpiarKeys(n);
 
-// ✅ PUBLICADO
-const publicado = (keys["publicado"] || "").toLowerCase();
-if(publicado !== "si") return;
+// ✅ NUEVO FILTRO CORRECTO
+const publicado = (keys["¿te gustaría que tu negocio sea publicado dentro de la red?"] || "").toLowerCase();
+
+if(publicado !== "sí" && publicado !== "si") return;
 
 // DATOS
 const nombre = keys["nombre de tu negocio"] || "Negocio";
@@ -233,21 +201,12 @@ const zonaHTML = ubicacionLink
   : zona;
 
 // 🖼 IMAGEN
-let img = keys["imagen_final"] || "";
+let img = keys["imagen_final"] || "https://via.placeholder.com/300x150";
 
-if(!img){
-  img = "https://via.placeholder.com/300x150";
-}
-
-// 🧩 CARD SEGURA
+// CARD
 const card = `
-<div class="card"
-data-nombre="${encodeURIComponent(nombre)}"
-data-desc="${encodeURIComponent(descripcion)}"
-data-zona="${encodeURIComponent(zona)}"
-data-tel="${telefono}">
-
-<img src="${img}" onclick="abrirModalDesdeCard(this)">
+<div class="card">
+<img src="${img}" onclick="abrirModal('${nombre}','${descripcion}','${zona}')">
 
 <h3>${nombre}</h3>
 
@@ -257,16 +216,15 @@ data-tel="${telefono}">
 
 <div style="display:flex; gap:10px; margin-top:10px;">
 
-<a href="#" onclick="trackWhatsApp('${telefono}')" class="btn btn-w">
+<a href="https://wa.me/${telefono}" target="_blank" class="btn btn-w">
 WhatsApp
 </a>
 
-<button onclick="abrirModalDesdeCard(this)" class="btn btn-v">
+<button onclick="abrirModal('${nombre}','${descripcion}','${zona}')" class="btn btn-v">
 Ver más
 </button>
 
 </div>
-
 </div>
 `;
 
@@ -276,7 +234,6 @@ contenedor.innerHTML += card;
 
 }
 
-// 🔍 BUSCADOR
 function buscar(){
 const texto = document.getElementById("buscador").value.toLowerCase();
 
@@ -288,37 +245,15 @@ return (k["nombre de tu negocio"] || "").toLowerCase().includes(texto);
 renderizar(filtrados);
 }
 
-// 🔥 MODAL SEGURO
-function abrirModalDesdeCard(el){
-
-const card = el.closest(".card");
-
-const nombre = decodeURIComponent(card.dataset.nombre);
-const desc = decodeURIComponent(card.dataset.desc);
-const zona = decodeURIComponent(card.dataset.zona);
-
+function abrirModal(nombre,desc,zona){
 document.getElementById("modal").style.display = "flex";
-
-try{
-fetch(ANALYTICS,{
-method:"POST",
-body:JSON.stringify({tipo:"vista",negocio:nombre})
-});
-}catch(e){}
-
 document.getElementById("m_nombre").innerText = nombre;
 document.getElementById("m_desc").innerText = desc;
 document.getElementById("m_zona").innerText = zona;
-
 }
 
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
-}
-
-// 📲 WHATSAPP
-function trackWhatsApp(telefono){
-window.open("https://wa.me/" + telefono, "_blank");
 }
 
 </script>
