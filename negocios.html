@@ -103,6 +103,17 @@ nav a{
   color:#555;
 }
 
+/* SOCIAL PROOF */
+.social{
+  font-size:13px;
+  margin-top:8px;
+}
+
+.popular{
+  color:#e67e22;
+  font-weight:bold;
+}
+
 /* BOTONES */
 .botones{
   display:flex;
@@ -143,7 +154,6 @@ nav a{
   max-width:500px;
 }
 
-/* CAROUSEL */
 .carousel{
   display:flex;
   overflow-x:auto;
@@ -173,7 +183,6 @@ footer{
 
 <header>
   <img src="logo.png">
-
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
@@ -214,8 +223,12 @@ footer{
     <div class="carousel" id="carousel"></div>
 
     <h2 id="m_nombre"></h2>
+
     <p id="m_desc"></p>
+
     <p id="m_zona"></p>
+
+    <div id="m_social"></div>
 
     <button onclick="cerrarModal()">Cerrar</button>
 
@@ -238,6 +251,14 @@ fetch(url)
   dataGlobal = data;
   renderizar(data);
 });
+
+/* SIMULADOR DE DATA (luego será real) */
+function generarData(){
+return {
+  vistas: Math.floor(Math.random()*200)+20,
+  contactos: Math.floor(Math.random()*50)+5
+};
+}
 
 function convertirDrive(link){
 if(link.includes("drive.google.com")){
@@ -265,7 +286,9 @@ const nombre = k["Nombre de tu negocio"] || "Negocio";
 const descripcion = k["Descripcion_final"] || "";
 const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
 const zona = k["¿En qué zona resides?"] || "";
-const ubicacion = k["Ubicación del Negocio (Link de Google Maps)"] || "";
+
+/* DATA UX */
+const dataUX = generarData();
 
 /* IMAGENES */
 let img1 = convertirDrive(k["Imagen_final"] || "");
@@ -274,11 +297,7 @@ let img3 = convertirDrive(k["Imagen3"] || "");
 
 if(!img1) img1 = "https://via.placeholder.com/300x150";
 
-const images = [img1, img2, img3].filter(i => i);
-
-const zonaHTML = ubicacion
-? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
-: zona;
+const images = [img1,img2,img3].filter(i=>i);
 
 const card = `
 <div class="card">
@@ -287,9 +306,14 @@ const card = `
 
 <h3>${nombre}</h3>
 
-<p><strong>📍</strong> ${zonaHTML}</p>
+<p><strong>📍 ${zona}</strong></p>
 
 <p>${descripcion.substring(0,80)}...</p>
+
+<div class="social">
+💬 ${dataUX.contactos} personas ya contactaron <br>
+<span class="popular">🔥 Popular en la comunidad</span>
+</div>
 
 <div class="botones">
 
@@ -297,7 +321,7 @@ const card = `
 WhatsApp
 </a>
 
-<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images})})' class="btn btn-v">
+<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images,dataUX})})' class="btn btn-v">
 Ver más
 </button>
 
@@ -312,7 +336,6 @@ contenedor.innerHTML += card;
 
 }
 
-/* MODAL CON IMAGENES */
 function abrirModal(data){
 
 document.getElementById("modal").style.display = "flex";
@@ -324,13 +347,16 @@ document.getElementById("m_zona").innerText = "📍 " + data.zona;
 document.getElementById("carousel").innerHTML =
 data.images.map(i => `<img src="${i}">`).join("");
 
+document.getElementById("m_social").innerHTML =
+`👀 ${data.dataUX.vistas} personas lo han visto<br>
+💬 ${data.dataUX.contactos} ya lo contactaron`;
+
 }
 
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
-/* BUSCAR */
 function buscar(){
 const texto = document.getElementById("buscador").value.toLowerCase();
 
@@ -342,7 +368,6 @@ return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
 renderizar(filtrados);
 }
 
-/* FILTRO */
 function filtrar(cat){
 
 if(cat === "Todos"){
