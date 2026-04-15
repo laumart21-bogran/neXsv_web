@@ -192,13 +192,11 @@ let dataGlobal = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  console.log("DATA REAL:", data); // 🔍 DEBUG
+  console.log("DATA OK:", data);
   dataGlobal = data;
   renderizar(data);
 })
-.catch(err => {
-  console.error("ERROR FETCH:", err);
-});
+.catch(err => console.error("ERROR:", err));
 
 function limpiarKeys(obj){
   let nuevo = {};
@@ -217,37 +215,18 @@ data.forEach(n => {
 
 const keys = limpiarKeys(n);
 
-// 🔥 DETECTA PUBLICADO EN CUALQUIER FORMA
-const publicado = Object.values(keys)
-  .map(v => (v || "").toString().toLowerCase())
-  .includes("si");
+// ✅ PUBLICADO
+const publicado = (keys["publicado"] || "").toLowerCase();
+if(publicado !== "si") return;
 
-if(!publicado) return;
-
-// 🔥 CAMPOS FLEXIBLES
-const nombre =
-  keys["nombre de tu negocio"] ||
-  keys["nombre"] ||
-  "Negocio";
-
-const descripcion =
-  keys["descripcion_final"] ||
-  keys["descripción"] ||
-  keys["¿qué vendes o qué servicio ofreces?"] ||
-  "";
-
+// DATOS
+const nombre = keys["nombre de tu negocio"] || "Negocio";
+const descripcion = keys["descripcion_final"] || "";
 const telefono = (keys["whatsapp del negocio"] || "").replace("+","");
-
-const zona =
-  keys["¿en qué zona resides?"] ||
-  keys["zona"] ||
-  "";
+const zona = keys["¿en qué zona resides?"] || "";
 
 // 📍 UBICACIÓN
-const ubicacionLink =
-  keys["ubicación del negocio (link de google maps)"] ||
-  keys["ubicacion"] ||
-  "";
+const ubicacionLink = keys["ubicación del negocio (link de google maps)"] || "";
 
 const zonaHTML = ubicacionLink
   ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
@@ -256,23 +235,19 @@ const zonaHTML = ubicacionLink
 // 🖼 IMAGEN
 let img = keys["imagen_final"] || "";
 
-if(img && img.includes("drive.google.com")){
-  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
-  if(match){
-    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
-}
-
 if(!img){
   img = "https://via.placeholder.com/300x150";
 }
 
-// 🧩 CARD
+// 🧩 CARD SEGURA
 const card = `
-<div class="card">
+<div class="card"
+data-nombre="${encodeURIComponent(nombre)}"
+data-desc="${encodeURIComponent(descripcion)}"
+data-zona="${encodeURIComponent(zona)}"
+data-tel="${telefono}">
 
-<img src="${img}" onclick='abrirModal("${nombre}","${descripcion}","${zona}")'>
+<img src="${img}" onclick="abrirModalDesdeCard(this)">
 
 <h3>${nombre}</h3>
 
@@ -282,11 +257,11 @@ const card = `
 
 <div style="display:flex; gap:10px; margin-top:10px;">
 
-<a href="#" onclick="trackWhatsApp('${nombre}','${telefono}')" class="btn btn-w">
+<a href="#" onclick="trackWhatsApp('${telefono}')" class="btn btn-w">
 WhatsApp
 </a>
 
-<button onclick='abrirModal("${nombre}","${descripcion}","${zona}")' class="btn btn-v">
+<button onclick="abrirModalDesdeCard(this)" class="btn btn-v">
 Ver más
 </button>
 
@@ -313,8 +288,14 @@ return (k["nombre de tu negocio"] || "").toLowerCase().includes(texto);
 renderizar(filtrados);
 }
 
-// MODAL
-function abrirModal(nombre,desc,zona){
+// 🔥 MODAL SEGURO
+function abrirModalDesdeCard(el){
+
+const card = el.closest(".card");
+
+const nombre = decodeURIComponent(card.dataset.nombre);
+const desc = decodeURIComponent(card.dataset.desc);
+const zona = decodeURIComponent(card.dataset.zona);
 
 document.getElementById("modal").style.display = "flex";
 
@@ -335,18 +316,9 @@ function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
-// WHATSAPP
-function trackWhatsApp(nombre,telefono){
-
-try{
-fetch(ANALYTICS,{
-method:"POST",
-body:JSON.stringify({tipo:"whatsapp",negocio:nombre})
-});
-}catch(e){}
-
+// 📲 WHATSAPP
+function trackWhatsApp(telefono){
 window.open("https://wa.me/" + telefono, "_blank");
-
 }
 
 </script>
