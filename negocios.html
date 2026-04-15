@@ -185,17 +185,28 @@ footer{
 <script>
 
 const url = "https://script.google.com/macros/s/AKfycbw2SdQtBKD9FUmsUH-dG5X0DkXEQAx7zwt8SYnnF91F7MG_IVEgkMfps8J6DDr5AlASqQ/exec";
-const ANALYTICS = "https://script.google.com/macros/s/AKfycbw2SdQtBKD9FUmsUH-dG5X0DkXEQAx7zwt8SYnnF91F7MG_IVEgkMfps8J6DDr5AlASqQ/exec";
+const ANALYTICS = url;
 
 let dataGlobal = [];
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  console.log("DATA:", data); // DEBUG
+  console.log("DATA REAL:", data); // 🔍 DEBUG
   dataGlobal = data;
   renderizar(data);
+})
+.catch(err => {
+  console.error("ERROR FETCH:", err);
 });
+
+function limpiarKeys(obj){
+  let nuevo = {};
+  Object.keys(obj).forEach(k=>{
+    nuevo[k.trim().toLowerCase()] = obj[k];
+  });
+  return nuevo;
+}
 
 function renderizar(data){
 
@@ -204,45 +215,46 @@ contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
+const keys = limpiarKeys(n);
 
-// ✅ FILTRO INTELIGENTE
-const publicado = (keys["Publicado"] || "").toString().toLowerCase().trim();
-if(!(publicado === "si" || publicado === "sí" || publicado === "yes")) return;
+// 🔥 DETECTA PUBLICADO EN CUALQUIER FORMA
+const publicado = Object.values(keys)
+  .map(v => (v || "").toString().toLowerCase())
+  .includes("si");
 
-// ✅ CAMPOS FLEXIBLES
+if(!publicado) return;
+
+// 🔥 CAMPOS FLEXIBLES
 const nombre =
-  keys["Nombre de tu negocio"] ||
-  keys["Nombre"] ||
+  keys["nombre de tu negocio"] ||
+  keys["nombre"] ||
   "Negocio";
 
 const descripcion =
-  keys["Descripcion_final"] ||
-  keys["Descripción"] ||
-  keys["¿Qué vendes o qué servicio ofreces?"] ||
+  keys["descripcion_final"] ||
+  keys["descripción"] ||
+  keys["¿qué vendes o qué servicio ofreces?"] ||
   "";
 
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const telefono = (keys["whatsapp del negocio"] || "").replace("+","");
 
 const zona =
-  keys["¿En qué zona resides?"] ||
-  keys["Zona"] ||
+  keys["¿en qué zona resides?"] ||
+  keys["zona"] ||
   "";
 
 // 📍 UBICACIÓN
 const ubicacionLink =
-  keys["Ubicación del Negocio (Link de Google Maps)"] ||
-  keys["Ubicacion"] || "";
+  keys["ubicación del negocio (link de google maps)"] ||
+  keys["ubicacion"] ||
+  "";
 
 const zonaHTML = ubicacionLink
   ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
   : zona;
 
 // 🖼 IMAGEN
-let img = keys["Imagen_final"] || "";
+let img = keys["imagen_final"] || "";
 
 if(img && img.includes("drive.google.com")){
   let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -294,22 +306,24 @@ function buscar(){
 const texto = document.getElementById("buscador").value.toLowerCase();
 
 const filtrados = dataGlobal.filter(n => {
-const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});
-return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
+const k = limpiarKeys(n);
+return (k["nombre de tu negocio"] || "").toLowerCase().includes(texto);
 });
 
 renderizar(filtrados);
 }
 
-// 📲 MODAL + ANALÍTICA
+// MODAL
 function abrirModal(nombre,desc,zona){
 
 document.getElementById("modal").style.display = "flex";
 
+try{
 fetch(ANALYTICS,{
 method:"POST",
 body:JSON.stringify({tipo:"vista",negocio:nombre})
 });
+}catch(e){}
 
 document.getElementById("m_nombre").innerText = nombre;
 document.getElementById("m_desc").innerText = desc;
@@ -321,13 +335,15 @@ function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
-// 📲 WHATSAPP
+// WHATSAPP
 function trackWhatsApp(nombre,telefono){
 
+try{
 fetch(ANALYTICS,{
 method:"POST",
 body:JSON.stringify({tipo:"whatsapp",negocio:nombre})
 });
+}catch(e){}
 
 window.open("https://wa.me/" + telefono, "_blank");
 
