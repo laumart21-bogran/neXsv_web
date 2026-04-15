@@ -11,6 +11,7 @@ body{
   background:#f5f7fb;
 }
 
+/* HEADER NUEVO (BLANCO) */
 header{
   background:white;
   padding:12px 40px;
@@ -20,7 +21,9 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{ height:70px; }
+header img{
+  height:70px;
+}
 
 nav a{
   color:#2f4ea2;
@@ -30,36 +33,36 @@ nav a{
 
 .nav-btn{
   background:#4CAF50;
-  padding:10px 15px;
+  padding:10px 18px;
   border-radius:8px;
   color:white;
 }
 
+/* MAIN */
 .main{
   padding:40px;
   max-width:1200px;
   margin:auto;
 }
 
-#buscador{
-  width:100%;
-  padding:12px;
-  margin-bottom:20px;
-  border-radius:10px;
-  border:1px solid #ccc;
-}
-
+/* GRID */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:20px;
 }
 
+/* TARJETAS */
 .card{
   background:white;
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 .card img{
@@ -67,9 +70,14 @@ nav a{
   height:180px;
   object-fit:cover;
   border-radius:8px;
-  cursor:pointer;
 }
 
+.card p{
+  font-size:14px;
+  color:#555;
+}
+
+/* BOTONES */
 .btn{
   flex:1;
   text-align:center;
@@ -77,11 +85,20 @@ nav a{
   border-radius:8px;
   text-decoration:none;
   color:white;
+  font-size:14px;
 }
 
-.btn-w{ background:#4CAF50; }
-.btn-v{ background:#2f4ea2; }
+.btn-w{
+  background:#4CAF50;
+}
 
+.btn-v{
+  background:#2f4ea2;
+  border:none;
+  cursor:pointer;
+}
+
+/* MODAL */
 #modal{
   display:none;
   position:fixed;
@@ -102,6 +119,7 @@ nav a{
   max-width:500px;
 }
 
+/* FOOTER */
 footer{
   background:#2f4ea2;
   color:white;
@@ -116,33 +134,37 @@ footer{
 
 <header>
   <img src="logo.png">
+
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
     <a href="beneficios.html">Beneficios</a>
     <a href="negocios.html">Negocios</a>
     <a href="blog.html">Blog</a>
-    <a class="nav-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-    Solicitar acceso
+
+    <a class="nav-btn"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+       target="_blank">
+       Solicitar acceso
     </a>
   </nav>
 </header>
 
 <section class="main">
+  <h2>Negocios disponibles</h2>
 
-<h2>Negocios disponibles</h2>
-
-<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
-
-<div class="grid" id="contenedor"></div>
-
+  <div class="grid" id="contenedor"></div>
 </section>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
+    <p id="m_tel"></p>
+    <p id="m_mail"></p>
+
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
@@ -153,25 +175,18 @@ footer{
 
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbw2SdQtBKD9FUmsUH-dG5X0DkXEQAx7zwt8SYnnF91F7MG_IVEgkMfps8J6DDr5AlASqQ/exec";
+const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
-let dataGlobal = [];
+let negociosData = [];
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  console.log("DATA:", data);
-  dataGlobal = data;
-  renderizar(data);
-});
 
-function limpiarKeys(obj){
-  let nuevo = {};
-  Object.keys(obj).forEach(k=>{
-    nuevo[k.trim().toLowerCase()] = obj[k];
-  });
-  return nuevo;
-}
+negociosData = data;
+renderizar(data);
+
+});
 
 function renderizar(data){
 
@@ -180,33 +195,46 @@ contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = limpiarKeys(n);
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
 
-// ✅ NUEVO FILTRO CORRECTO
-const publicado = (keys["¿te gustaría que tu negocio sea publicado dentro de la red?"] || "").toLowerCase();
+if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
-if(publicado !== "sí" && publicado !== "si") return;
+const nombre = keys["Nombre de tu negocio"] || "Negocio";
+const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "";
+const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const zona = keys["¿En qué zona resides?"] || "";
+const email = keys["Correo del negocio"] || "";
 
-// DATOS
-const nombre = keys["nombre de tu negocio"] || "Negocio";
-const descripcion = keys["descripcion_final"] || "";
-const telefono = (keys["whatsapp del negocio"] || "").replace("+","");
-const zona = keys["¿en qué zona resides?"] || "";
+/* 📍 UBICACIÓN */
+const ubicacion = keys["Ubicación del Negocio (Link de Google Maps)"] || "";
 
-// 📍 UBICACIÓN
-const ubicacionLink = keys["ubicación del negocio (link de google maps)"] || "";
-
-const zonaHTML = ubicacionLink
-  ? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+const zonaHTML = ubicacion
+  ? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
   : zona;
 
-// 🖼 IMAGEN
-let img = keys["imagen_final"] || "https://via.placeholder.com/300x150";
+/* 🖼 IMAGEN */
+let img = keys["Imagen_final"] || "";
 
-// CARD
+if(img.includes("drive.google.com")){
+  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
+  if(match){
+    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+}
+
+if(!img){
+  img = "https://via.placeholder.com/300x150";
+}
+
+/* CARD MEJORADA */
 const card = `
 <div class="card">
-<img src="${img}" onclick="abrirModal('${nombre}','${descripcion}','${zona}')">
+
+<img src="${img}" onclick='abrirModal(${JSON.stringify({nombre,descripcion,telefono,zona,email})})'>
 
 <h3>${nombre}</h3>
 
@@ -220,11 +248,12 @@ const card = `
 WhatsApp
 </a>
 
-<button onclick="abrirModal('${nombre}','${descripcion}','${zona}')" class="btn btn-v">
+<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,telefono,zona,email})})' class="btn btn-v">
 Ver más
 </button>
 
 </div>
+
 </div>
 `;
 
@@ -234,22 +263,14 @@ contenedor.innerHTML += card;
 
 }
 
-function buscar(){
-const texto = document.getElementById("buscador").value.toLowerCase();
-
-const filtrados = dataGlobal.filter(n => {
-const k = limpiarKeys(n);
-return (k["nombre de tu negocio"] || "").toLowerCase().includes(texto);
-});
-
-renderizar(filtrados);
-}
-
-function abrirModal(nombre,desc,zona){
+function abrirModal(data){
 document.getElementById("modal").style.display = "flex";
-document.getElementById("m_nombre").innerText = nombre;
-document.getElementById("m_desc").innerText = desc;
-document.getElementById("m_zona").innerText = zona;
+
+document.getElementById("m_nombre").innerText = data.nombre;
+document.getElementById("m_desc").innerText = data.descripcion;
+document.getElementById("m_zona").innerText = "📍 " + data.zona;
+document.getElementById("m_tel").innerText = "📞 " + data.telefono;
+document.getElementById("m_mail").innerText = "📧 " + data.email;
 }
 
 function cerrarModal(){
