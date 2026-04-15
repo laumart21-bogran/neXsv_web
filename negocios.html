@@ -103,17 +103,6 @@ nav a{
   color:#555;
 }
 
-/* SOCIAL PROOF */
-.social{
-  font-size:13px;
-  margin-top:8px;
-}
-
-.popular{
-  color:#e67e22;
-  font-weight:bold;
-}
-
 /* BOTONES */
 .botones{
   display:flex;
@@ -223,12 +212,8 @@ footer{
     <div class="carousel" id="carousel"></div>
 
     <h2 id="m_nombre"></h2>
-
     <p id="m_desc"></p>
-
     <p id="m_zona"></p>
-
-    <div id="m_social"></div>
 
     <button onclick="cerrarModal()">Cerrar</button>
 
@@ -243,6 +228,9 @@ footer{
 
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
+/* 🔥 MISMO LINK PARA ANALYTICS */
+const ANALYTICS = url;
+
 let dataGlobal = [];
 
 fetch(url)
@@ -252,16 +240,8 @@ fetch(url)
   renderizar(data);
 });
 
-/* SIMULADOR DE DATA (luego será real) */
-function generarData(){
-return {
-  vistas: Math.floor(Math.random()*200)+20,
-  contactos: Math.floor(Math.random()*50)+5
-};
-}
-
 function convertirDrive(link){
-if(link.includes("drive.google.com")){
+if(link && link.includes("drive.google.com")){
   let match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
   if(!match){match = link.match(/id=([a-zA-Z0-9_-]+)/);}
   if(match){
@@ -286,9 +266,14 @@ const nombre = k["Nombre de tu negocio"] || "Negocio";
 const descripcion = k["Descripcion_final"] || "";
 const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
 const zona = k["¿En qué zona resides?"] || "";
+const categoria = k["Categoría de tu negocio"] || "Otros";
 
-/* DATA UX */
-const dataUX = generarData();
+const ubicacionLink = k["Ubicación del Negocio (Link de Google Maps)"] || "";
+
+/* LINK UBICACION */
+const zonaHTML = ubicacionLink
+? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+: zona;
 
 /* IMAGENES */
 let img1 = convertirDrive(k["Imagen_final"] || "");
@@ -299,6 +284,7 @@ if(!img1) img1 = "https://via.placeholder.com/300x150";
 
 const images = [img1,img2,img3].filter(i=>i);
 
+/* CARD */
 const card = `
 <div class="card">
 
@@ -306,22 +292,17 @@ const card = `
 
 <h3>${nombre}</h3>
 
-<p><strong>📍 ${zona}</strong></p>
+<p><strong>📍</strong> ${zonaHTML}</p>
 
 <p>${descripcion.substring(0,80)}...</p>
 
-<div class="social">
-💬 ${dataUX.contactos} personas ya contactaron <br>
-<span class="popular">🔥 Popular en la comunidad</span>
-</div>
-
 <div class="botones">
 
-<a href="https://wa.me/${telefono}" target="_blank" class="btn btn-w">
+<a href="#" onclick="irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">
 WhatsApp
 </a>
 
-<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images,dataUX})})' class="btn btn-v">
+<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images})})' class="btn btn-v">
 Ver más
 </button>
 
@@ -336,7 +317,16 @@ contenedor.innerHTML += card;
 
 }
 
+/* 🔥 TRACK VISTA */
 function abrirModal(data){
+
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({
+  tipo:"vista",
+  negocio:data.nombre
+})
+});
 
 document.getElementById("modal").style.display = "flex";
 
@@ -347,9 +337,20 @@ document.getElementById("m_zona").innerText = "📍 " + data.zona;
 document.getElementById("carousel").innerHTML =
 data.images.map(i => `<img src="${i}">`).join("");
 
-document.getElementById("m_social").innerHTML =
-`👀 ${data.dataUX.vistas} personas lo han visto<br>
-💬 ${data.dataUX.contactos} ya lo contactaron`;
+}
+
+/* 🔥 TRACK WHATSAPP */
+function irWhatsApp(nombre,telefono){
+
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({
+  tipo:"whatsapp",
+  negocio:nombre
+})
+});
+
+window.open("https://wa.me/" + telefono, "_blank");
 
 }
 
