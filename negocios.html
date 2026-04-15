@@ -31,7 +31,7 @@ nav a{
 
 .nav-btn{
   background:#4CAF50;
-  padding:10px 18px;
+  padding:10px 15px;
   border-radius:8px;
   color:white;
 }
@@ -47,7 +47,7 @@ nav a{
 #buscador{
   width:100%;
   padding:12px;
-  margin-bottom:15px;
+  margin-bottom:20px;
   border-radius:10px;
   border:1px solid #ccc;
 }
@@ -78,7 +78,7 @@ nav a{
   gap:20px;
 }
 
-/* TARJETAS */
+/* CARD */
 .card{
   background:white;
   border-radius:12px;
@@ -104,6 +104,12 @@ nav a{
 }
 
 /* BOTONES */
+.botones{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
 .btn{
   flex:1;
   text-align:center;
@@ -111,11 +117,10 @@ nav a{
   border-radius:8px;
   text-decoration:none;
   color:white;
-  font-size:14px;
 }
 
 .btn-w{ background:#4CAF50; }
-.btn-v{ background:#2f4ea2; cursor:pointer; }
+.btn-v{ background:#2f4ea2; border:none; cursor:pointer; }
 
 /* MODAL */
 #modal{
@@ -138,6 +143,21 @@ nav a{
   max-width:500px;
 }
 
+/* CAROUSEL */
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.carousel img{
+  min-width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
 /* FOOTER */
 footer{
   background:#2f4ea2;
@@ -153,6 +173,7 @@ footer{
 
 <header>
   <img src="logo.png">
+
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
@@ -161,9 +182,9 @@ footer{
     <a href="blog.html">Blog</a>
 
     <a class="nav-btn"
-       href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-       target="_blank">
-       Solicitar acceso
+    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+    target="_blank">
+    Solicitar acceso
     </a>
   </nav>
 </header>
@@ -172,16 +193,14 @@ footer{
 
 <h2>Negocios disponibles</h2>
 
-<!-- 🔍 BUSCADOR -->
-<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="filtrarTodo()">
+<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
 
-<!-- 🏷 CATEGORIAS -->
 <div class="categorias">
-  <button onclick="setCategoria('Todos')">Todos</button>
-  <button onclick="setCategoria('Servicios')">Servicios</button>
-  <button onclick="setCategoria('Comida')">Comida</button>
-  <button onclick="setCategoria('Belleza')">Belleza</button>
-  <button onclick="setCategoria('Legal')">Legal</button>
+  <button onclick="filtrar('Todos')">Todos</button>
+  <button onclick="filtrar('Servicios')">Servicios</button>
+  <button onclick="filtrar('Comida')">Comida</button>
+  <button onclick="filtrar('Belleza')">Belleza</button>
+  <button onclick="filtrar('Legal')">Legal</button>
 </div>
 
 <div class="grid" id="contenedor"></div>
@@ -191,12 +210,15 @@ footer{
 <!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
+
+    <div class="carousel" id="carousel"></div>
+
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
-    <p id="m_tel"></p>
-    <p id="m_mail"></p>
+
     <button onclick="cerrarModal()">Cerrar</button>
+
   </div>
 </div>
 
@@ -208,15 +230,25 @@ footer{
 
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
-let negociosData = [];
-let categoriaActual = "Todos";
+let dataGlobal = [];
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  negociosData = data;
+  dataGlobal = data;
   renderizar(data);
 });
+
+function convertirDrive(link){
+if(link.includes("drive.google.com")){
+  let match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!match){match = link.match(/id=([a-zA-Z0-9_-]+)/);}
+  if(match){
+    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
+}
+return link;
+}
 
 function renderizar(data){
 
@@ -225,46 +257,33 @@ contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+if((k["Publicado"] || "").toLowerCase() !== "si") return;
 
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué servicio ofreces?"] || "";
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
-const email = keys["Correo del negocio"] || "";
-const categoria = keys["Categoria"] || "Otros";
+const nombre = k["Nombre de tu negocio"] || "Negocio";
+const descripcion = k["Descripcion_final"] || "";
+const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
+const zona = k["¿En qué zona resides?"] || "";
+const ubicacion = k["Ubicación del Negocio (Link de Google Maps)"] || "";
 
-const ubicacion = keys["Ubicación del Negocio (Link de Google Maps)"] || "";
+/* IMAGENES */
+let img1 = convertirDrive(k["Imagen_final"] || "");
+let img2 = convertirDrive(k["Imagen2"] || "");
+let img3 = convertirDrive(k["Imagen3"] || "");
+
+if(!img1) img1 = "https://via.placeholder.com/300x150";
+
+const images = [img1, img2, img3].filter(i => i);
 
 const zonaHTML = ubicacion
-  ? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
-  : zona;
-
-let img = keys["Imagen_final"] || "";
-
-if(img.includes("drive.google.com")){
-  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
-  if(match){
-    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
-}
-
-if(!img){
-  img = "https://via.placeholder.com/300x150";
-}
-
-const dataModal = {nombre,descripcion,telefono,zona,email};
+? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+: zona;
 
 const card = `
-<div class="card" data-cat="${categoria}">
+<div class="card">
 
-<img src="${img}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+<img src="${img1}">
 
 <h3>${nombre}</h3>
 
@@ -272,13 +291,13 @@ const card = `
 
 <p>${descripcion.substring(0,80)}...</p>
 
-<div style="display:flex; gap:10px; margin-top:10px;">
+<div class="botones">
 
 <a href="https://wa.me/${telefono}" target="_blank" class="btn btn-w">
 WhatsApp
 </a>
 
-<button onclick='abrirModal(${JSON.stringify(dataModal)})' class="btn btn-v">
+<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images})})' class="btn btn-v">
 Ver más
 </button>
 
@@ -293,48 +312,50 @@ contenedor.innerHTML += card;
 
 }
 
-function setCategoria(cat){
-categoriaActual = cat;
-filtrarTodo();
-}
-
-function filtrarTodo(){
-
-const texto = document.getElementById("buscador").value.toLowerCase();
-
-const filtrados = negociosData.filter(n => {
-
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
-
-const nombre = (keys["Nombre de tu negocio"] || "").toLowerCase();
-const categoria = (keys["Categoria"] || "").toLowerCase();
-
-const matchTexto = nombre.includes(texto);
-const matchCategoria = categoriaActual === "Todos" || categoria === categoriaActual.toLowerCase();
-
-return matchTexto && matchCategoria;
-
-});
-
-renderizar(filtrados);
-
-}
-
+/* MODAL CON IMAGENES */
 function abrirModal(data){
+
 document.getElementById("modal").style.display = "flex";
 
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
 document.getElementById("m_zona").innerText = "📍 " + data.zona;
-document.getElementById("m_tel").innerText = "📞 " + data.telefono;
-document.getElementById("m_mail").innerText = "📧 " + data.email;
+
+document.getElementById("carousel").innerHTML =
+data.images.map(i => `<img src="${i}">`).join("");
+
 }
 
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
+}
+
+/* BUSCAR */
+function buscar(){
+const texto = document.getElementById("buscador").value.toLowerCase();
+
+const filtrados = dataGlobal.filter(n => {
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
+return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
+});
+
+renderizar(filtrados);
+}
+
+/* FILTRO */
+function filtrar(cat){
+
+if(cat === "Todos"){
+  renderizar(dataGlobal);
+  return;
+}
+
+const filtrados = dataGlobal.filter(n => {
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
+return (k["Categoría de tu negocio"] || "").toLowerCase() === cat.toLowerCase();
+});
+
+renderizar(filtrados);
 }
 
 </script>
