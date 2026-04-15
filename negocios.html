@@ -11,7 +11,7 @@ body{
   background:#f5f7fb;
 }
 
-/* HEADER NUEVO (BLANCO) */
+/* HEADER */
 header{
   background:white;
   padding:12px 40px;
@@ -21,9 +21,7 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:#2f4ea2;
@@ -43,6 +41,34 @@ nav a{
   padding:40px;
   max-width:1200px;
   margin:auto;
+}
+
+/* BUSCADOR */
+#buscador{
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:10px;
+  border:1px solid #ccc;
+}
+
+/* CATEGORIAS */
+.categorias{
+  margin-bottom:20px;
+}
+
+.categorias button{
+  margin:5px;
+  padding:8px 15px;
+  border:1px solid #2f4ea2;
+  background:white;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+.categorias button:hover{
+  background:#2f4ea2;
+  color:white;
 }
 
 /* GRID */
@@ -88,15 +114,8 @@ nav a{
   font-size:14px;
 }
 
-.btn-w{
-  background:#4CAF50;
-}
-
-.btn-v{
-  background:#2f4ea2;
-  border:none;
-  cursor:pointer;
-}
+.btn-w{ background:#4CAF50; }
+.btn-v{ background:#2f4ea2; cursor:pointer; }
 
 /* MODAL */
 #modal{
@@ -134,7 +153,6 @@ footer{
 
 <header>
   <img src="logo.png">
-
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
@@ -151,9 +169,23 @@ footer{
 </header>
 
 <section class="main">
-  <h2>Negocios disponibles</h2>
 
-  <div class="grid" id="contenedor"></div>
+<h2>Negocios disponibles</h2>
+
+<!-- 🔍 BUSCADOR -->
+<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="filtrarTodo()">
+
+<!-- 🏷 CATEGORIAS -->
+<div class="categorias">
+  <button onclick="setCategoria('Todos')">Todos</button>
+  <button onclick="setCategoria('Servicios')">Servicios</button>
+  <button onclick="setCategoria('Comida')">Comida</button>
+  <button onclick="setCategoria('Belleza')">Belleza</button>
+  <button onclick="setCategoria('Legal')">Legal</button>
+</div>
+
+<div class="grid" id="contenedor"></div>
+
 </section>
 
 <!-- MODAL -->
@@ -164,7 +196,6 @@ footer{
     <p id="m_zona"></p>
     <p id="m_tel"></p>
     <p id="m_mail"></p>
-
     <button onclick="cerrarModal()">Cerrar</button>
   </div>
 </div>
@@ -178,14 +209,13 @@ footer{
 const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
 
 let negociosData = [];
+let categoriaActual = "Todos";
 
 fetch(url)
 .then(res => res.json())
 .then(data => {
-
-negociosData = data;
-renderizar(data);
-
+  negociosData = data;
+  renderizar(data);
 });
 
 function renderizar(data){
@@ -207,15 +237,14 @@ const descripcion = keys["Descripcion_final"] || keys["¿Qué vendes o qué serv
 const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
 const zona = keys["¿En qué zona resides?"] || "";
 const email = keys["Correo del negocio"] || "";
+const categoria = keys["Categoria"] || "Otros";
 
-/* 📍 UBICACIÓN */
 const ubicacion = keys["Ubicación del Negocio (Link de Google Maps)"] || "";
 
 const zonaHTML = ubicacion
   ? `<a href="${ubicacion}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
   : zona;
 
-/* 🖼 IMAGEN */
 let img = keys["Imagen_final"] || "";
 
 if(img.includes("drive.google.com")){
@@ -230,11 +259,12 @@ if(!img){
   img = "https://via.placeholder.com/300x150";
 }
 
-/* CARD MEJORADA */
-const card = `
-<div class="card">
+const dataModal = {nombre,descripcion,telefono,zona,email};
 
-<img src="${img}" onclick='abrirModal(${JSON.stringify({nombre,descripcion,telefono,zona,email})})'>
+const card = `
+<div class="card" data-cat="${categoria}">
+
+<img src="${img}" onclick='abrirModal(${JSON.stringify(dataModal)})'>
 
 <h3>${nombre}</h3>
 
@@ -248,7 +278,7 @@ const card = `
 WhatsApp
 </a>
 
-<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,telefono,zona,email})})' class="btn btn-v">
+<button onclick='abrirModal(${JSON.stringify(dataModal)})' class="btn btn-v">
 Ver más
 </button>
 
@@ -260,6 +290,36 @@ Ver más
 contenedor.innerHTML += card;
 
 });
+
+}
+
+function setCategoria(cat){
+categoriaActual = cat;
+filtrarTodo();
+}
+
+function filtrarTodo(){
+
+const texto = document.getElementById("buscador").value.toLowerCase();
+
+const filtrados = negociosData.filter(n => {
+
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
+
+const nombre = (keys["Nombre de tu negocio"] || "").toLowerCase();
+const categoria = (keys["Categoria"] || "").toLowerCase();
+
+const matchTexto = nombre.includes(texto);
+const matchCategoria = categoriaActual === "Todos" || categoria === categoriaActual.toLowerCase();
+
+return matchTexto && matchCategoria;
+
+});
+
+renderizar(filtrados);
 
 }
 
