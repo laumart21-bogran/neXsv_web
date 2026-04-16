@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -7,24 +7,23 @@
 <style>
 body{
   margin:0;
-  font-family:Arial;
+  font-family: Arial;
   background:#f5f7fb;
 }
 
 /* HEADER */
 header{
-  background:white;
+  background:#3f5b8a;
   padding:12px 40px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #eee;
 }
 
-header img{ height:70px; }
+header img{ height:60px; }
 
 nav a{
-  color:#2f4ea2;
+  color:white;
   margin-left:20px;
   text-decoration:none;
 }
@@ -38,68 +37,61 @@ nav a{
 
 /* HERO */
 .hero{
-  text-align:center;
-  padding:60px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:60px;
 }
 
-.hero h1{
-  font-size:36px;
-  margin-bottom:10px;
+.hero img{
+  width:450px;
 }
 
-.hero p{
-  color:#666;
-  margin-bottom:30px;
+/* CONTENIDO */
+.container{
+  max-width:1100px;
+  margin:auto;
 }
 
-/* CARDS */
-.cards{
+/* BOTONES */
+.btn{
+  display:inline-block;
+  background:#4CAF50;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+  margin-top:10px;
+}
+
+/* GRID */
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
-  max-width:1000px;
-  margin:auto;
+  padding:40px;
 }
 
 .card{
   background:white;
   padding:20px;
   border-radius:12px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.08);
 }
 
-/* CTA */
-.cta{
-  text-align:center;
-  margin-top:40px;
+/* TESTIMONIOS */
+.testimonial{
+  background:white;
+  padding:20px;
+  border-left:5px solid #3f5b8a;
+  border-radius:10px;
 }
 
-.btn{
-  background:#4CAF50;
-  color:white;
-  padding:12px 20px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* FOOTER LIMPIO */
+/* FOOTER */
 footer{
+  background:#3f5b8a;
+  color:white;
   text-align:center;
   padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-}
-
-.footer-line{
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
-}
-
-footer a{
-  color:#2f4ea2;
-  text-decoration:none;
 }
 </style>
 </head>
@@ -124,39 +116,107 @@ footer a{
   </nav>
 </header>
 
-<section class="hero">
+<!-- HERO -->
+<section class="hero container">
 
+<div>
 <h1>Conecta, compra y crece</h1>
-<p>Una red confiable para hacer negocios reales</p>
+<p>Red privada de conexión entre padres de familia y negocios dentro de su misma comunidad.</p>
 
-<div class="cards">
+<a class="btn" href="negocios.html">Explorar negocios</a>
 
-<div class="card">
-<h3>Acceso a clientes</h3>
-<p>Conecta con personas listas para comprar.</p>
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
 </div>
 
-<div class="card">
-<h3>Comunidad privada</h3>
-<p>Solo negocios verificados.</p>
-</div>
+<img src="hero.png">
 
-<div class="card">
-<h3>Más ventas</h3>
-<p>Sin depender de algoritmos.</p>
-</div>
+</section>
 
-</div>
+<!-- BLOQUE DE POSICIONAMIENTO -->
+<section style="padding:40px; max-width:900px; margin:auto; text-align:center;">
 
-<div class="cta">
-<a class="btn" href="negocios.html">Ver negocios</a>
+<h2>Una red privada, no un marketplace abierto</h2>
+
+<p style="font-size:18px; color:#555;">
+NeXsv facilita la conexión entre padres de familia y negocios dentro de un mismo entorno, 
+permitiendo relaciones más cercanas, ágiles y basadas en confianza.
+</p>
+
+<div style="margin-top:30px; background:white; padding:25px; border-radius:12px;">
+
+<p>✔ Comunidad privada entre padres de familia</p>
+<p>✔ Conexiones basadas en cercanía y afinidad</p>
+<p>✔ Contacto directo entre miembros</p>
+<p>✔ Negocios activos dentro de la red</p>
+
 </div>
 
 </section>
 
+<!-- URGENCIA -->
+<section style="padding:40px; text-align:center;">
+
+<h2>Acceso limitado por categoría</h2>
+
+<p style="font-size:18px; color:#555;">
+Para mantener la calidad de la red, el acceso está sujeto a validación 
+y disponibilidad dentro de cada categoría.
+</p>
+
+<p style="font-weight:bold;">
+Una vez que una categoría alcanza su capacidad, se habilita lista de espera.
+</p>
+
+<a class="btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
+</section>
+
+<!-- BENEFICIOS -->
+<div class="grid container">
+
+<div class="card">
+<h3>Clientes reales</h3>
+<p>Accede a personas dentro de tu mismo entorno con interés en productos y servicios.</p>
+</div>
+
+<div class="card">
+<h3>Comunidad privada</h3>
+<p>Espacio donde la conexión se basa en cercanía y afinidad.</p>
+</div>
+
+<div class="card">
+<h3>Más oportunidades</h3>
+<p>Facilita el contacto directo y genera nuevas posibilidades de negocio.</p>
+</div>
+
+</div>
+
+<!-- TESTIMONIOS -->
+<div class="grid container">
+
+<div class="testimonial">
+<p>"He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."</p>
+<strong>- Miembro de la red</strong>
+</div>
+
+<div class="testimonial">
+<p>"Es mucho más fácil generar contactos cuando hay afinidad entre las personas."</p>
+<strong>- Emprendedor</strong>
+</div>
+
+</div>
+
 <footer>
-  <div class="footer-line"></div>
-  <p>© 2026 NeXsv | <a href="terminos.html">Términos y condiciones</a></p>
+© 2026 NeXsv | 
+<a href="terminos.html" style="color:white;">Términos y condiciones</a>
 </footer>
 
 </body>
