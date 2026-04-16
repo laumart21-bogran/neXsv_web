@@ -21,9 +21,7 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:#2f4ea2;
@@ -40,54 +38,52 @@ nav a{
 
 /* CONTENIDO */
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
   padding:50px 20px;
 }
 
 h1{
   text-align:center;
-  margin-bottom:40px;
+  margin-bottom:50px;
 }
 
-/* TARJETAS GRANDES */
-.step{
+/* BLOQUES */
+.beneficio{
   display:flex;
-  align-items:flex-start;
-  gap:25px;
-  background:white;
-  padding:30px;
-  border-radius:14px;
-  margin-bottom:25px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  transition:0.2s;
+  align-items:center;
+  gap:40px;
+  margin-bottom:60px;
 }
 
-.step:hover{
-  transform:translateY(-4px);
+.beneficio.reverse{
+  flex-direction:row-reverse;
 }
 
-.step img{
-  width:85px;
-  min-width:85px;
+.beneficio img{
+  width:50%;
+  border-radius:12px;
+  object-fit:cover;
 }
 
-.step h3{
-  margin:0;
+.beneficio-text{
+  width:50%;
+}
+
+.beneficio-text h3{
   color:#2f4ea2;
+  margin-bottom:10px;
 }
 
-.step p{
-  margin:8px 0 0;
+.beneficio-text p{
   color:#555;
-  font-size:14px;
   line-height:1.6;
 }
 
 /* CTA */
 .cta{
   text-align:center;
-  margin:40px 0;
+  margin-top:40px;
 }
 
 .cta a{
@@ -117,6 +113,22 @@ footer a{
   color:#2f4ea2;
   text-decoration:none;
 }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .beneficio{
+    flex-direction:column;
+  }
+
+  .beneficio.reverse{
+    flex-direction:column;
+  }
+
+  .beneficio img,
+  .beneficio-text{
+    width:100%;
+  }
+}
 </style>
 </head>
 
@@ -142,53 +154,47 @@ footer a{
 
 <div class="container">
 
-<h1>¿Por qué formar parte de NeXsv?</h1>
+<h1>Haz crecer tu negocio con NeXsv</h1>
 
 <!-- BENEFICIO 1 -->
-<div class="step">
-  <img src="https://raw.githubusercontent.com/laumart21-bogran/neXsv_web/main/icono1.png">
-  <div>
-    <h3>1. Te registras en la comunidad</h3>
-    <p>Forma parte de una red donde las oportunidades sí llegan. Al registrarte en NeXsv, dejas de ser invisible y comienzas a posicionarte frente a personas que realmente buscan lo que ofreces.</p>
+<div class="beneficio">
+  <img src="img/beneficio1.jpg">
+  <div class="beneficio-text">
+    <h3>Más visibilidad para tu negocio</h3>
+    <p>Tu negocio deja de depender del algoritmo o del boca a boca. En NeXsv te posicionas frente a personas que ya están buscando lo que ofreces, aumentando tus oportunidades reales de venta desde el primer día.</p>
   </div>
 </div>
 
-<!-- BENEFICIO 2 (se mantiene icono actual) -->
-<div class="step">
-  <img src="https://raw.githubusercontent.com/laumart21-bogran/neXsv_web/main/icono2.png">
-  <div>
-    <h3>2. Publicas tu negocio</h3>
-    <p>Tu negocio trabaja para ti 24/7. Publicar en NeXsv significa tener una vitrina digital activa todo el tiempo, aumentando tu alcance sin necesidad de invertir en publicidad complicada.</p>
+<!-- BENEFICIO 2 -->
+<div class="beneficio reverse">
+  <img src="img/beneficio2.jpg">
+  <div class="beneficio-text">
+    <h3>Presencia digital activa 24/7</h3>
+    <p>Mientras tú descansas, tu negocio sigue trabajando. Tu perfil funciona como una vitrina digital disponible en todo momento, mostrando tus productos o servicios sin que tengas que estar conectado.</p>
   </div>
 </div>
 
-  <div class="cta">
-  <p><strong>Empieza hoy y haz que tu negocio trabaje para ti.</strong></p>
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-    Solicitar acceso
-  </a>
-</div>
-
-<!-- BENEFICIO 3 (se mantiene icono actual) -->
-<div class="step">
-  <img src="raw.githubusercontent.com/laumart21-bogran/neXsv_web/main/icono3.png">
-  <div>
-    <h3>3. Te contactan por WhatsApp</h3>
-    <p>Conecta de forma directa y rápida con clientes reales. Sin intermediarios ni procesos largos: los interesados llegan directo a tu WhatsApp, listos para preguntar… y comprar.</p>
+<!-- BENEFICIO 3 -->
+<div class="beneficio">
+  <img src="img/beneficio3.jpg">
+  <div class="beneficio-text">
+    <h3>Contacto directo con clientes interesados</h3>
+    <p>Olvídate de procesos largos o intermediarios. Los clientes llegan directamente a tu WhatsApp con intención real de compra, lo que reduce el tiempo de cierre y aumenta tus conversiones.</p>
   </div>
 </div>
 
 <!-- BENEFICIO 4 -->
-<div class="step">
-  <img src="https://raw.githubusercontent.com/laumart21-bogran/neXsv_web/main/icono4.png">
-  <div>
-    <h3>4. Generas ingresos</h3>
-    <p>Convierte tu presencia en ganancias. NeXsv no es solo visibilidad, es una herramienta para transformar contactos en clientes y hacer crecer tus ingresos de manera constante.</p>
+<div class="beneficio reverse">
+  <img src="img/beneficio4.jpg">
+  <div class="beneficio-text">
+    <h3>Generación constante de oportunidades</h3>
+    <p>Cada visita a tu perfil es una oportunidad. NeXsv no solo te da visibilidad, te conecta con personas que pueden convertirse en clientes reales, creando un flujo constante de nuevos contactos.</p>
   </div>
 </div>
 
 <!-- CTA -->
 <div class="cta">
+  <p><strong>Tu negocio puede crecer más rápido de lo que imaginas.</strong></p>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
     Quiero formar parte de NeXsv
   </a>
