@@ -41,7 +41,7 @@ nav a{
 /* HERO */
 .hero{
   background:url('cover-negocios.jpg') center/cover no-repeat;
-  height:300px;
+  height:280px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -117,6 +117,11 @@ nav a{
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
   cursor:pointer;
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
 }
 
 .card img{
@@ -124,6 +129,11 @@ nav a{
   height:180px;
   object-fit:cover;
   border-radius:8px;
+}
+
+.card p{
+  font-size:14px;
+  color:#555;
 }
 
 /* MODAL */
@@ -143,14 +153,22 @@ nav a{
   background:white;
   padding:20px;
   border-radius:10px;
-  max-width:500px;
   width:90%;
+  max-width:500px;
+}
+
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  margin-top:10px;
 }
 
 .carousel img{
-  width:100%;
+  min-width:100%;
+  height:220px;
+  object-fit:cover;
   border-radius:8px;
-  margin-top:10px;
 }
 
 .btn{
@@ -206,12 +224,10 @@ footer{
 
 <section class="main">
 
-<!-- BUSCADOR -->
 <div class="buscador">
   <input type="text" id="buscar" placeholder="Buscar negocio..." onkeyup="buscarNegocio()">
 </div>
 
-<!-- CATEGORIAS -->
 <div class="categorias">
   <button onclick="filtrar('Todos')">Todos</button>
   <button onclick="filtrar('Servicios')">Servicios</button>
@@ -230,6 +246,8 @@ footer{
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
+    <p id="m_tel"></p>
+    <p id="m_mail"></p>
 
     <div class="carousel" id="carousel"></div>
 
@@ -260,84 +278,112 @@ fetch(url)
 });
 
 function renderizar(data){
-  const contenedor = document.getElementById("contenedor");
-  contenedor.innerHTML = "";
 
-  data.forEach(n => {
+const contenedor = document.getElementById("contenedor");
+contenedor.innerHTML = "";
 
-    if((n["Publicado"] || "").toLowerCase() !== "si") return;
+data.forEach(n => {
 
-    let img = n["Imagen_final"] || "";
-    if(img.includes("drive")){
-      let id = img.match(/[-\w]{25,}/);
-      if(id){
-        img = `https://drive.google.com/uc?export=view&id=${id}`;
-      }
-    }
+const keys = Object.keys(n).reduce((acc, key) => {
+  acc[key.trim()] = n[key];
+  return acc;
+}, {});
 
-    if(!img) img = "https://via.placeholder.com/300";
+if((keys["Publicado"] || "").toLowerCase() !== "si") return;
 
-    const dataModal = {
-      nombre:n["Nombre de tu negocio"],
-      descripcion:n["Descripcion_final"],
-      telefono:n["WhatsApp del negocio"],
-      zona:n["¿En qué zona resides?"],
-      img,
-      img2:n["Imagen2"],
-      img3:n["Imagen3"]
-    };
+const nombre = keys["Nombre de tu negocio"] || "Negocio";
+const descripcion = keys["Descripcion_final"] || "";
+const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
+const zona = keys["¿En qué zona resides?"] || "";
+const email = keys["Correo del negocio"] || "";
 
-    contenedor.innerHTML += `
-      <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
-        <img src="${img}">
-        <h3>${n["Nombre de tu negocio"]}</h3>
-        <p>${n["Descripcion_final"]?.substring(0,80) || ""}...</p>
-      </div>
-    `;
-  });
+let img = keys["Imagen_final"] || "";
+
+if(img.includes("drive.google.com")){
+  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
+  if(match){
+    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+  }
 }
 
-function filtrar(cat){
-  if(cat==="Todos"){ renderizar(negociosData); return; }
-
-  const filtrados = negociosData.filter(n =>
-    (n["Categoria"] || "").toLowerCase() === cat.toLowerCase()
-  );
-
-  renderizar(filtrados);
+if(!img){
+  img = "https://via.placeholder.com/300x150";
 }
 
-function buscarNegocio(){
-  const texto = document.getElementById("buscar").value.toLowerCase();
+const img2 = keys["Imagen2"] || img;
+const img3 = keys["Imagen3"] || img;
 
-  const filtrados = negociosData.filter(n =>
-    (n["Nombre de tu negocio"] || "").toLowerCase().includes(texto)
-  );
+const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
-  renderizar(filtrados);
+const card = `
+<div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+  <img src="${img}">
+  <h3>${nombre}</h3>
+  <p><strong>📍 ${zona}</strong></p>
+  <p>${descripcion.substring(0,80)}...</p>
+</div>
+`;
+
+contenedor.innerHTML += card;
+
+});
+
 }
 
 function abrirModal(data){
-  document.getElementById("modal").style.display = "flex";
 
-  document.getElementById("m_nombre").innerText = data.nombre;
-  document.getElementById("m_desc").innerText = data.descripcion;
-  document.getElementById("m_zona").innerText = data.zona;
+document.getElementById("modal").style.display = "flex";
 
-  const imgs = [data.img, data.img2, data.img3].filter(i=>i);
+document.getElementById("m_nombre").innerText = data.nombre;
+document.getElementById("m_desc").innerText = data.descripcion;
+document.getElementById("m_zona").innerText = "📍 " + data.zona;
+document.getElementById("m_tel").innerText = data.telefono ? "📞 " + data.telefono : "";
+document.getElementById("m_mail").innerText = data.email ? "📧 " + data.email : "";
 
-  document.getElementById("carousel").innerHTML =
-    imgs.map(i=>`<img src="${i}">`).join("");
+let images = [data.img, data.img2, data.img3];
+images = [...new Set(images)];
 
-  document.getElementById("btn_whatsapp").href =
-    `https://wa.me/${(data.telefono||"").replace("+","")}`;
+document.getElementById("carousel").innerHTML =
+images.map(i => `<img src="${i}">`).join("");
 
-  document.getElementById("btn_maps").href =
-    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.zona)}`;
+if(data.telefono){
+document.getElementById("btn_whatsapp").href =
+`https://wa.me/${data.telefono}`;
+}
+
+document.getElementById("btn_maps").href =
+`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(data.zona)}`;
+
 }
 
 function cerrarModal(){
-  document.getElementById("modal").style.display = "none";
+document.getElementById("modal").style.display = "none";
+}
+
+function filtrar(cat){
+
+if(cat === "Todos"){
+  renderizar(negociosData);
+  return;
+}
+
+const filtrados = negociosData.filter(n => {
+  const categoria = (n["Categoria"] || "").toLowerCase();
+  return categoria === cat.toLowerCase();
+});
+
+renderizar(filtrados);
+}
+
+function buscarNegocio(){
+const texto = document.getElementById("buscar").value.toLowerCase();
+
+const filtrados = negociosData.filter(n =>
+(n["Nombre de tu negocio"] || "").toLowerCase().includes(texto)
+);
+
+renderizar(filtrados);
 }
 
 </script>
