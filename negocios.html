@@ -284,64 +284,55 @@ contenedor.innerHTML = "";
 
 data.forEach(n => {
 
-const keys = Object.keys(n).reduce((acc, key) => {
-  acc[key.trim()] = n[key];
-  return acc;
-}, {});
+const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 
-if((keys["Publicado"] || "").toLowerCase() !== "si") return;
+if((k["Publicado"] || "").toLowerCase() !== "si") return;
 
-const nombre = keys["Nombre de tu negocio"] || "Negocio";
-const descripcion = keys["Descripcion_final"] || "";
-const telefono = (keys["WhatsApp del negocio"] || "").replace("+","");
-const zona = keys["¿En qué zona resides?"] || "";
-const email = keys["Correo del negocio"] || "";
+const nombre = k["Nombre de tu negocio"] || "Negocio";
+const descripcion = k["Descripcion_final"] || "";
+const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
+const zona = k["¿En qué zona resides?"] || "";
+const categoria = k["Categoría de tu negocio"] || "Otros";
 
-let img = keys["Imagen_final"] || "";
+const ubicacionLink = k["Ubicación del Negocio (Link de Google Maps)"] || "";
 
-if(img.includes("drive.google.com")){
-  let match = img.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(!match){match = img.match(/id=([a-zA-Z0-9_-]+)/);}
-  if(match){
-    img = `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
-}
+/* LINK UBICACION */
+const zonaHTML = ubicacionLink
+? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+: zona;
 
-if(!img){
-  img = "https://via.placeholder.com/300x150";
-}
+/* IMAGENES */
+let img1 = convertirDrive(k["Imagen_final"] || "");
+let img2 = convertirDrive(k["Imagen2"] || "");
+let img3 = convertirDrive(k["Imagen3"] || "");
 
-const img2 = keys["Imagen2"] || img;
-const img3 = keys["Imagen3"] || img;
+if(!img1) img1 = "https://via.placeholder.com/300x150";
 
-const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
+const images = [img1,img2,img3].filter(i=>i);
 
+/* CARD */
 const card = `
-<div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+<div class="card">
 
-  <img src="${img}">
-  
-  <h3>${nombre}</h3>
-  <p><strong>📍 ${zona}</strong></p>
-  <p>${descripcion.substring(0,80)}...</p>
+<img src="${img1}">
 
-  <div class="card-actions">
+<h3>${nombre}</h3>
 
-    ${
-      telefono 
-      ? `<a href="https://wa.me/${telefono}" target="_blank"
-           onclick="event.stopPropagation()" class="btn-card">
-           WhatsApp
-         </a>`
-      : ""
-    }
+<p><strong>📍</strong> ${zonaHTML}</p>
 
-    <button onclick='event.stopPropagation(); abrirModal(${JSON.stringify(dataModal)})'
-      class="btn-card secondary">
-      Ver más
-    </button>
+<p>${descripcion.substring(0,80)}...</p>
 
-  </div>
+<div class="botones">
+
+<a href="#" onclick="irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">
+WhatsApp
+</a>
+
+<button onclick='abrirModal(${JSON.stringify({nombre,descripcion,zona,images})})' class="btn btn-v">
+Ver más
+</button>
+
+</div>
 
 </div>
 `;
@@ -349,8 +340,8 @@ const card = `
 contenedor.innerHTML += card;
 
 });
-}
 
+}
 function abrirModal(data){
 
 document.getElementById("modal").style.display = "flex";
