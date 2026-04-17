@@ -318,17 +318,37 @@ const dataModal = {nombre,descripcion,telefono,zona,email,img,img2,img3};
 
 const card = `
 <div class="card" onclick='abrirModal(${JSON.stringify(dataModal)})'>
+
   <img src="${img}">
+  
   <h3>${nombre}</h3>
   <p><strong>📍 ${zona}</strong></p>
   <p>${descripcion.substring(0,80)}...</p>
+
+  <div class="card-actions">
+
+    ${
+      telefono 
+      ? `<a href="https://wa.me/${telefono}" target="_blank"
+           onclick="event.stopPropagation()" class="btn-card">
+           WhatsApp
+         </a>`
+      : ""
+    }
+
+    <button onclick='event.stopPropagation(); abrirModal(${JSON.stringify(dataModal)})'
+      class="btn-card secondary">
+      Ver más
+    </button>
+
+  </div>
+
 </div>
 `;
 
 contenedor.innerHTML += card;
 
 });
-
 }
 
 function abrirModal(data){
