@@ -1,212 +1,53 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<title>Beneficios - NeXsv</title>
-
-<style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
-}
-
-/* HEADER */
-header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
-}
-
-header img{ height:70px; }
-
-nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
-}
-
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
-}
-
-/* CONTENIDO */
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:50px 20px;
-}
-
-h1{
-  text-align:center;
-  margin-bottom:50px;
-}
-
-/* BLOQUES */
-.beneficio{
-  display:flex;
-  align-items:center;
-  gap:40px;
-  margin-bottom:60px;
-}
-
-.beneficio.reverse{
-  flex-direction:row-reverse;
-}
-
-.beneficio img{
-  width:50%;
-  border-radius:12px;
-  object-fit:cover;
-}
-
-.beneficio-text{
-  width:50%;
-}
-
-.beneficio-text h3{
-  color:#2f4ea2;
-  margin-bottom:10px;
-}
-
-.beneficio-text p{
-  color:#555;
-  line-height:1.6;
-}
-
-/* CTA */
-.cta{
-  text-align:center;
-  margin-top:40px;
-}
-
-.cta a{
-  background:#4CAF50;
-  color:white;
-  padding:12px 20px;
-  border-radius:8px;
-  text-decoration:none;
-}
-
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-}
-
-.footer-line{
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
-}
-
-footer a{
-  color:#2f4ea2;
-  text-decoration:none;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-  .beneficio{
-    flex-direction:column;
-  }
-
-  .beneficio.reverse{
-    flex-direction:column;
-  }
-
-  .beneficio img,
-  .beneficio-text{
-    width:100%;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<header>
-  <img src="logo.png">
-
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
-</header>
-
+<!-- CONTENEDOR -->
 <div class="container">
 
 <h1>Haz crecer tu negocio con NeXsv</h1>
 
-<!-- BENEFICIO 1 -->
-<div class="beneficio">
-  <img src="img/beneficio1.jpg">
-  <div class="beneficio-text">
+<div class="slider-wrapper">
+
+<button class="arrow left" onclick="scrollSlider(-1)">❮</button>
+
+<div class="slider" id="slider">
+
+  <!-- ITEM 1 -->
+  <div class="slide">
+    <img src="img/beneficio1.jpg">
     <h3>Más visibilidad para tu negocio</h3>
-    <p>Tu negocio deja de depender del algoritmo o del boca a boca. En NeXsv te posicionas frente a personas que ya están buscando lo que ofreces, aumentando tus oportunidades reales de venta desde el primer día.</p>
+    <p>Tu negocio deja de depender del algoritmo o del boca a boca. Te posicionas frente a clientes reales.</p>
   </div>
+
+  <!-- ITEM 2 -->
+  <div class="slide">
+    <img src="img/beneficio2.jpg">
+    <h3>Presencia digital 24/7</h3>
+    <p>Tu negocio trabaja incluso cuando no estás conectado. Siempre visible.</p>
+  </div>
+
+  <!-- ITEM 3 -->
+  <div class="slide">
+    <img src="img/beneficio3.jpg">
+    <h3>Clientes directos a WhatsApp</h3>
+    <p>Sin intermediarios. Clientes listos para comprar llegan directo a ti.</p>
+  </div>
+
+  <!-- ITEM 4 -->
+  <div class="slide">
+    <img src="img/beneficio4.jpg">
+    <h3>Más oportunidades de venta</h3>
+    <p>Cada visita puede convertirse en cliente. Más contactos, más ingresos.</p>
+  </div>
+
 </div>
 
-<!-- BENEFICIO 2 -->
-<div class="beneficio reverse">
-  <img src="img/beneficio2.jpg">
-  <div class="beneficio-text">
-    <h3>Presencia digital activa 24/7</h3>
-    <p>Mientras tú descansas, tu negocio sigue trabajando. Tu perfil funciona como una vitrina digital disponible en todo momento, mostrando tus productos o servicios sin que tengas que estar conectado.</p>
-  </div>
-</div>
+<button class="arrow right" onclick="scrollSlider(1)">❯</button>
 
-<!-- BENEFICIO 3 -->
-<div class="beneficio">
-  <img src="img/beneficio3.jpg">
-  <div class="beneficio-text">
-    <h3>Contacto directo con clientes interesados</h3>
-    <p>Olvídate de procesos largos o intermediarios. Los clientes llegan directamente a tu WhatsApp con intención real de compra, lo que reduce el tiempo de cierre y aumenta tus conversiones.</p>
-  </div>
-</div>
-
-<!-- BENEFICIO 4 -->
-<div class="beneficio reverse">
-  <img src="img/beneficio4.jpg">
-  <div class="beneficio-text">
-    <h3>Generación constante de oportunidades</h3>
-    <p>Cada visita a tu perfil es una oportunidad. NeXsv no solo te da visibilidad, te conecta con personas que pueden convertirse en clientes reales, creando un flujo constante de nuevos contactos.</p>
-  </div>
 </div>
 
 <!-- CTA -->
 <div class="cta">
-  <p><strong>Tu negocio puede crecer más rápido de lo que imaginas.</strong></p>
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
     Quiero formar parte de NeXsv
   </a>
 </div>
 
 </div>
-
-<footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
-</footer>
-
-</body>
-</html>
