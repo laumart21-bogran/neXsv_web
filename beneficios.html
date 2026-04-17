@@ -1,4 +1,196 @@
-<!-- CONTENEDOR -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Beneficios - NeXsv</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f5f7fb;
+}
+
+/* HEADER */
+header{
+  background:white;
+  padding:12px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #eee;
+}
+
+header img{
+  height:70px;
+}
+
+nav a{
+  color:#2f4ea2;
+  margin-left:20px;
+  text-decoration:none;
+}
+
+.nav-btn{
+  background:#4CAF50;
+  padding:10px 15px;
+  border-radius:8px;
+  color:white;
+}
+
+/* CONTENIDO */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:50px 20px;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+/* SLIDER */
+.slider-wrapper{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.slider{
+  display:flex;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  gap:20px;
+  padding:20px 10px;
+}
+
+.slider::-webkit-scrollbar{
+  display:none;
+}
+
+.slide{
+  min-width:300px;
+  max-width:300px;
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  text-align:center;
+  flex-shrink:0;
+}
+
+.slide:hover{
+  transform:translateY(-5px);
+}
+
+.slide img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:10px;
+  margin-bottom:12px;
+}
+
+.slide h3{
+  color:#2f4ea2;
+  margin-bottom:8px;
+}
+
+.slide p{
+  color:#555;
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* FLECHAS */
+.arrow{
+  background:white;
+  border:none;
+  font-size:24px;
+  cursor:pointer;
+  padding:12px;
+  border-radius:50%;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  transition:0.2s;
+}
+
+.arrow:hover{
+  background:#4CAF50;
+  color:white;
+}
+
+.arrow.left{
+  margin-right:10px;
+}
+
+.arrow.right{
+  margin-left:10px;
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+  margin-top:40px;
+}
+
+.cta a{
+  background:#4CAF50;
+  color:white;
+  padding:12px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:20px;
+  margin-top:40px;
+  background:white;
+  color:#555;
+}
+
+.footer-line{
+  height:1px;
+  background:#ddd;
+  margin-bottom:15px;
+}
+
+footer a{
+  color:#2f4ea2;
+  text-decoration:none;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .slide{
+    min-width:260px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="logo.png">
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="como.html">Cómo funciona</a>
+    <a href="beneficios.html">Beneficios</a>
+    <a href="negocios.html">Negocios</a>
+    <a href="blog.html">Blog</a>
+
+    <a class="nav-btn"
+    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+    target="_blank">
+    Solicitar acceso
+    </a>
+  </nav>
+</header>
+
 <div class="container">
 
 <h1>Haz crecer tu negocio con NeXsv</h1>
@@ -9,32 +201,28 @@
 
 <div class="slider" id="slider">
 
-  <!-- ITEM 1 -->
   <div class="slide">
     <img src="img/beneficio1.jpg">
-    <h3>Más visibilidad para tu negocio</h3>
-    <p>Tu negocio deja de depender del algoritmo o del boca a boca. Te posicionas frente a clientes reales.</p>
+    <h3>Más visibilidad</h3>
+    <p>Tu negocio se muestra a personas que realmente buscan lo que ofreces.</p>
   </div>
 
-  <!-- ITEM 2 -->
   <div class="slide">
     <img src="img/beneficio2.jpg">
-    <h3>Presencia digital 24/7</h3>
-    <p>Tu negocio trabaja incluso cuando no estás conectado. Siempre visible.</p>
+    <h3>Presencia 24/7</h3>
+    <p>Tu negocio sigue generando oportunidades incluso cuando no estás activo.</p>
   </div>
 
-  <!-- ITEM 3 -->
   <div class="slide">
     <img src="img/beneficio3.jpg">
-    <h3>Clientes directos a WhatsApp</h3>
-    <p>Sin intermediarios. Clientes listos para comprar llegan directo a ti.</p>
+    <h3>Clientes directos</h3>
+    <p>Recibe mensajes de personas interesadas listas para comprar.</p>
   </div>
 
-  <!-- ITEM 4 -->
   <div class="slide">
     <img src="img/beneficio4.jpg">
-    <h3>Más oportunidades de venta</h3>
-    <p>Cada visita puede convertirse en cliente. Más contactos, más ingresos.</p>
+    <h3>Más ventas</h3>
+    <p>Convierte visitas en clientes y aumenta tus ingresos constantemente.</p>
   </div>
 
 </div>
@@ -43,7 +231,6 @@
 
 </div>
 
-<!-- CTA -->
 <div class="cta">
   <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
     Quiero formar parte de NeXsv
@@ -51,3 +238,22 @@
 </div>
 
 </div>
+
+<footer>
+  <div class="footer-line"></div>
+  © 2026 NeXsv | 
+  <a href="terminos.html">Términos y condiciones</a>
+</footer>
+
+<script>
+function scrollSlider(direction){
+  const slider = document.getElementById("slider");
+  slider.scrollBy({
+    left: direction * 320,
+    behavior: "smooth"
+  });
+}
+</script>
+
+</body>
+</html>
