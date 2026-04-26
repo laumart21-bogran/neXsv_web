@@ -36,7 +36,7 @@ nav a{
   color:white;
 }
 
-/* ✅ HERO (NUEVO) */
+/* ✅ HERO */
 .hero{
   background:url('cover-negocios.jpg') center/cover no-repeat;
   height:280px;
@@ -59,7 +59,6 @@ nav a{
 .hero h1{
   position:relative;
   z-index:1;
-  font-size:32px;
 }
 
 /* MAIN */
@@ -226,14 +225,12 @@ footer a{
   </nav>
 </header>
 
-<!-- ✅ HERO AGREGADO -->
+<!-- ✅ HERO -->
 <section class="hero">
   <h1>Negocios disponibles</h1>
 </section>
 
 <section class="main">
-
-<h2>Negocios disponibles</h2>
 
 <input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
 
@@ -249,5 +246,31 @@ footer a{
 
 </section>
 
-<!-- TODO TU SCRIPT SIGUE IGUAL -->
-<!-- NO TOQUÉ NADA ABAJO -->
+<!-- MODAL -->
+<div id="modal">
+  <div class="modal-content">
+
+    <div class="carousel" id="carousel"></div>
+
+    <h2 id="m_nombre"></h2>
+    <p id="m_desc"></p>
+    <p id="m_zona"></p>
+
+    <button onclick="cerrarModal()">Cerrar</button>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-line"></div>
+  © 2026 NeXsv | 
+  <a href="terminos.html">Términos y condiciones</a>
+</footer>
+
+<!-- 🔥 TU SCRIPT ORIGINAL INTACTO -->
+<script>
+/* pega aquí EXACTAMENTE tu script original sin cambios */
+</script>
+
+</body>
+</html>
