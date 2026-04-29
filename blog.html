@@ -11,6 +11,7 @@ body{
   background:#f5f7fb;
 }
 
+/* HEADER */
 header{
   background:white;
   padding:12px 40px;
@@ -37,22 +38,47 @@ nav a{
   color:white;
 }
 
-.post{
+/* GRID BLOG */
+.blog-grid{
+  max-width:1100px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap:25px;
+}
+
+/* CARD */
+.blog-card{
   background:white;
-  margin:20px;
-  padding:20px;
-  border-radius:10px;
+  border-radius:12px;
+  overflow:hidden;
   cursor:pointer;
+  transition:0.3s;
 }
 
-.contenido{
-  display:none;
+.blog-card:hover{
+  transform:translateY(-5px);
 }
 
-.post.activo .contenido{
-  display:block;
+.blog-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
 }
 
+.blog-card-content{
+  padding:20px;
+}
+
+.blog-card h3{
+  margin:0 0 10px;
+}
+
+.blog-card p{
+  color:#555;
+}
+
+/* FOOTER */
 footer{
   text-align:center;
   padding:20px;
@@ -68,16 +94,12 @@ footer{
   background:#ddd;
   margin-bottom:15px;
 }
-
-footer a{
-  color:#2f4ea2;
-  text-decoration:none;
-}
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <header>
   <img src="logo.png">
 
@@ -96,22 +118,30 @@ footer a{
   </nav>
 </header>
 
-<div class="post" onclick="window.location.href='por-que-no-vendes.html'">
-<h3>¿Por qué no vendes?</h3>
+<!-- BLOG GRID -->
+<section class="blog-grid">
 
-<div class="contenido">
-<p>Tu problema no es el producto, es la visibilidad.</p>
-<p>Cuando estás frente a la audiencia correcta, las ventas suceden.</p>
+<!-- BLOG 1 -->
+<div class="blog-card" onclick="window.location.href='Blogs/por-que-no-vendes.html'">
+  <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
+  <div class="blog-card-content">
+    <h3>¿Por qué no vendes?</h3>
+    <p>Descubre qué está frenando tu negocio y cómo solucionarlo.</p>
+  </div>
 </div>
 
+<!-- BLOG 2 -->
+<div class="blog-card" onclick="window.location.href='Blogs/como-vender-en-whatsapp.html'">
+  <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28">
+  <div class="blog-card-content">
+    <h3>Cómo vender por WhatsApp</h3>
+    <p>Convierte conversaciones en ventas reales sin ser insistente.</p>
+  </div>
 </div>
 
-<script>
-function toggle(el){
-el.classList.toggle("activo");
-}
-</script>
+</section>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-line"></div>
   © 2026 NeXsv | 
