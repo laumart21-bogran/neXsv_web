@@ -13,15 +13,6 @@ body{
   background:#f5f7fb;
 }
 
-/* BARRA SUPERIOR */
-.top-bar{
-  background:#2f4ea2;
-  color:white;
-  text-align:center;
-  padding:10px;
-  font-size:14px;
-}
-
 /* HEADER */
 header{
   background:white;
@@ -65,14 +56,33 @@ nav a{
   margin:25px 0;
 }
 
-/* CAJA LEAD */
-.lead-box{
-  background:#eef2ff;
-  padding:25px;
-  border-radius:12px;
-  margin:30px 0;
+.blog-container h1{
   text-align:center;
 }
+
+.blog-container p{
+  font-size:16px;
+  color:#333;
+}
+
+/* SHARE */
+.share{
+  margin-top:30px;
+  display:flex;
+  gap:10px;
+}
+
+.share a{
+  text-decoration:none;
+  padding:10px 15px;
+  border-radius:6px;
+  color:white;
+  font-size:14px;
+}
+
+.fb{ background:#3b5998; }
+.wa{ background:#25D366; }
+.tw{ background:#1DA1F2; }
 
 /* CTA */
 .cta{
@@ -88,19 +98,6 @@ nav a{
   border-radius:8px;
   font-size:16px;
   cursor:pointer;
-}
-
-/* WHATSAPP FLOAT */
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  color:white;
-  padding:15px;
-  border-radius:50%;
-  font-size:20px;
-  text-decoration:none;
 }
 
 /* FOOTER */
@@ -124,14 +121,9 @@ footer{
 
 <body>
 
-<!-- BARRA -->
-<div class="top-bar">
-🚀 ¿Quieres más clientes? Escríbenos y te ayudamos
-</div>
-
 <!-- HEADER -->
 <header>
-  <img src="logo.png">
+  <img src="../logo.png">
 
   <nav>
     <a href="../index.html">Inicio</a>
@@ -152,50 +144,55 @@ footer{
 <section class="blog-container">
 
 <h1>¿Por qué no vendes?</h1>
-<p style="color:#666;">Descubre qué está frenando tu negocio</p>
+<p style="text-align:center; color:#666;">
+Descubre qué está frenando tu negocio y cómo solucionarlo
+</p>
 
 <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
 
 <p>
-Vendes poco… o peor aún, no vendes nada. Y lo más frustrante es que sientes que estás haciendo todo bien.
+Vendes poco o incluso nada, y lo más frustrante es que sientes que estás haciendo todo bien. Publicas en redes sociales, tienes buenos productos e incluso inviertes en publicidad. Sin embargo, los resultados no llegan.
 </p>
 
-<div class="lead-box">
-<h3>🎯 Diagnóstico GRATIS</h3>
-<p>Descubre exactamente qué está frenando tus ventas</p>
-<a href="https://wa.me/50377448261" target="_blank">
-<button>Quiero mi diagnóstico</button>
-</a>
-</div>
-
 <p>
-Muchos negocios fallan porque no tienen estrategia.
+La realidad es que vender no depende únicamente de lo que ofreces, sino de cómo lo comunicas. Sin una estrategia clara, sin un mensaje definido y sin entender a quién le hablas, las ventas se vuelven impredecibles.
 </p>
 
 <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f">
 
 <p>
-No se trata de vender más… se trata de vender mejor.
+Uno de los errores más comunes es querer venderle a todo el mundo. Cuando haces eso, tu mensaje pierde fuerza y no logras conectar con nadie. Las personas no compran productos, compran soluciones a sus problemas.
 </p>
-
-<hr>
-
-<h2>La solución</h2>
 
 <p>
-Define tu cliente, comunica beneficios y crea un sistema.
+Además, muchas marcas se enfocan en mostrar características en lugar de beneficios. Si el cliente no entiende cómo tu producto mejora su vida, simplemente no compra.
 </p>
 
+<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
+
+<p>
+Otro factor clave es la falta de un proceso de ventas. Muchos negocios dependen solo de responder mensajes sin dar seguimiento, sin resolver dudas y sin guiar al cliente hacia una decisión.
+</p>
+
+<p>
+Cuando defines a tu cliente ideal, comunicas beneficios claros y creas un sistema de ventas, todo cambia. Dejas de depender de la suerte y comienzas a generar resultados constantes.
+</p>
+
+<!-- SHARE -->
+<div class="share">
+  <a class="fb" href="#" target="_blank">Facebook</a>
+  <a class="wa" href="https://wa.me/?text=Descubre%20por%20qué%20no%20estás%20vendiendo" target="_blank">WhatsApp</a>
+  <a class="tw" href="#" target="_blank">Twitter</a>
+</div>
+
+<!-- CTA -->
 <div class="cta">
   <a href="https://wa.me/50377448261" target="_blank">
-    <button>Quiero vender más</button>
+    <button>Chatear con un asesor</button>
   </a>
 </div>
 
 </section>
-
-<!-- WHATSAPP -->
-<a class="whatsapp" href="https://wa.me/50377448261" target="_blank">💬</a>
 
 <!-- FOOTER -->
 <footer>
