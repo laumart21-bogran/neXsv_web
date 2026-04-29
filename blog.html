@@ -9,6 +9,7 @@ body{
   margin:0;
   font-family:Arial;
   background:#f5f7fb;
+  overflow-x:hidden;
 }
 
 /* HEADER */
@@ -36,54 +37,132 @@ nav a{
   color:white;
 }
 
-/* GRID BLOG */
-.blog-grid{
-  max-width:1100px;
-  margin:40px auto;
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-  gap:25px;
-}
-
-/* CARD */
-.blog-card{
-  background:white;
-  border-radius:12px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.blog-card:hover{
-  transform:translateY(-5px);
-}
-
-.blog-card img{
+/* SLIDER */
+.slider-container{
+  position:relative;
   width:100%;
-  height:200px;
+  height:80vh;
+  overflow:hidden;
+}
+
+.slider{
+  display:flex;
+  transition:0.5s ease;
+  height:100%;
+}
+
+.slide{
+  min-width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:white;
+  cursor:pointer;
+}
+
+.slide img{
+  width:100%;
+  height:65%;
   object-fit:cover;
 }
 
-.blog-card-content{
+/* TEXTO */
+.text{
   padding:20px;
+  text-align:center;
+  max-width:800px;
 }
 
-.blog-card h3{ margin:0 0 10px; }
+.text h2{
+  color:#2f4ea2;
+  margin-bottom:10px;
+}
 
-.blog-card p{ color:#555; }
+.text p{
+  color:#555;
+  font-size:16px;
+  line-height:1.6;
+}
+
+/* BOTÓN */
+.text a{
+  display:inline-block;
+  margin-top:15px;
+  background:#4CAF50;
+  color:white;
+  padding:10px 20px;
+  border-radius:8px;
+  text-decoration:none;
+}
+
+/* FLECHAS */
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:30px;
+  background:rgba(255,255,255,0.8);
+  border:none;
+  padding:10px 15px;
+  cursor:pointer;
+  border-radius:50%;
+  z-index:2;
+}
+
+.arrow:hover{
+  background:#4CAF50;
+  color:white;
+}
+
+.left{ left:20px; }
+.right{ right:20px; }
+
+/* DOTS */
+.dots{
+  position:absolute;
+  bottom:15px;
+  width:100%;
+  text-align:center;
+}
+
+.dot{
+  height:10px;
+  width:10px;
+  margin:5px;
+  background:#ccc;
+  display:inline-block;
+  border-radius:50%;
+  cursor:pointer;
+}
+
+.active{ background:#4CAF50; }
+
+/* CTA */
+.cta{
+  text-align:center;
+  padding:40px 20px;
+}
+
+.cta a{
+  background:#4CAF50;
+  color:white;
+  padding:14px 25px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:18px;
+}
 
 /* FOOTER */
 footer{
   text-align:center;
   padding:20px;
-  margin-top:40px;
   background:white;
   color:#555;
-  font-size:14px;
 }
 
 .footer-line{
-  width:100%;
   height:1px;
   background:#ddd;
   margin-bottom:15px;
@@ -93,7 +172,6 @@ footer{
 
 <body>
 
-<!-- HEADER -->
 <header>
   <img src="logo.png">
 
@@ -112,62 +190,121 @@ footer{
   </nav>
 </header>
 
-<!-- BLOG GRID -->
-<section class="blog-grid">
+<!-- SLIDER BLOG -->
+<div class="slider-container" id="sliderContainer">
 
-<!-- BLOG 1 -->
-<div class="blog-card" onclick="window.location.href='Blogs/por-que-no-vendes.html'">
-  <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
-  <div class="blog-card-content">
-    <h3>¿Por qué tu negocio no está vendiendo?</h3>
-    <p>Descubre por qué no estás generando ventas y qué está frenando tu crecimiento.</p>
+<button class="arrow left" onclick="mover(-1)">❮</button>
+
+<div class="slider" id="slider">
+
+  <!-- BLOG 1 -->
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
+    <div class="text">
+      <h2>¿Por qué tu negocio no está vendiendo?</h2>
+      <p>Descubre qué está frenando tus ventas y por qué el problema no es tu producto, sino la falta de visibilidad.</p>
+      <a href="Blogs/por-que-no-vendes.html">Leer más</a>
+    </div>
   </div>
+
+  <!-- BLOG 2 -->
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
+    <div class="text">
+      <h2>Cómo lograr ventas constantes</h2>
+      <p>No se trata de vender más, sino de aparecer donde los clientes ya están buscando.</p>
+      <a href="Blogs/ventas-constantes.html">Leer más</a>
+    </div>
+  </div>
+
+  <!-- BLOG 3 -->
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
+    <div class="text">
+      <h2>Errores que hacen invisible tu negocio</h2>
+      <p>Descubre por qué los clientes no te encuentran aunque tengas un buen producto.</p>
+      <a href="Blogs/errores-visibilidad.html">Leer más</a>
+    </div>
+  </div>
+
+  <!-- BLOG 4 -->
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+    <div class="text">
+      <h2>Por qué algunos negocios venden y otros no</h2>
+      <p>No siempre gana el mejor… gana el que aparece en el momento correcto.</p>
+      <a href="Blogs/negocios-que-si-venden.html">Leer más</a>
+    </div>
+  </div>
+
+  <!-- BLOG 5 -->
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
+    <div class="text">
+      <h2>Cómo empezar a recibir clientes reales</h2>
+      <p>Deja de esperar clientes y empieza a aparecer donde ya están buscando.</p>
+      <a href="Blogs/como-recibir-clientes.html">Leer más</a>
+    </div>
+  </div>
+
 </div>
 
-<!-- BLOG 2 -->
-<div class="blog-card" onclick="window.location.href='Blogs/ventas-constantes.html'">
-  <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
-  <div class="blog-card-content">
-    <h3>Cómo lograr ventas constantes</h3>
-    <p>El verdadero secreto no es vender más, es ser encontrado por los clientes correctos.</p>
-  </div>
+<button class="arrow right" onclick="mover(1)">❯</button>
+
+<div class="dots" id="dots"></div>
+
 </div>
 
-<!-- BLOG 3 -->
-<div class="blog-card" onclick="window.location.href='Blogs/errores-visibilidad.html'">
-  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
-  <div class="blog-card-content">
-    <h3>Errores que hacen invisible tu negocio</h3>
-    <p>Descubre por qué los clientes no te encuentran y cómo evitarlo.</p>
-  </div>
+<!-- CTA -->
+<div class="cta">
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
+    Quiero empezar a recibir clientes
+  </a>
 </div>
 
-<!-- BLOG 4 -->
-<div class="blog-card" onclick="window.location.href='Blogs/negocios-que-si-venden.html'">
-  <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
-  <div class="blog-card-content">
-    <h3>Por qué algunos negocios venden y otros no</h3>
-    <p>No siempre gana el mejor… gana el que aparece primero.</p>
-  </div>
-</div>
-
-<!-- BLOG 5 -->
-<div class="blog-card" onclick="window.location.href='Blogs/como-recibir-clientes.html'">
-  <img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
-  <div class="blog-card-content">
-    <h3>Cómo empezar a recibir clientes reales</h3>
-    <p>Deja de esperar clientes y empieza a aparecer donde ya están buscando.</p>
-  </div>
-</div>
-
-</section>
-
-<!-- FOOTER -->
 <footer>
   <div class="footer-line"></div>
   © 2026 NeXsv | 
   <a href="terminos.html">Términos y condiciones</a>
 </footer>
+
+<script>
+let index = 0;
+const slider = document.getElementById("slider");
+const total = slider.children.length;
+const dotsContainer = document.getElementById("dots");
+
+for(let i=0;i<total;i++){
+  const dot = document.createElement("span");
+  dot.classList.add("dot");
+  dot.onclick = () => goTo(i);
+  dotsContainer.appendChild(dot);
+}
+
+function actualizarDots(){
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach(d => d.classList.remove("active"));
+  dots[index].classList.add("active");
+}
+
+function mover(dir){
+  index += dir;
+  if(index < 0) index = total - 1;
+  if(index >= total) index = 0;
+  slider.style.transform = `translateX(-${index * 100}%)`;
+  actualizarDots();
+}
+
+function goTo(i){
+  index = i;
+  slider.style.transform = `translateX(-${index * 100}%)`;
+  actualizarDots();
+}
+
+setInterval(() => mover(1), 5000);
+
+actualizarDots();
+</script>
 
 </body>
 </html>
