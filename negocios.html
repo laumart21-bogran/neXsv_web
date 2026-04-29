@@ -2,23 +2,20 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>NeXsv - Negocios</title>
 
 <style>
 
-/* BASE TIPOGRÁFICA */
+/* BASE RESPONSIVE */
 html{
-  font-size:18px;
+  font-size:16px;
 }
 
 body{
   margin:0;
   font-family: Arial;
-  font-size:1.05rem;
-  line-height:1.5;
   background:#f5f7fb;
+  font-size:1rem;
   color:#333;
 }
 
@@ -135,7 +132,7 @@ nav a{
 }
 
 .card p{
-  font-size:0.95rem;
+  font-size:0.9rem;
   color:#555;
 }
 
@@ -219,14 +216,6 @@ footer a{
 /* MOBILE */
 @media(max-width:768px){
 
-  html{
-    font-size:19px;
-  }
-
-  body{
-    font-size:1.1rem;
-  }
-
   header{
     flex-direction:column;
     gap:10px;
@@ -235,7 +224,7 @@ footer a{
 
   nav a{
     margin-left:10px;
-    font-size:0.9rem;
+    font-size:0.85rem;
   }
 
   .main{
@@ -292,7 +281,6 @@ footer a{
 
 </section>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <div class="carousel" id="carousel"></div>
@@ -391,6 +379,7 @@ contenedor.innerHTML = html;
 }
 
 function abrirModal(data){
+
 fetch(ANALYTICS,{
 method:"POST",
 body:JSON.stringify({tipo:"vista", negocio:data.nombre})
@@ -403,10 +392,7 @@ document.getElementById("m_zona").innerText = "📍 " + data.zona;
 
 document.getElementById("carousel").innerHTML =
 data.images.map(i => `<img src="${i}">`).join("");
-}
 
-function cerrarModal(){
-document.getElementById("modal").style.display = "none";
 }
 
 function irWhatsApp(nombre,telefono){
@@ -415,6 +401,10 @@ method:"POST",
 body:JSON.stringify({tipo:"whatsapp", negocio:nombre})
 });
 window.open("https://wa.me/" + telefono, "_blank");
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display = "none";
 }
 
 function buscar(){
