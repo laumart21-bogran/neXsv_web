@@ -301,7 +301,25 @@ function goTo(i){
   actualizarDots();
 }
 
-setInterval(() => mover(1), 5000);
+/* AUTOPLAY OPTIMIZADO */
+let autoplay;
+
+function iniciarAutoplay(){
+  autoplay = setInterval(() => mover(1), 9000);
+}
+
+/* SOLO DESKTOP */
+if(window.innerWidth > 768){
+  iniciarAutoplay();
+
+  document.getElementById("sliderContainer").addEventListener("mouseenter", () => {
+    clearInterval(autoplay);
+  });
+
+  document.getElementById("sliderContainer").addEventListener("mouseleave", () => {
+    iniciarAutoplay();
+  });
+}
 
 actualizarDots();
 </script>
