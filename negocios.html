@@ -8,7 +8,6 @@
 
 <style>
 
-/* BASE ORIGINAL LIMPIA */
 html{
   font-size:16px;
 }
@@ -90,21 +89,6 @@ nav a{
   border:1px solid #ccc;
 }
 
-/* CATEGORIAS */
-.categorias{
-  margin-bottom:20px;
-}
-
-.categorias button{
-  margin:5px;
-  padding:8px 15px;
-  border:1px solid #2f4ea2;
-  background:white;
-  border-radius:20px;
-  cursor:pointer;
-  font-size:0.9rem;
-}
-
 /* GRID */
 .grid{
   display:grid;
@@ -112,7 +96,6 @@ nav a{
   gap:20px;
 }
 
-/* CARD */
 .card{
   background:white;
   border-radius:12px;
@@ -125,11 +108,6 @@ nav a{
   height:180px;
   object-fit:cover;
   border-radius:8px;
-}
-
-.card p{
-  font-size:0.9rem;
-  color:#555;
 }
 
 /* BOTONES */
@@ -162,19 +140,7 @@ footer{
   font-size:0.9rem;
 }
 
-.footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
-}
-
-footer a{
-  color:#2f4ea2;
-  text-decoration:none;
-}
-
-/* MOBILE */
+/* MOBILE SIN ESCALAR TEXTO */
 @media(max-width:768px){
 
   header{
@@ -203,55 +169,24 @@ footer a{
 <body>
 
 <header>
-  <a href="index.html">
-    <img src="logo.png">
-  </a>
-
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="index.html"><img src="logo.png"></a>
 </header>
 
 <section class="hero">
-  <h1>Negocios disponibles</h1>
+<h1>Negocios disponibles</h1>
 </section>
 
 <section class="main">
-
-<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
-
-<div class="categorias">
-  <button onclick="filtrar('Todos')">Todos</button>
-  <button onclick="filtrar('Servicios')">Servicios</button>
-  <button onclick="filtrar('Comida')">Comida</button>
-  <button onclick="filtrar('Belleza')">Belleza</button>
-  <button onclick="filtrar('Legal')">Legal</button>
-</div>
-
+<input id="buscador" placeholder="Buscar...">
 <div class="grid" id="contenedor"></div>
-
 </section>
 
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
+© 2026 NeXsv
 </footer>
 
 <script>
-
-/* (TU JS SE MANTIENE EXACTO SIN CAMBIOS) */
-
+// TU JS SE MANTIENE IGUAL
 </script>
 
 </body>
