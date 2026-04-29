@@ -5,10 +5,18 @@
 <title>NeXsv - Negocios</title>
 
 <style>
+
+/* BASE RESPONSIVE */
+html{
+  font-size:16px;
+}
+
 body{
   margin:0;
   font-family: Arial;
   background:#f5f7fb;
+  font-size:1rem;
+  color:#333;
 }
 
 /* HEADER */
@@ -27,6 +35,7 @@ nav a{
   color:#2f4ea2;
   margin-left:20px;
   text-decoration:none;
+  font-size:0.95rem;
 }
 
 .nav-btn{
@@ -34,6 +43,7 @@ nav a{
   padding:10px 15px;
   border-radius:8px;
   color:white;
+  font-size:0.95rem;
 }
 
 /* HERO */
@@ -59,6 +69,7 @@ nav a{
 .hero h1{
   position:relative;
   z-index:1;
+  font-size:2rem;
 }
 
 /* MAIN */
@@ -75,6 +86,7 @@ nav a{
   margin-bottom:20px;
   border-radius:10px;
   border:1px solid #ccc;
+  font-size:1rem;
 }
 
 /* CATEGORIAS */
@@ -89,11 +101,7 @@ nav a{
   background:white;
   border-radius:20px;
   cursor:pointer;
-}
-
-.categorias button:hover{
-  background:#2f4ea2;
-  color:white;
+  font-size:0.9rem;
 }
 
 /* GRID */
@@ -124,7 +132,7 @@ nav a{
 }
 
 .card p{
-  font-size:14px;
+  font-size:0.9rem;
   color:#555;
 }
 
@@ -142,6 +150,7 @@ nav a{
   border-radius:8px;
   text-decoration:none;
   color:white;
+  font-size:0.9rem;
 }
 
 .btn-w{ background:#4CAF50; }
@@ -189,7 +198,7 @@ footer{
   margin-top:40px;
   background:white;
   color:#555;
-  font-size:14px;
+  font-size:0.9rem;
 }
 
 .footer-line{
@@ -203,13 +212,40 @@ footer a{
   color:#2f4ea2;
   text-decoration:none;
 }
+
+/* MOBILE */
+@media(max-width:768px){
+
+  header{
+    flex-direction:column;
+    gap:10px;
+    padding:15px;
+  }
+
+  nav a{
+    margin-left:10px;
+    font-size:0.85rem;
+  }
+
+  .main{
+    padding:20px;
+  }
+
+  .hero h1{
+    font-size:1.5rem;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo.png">
+  <a href="index.html">
+    <img src="logo.png">
+  </a>
+
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
@@ -225,7 +261,6 @@ footer a{
   </nav>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <h1>Negocios disponibles</h1>
 </section>
@@ -246,7 +281,6 @@ footer a{
 
 </section>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <div class="carousel" id="carousel"></div>
@@ -292,14 +326,14 @@ return link;
 function renderizar(data){
 
 const contenedor = document.getElementById("contenedor");
-contenedor.innerHTML = "";
+
 DATA_MODAL = [];
 
-data.forEach(n => {
+const html = data.map(n => {
 
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 
-if((k["Publicado"] || "").toLowerCase() !== "si") return;
+if((k["Publicado"] || "").toLowerCase() !== "si") return "";
 
 const nombre = k["Nombre de tu negocio"] || "Negocio";
 const descripcion = k["Descripcion_final"] || "";
@@ -319,50 +353,36 @@ if(!img1) img1 = "https://via.placeholder.com/300x150";
 
 const images = [img1,img2,img3].filter(i=>i);
 
-/* guardar data segura */
 DATA_MODAL.push({nombre,descripcion,zona,images});
 
 const index = DATA_MODAL.length - 1;
 
-const card = `
+return `
 <div class="card">
-
-<img src="${img1}">
-
+<img src="${img1}" loading="lazy">
 <h3>${nombre}</h3>
-
-<p><strong>📍</strong> ${zonaHTML}</p>
-
+<p>📍 ${zonaHTML}</p>
 <p>${descripcion.substring(0,80)}...</p>
 
 <div class="botones">
-
-<a href="#" onclick="event.stopPropagation(); irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">
-WhatsApp
-</a>
-
-<button onclick="event.stopPropagation(); abrirModal(DATA_MODAL[${index}])" class="btn btn-v">
-Ver más
-</button>
-
+<a href="#" onclick="event.stopPropagation(); irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">WhatsApp</a>
+<button onclick="event.stopPropagation(); abrirModal(DATA_MODAL[${index}])" class="btn btn-v">Ver más</button>
 </div>
 
 </div>
 `;
 
-contenedor.innerHTML += card;
+}).join("");
 
-});
+contenedor.innerHTML = html;
+
 }
 
 function abrirModal(data){
 
 fetch(ANALYTICS,{
 method:"POST",
-body:JSON.stringify({
-  tipo:"vista",
-  negocio:data.nombre
-})
+body:JSON.stringify({tipo:"vista", negocio:data.nombre})
 });
 
 document.getElementById("modal").style.display = "flex";
@@ -376,15 +396,10 @@ data.images.map(i => `<img src="${i}">`).join("");
 }
 
 function irWhatsApp(nombre,telefono){
-
 fetch(ANALYTICS,{
 method:"POST",
-body:JSON.stringify({
-  tipo:"whatsapp",
-  negocio:nombre
-})
+body:JSON.stringify({tipo:"whatsapp", negocio:nombre})
 });
-
 window.open("https://wa.me/" + telefono, "_blank");
 }
 
@@ -394,27 +409,22 @@ document.getElementById("modal").style.display = "none";
 
 function buscar(){
 const texto = document.getElementById("buscador").value.toLowerCase();
-
 const filtrados = dataGlobal.filter(n => {
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
 });
-
 renderizar(filtrados);
 }
 
 function filtrar(cat){
-
 if(cat === "Todos"){
   renderizar(dataGlobal);
   return;
 }
-
 const filtrados = dataGlobal.filter(n => {
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 return (k["Categoría de tu negocio"] || "").toLowerCase() === cat.toLowerCase();
 });
-
 renderizar(filtrados);
 }
 
