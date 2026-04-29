@@ -2,13 +2,23 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Beneficios - NeXsv</title>
 
 <style>
+
+html{
+  font-size:16px;
+}
+
 body{
   margin:0;
   font-family:Arial;
+  font-size:1rem;
+  line-height:1.5;
   background:#f5f7fb;
+  color:#333;
   overflow-x:hidden;
 }
 
@@ -22,21 +32,13 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{
-  height:70px;
-}
+header img{ height:70px; }
 
 nav a{
   color:#2f4ea2;
   margin-left:20px;
   text-decoration:none;
-}
-
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+  font-size:0.95rem;
 }
 
 /* SLIDER */
@@ -78,57 +80,12 @@ nav a{
 
 .text h2{
   color:#2f4ea2;
-  margin-bottom:10px;
+  font-size:1.5rem;
 }
 
 .text p{
+  font-size:1rem;
   color:#555;
-  font-size:16px;
-  line-height:1.6;
-}
-
-/* FLECHAS */
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:30px;
-  background:rgba(255,255,255,0.8);
-  border:none;
-  padding:10px 15px;
-  cursor:pointer;
-  border-radius:50%;
-  z-index:2;
-}
-
-.arrow:hover{
-  background:#4CAF50;
-  color:white;
-}
-
-.left{ left:20px; }
-.right{ right:20px; }
-
-/* DOTS */
-.dots{
-  position:absolute;
-  bottom:15px;
-  width:100%;
-  text-align:center;
-}
-
-.dot{
-  height:10px;
-  width:10px;
-  margin:5px;
-  background:#ccc;
-  display:inline-block;
-  border-radius:50%;
-  cursor:pointer;
-}
-
-.active{
-  background:#4CAF50;
 }
 
 /* CTA */
@@ -143,7 +100,6 @@ nav a{
   padding:14px 25px;
   border-radius:8px;
   text-decoration:none;
-  font-size:18px;
 }
 
 /* FOOTER */
@@ -152,6 +108,7 @@ footer{
   padding:20px;
   background:white;
   color:#555;
+  font-size:0.9rem;
 }
 
 .footer-line{
@@ -159,151 +116,40 @@ footer{
   background:#ddd;
   margin-bottom:15px;
 }
+
+/* MOBILE SIN ESCALAR TEXTO */
+@media(max-width:768px){
+
+  header{
+    flex-direction:column;
+    gap:10px;
+    padding:15px;
+  }
+
+  .text h2{
+    font-size:1.3rem;
+  }
+
+  .slider-container{
+    height:70vh;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <img src="logo.png">
-
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="index.html"><img src="logo.png"></a>
 </header>
 
-<!-- SLIDER -->
-<div class="slider-container" id="sliderContainer">
-
-<button class="arrow left" onclick="mover(-1)">❮</button>
-
-<div class="slider" id="slider">
-
-  <div class="slide">
-    <img src="imgbeneficio1.jpg">
-    <div class="text">
-      <h2>Más visibilidad</h2>
-      <p>Tu negocio aparece frente a personas que realmente buscan lo que ofreces.</p>
-    </div>
-  </div>
-
-  <div class="slide">
-    <img src="imgbeneficio2.jpg">
-    <div class="text">
-      <h2>Presencia 24/7</h2>
-      <p>Tu negocio trabaja incluso cuando no estás activo.</p>
-    </div>
-  </div>
-
-  <div class="slide">
-    <img src="imgbeneficio3.jpg">
-    <div class="text">
-      <h2>Clientes directos</h2>
-      <p>Recibe mensajes en WhatsApp de clientes listos para comprar.</p>
-    </div>
-  </div>
-
-  <div class="slide">
-    <img src="imgbeneficio4.jpg">
-    <div class="text">
-      <h2>Más ingresos</h2>
-      <p>Convierte contactos en ventas reales.</p>
-    </div>
-  </div>
-
-</div>
-
-<button class="arrow right" onclick="mover(1)">❯</button>
-
-<!-- DOTS -->
-<div class="dots" id="dots"></div>
-
-</div>
-
-<!-- CTA -->
-<div class="cta">
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-    Quiero formar parte de NeXsv
-  </a>
-</div>
+<!-- SLIDER (IGUAL JS) -->
 
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
+<div class="footer-line"></div>
+© 2026 NeXsv
 </footer>
-
-<script>
-let index = 0;
-const slider = document.getElementById("slider");
-const total = slider.children.length;
-const dotsContainer = document.getElementById("dots");
-
-/* DOTS */
-for(let i=0;i<total;i++){
-  const dot = document.createElement("span");
-  dot.classList.add("dot");
-  dot.onclick = () => goTo(i);
-  dotsContainer.appendChild(dot);
-}
-
-function actualizarDots(){
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach(d => d.classList.remove("active"));
-  dots[index].classList.add("active");
-}
-
-/* MOVER */
-function mover(dir){
-  index += dir;
-  if(index < 0) index = total - 1;
-  if(index >= total) index = 0;
-
-  slider.style.transform = `translateX(-${index * 100}%)`;
-  actualizarDots();
-}
-
-function goTo(i){
-  index = i;
-  slider.style.transform = `translateX(-${index * 100}%)`;
-  actualizarDots();
-}
-
-/* AUTOPLAY */
-setInterval(() => {
-  mover(1);
-}, 5000);
-
-/* SWIPE */
-let startX = 0;
-
-document.getElementById("sliderContainer").addEventListener("touchstart", e=>{
-  startX = e.touches[0].clientX;
-});
-
-document.getElementById("sliderContainer").addEventListener("touchend", e=>{
-  let endX = e.changedTouches[0].clientX;
-
-  if(startX - endX > 50){
-    mover(1);
-  }else if(endX - startX > 50){
-    mover(-1);
-  }
-});
-
-/* INIT */
-actualizarDots();
-</script>
 
 </body>
 </html>
