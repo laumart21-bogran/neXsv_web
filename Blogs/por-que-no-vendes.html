@@ -84,22 +84,6 @@ nav a{
 .wa{ background:#25D366; }
 .tw{ background:#1DA1F2; }
 
-/* CTA */
-.cta{
-  text-align:center;
-  margin-top:40px;
-}
-
-.cta button{
-  padding:15px 25px;
-  background:#4CAF50;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-size:16px;
-  cursor:pointer;
-}
-
 /* FOOTER */
 footer{
   text-align:center;
@@ -115,6 +99,64 @@ footer{
   height:1px;
   background:#ddd;
   margin-bottom:15px;
+}
+
+/* ================= CHAT WIDGET ================= */
+
+/* BOTÓN */
+.chat-button{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#4CAF50;
+  color:white;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:22px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* CAJA */
+.chat-box{
+  position:fixed;
+  bottom:85px;
+  right:20px;
+  width:300px;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 4px 25px rgba(0,0,0,0.25);
+  display:none;
+  overflow:hidden;
+}
+
+/* HEADER CHAT */
+.chat-header{
+  background:#4CAF50;
+  color:white;
+  padding:12px;
+  font-weight:bold;
+}
+
+/* BODY */
+.chat-body{
+  padding:15px;
+}
+
+/* BOTÓN INTERNO */
+.chat-body a{
+  display:block;
+  margin-top:12px;
+  background:#4CAF50;
+  color:white;
+  text-align:center;
+  padding:10px;
+  border-radius:8px;
+  text-decoration:none;
 }
 </style>
 </head>
@@ -180,16 +222,10 @@ Cuando defines a tu cliente ideal, comunicas beneficios claros y creas un sistem
 
 <!-- SHARE -->
 <div class="share">
-  <a class="fb" href="#" target="_blank">Facebook</a>
+  <a class="fb" href="#">Facebook</a>
   <a class="wa" href="https://wa.me/?text=Descubre%20por%20qué%20no%20estás%20vendiendo" target="_blank">WhatsApp</a>
-  <a class="tw" href="#" target="_blank">Twitter</a>
+  <a class="tw" href="#">Twitter</a>
 </div>
-
-<!-- CTA -->
-<a href="https://wa.me/50377448261" target="_blank" class="chat-fixed">
-  <div class="chat-icon">💬</div>
-  <span>Hablar con un asesor</span>
-</a>
 
 </section>
 
@@ -199,6 +235,40 @@ Cuando defines a tu cliente ideal, comunicas beneficios claros y creas un sistem
   © 2026 NeXsv | 
   <a href="../terminos.html">Términos y condiciones</a>
 </footer>
+
+<!-- CHAT BOTÓN -->
+<div class="chat-button" onclick="toggleChat()">
+  💬
+</div>
+
+<!-- CHAT CAJA -->
+<div class="chat-box" id="chatBox">
+
+  <div class="chat-header">
+    NeXsv
+  </div>
+
+  <div class="chat-body">
+    <p>Hola, ¿te gustaría mejorar tus ventas?</p>
+
+    <a href="https://wa.me/50377448261" target="_blank">
+      Hablar con un asesor
+    </a>
+  </div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+function toggleChat(){
+  var chat = document.getElementById("chatBox");
+  if(chat.style.display === "block"){
+    chat.style.display = "none";
+  } else {
+    chat.style.display = "block";
+  }
+}
+</script>
 
 </body>
 </html>
