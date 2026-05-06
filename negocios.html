@@ -6,17 +6,11 @@
 
 <style>
 
-/* BASE RESPONSIVE */
-html{
-  font-size:16px;
-}
-
+/* BASE */
 body{
   margin:0;
   font-family: Arial;
   background:#f5f7fb;
-  font-size:1rem;
-  color:#333;
 }
 
 /* HEADER */
@@ -35,7 +29,6 @@ nav a{
   color:#2f4ea2;
   margin-left:20px;
   text-decoration:none;
-  font-size:0.95rem;
 }
 
 .nav-btn{
@@ -43,7 +36,6 @@ nav a{
   padding:10px 15px;
   border-radius:8px;
   color:white;
-  font-size:0.95rem;
 }
 
 /* HERO */
@@ -54,10 +46,8 @@ nav a{
   align-items:center;
   justify-content:center;
   color:white;
-  text-align:center;
   position:relative;
 }
-
 .hero::before{
   content:"";
   position:absolute;
@@ -65,11 +55,9 @@ nav a{
   height:100%;
   background:rgba(0,0,0,0.45);
 }
-
 .hero h1{
   position:relative;
   z-index:1;
-  font-size:2rem;
 }
 
 /* MAIN */
@@ -86,22 +74,6 @@ nav a{
   margin-bottom:20px;
   border-radius:10px;
   border:1px solid #ccc;
-  font-size:1rem;
-}
-
-/* CATEGORIAS */
-.categorias{
-  margin-bottom:20px;
-}
-
-.categorias button{
-  margin:5px;
-  padding:8px 15px;
-  border:1px solid #2f4ea2;
-  background:white;
-  border-radius:20px;
-  cursor:pointer;
-  font-size:0.9rem;
 }
 
 /* GRID */
@@ -113,15 +85,11 @@ nav a{
 
 /* CARD */
 .card{
+  position:relative;
   background:white;
   border-radius:12px;
   padding:15px;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:0.2s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
 }
 
 .card img{
@@ -131,9 +99,16 @@ nav a{
   border-radius:8px;
 }
 
-.card p{
-  font-size:0.9rem;
-  color:#555;
+/* BADGE */
+.badge{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#ff5722;
+  color:white;
+  padding:5px 10px;
+  border-radius:6px;
+  font-size:12px;
 }
 
 /* BOTONES */
@@ -150,7 +125,6 @@ nav a{
   border-radius:8px;
   text-decoration:none;
   color:white;
-  font-size:0.9rem;
 }
 
 .btn-w{ background:#4CAF50; }
@@ -177,18 +151,23 @@ nav a{
   max-width:500px;
 }
 
+/* SWIPE */
 .carousel{
   display:flex;
   overflow-x:auto;
+  scroll-snap-type:x mandatory;
   gap:10px;
-  margin-bottom:15px;
 }
 
-.carousel img{
+.slide{
   min-width:100%;
+  scroll-snap-align:start;
+}
+
+.slide img{
+  width:100%;
   height:220px;
   object-fit:cover;
-  border-radius:8px;
 }
 
 /* FOOTER */
@@ -198,19 +177,12 @@ footer{
   margin-top:40px;
   background:white;
   color:#555;
-  font-size:0.9rem;
 }
 
 .footer-line{
-  width:100%;
   height:1px;
   background:#ddd;
   margin-bottom:15px;
-}
-
-footer a{
-  color:#2f4ea2;
-  text-decoration:none;
 }
 
 </style>
@@ -219,22 +191,12 @@ footer a{
 <body>
 
 <header>
-  <a href="index.html">
-    <img src="logo.png">
-  </a>
-
+  <img src="logo.png">
   <nav>
     <a href="index.html">Inicio</a>
     <a href="como.html">Cómo funciona</a>
     <a href="beneficios.html">Beneficios</a>
     <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
-
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
   </nav>
 </header>
 
@@ -246,18 +208,11 @@ footer a{
 
 <input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
 
-<div class="categorias">
-  <button onclick="filtrar('Todos')">Todos</button>
-  <button onclick="filtrar('Servicios')">Servicios</button>
-  <button onclick="filtrar('Comida')">Comida</button>
-  <button onclick="filtrar('Belleza')">Belleza</button>
-  <button onclick="filtrar('Legal')">Legal</button>
-</div>
-
 <div class="grid" id="contenedor"></div>
 
 </section>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
     <div class="carousel" id="carousel"></div>
@@ -270,40 +225,32 @@ footer a{
 
 <footer>
   <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
+  © 2026 NeXsv
 </footer>
 
 <script>
 
-/* ✅ USA SOLO ESTA URL (LA CORRECTA) */
 const url = "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
 let dataGlobal = [];
 let DATA_MODAL = [];
 
-/* 🔥 FETCH CON PROTECCIÓN */
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  console.log("DATA OK:", data);
+
+  /* ORDEN POR PRIORIDAD */
+  data.sort((a,b)=> (b["Prioridad"]||0) - (a["Prioridad"]||0));
+
   dataGlobal = data;
   renderizar(data);
-})
-.catch(err => {
-  console.error("ERROR FETCH:", err);
 });
 
-/* FUNCIONES */
+/* DRIVE */
 function convertirDrive(link){
-if(link && link.includes("drive.google.com")){
-  let match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  if(!match){match = link.match(/id=([a-zA-Z0-9_-]+)/);}
-  if(match){
-    return `https://drive.google.com/uc?export=view&id=${match[1]}`;
-  }
-}
-return link;
+  if(!link) return "";
+  let id = link.match(/[-\w]{25,}/);
+  return id ? `https://drive.google.com/uc?export=view&id=${id[0]}` : link;
 }
 
 function renderizar(data){
@@ -311,39 +258,53 @@ function renderizar(data){
 const contenedor = document.getElementById("contenedor");
 DATA_MODAL = [];
 
-const html = data.map(n => {
+contenedor.innerHTML = data.map(n => {
 
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 
 if((k["Publicado"] || "").toLowerCase().trim() !== "si") return "";
 
-const nombre = k["Nombre de tu negocio"] || "Negocio";
+const nombre = k["Nombre de tu negocio"] || "";
 const descripcion = k["Descripcion_final"] || "";
 const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
 const zona = k["¿En qué zona resides?"] || "";
-const ubicacionLink = k["Ubicación del Negocio (Link de Google Maps)"] || "";
+const ubicacion = k["Ubicación del Negocio (Link de Google Maps)"] || "";
 
-const zonaHTML = ubicacionLink
-? `<a href="${ubicacionLink}" target="_blank">${zona}</a>`
-: zona;
+/* IMAGENES */
+let img1 = convertirDrive(k["Imagen_final"]);
+let img2 = convertirDrive(k["Imagen2"]);
+let img3 = convertirDrive(k["Imagen3"]);
 
-let img1 = convertirDrive(k["Imagen_final"] || "");
 if(!img1) img1 = "https://via.placeholder.com/300x150";
 
-const images = [img1];
+const images = [img1,img2,img3].filter(i=>i);
+
+/* MAPS */
+const zonaHTML = ubicacion
+? `<a href="${ubicacion}" target="_blank">📍 ${zona}</a>`
+: `📍 ${zona}`;
+
+/* BADGE */
+const badge = k["Recomendado"] === "si"
+? `<div class="badge">🔥 Recomendado</div>`
+: "";
 
 DATA_MODAL.push({nombre,descripcion,zona,images});
 const index = DATA_MODAL.length - 1;
 
 return `
 <div class="card">
+
+${badge}
+
 <img src="${img1}">
+
 <h3>${nombre}</h3>
-<p>📍 ${zonaHTML}</p>
+<p>${zonaHTML}</p>
 <p>${descripcion.substring(0,80)}...</p>
 
 <div class="botones">
-<a href="#" onclick="irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">WhatsApp</a>
+<a href="#" onclick="irWhatsApp('${telefono}')" class="btn btn-w">WhatsApp</a>
 <button onclick="abrirModal(DATA_MODAL[${index}])" class="btn btn-v">Ver más</button>
 </div>
 
@@ -352,44 +313,38 @@ return `
 
 }).join("");
 
-contenedor.innerHTML = html;
-
 }
 
 function abrirModal(data){
+
 document.getElementById("modal").style.display = "flex";
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = "📍 " + data.zona;
+document.getElementById("m_zona").innerText = data.zona;
 
 document.getElementById("carousel").innerHTML =
-data.images.map(i => `<img src="${i}">`).join("");
+data.images.map(i => `
+<div class="slide">
+<img src="${i}">
+</div>
+`).join("");
+
 }
 
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
-function irWhatsApp(nombre,telefono){
+function irWhatsApp(telefono){
 window.open("https://wa.me/" + telefono, "_blank");
 }
 
 function buscar(){
 const texto = document.getElementById("buscador").value.toLowerCase();
-const filtrados = dataGlobal.filter(n => {
+renderizar(dataGlobal.filter(n=>{
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
-});
-renderizar(filtrados);
-}
-
-function filtrar(cat){
-if(cat === "Todos"){ renderizar(dataGlobal); return; }
-const filtrados = dataGlobal.filter(n => {
-const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
-return (k["Categoría de tu negocio"] || "").toLowerCase() === cat.toLowerCase();
-});
-renderizar(filtrados);
+}));
 }
 
 </script>
