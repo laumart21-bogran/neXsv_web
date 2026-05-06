@@ -213,29 +213,6 @@ footer a{
   text-decoration:none;
 }
 
-/* MOBILE */
-@media(max-width:768px){
-
-  header{
-    flex-direction:column;
-    gap:10px;
-    padding:15px;
-  }
-
-  nav a{
-    margin-left:10px;
-    font-size:0.85rem;
-  }
-
-  .main{
-    padding:20px;
-  }
-
-  .hero h1{
-    font-size:1.5rem;
-  }
-}
-
 </style>
 </head>
 
@@ -299,19 +276,25 @@ footer a{
 
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbzF0bM2tWAxX2lTgBP-6WnkJeV2kohQHPVV4FLubDH5NENFUgFH_Vs7ufepbyJ6NXa4/exec";
-const ANALYTICS = url;
+/* ✅ USA SOLO ESTA URL (LA CORRECTA) */
+const url = "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
 let dataGlobal = [];
 let DATA_MODAL = [];
 
+/* 🔥 FETCH CON PROTECCIÓN */
 fetch(url)
 .then(res => res.json())
 .then(data => {
+  console.log("DATA OK:", data);
   dataGlobal = data;
   renderizar(data);
+})
+.catch(err => {
+  console.error("ERROR FETCH:", err);
 });
 
+/* FUNCIONES */
 function convertirDrive(link){
 if(link && link.includes("drive.google.com")){
   let match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -326,14 +309,13 @@ return link;
 function renderizar(data){
 
 const contenedor = document.getElementById("contenedor");
-
 DATA_MODAL = [];
 
 const html = data.map(n => {
 
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 
-if((k["Publicado"] || "").toLowerCase() !== "si") return "";
+if((k["Publicado"] || "").toLowerCase().trim() !== "si") return "";
 
 const nombre = k["Nombre de tu negocio"] || "Negocio";
 const descripcion = k["Descripcion_final"] || "";
@@ -342,31 +324,27 @@ const zona = k["¿En qué zona resides?"] || "";
 const ubicacionLink = k["Ubicación del Negocio (Link de Google Maps)"] || "";
 
 const zonaHTML = ubicacionLink
-? `<a href="${ubicacionLink}" target="_blank" style="color:#2f4ea2; font-weight:bold;">${zona}</a>`
+? `<a href="${ubicacionLink}" target="_blank">${zona}</a>`
 : zona;
 
 let img1 = convertirDrive(k["Imagen_final"] || "");
-let img2 = convertirDrive(k["Imagen2"] || "");
-let img3 = convertirDrive(k["Imagen3"] || "");
-
 if(!img1) img1 = "https://via.placeholder.com/300x150";
 
-const images = [img1,img2,img3].filter(i=>i);
+const images = [img1];
 
 DATA_MODAL.push({nombre,descripcion,zona,images});
-
 const index = DATA_MODAL.length - 1;
 
 return `
 <div class="card">
-<img src="${img1}" loading="lazy">
+<img src="${img1}">
 <h3>${nombre}</h3>
 <p>📍 ${zonaHTML}</p>
 <p>${descripcion.substring(0,80)}...</p>
 
 <div class="botones">
-<a href="#" onclick="event.stopPropagation(); irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">WhatsApp</a>
-<button onclick="event.stopPropagation(); abrirModal(DATA_MODAL[${index}])" class="btn btn-v">Ver más</button>
+<a href="#" onclick="irWhatsApp('${nombre}','${telefono}')" class="btn btn-w">WhatsApp</a>
+<button onclick="abrirModal(DATA_MODAL[${index}])" class="btn btn-v">Ver más</button>
 </div>
 
 </div>
@@ -379,12 +357,6 @@ contenedor.innerHTML = html;
 }
 
 function abrirModal(data){
-
-fetch(ANALYTICS,{
-method:"POST",
-body:JSON.stringify({tipo:"vista", negocio:data.nombre})
-});
-
 document.getElementById("modal").style.display = "flex";
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
@@ -392,19 +364,14 @@ document.getElementById("m_zona").innerText = "📍 " + data.zona;
 
 document.getElementById("carousel").innerHTML =
 data.images.map(i => `<img src="${i}">`).join("");
-
-}
-
-function irWhatsApp(nombre,telefono){
-fetch(ANALYTICS,{
-method:"POST",
-body:JSON.stringify({tipo:"whatsapp", negocio:nombre})
-});
-window.open("https://wa.me/" + telefono, "_blank");
 }
 
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
+}
+
+function irWhatsApp(nombre,telefono){
+window.open("https://wa.me/" + telefono, "_blank");
 }
 
 function buscar(){
@@ -417,10 +384,7 @@ renderizar(filtrados);
 }
 
 function filtrar(cat){
-if(cat === "Todos"){
-  renderizar(dataGlobal);
-  return;
-}
+if(cat === "Todos"){ renderizar(dataGlobal); return; }
 const filtrados = dataGlobal.filter(n => {
 const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
 return (k["Categoría de tu negocio"] || "").toLowerCase() === cat.toLowerCase();
