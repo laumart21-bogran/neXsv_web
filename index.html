@@ -6,11 +6,17 @@
 
 <title>NeXsv</title>
 
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 
-/* =========================
+/* ========================================
 RESET
-========================= */
+======================================== */
 
 *{
 margin:0;
@@ -19,26 +25,57 @@ box-sizing:border-box;
 scroll-behavior:smooth;
 }
 
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
 body{
-font-family:Arial,sans-serif;
-background:#f5f7fb;
-color:#1d1c4b;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
 overflow-x:hidden;
 }
 
-/* =========================
+/* ========================================
+HEADER
+======================================== */
+
+.top-blur{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:90px;
+background:rgba(255,255,255,.72);
+backdrop-filter:blur(12px);
+z-index:999;
+border-bottom:1px solid rgba(255,255,255,.5);
+}
+
+/* ========================================
 HERO
-========================= */
+======================================== */
 
 .hero{
 width:100%;
-min-height:85vh;
+min-height:92vh;
+
 background:
-linear-gradient(rgba(10,10,30,.65),rgba(10,10,30,.65)),
+linear-gradient(
+rgba(9,28,61,.78),
+rgba(9,28,61,.82)
+),
 url('cover-index.jpg') center/cover;
+
 display:flex;
 align-items:center;
-padding:80px;
+padding:90px 60px;
 position:relative;
 overflow:hidden;
 }
@@ -48,67 +85,93 @@ content:"";
 position:absolute;
 width:500px;
 height:500px;
-background:rgba(252,145,2,.15);
+background:rgba(25,194,198,.18);
 filter:blur(120px);
 top:-100px;
 right:-100px;
 border-radius:50%;
 }
 
+.hero::after{
+content:"";
+position:absolute;
+width:350px;
+height:350px;
+background:rgba(247,197,49,.12);
+filter:blur(100px);
+bottom:-120px;
+left:-80px;
+border-radius:50%;
+}
+
 .hero-content{
 position:relative;
 z-index:2;
-max-width:650px;
+max-width:700px;
 animation:fadeUp 1s ease;
 }
 
+.hero-logo{
+width:230px;
+margin-bottom:30px;
+}
+
 .hero h1{
-font-size:64px;
-line-height:1.1;
-margin-bottom:25px;
-color:white;
+font-size:68px;
+line-height:1.05;
 font-weight:800;
+color:white;
+margin-bottom:25px;
+letter-spacing:-2px;
 }
 
 .hero p{
 font-size:22px;
-line-height:1.7;
-color:rgba(255,255,255,.9);
-margin-bottom:35px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+margin-bottom:40px;
+max-width:650px;
 }
 
-/* =========================
+/* ========================================
 BOTONES
-========================= */
+======================================== */
 
 .hero-buttons{
 display:flex;
 flex-wrap:wrap;
-gap:15px;
+gap:18px;
 }
 
 .btn{
 display:inline-flex;
 align-items:center;
 justify-content:center;
-padding:16px 28px;
-border-radius:16px;
+padding:17px 30px;
+border-radius:18px;
 text-decoration:none;
 font-weight:700;
-transition:.3s;
+transition:.35s;
 font-size:16px;
 }
 
 .btn-primary{
-background:#fc9102;
-color:white;
-box-shadow:0 10px 25px rgba(252,145,2,.35);
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+color:#1D2A3A;
+
+box-shadow:
+0 15px 35px rgba(247,197,49,.28);
 }
 
 .btn-secondary{
-background:rgba(255,255,255,.1);
+background:rgba(255,255,255,.12);
 backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,.2);
+border:1px solid rgba(255,255,255,.18);
 color:white;
 }
 
@@ -116,80 +179,95 @@ color:white;
 transform:translateY(-4px);
 }
 
-/* =========================
+/* ========================================
 SECCIONES
-========================= */
+======================================== */
+
+.section{
+padding:100px 20px;
+position:relative;
+}
 
 .container{
 max-width:1200px;
 margin:auto;
-padding:0 20px;
-}
-
-.section{
-padding:90px 20px;
 }
 
 .section-center{
 text-align:center;
 }
 
-.section-box{
-background:white;
-padding:40px;
-border-radius:28px;
-box-shadow:0 10px 35px rgba(0,0,0,.06);
-margin-top:35px;
-}
-
-/* =========================
-TEXTOS
-========================= */
-
-h2{
-font-size:46px;
+.section h2{
+font-size:52px;
+line-height:1.15;
 font-weight:800;
-margin-bottom:20px;
-color:#1d1c4b;
+margin-bottom:25px;
+color:var(--primary);
+letter-spacing:-1px;
 }
 
 .section p{
 font-size:18px;
-line-height:1.8;
-color:#555;
+line-height:1.9;
+color:#5d6677;
 }
 
-/* =========================
+/* ========================================
+BOX
+======================================== */
+
+.section-box{
+margin-top:45px;
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(14px);
+padding:40px;
+border-radius:32px;
+
+box-shadow:
+0 10px 40px rgba(0,0,0,.06);
+
+border:1px solid rgba(255,255,255,.6);
+}
+
+.section-box p{
+margin-bottom:14px;
+font-weight:500;
+}
+
+/* ========================================
 GRID
-========================= */
+======================================== */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:30px;
-margin-top:40px;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:32px;
+margin-top:50px;
 }
 
-/* =========================
+/* ========================================
 CARDS
-========================= */
+======================================== */
 
 .card{
 background:white;
-padding:35px;
-border-radius:28px;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-transition:.35s;
+padding:38px;
+border-radius:30px;
 position:relative;
 overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.4s;
 }
 
 .card::before{
 content:"";
 position:absolute;
-width:140px;
-height:140px;
-background:rgba(252,145,2,.08);
+width:160px;
+height:160px;
+background:rgba(25,194,198,.08);
 border-radius:50%;
 top:-50px;
 right:-50px;
@@ -197,12 +275,15 @@ right:-50px;
 
 .card:hover{
 transform:translateY(-10px);
-box-shadow:0 20px 45px rgba(0,0,0,.12);
+box-shadow:
+0 20px 50px rgba(0,0,0,.12);
 }
 
 .card h3{
-font-size:26px;
-margin-bottom:15px;
+font-size:28px;
+margin-bottom:18px;
+font-weight:700;
+color:var(--primary);
 position:relative;
 z-index:2;
 }
@@ -212,32 +293,36 @@ position:relative;
 z-index:2;
 }
 
-/* =========================
+/* ========================================
 TESTIMONIOS
-========================= */
+======================================== */
 
 .testimonial{
 background:white;
-padding:35px;
-border-radius:28px;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-position:relative;
-transition:.3s;
-overflow:hidden;
-}
+padding:40px;
+border-radius:30px;
 
-.testimonial:hover{
-transform:translateY(-8px);
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.35s;
 }
 
 .testimonial::before{
 content:"“";
 position:absolute;
-top:-20px;
-left:20px;
 font-size:120px;
-color:rgba(252,145,2,.12);
-font-weight:bold;
+top:-30px;
+left:18px;
+color:rgba(25,194,198,.1);
+font-weight:800;
+}
+
+.testimonial:hover{
+transform:translateY(-8px);
 }
 
 .testimonial p,
@@ -246,82 +331,80 @@ position:relative;
 z-index:2;
 }
 
-/* =========================
+/* ========================================
 PLANES
-========================= */
+======================================== */
 
 .planes-section{
-padding:100px 20px;
-background:#eef2f8;
+padding:120px 20px;
+background:
+linear-gradient(
+180deg,
+#eef5ff,
+#f5f7fb
+);
+
 text-align:center;
 }
 
 .planes-title{
-font-size:48px;
+font-size:56px;
 font-weight:800;
-margin-bottom:15px;
+color:var(--primary);
+margin-bottom:20px;
 }
 
 .planes-subtitle{
-max-width:700px;
+max-width:760px;
 margin:auto;
-margin-bottom:60px;
-font-size:18px;
-line-height:1.7;
-color:#666;
+font-size:19px;
+line-height:1.9;
+color:#667085;
+margin-bottom:70px;
 }
 
 .planes-container{
 display:flex;
 justify-content:center;
-gap:30px;
+gap:32px;
 flex-wrap:wrap;
 }
 
 .plan-card{
+width:340px;
 background:white;
-width:330px;
-padding:45px 30px;
-border-radius:28px;
-box-shadow:0 10px 35px rgba(0,0,0,.08);
-transition:.35s;
+padding:45px 35px;
+border-radius:32px;
+
 position:relative;
 overflow:hidden;
+
+box-shadow:
+0 15px 45px rgba(0,0,0,.08);
+
+transition:.4s;
 }
 
 .plan-card:hover{
 transform:translateY(-12px);
 }
 
-.featured{
-border:3px solid #fc9102;
-transform:scale(1.04);
-}
-
-.premium{
-background:#1d1c4b;
-color:white;
-}
-
 .plan-card h3{
-font-size:30px;
+font-size:32px;
 margin-bottom:10px;
+font-weight:800;
 }
 
 .future-name{
-opacity:.7;
+color:#7b8190;
 margin-bottom:25px;
 }
 
 .plan-price{
 font-size:24px;
-font-weight:bold;
-color:#fc9102;
-margin-bottom:25px;
-}
-
-.premium .plan-price{
-color:white;
+font-weight:800;
+color:var(--secondary);
+margin-bottom:30px;
 }
 
 .plan-card ul{
@@ -331,109 +414,152 @@ margin-bottom:35px;
 }
 
 .plan-card ul li{
-margin-bottom:14px;
-line-height:1.6;
+margin-bottom:16px;
+line-height:1.7;
+color:#596273;
 }
 
-.plan-btn{
-width:100%;
-padding:16px;
-border:none;
-border-radius:16px;
-font-weight:bold;
-cursor:pointer;
-transition:.3s;
-font-size:16px;
+.featured{
+border:3px solid var(--accent);
+transform:scale(1.04);
 }
 
-.plan-btn{
-background:#1d1c4b;
+.premium{
+background:
+linear-gradient(
+180deg,
+#1657B8,
+#0d3f89
+);
+
 color:white;
 }
 
-.featured-btn{
-background:#fc9102;
+.premium h3,
+.premium li,
+.premium .future-name{
+color:white;
 }
 
-.premium-btn{
-background:white;
-color:#1d1c4b;
+.premium .plan-price{
+color:#F7C531;
 }
 
 .popular-badge{
 position:absolute;
 top:18px;
 right:18px;
-background:#fc9102;
-color:white;
-padding:8px 14px;
+background:var(--accent);
+color:#1D2A3A;
+padding:9px 14px;
 border-radius:50px;
 font-size:12px;
-font-weight:bold;
+font-weight:800;
 }
 
-/* =========================
+.plan-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:18px;
+font-weight:700;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+}
+
+.default-btn{
+background:var(--primary);
+color:white;
+}
+
+.featured-btn{
+background:var(--accent);
+color:#1D2A3A;
+}
+
+.premium-btn{
+background:white;
+color:var(--primary);
+}
+
+.plan-btn:hover{
+transform:translateY(-3px);
+}
+
+/* ========================================
 FOOTER
-========================= */
+======================================== */
 
 footer{
-margin-top:60px;
-padding:40px 20px;
 background:white;
+padding:40px 20px;
 text-align:center;
+margin-top:60px;
+color:#6b7280;
 font-size:14px;
-color:#777;
 }
 
 .footer-line{
 width:100%;
 height:1px;
-background:#ddd;
+background:#e5e7eb;
 margin-bottom:20px;
 }
 
 footer a{
-color:#1d1c4b;
 text-decoration:none;
-font-weight:bold;
+color:var(--primary);
+font-weight:700;
 }
 
-/* =========================
+/* ========================================
 ANIMACIONES
-========================= */
+======================================== */
 
 @keyframes fadeUp{
+
 from{
 opacity:0;
 transform:translateY(40px);
 }
+
 to{
 opacity:1;
 transform:translateY(0);
 }
+
 }
 
-/* =========================
+/* ========================================
 RESPONSIVE
-========================= */
+======================================== */
 
 @media(max-width:900px){
 
 .hero{
-padding:40px 25px;
-min-height:75vh;
+padding:60px 25px;
+min-height:82vh;
+}
+
+.hero-logo{
+width:180px;
 }
 
 .hero h1{
-font-size:42px;
+font-size:44px;
 }
 
 .hero p{
 font-size:18px;
 }
 
-h2{
-font-size:34px;
+.section h2{
+font-size:36px;
+}
+
+.planes-title{
+font-size:38px;
 }
 
 .featured{
@@ -461,6 +587,8 @@ width:100%;
 
 <body>
 
+<div class="top-blur"></div>
+
 <!-- HEADER DINÁMICO -->
 <script src="components/header.js"></script>
 
@@ -470,17 +598,24 @@ width:100%;
 
 <div class="hero-content">
 
+<img
+src="logo.png"
+class="hero-logo"
+alt="NeXsv">
+
 <h1>
 Conecta, compra y crece
 </h1>
 
 <p>
-Red privada de conexión entre padres de familia y negocios dentro de su misma comunidad.
+La red privada que conecta negocios y familias dentro de una misma comunidad basada en confianza, cercanía y afinidad.
 </p>
 
 <div class="hero-buttons">
 
-<a class="btn btn-primary" href="negocios.html">
+<a
+class="btn btn-primary"
+href="negocios.html">
 Explorar negocios
 </a>
 
@@ -508,13 +643,13 @@ Una red privada, no un marketplace abierto
 </h2>
 
 <p>
-NeXsv facilita la conexión entre padres de familia y negocios dentro de un mismo entorno, permitiendo relaciones más cercanas, ágiles y basadas en confianza.
+NeXsv facilita conexiones reales entre familias y negocios dentro de un mismo entorno, fortaleciendo relaciones basadas en confianza y cercanía.
 </p>
 
 <div class="section-box">
 
 <p>✔ Comunidad privada entre padres de familia</p>
-<p>✔ Conexiones basadas en cercanía y afinidad</p>
+<p>✔ Conexiones basadas en afinidad y cercanía</p>
 <p>✔ Contacto directo entre miembros</p>
 <p>✔ Negocios activos dentro de la red</p>
 
@@ -535,13 +670,13 @@ Acceso limitado por categoría
 </h2>
 
 <p>
-Para mantener la calidad de la red, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
+Para mantener la calidad de la comunidad, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
 </p>
 
-<br>
+<br><br>
 
-<p style="font-weight:bold;">
-Una vez que una categoría alcanza su capacidad, se habilita lista de espera.
+<p style="font-weight:700;">
+Cuando una categoría alcanza capacidad máxima, se habilita lista de espera.
 </p>
 
 <br><br>
@@ -566,24 +701,39 @@ Solicitar acceso
 <div class="grid">
 
 <div class="card">
-<h3>Clientes reales</h3>
+
+<h3>
+Clientes reales
+</h3>
+
 <p>
-Accede a personas dentro de tu mismo entorno con interés en productos y servicios.
+Accede a personas dentro de tu mismo entorno con interés real en productos y servicios.
 </p>
+
 </div>
 
 <div class="card">
-<h3>Comunidad privada</h3>
+
+<h3>
+Comunidad privada
+</h3>
+
 <p>
-Espacio donde la conexión se basa en cercanía y afinidad.
+Espacio donde las conexiones nacen desde la afinidad y la confianza.
 </p>
+
 </div>
 
 <div class="card">
-<h3>Más oportunidades</h3>
+
+<h3>
+Más oportunidades
+</h3>
+
 <p>
-Facilita el contacto directo y genera nuevas posibilidades de negocio.
+Facilita conversaciones directas y genera nuevas oportunidades de negocio.
 </p>
+
 </div>
 
 </div>
@@ -601,19 +751,31 @@ Facilita el contacto directo y genera nuevas posibilidades de negocio.
 <div class="grid">
 
 <div class="testimonial">
+
 <p>
 "He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."
 </p>
+
 <br>
-<strong>- Miembro de la red</strong>
+
+<strong>
+— Miembro de la red
+</strong>
+
 </div>
 
 <div class="testimonial">
+
 <p>
-"Es mucho más fácil generar contactos cuando hay afinidad entre las personas."
+"Es mucho más fácil generar oportunidades cuando ya existe afinidad entre las personas."
 </p>
+
 <br>
-<strong>- Emprendedor</strong>
+
+<strong>
+— Emprendedor
+</strong>
+
 </div>
 
 </div>
@@ -631,7 +793,7 @@ Planes para negocios de la comunidad
 </h2>
 
 <p class="planes-subtitle">
-Accede a distintos niveles de visibilidad dentro de nuestra red privada.
+Accede a distintos niveles de visibilidad dentro de la red privada de NeXsv.
 </p>
 
 <div class="planes-container">
@@ -640,7 +802,9 @@ Accede a distintos niveles de visibilidad dentro de nuestra red privada.
 
 <div class="plan-card">
 
-<h3>Comunidad Fundadora</h3>
+<h3>
+Comunidad Fundadora
+</h3>
 
 <p class="future-name">
 (Comunidad)
@@ -655,10 +819,10 @@ Acceso inicial
 <li>✔ Categoría visible</li>
 <li>✔ Botón de WhatsApp</li>
 <li>✔ Aparición en búsquedas</li>
-<li>✔ 1 imagen principal</li>
+<li>✔ Imagen principal</li>
 </ul>
 
-<button class="plan-btn">
+<button class="plan-btn default-btn">
 Solicitar acceso
 </button>
 
@@ -672,7 +836,9 @@ Solicitar acceso
 MÁS SOLICITADO
 </div>
 
-<h3>Negocio Recomendado</h3>
+<h3>
+Negocio Recomendado
+</h3>
 
 <p class="future-name">
 (Destacado)
@@ -687,7 +853,7 @@ Mayor visibilidad
 <li>✔ Aparecer primero</li>
 <li>✔ Badge recomendado</li>
 <li>✔ Hasta 5 imágenes</li>
-<li>✔ Prioridad en categorías</li>
+<li>✔ Prioridad por categoría</li>
 <li>✔ Promociones visibles</li>
 </ul>
 
@@ -701,7 +867,9 @@ Quiero destacar
 
 <div class="plan-card premium">
 
-<h3>Aliado Estratégico</h3>
+<h3>
+Aliado Estratégico
+</h3>
 
 <p class="future-name">
 (Élite)
