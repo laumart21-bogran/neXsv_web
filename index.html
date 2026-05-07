@@ -2,117 +2,460 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>NeXsv</title>
 
 <style>
+
+/* =========================
+RESET
+========================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
 body{
-  margin:0;
-  font-family: Arial;
-  background:#f5f7fb;
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+color:#1d1c4b;
+overflow-x:hidden;
 }
 
-/* HERO */
+/* =========================
+HERO
+========================= */
+
 .hero{
-  width:100%;
-  height:60vh;
-  background:url('cover-index.jpg') center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:60px;
-  position:relative;
-  color:white;
+width:100%;
+min-height:85vh;
+background:
+linear-gradient(rgba(10,10,30,.65),rgba(10,10,30,.65)),
+url('cover-index.jpg') center/cover;
+display:flex;
+align-items:center;
+padding:80px;
+position:relative;
+overflow:hidden;
 }
 
-.hero::after{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.4);
-  top:0;
-  left:0;
+.hero::before{
+content:"";
+position:absolute;
+width:500px;
+height:500px;
+background:rgba(252,145,2,.15);
+filter:blur(120px);
+top:-100px;
+right:-100px;
+border-radius:50%;
 }
 
-.hero div,
-.hero img{
-  position:relative;
-  z-index:2;
-}
-
-.hero img{
-  width:400px;
+.hero-content{
+position:relative;
+z-index:2;
+max-width:650px;
+animation:fadeUp 1s ease;
 }
 
 .hero h1{
-  font-size:42px;
+font-size:64px;
+line-height:1.1;
+margin-bottom:25px;
+color:white;
+font-weight:800;
 }
 
 .hero p{
-  font-size:18px;
+font-size:22px;
+line-height:1.7;
+color:rgba(255,255,255,.9);
+margin-bottom:35px;
 }
 
-/* CONTENIDO */
-.container{
-  max-width:1100px;
-  margin:auto;
+/* =========================
+BOTONES
+========================= */
+
+.hero-buttons{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
 }
 
-/* BOTONES */
 .btn{
-  display:inline-block;
-  background:#4CAF50;
-  color:white;
-  padding:14px 24px;
-  border-radius:10px;
-  text-decoration:none;
-  margin:10px;
-  font-weight:bold;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+padding:16px 28px;
+border-radius:16px;
+text-decoration:none;
+font-weight:700;
+transition:.3s;
+font-size:16px;
 }
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-  padding:40px;
+.btn-primary{
+background:#fc9102;
+color:white;
+box-shadow:0 10px 25px rgba(252,145,2,.35);
 }
+
+.btn-secondary{
+background:rgba(255,255,255,.1);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,.2);
+color:white;
+}
+
+.btn:hover{
+transform:translateY(-4px);
+}
+
+/* =========================
+SECCIONES
+========================= */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:0 20px;
+}
+
+.section{
+padding:90px 20px;
+}
+
+.section-center{
+text-align:center;
+}
+
+.section-box{
+background:white;
+padding:40px;
+border-radius:28px;
+box-shadow:0 10px 35px rgba(0,0,0,.06);
+margin-top:35px;
+}
+
+/* =========================
+TEXTOS
+========================= */
+
+h2{
+font-size:46px;
+font-weight:800;
+margin-bottom:20px;
+color:#1d1c4b;
+}
+
+.section p{
+font-size:18px;
+line-height:1.8;
+color:#555;
+}
+
+/* =========================
+GRID
+========================= */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+/* =========================
+CARDS
+========================= */
 
 .card{
-  background:white;
-  padding:20px;
-  border-radius:12px;
+background:white;
+padding:35px;
+border-radius:28px;
+box-shadow:0 10px 30px rgba(0,0,0,.06);
+transition:.35s;
+position:relative;
+overflow:hidden;
 }
 
-/* TESTIMONIOS */
+.card::before{
+content:"";
+position:absolute;
+width:140px;
+height:140px;
+background:rgba(252,145,2,.08);
+border-radius:50%;
+top:-50px;
+right:-50px;
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+
+.card h3{
+font-size:26px;
+margin-bottom:15px;
+position:relative;
+z-index:2;
+}
+
+.card p{
+position:relative;
+z-index:2;
+}
+
+/* =========================
+TESTIMONIOS
+========================= */
+
 .testimonial{
-  background:white;
-  padding:20px;
-  border-left:5px solid #3f5b8a;
-  border-radius:10px;
+background:white;
+padding:35px;
+border-radius:28px;
+box-shadow:0 10px 30px rgba(0,0,0,.06);
+position:relative;
+transition:.3s;
+overflow:hidden;
 }
 
-/* FOOTER */
+.testimonial:hover{
+transform:translateY(-8px);
+}
+
+.testimonial::before{
+content:"“";
+position:absolute;
+top:-20px;
+left:20px;
+font-size:120px;
+color:rgba(252,145,2,.12);
+font-weight:bold;
+}
+
+.testimonial p,
+.testimonial strong{
+position:relative;
+z-index:2;
+}
+
+/* =========================
+PLANES
+========================= */
+
+.planes-section{
+padding:100px 20px;
+background:#eef2f8;
+text-align:center;
+}
+
+.planes-title{
+font-size:48px;
+font-weight:800;
+margin-bottom:15px;
+}
+
+.planes-subtitle{
+max-width:700px;
+margin:auto;
+margin-bottom:60px;
+font-size:18px;
+line-height:1.7;
+color:#666;
+}
+
+.planes-container{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.plan-card{
+background:white;
+width:330px;
+padding:45px 30px;
+border-radius:28px;
+box-shadow:0 10px 35px rgba(0,0,0,.08);
+transition:.35s;
+position:relative;
+overflow:hidden;
+}
+
+.plan-card:hover{
+transform:translateY(-12px);
+}
+
+.featured{
+border:3px solid #fc9102;
+transform:scale(1.04);
+}
+
+.premium{
+background:#1d1c4b;
+color:white;
+}
+
+.plan-card h3{
+font-size:30px;
+margin-bottom:10px;
+}
+
+.future-name{
+opacity:.7;
+margin-bottom:25px;
+}
+
+.plan-price{
+font-size:24px;
+font-weight:bold;
+color:#fc9102;
+margin-bottom:25px;
+}
+
+.premium .plan-price{
+color:white;
+}
+
+.plan-card ul{
+list-style:none;
+text-align:left;
+margin-bottom:35px;
+}
+
+.plan-card ul li{
+margin-bottom:14px;
+line-height:1.6;
+}
+
+.plan-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+font-size:16px;
+}
+
+.plan-btn{
+background:#1d1c4b;
+color:white;
+}
+
+.featured-btn{
+background:#fc9102;
+}
+
+.premium-btn{
+background:white;
+color:#1d1c4b;
+}
+
+.popular-badge{
+position:absolute;
+top:18px;
+right:18px;
+background:#fc9102;
+color:white;
+padding:8px 14px;
+border-radius:50px;
+font-size:12px;
+font-weight:bold;
+}
+
+/* =========================
+FOOTER
+========================= */
+
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-  font-size:14px;
+margin-top:60px;
+padding:40px 20px;
+background:white;
+text-align:center;
+font-size:14px;
+color:#777;
 }
 
 .footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#ddd;
+margin-bottom:20px;
 }
 
 footer a{
-  color:#2f4ea2;
-  text-decoration:none;
+color:#1d1c4b;
+text-decoration:none;
+font-weight:bold;
 }
+
+/* =========================
+ANIMACIONES
+========================= */
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(40px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+.hero{
+padding:40px 25px;
+min-height:75vh;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+h2{
+font-size:34px;
+}
+
+.featured{
+transform:none;
+}
+
+.plan-card{
+width:100%;
+max-width:380px;
+}
+
+.hero-buttons{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.btn{
+width:100%;
+}
+
+}
+
 </style>
 </head>
 
@@ -122,34 +465,53 @@ footer a{
 <script src="components/header.js"></script>
 
 <!-- HERO -->
+
 <section class="hero">
 
-<div>
-<h1>Conecta, compra y crece</h1>
-<p>Red privada de conexión entre padres de familia y negocios dentro de su misma comunidad.</p>
+<div class="hero-content">
 
-<a class="btn" href="negocios.html">Explorar negocios</a>
+<h1>
+Conecta, compra y crece
+</h1>
 
-<a class="btn"
+<p>
+Red privada de conexión entre padres de familia y negocios dentro de su misma comunidad.
+</p>
+
+<div class="hero-buttons">
+
+<a class="btn btn-primary" href="negocios.html">
+Explorar negocios
+</a>
+
+<a
+class="btn btn-secondary"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
 Solicitar acceso
 </a>
+
+</div>
+
 </div>
 
 </section>
 
-<!-- BLOQUE DE POSICIONAMIENTO -->
-<section style="padding:40px; max-width:900px; margin:auto; text-align:center;">
+<!-- POSICIONAMIENTO -->
 
-<h2>Una red privada, no un marketplace abierto</h2>
+<section class="section section-center">
 
-<p style="font-size:18px; color:#555;">
-NeXsv facilita la conexión entre padres de familia y negocios dentro de un mismo entorno, 
-permitiendo relaciones más cercanas, ágiles y basadas en confianza.
+<div class="container">
+
+<h2>
+Una red privada, no un marketplace abierto
+</h2>
+
+<p>
+NeXsv facilita la conexión entre padres de familia y negocios dentro de un mismo entorno, permitiendo relaciones más cercanas, ágiles y basadas en confianza.
 </p>
 
-<div style="margin-top:30px; background:white; padding:25px; border-radius:12px;">
+<div class="section-box">
 
 <p>✔ Comunidad privada entre padres de familia</p>
 <p>✔ Conexiones basadas en cercanía y afinidad</p>
@@ -158,69 +520,227 @@ permitiendo relaciones más cercanas, ágiles y basadas en confianza.
 
 </div>
 
+</div>
+
 </section>
 
 <!-- URGENCIA -->
-<section style="padding:40px; text-align:center;">
 
-<h2>Acceso limitado por categoría</h2>
+<section class="section section-center">
 
-<p style="font-size:18px; color:#555;">
-Para mantener la calidad de la red, el acceso está sujeto a validación 
-y disponibilidad dentro de cada categoría.
+<div class="container">
+
+<h2>
+Acceso limitado por categoría
+</h2>
+
+<p>
+Para mantener la calidad de la red, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
 </p>
+
+<br>
 
 <p style="font-weight:bold;">
 Una vez que una categoría alcanza su capacidad, se habilita lista de espera.
 </p>
 
-<a class="btn"
+<br><br>
+
+<a
+class="btn btn-primary"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
 Solicitar acceso
 </a>
 
+</div>
+
 </section>
 
 <!-- BENEFICIOS -->
-<div class="grid container">
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
 
 <div class="card">
 <h3>Clientes reales</h3>
-<p>Accede a personas dentro de tu mismo entorno con interés en productos y servicios.</p>
+<p>
+Accede a personas dentro de tu mismo entorno con interés en productos y servicios.
+</p>
 </div>
 
 <div class="card">
 <h3>Comunidad privada</h3>
-<p>Espacio donde la conexión se basa en cercanía y afinidad.</p>
+<p>
+Espacio donde la conexión se basa en cercanía y afinidad.
+</p>
 </div>
 
 <div class="card">
 <h3>Más oportunidades</h3>
-<p>Facilita el contacto directo y genera nuevas posibilidades de negocio.</p>
+<p>
+Facilita el contacto directo y genera nuevas posibilidades de negocio.
+</p>
 </div>
 
 </div>
+
+</div>
+
+</section>
 
 <!-- TESTIMONIOS -->
-<div class="grid container">
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
 
 <div class="testimonial">
-<p>"He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."</p>
+<p>
+"He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."
+</p>
+<br>
 <strong>- Miembro de la red</strong>
 </div>
 
 <div class="testimonial">
-<p>"Es mucho más fácil generar contactos cuando hay afinidad entre las personas."</p>
+<p>
+"Es mucho más fácil generar contactos cuando hay afinidad entre las personas."
+</p>
+<br>
 <strong>- Emprendedor</strong>
 </div>
 
 </div>
 
+</div>
+
+</section>
+
+<!-- PLANES -->
+
+<section class="planes-section">
+
+<h2 class="planes-title">
+Planes para negocios de la comunidad
+</h2>
+
+<p class="planes-subtitle">
+Accede a distintos niveles de visibilidad dentro de nuestra red privada.
+</p>
+
+<div class="planes-container">
+
+<!-- PLAN 1 -->
+
+<div class="plan-card">
+
+<h3>Comunidad Fundadora</h3>
+
+<p class="future-name">
+(Comunidad)
+</p>
+
+<div class="plan-price">
+Acceso inicial
+</div>
+
+<ul>
+<li>✔ Perfil del negocio</li>
+<li>✔ Categoría visible</li>
+<li>✔ Botón de WhatsApp</li>
+<li>✔ Aparición en búsquedas</li>
+<li>✔ 1 imagen principal</li>
+</ul>
+
+<button class="plan-btn">
+Solicitar acceso
+</button>
+
+</div>
+
+<!-- PLAN 2 -->
+
+<div class="plan-card featured">
+
+<div class="popular-badge">
+MÁS SOLICITADO
+</div>
+
+<h3>Negocio Recomendado</h3>
+
+<p class="future-name">
+(Destacado)
+</p>
+
+<div class="plan-price">
+Mayor visibilidad
+</div>
+
+<ul>
+<li>✔ Todo lo anterior</li>
+<li>✔ Aparecer primero</li>
+<li>✔ Badge recomendado</li>
+<li>✔ Hasta 5 imágenes</li>
+<li>✔ Prioridad en categorías</li>
+<li>✔ Promociones visibles</li>
+</ul>
+
+<button class="plan-btn featured-btn">
+Quiero destacar
+</button>
+
+</div>
+
+<!-- PLAN 3 -->
+
+<div class="plan-card premium">
+
+<h3>Aliado Estratégico</h3>
+
+<p class="future-name">
+(Élite)
+</p>
+
+<div class="plan-price">
+Máxima exposición
+</div>
+
+<ul>
+<li>✔ Todo lo anterior</li>
+<li>✔ Banner principal</li>
+<li>✔ Prioridad máxima</li>
+<li>✔ Campañas destacadas</li>
+<li>✔ Estadísticas básicas</li>
+<li>✔ Mayor exposición</li>
+</ul>
+
+<button class="plan-btn premium-btn">
+Acceso preferencial
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+<a href="terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
 
 </body>
