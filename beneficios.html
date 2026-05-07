@@ -1,308 +1,1040 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Beneficios - NeXsv</title>
 
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
-  overflow-x:hidden;
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
 }
 
-/* HEADER */
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
+}
+
+/* ========================================
+HEADER
+======================================== */
+
 header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
+position:sticky;
+top:0;
+z-index:999;
+
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(14px);
+
+padding:14px 50px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+border-bottom:1px solid rgba(255,255,255,.5);
 }
 
 header img{
-  height:70px;
+height:72px;
+transition:.3s;
+}
+
+header img:hover{
+transform:scale(1.03);
+}
+
+nav{
+display:flex;
+align-items:center;
+flex-wrap:wrap;
+gap:18px;
 }
 
 nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+transition:.3s;
+}
+
+nav a:hover{
+color:var(--secondary);
 }
 
 .nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:12px 18px;
+
+border-radius:16px;
+
+color:#1D2A3A;
+
+font-weight:700;
+
+box-shadow:
+0 12px 30px rgba(247,197,49,.28);
 }
 
-/* SLIDER */
+.nav-btn:hover{
+transform:translateY(-3px);
+color:#1D2A3A;
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+width:100%;
+min-height:48vh;
+
+background:
+linear-gradient(
+rgba(9,28,61,.78),
+rgba(9,28,61,.82)
+),
+url('cover-beneficios.jpg') center/cover no-repeat;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:40px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:450px;
+height:450px;
+
+background:rgba(25,194,198,.18);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-100px;
+right:-120px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:300px;
+height:300px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-100px;
+left:-80px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+
+max-width:850px;
+
+animation:fadeUp 1s ease;
+}
+
+.hero-logo{
+width:220px;
+margin-bottom:30px;
+}
+
+.hero h1{
+font-size:62px;
+line-height:1.05;
+font-weight:800;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:22px;
+}
+
+.hero p{
+font-size:21px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+}
+
+/* ========================================
+SLIDER
+======================================== */
+
+.slider-section{
+padding:100px 20px;
+position:relative;
+}
+
 .slider-container{
-  position:relative;
-  width:100%;
-  height:80vh;
-  overflow:hidden;
+position:relative;
+max-width:1200px;
+margin:auto;
+
+overflow:hidden;
+
+border-radius:40px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.1);
+
+background:white;
 }
 
 .slider{
-  display:flex;
-  transition:0.5s ease;
-  height:100%;
+display:flex;
+transition:.6s ease;
 }
 
 .slide{
-  min-width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:white;
+min-width:100%;
+display:flex;
+flex-direction:column;
+background:white;
 }
 
 .slide img{
-  width:100%;
-  height:65%;
-  object-fit:cover;
+width:100%;
+height:520px;
+object-fit:cover;
 }
 
-/* TEXTO */
+/* ========================================
+CONTENIDO
+======================================== */
+
 .text{
-  padding:20px;
-  text-align:center;
-  max-width:800px;
+padding:50px 40px;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+
+.text::before{
+content:"";
+position:absolute;
+
+width:180px;
+height:180px;
+
+background:rgba(25,194,198,.08);
+
+border-radius:50%;
+
+top:-50px;
+right:-50px;
 }
 
 .text h2{
-  color:#2f4ea2;
-  margin-bottom:10px;
+font-size:42px;
+font-weight:800;
+color:var(--primary);
+margin-bottom:18px;
+position:relative;
+z-index:2;
 }
 
 .text p{
-  color:#555;
-  font-size:16px;
-  line-height:1.6;
+font-size:18px;
+line-height:1.9;
+color:#5d6677;
+max-width:760px;
+margin:auto;
+position:relative;
+z-index:2;
 }
 
-/* FLECHAS */
+/* ========================================
+ARROWS
+======================================== */
+
 .arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:30px;
-  background:rgba(255,255,255,0.8);
-  border:none;
-  padding:10px 15px;
-  cursor:pointer;
-  border-radius:50%;
-  z-index:2;
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+
+width:58px;
+height:58px;
+
+border:none;
+border-radius:50%;
+
+font-size:24px;
+cursor:pointer;
+
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 10px 30px rgba(0,0,0,.15);
+
+transition:.35s;
+
+z-index:5;
 }
 
 .arrow:hover{
-  background:#4CAF50;
-  color:white;
+background:var(--accent);
+transform:translateY(-50%) scale(1.08);
 }
 
-.left{ left:20px; }
-.right{ right:20px; }
+.left{
+left:22px;
+}
 
-/* DOTS */
+.right{
+right:22px;
+}
+
+/* ========================================
+DOTS
+======================================== */
+
 .dots{
-  position:absolute;
-  bottom:15px;
-  width:100%;
-  text-align:center;
+position:absolute;
+bottom:25px;
+width:100%;
+text-align:center;
+z-index:5;
 }
 
 .dot{
-  height:10px;
-  width:10px;
-  margin:5px;
-  background:#ccc;
-  display:inline-block;
-  border-radius:50%;
-  cursor:pointer;
+width:12px;
+height:12px;
+
+background:rgba(255,255,255,.6);
+
+display:inline-block;
+
+border-radius:50%;
+
+margin:6px;
+
+cursor:pointer;
+
+transition:.3s;
 }
 
 .active{
-  background:#4CAF50;
+background:var(--accent);
+transform:scale(1.3);
 }
 
-/* CTA */
+/* ========================================
+BENEFITS GRID
+======================================== */
+
+.extra-benefits{
+max-width:1200px;
+margin:90px auto 0;
+
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:28px;
+}
+
+.benefit-card{
+background:rgba(255,255,255,.8);
+backdrop-filter:blur(14px);
+
+padding:35px;
+
+border-radius:30px;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.35s;
+
+position:relative;
+overflow:hidden;
+}
+
+.benefit-card::before{
+content:"";
+position:absolute;
+
+width:160px;
+height:160px;
+
+background:rgba(25,194,198,.08);
+
+border-radius:50%;
+
+top:-50px;
+right:-50px;
+}
+
+.benefit-card:hover{
+transform:translateY(-10px);
+
+box-shadow:
+0 22px 50px rgba(0,0,0,.12);
+}
+
+.benefit-icon{
+font-size:42px;
+margin-bottom:18px;
+position:relative;
+z-index:2;
+}
+
+.benefit-card h3{
+font-size:28px;
+font-weight:800;
+color:var(--primary);
+margin-bottom:15px;
+position:relative;
+z-index:2;
+}
+
+.benefit-card p{
+font-size:17px;
+line-height:1.8;
+color:#5d6677;
+position:relative;
+z-index:2;
+}
+
+/* ========================================
+CTA
+======================================== */
+
 .cta{
-  text-align:center;
-  padding:40px 20px;
+padding:110px 20px;
+text-align:center;
 }
 
-.cta a{
-  background:#4CAF50;
-  color:white;
-  padding:14px 25px;
-  border-radius:8px;
-  text-decoration:none;
-  font-size:18px;
+.cta-box{
+max-width:1100px;
+margin:auto;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:70px 35px;
+
+border-radius:40px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 20px 60px rgba(22,87,184,.22);
 }
 
-/* FOOTER */
+.cta-box::before{
+content:"";
+position:absolute;
+
+width:350px;
+height:350px;
+
+background:rgba(255,255,255,.12);
+
+filter:blur(90px);
+
+top:-100px;
+right:-80px;
+
+border-radius:50%;
+}
+
+.cta-content{
+position:relative;
+z-index:2;
+}
+
+.cta h2{
+font-size:50px;
+line-height:1.15;
+font-weight:800;
+
+color:white;
+
+margin-bottom:22px;
+}
+
+.cta p{
+font-size:18px;
+line-height:1.9;
+
+color:rgba(255,255,255,.9);
+
+max-width:760px;
+margin:auto;
+
+margin-bottom:40px;
+}
+
+.cta-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:18px 30px;
+
+border-radius:18px;
+
+color:#1D2A3A;
+
+text-decoration:none;
+
+font-weight:800;
+
+font-size:16px;
+
+transition:.35s;
+
+box-shadow:
+0 14px 35px rgba(247,197,49,.3);
+}
+
+.cta-btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
 footer{
-  text-align:center;
-  padding:20px;
-  background:white;
-  color:#555;
+background:white;
+padding:40px 20px;
+text-align:center;
+color:#6b7280;
+font-size:14px;
 }
 
 .footer-line{
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
 }
+
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+/* ========================================
+ANIMACIONES
+======================================== */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:900px){
+
+header{
+padding:15px 20px;
+flex-direction:column;
+gap:15px;
+}
+
+nav{
+justify-content:center;
+}
+
+.hero{
+min-height:42vh;
+padding:30px 20px;
+}
+
+.hero-logo{
+width:170px;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.slide img{
+height:320px;
+}
+
+.text{
+padding:35px 25px;
+}
+
+.text h2{
+font-size:32px;
+}
+
+.arrow{
+width:48px;
+height:48px;
+font-size:20px;
+}
+
+.cta h2{
+font-size:36px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
+
 <header>
-  <img src="logo.png">
 
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
+<img src="logo.png" alt="NeXsv">
 
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<nav>
+
+<a href="index.html">
+Inicio
+</a>
+
+<a href="como.html">
+Cómo funciona
+</a>
+
+<a href="beneficios.html">
+Beneficios
+</a>
+
+<a href="negocios.html">
+Negocios
+</a>
+
+<a href="blog.html">
+Blog
+</a>
+
+<a
+class="nav-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
+</nav>
+
 </header>
 
-<!-- SLIDER -->
-<div class="slider-container" id="sliderContainer">
+<!-- HERO -->
 
-<button class="arrow left" onclick="mover(-1)">❮</button>
+<section class="hero">
 
-<div class="slider" id="slider">
+<div class="hero-content">
 
-  <div class="slide">
-    <img src="imgbeneficio1.jpg">
-    <div class="text">
-      <h2>Más visibilidad</h2>
-      <p>Tu negocio aparece frente a personas que realmente buscan lo que ofreces.</p>
-    </div>
-  </div>
+<img
+src="logo.png"
+class="hero-logo"
+alt="NeXsv">
 
-  <div class="slide">
-    <img src="imgbeneficio2.jpg">
-    <div class="text">
-      <h2>Presencia 24/7</h2>
-      <p>Tu negocio trabaja incluso cuando no estás activo.</p>
-    </div>
-  </div>
+<h1>
+Beneficios de formar parte de NeXsv
+</h1>
 
-  <div class="slide">
-    <img src="imgbeneficio3.jpg">
-    <div class="text">
-      <h2>Clientes directos</h2>
-      <p>Recibe mensajes en WhatsApp de clientes listos para comprar.</p>
-    </div>
-  </div>
-
-  <div class="slide">
-    <img src="imgbeneficio4.jpg">
-    <div class="text">
-      <h2>Más ingresos</h2>
-      <p>Convierte contactos en ventas reales.</p>
-    </div>
-  </div>
+<p>
+Conecta con personas reales dentro de tu comunidad y transforma relaciones en oportunidades de negocio.
+</p>
 
 </div>
 
-<button class="arrow right" onclick="mover(1)">❯</button>
+</section>
+
+<!-- SLIDER -->
+
+<section class="slider-section">
+
+<div class="slider-container" id="sliderContainer">
+
+<button class="arrow left" onclick="mover(-1)">
+❮
+</button>
+
+<div class="slider" id="slider">
+
+<!-- SLIDE 1 -->
+
+<div class="slide">
+
+<img src="imgbeneficio1.jpg">
+
+<div class="text">
+
+<h2>
+Más visibilidad
+</h2>
+
+<p>
+Tu negocio aparece frente a personas que realmente buscan productos y servicios dentro de su entorno.
+</p>
+
+</div>
+
+</div>
+
+<!-- SLIDE 2 -->
+
+<div class="slide">
+
+<img src="imgbeneficio2.jpg">
+
+<div class="text">
+
+<h2>
+Presencia activa 24/7
+</h2>
+
+<p>
+Tu perfil permanece visible incluso cuando no estás conectado, permitiendo generar oportunidades constantemente.
+</p>
+
+</div>
+
+</div>
+
+<!-- SLIDE 3 -->
+
+<div class="slide">
+
+<img src="imgbeneficio3.jpg">
+
+<div class="text">
+
+<h2>
+Clientes directos
+</h2>
+
+<p>
+Las personas interesadas llegan directamente a tu WhatsApp listas para solicitar información o comprar.
+</p>
+
+</div>
+
+</div>
+
+<!-- SLIDE 4 -->
+
+<div class="slide">
+
+<img src="imgbeneficio4.jpg">
+
+<div class="text">
+
+<h2>
+Más oportunidades
+</h2>
+
+<p>
+Convierte conexiones dentro de la comunidad en relaciones comerciales reales y sostenibles.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<button class="arrow right" onclick="mover(1)">
+❯
+</button>
 
 <!-- DOTS -->
+
 <div class="dots" id="dots"></div>
 
 </div>
 
-<!-- CTA -->
-<div class="cta">
-  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform" target="_blank">
-    Quiero formar parte de NeXsv
-  </a>
+<!-- BENEFICIOS EXTRA -->
+
+<div class="extra-benefits">
+
+<div class="benefit-card">
+
+<div class="benefit-icon">
+🚀
 </div>
 
+<h3>
+Mayor alcance
+</h3>
+
+<p>
+Haz visible tu negocio frente a una comunidad segmentada y con afinidad real.
+</p>
+
+</div>
+
+<div class="benefit-card">
+
+<div class="benefit-icon">
+🤝
+</div>
+
+<h3>
+Conexiones confiables
+</h3>
+
+<p>
+Las relaciones dentro de NeXsv nacen desde la cercanía y la confianza.
+</p>
+
+</div>
+
+<div class="benefit-card">
+
+<div class="benefit-icon">
+💬
+</div>
+
+<h3>
+Contacto inmediato
+</h3>
+
+<p>
+Facilita conversaciones rápidas mediante integración directa con WhatsApp.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta">
+
+<div class="cta-box">
+
+<div class="cta-content">
+
+<h2>
+Haz crecer tu negocio dentro de tu comunidad
+</h2>
+
+<p>
+Únete a una red privada diseñada para conectar familias y negocios de forma moderna, estratégica y cercana.
+</p>
+
+<a
+class="cta-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Quiero formar parte de NeXsv
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+<a href="terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
 
+<!-- SCRIPT -->
+
 <script>
+
 let index = 0;
+
 const slider = document.getElementById("slider");
+
 const total = slider.children.length;
+
 const dotsContainer = document.getElementById("dots");
 
 /* DOTS */
-for(let i=0;i<total;i++){
-  const dot = document.createElement("span");
-  dot.classList.add("dot");
-  dot.onclick = () => goTo(i);
-  dotsContainer.appendChild(dot);
+
+for(let i = 0; i < total; i++){
+
+const dot = document.createElement("span");
+
+dot.classList.add("dot");
+
+dot.onclick = () => goTo(i);
+
+dotsContainer.appendChild(dot);
+
 }
 
 function actualizarDots(){
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach(d => d.classList.remove("active"));
-  dots[index].classList.add("active");
+
+const dots = document.querySelectorAll(".dot");
+
+dots.forEach(d => d.classList.remove("active"));
+
+dots[index].classList.add("active");
+
 }
 
 /* MOVER */
-function mover(dir){
-  index += dir;
-  if(index < 0) index = total - 1;
-  if(index >= total) index = 0;
 
-  slider.style.transform = `translateX(-${index * 100}%)`;
-  actualizarDots();
+function mover(dir){
+
+index += dir;
+
+if(index < 0){
+index = total - 1;
+}
+
+if(index >= total){
+index = 0;
+}
+
+slider.style.transform =
+`translateX(-${index * 100}%)`;
+
+actualizarDots();
+
 }
 
 function goTo(i){
-  index = i;
-  slider.style.transform = `translateX(-${index * 100}%)`;
-  actualizarDots();
+
+index = i;
+
+slider.style.transform =
+`translateX(-${index * 100}%)`;
+
+actualizarDots();
+
 }
 
 /* AUTOPLAY */
+
 setInterval(() => {
-  mover(1);
+
+mover(1);
+
 }, 5000);
 
-/* SWIPE */
+/* SWIPE MOBILE */
+
 let startX = 0;
 
-document.getElementById("sliderContainer").addEventListener("touchstart", e=>{
-  startX = e.touches[0].clientX;
+document
+.getElementById("sliderContainer")
+.addEventListener("touchstart", e => {
+
+startX = e.touches[0].clientX;
+
 });
 
-document.getElementById("sliderContainer").addEventListener("touchend", e=>{
-  let endX = e.changedTouches[0].clientX;
+document
+.getElementById("sliderContainer")
+.addEventListener("touchend", e => {
 
-  if(startX - endX > 50){
-    mover(1);
-  }else if(endX - startX > 50){
-    mover(-1);
-  }
+let endX = e.changedTouches[0].clientX;
+
+if(startX - endX > 50){
+
+mover(1);
+
+}else if(endX - startX > 50){
+
+mover(-1);
+
+}
+
 });
 
 /* INIT */
+
 actualizarDots();
+
 </script>
 
 </body>
