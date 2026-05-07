@@ -146,76 +146,54 @@ nav a{
   flex:1;
   text-align:center;
   padding:10px;
-  border-radius:8px;
+  border-radius:10px;
   text-decoration:none;
-  color:white;
   border:none;
   cursor:pointer;
+  font-weight:bold;
+  transition:.2s;
 }
 
+/* WHATSAPP */
 .btn-w{
   background:#4CAF50;
+  color:white;
 }
 
+.btn-w:hover{
+  opacity:.9;
+}
+
+/* VER MÁS */
 .btn-v{
-  background:#2f4ea2;
+  background:#f1f4f9;
+  color:#2f4ea2;
+  border:1px solid #dbe3f1;
 }
 
-/* MODAL */
-#modal{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.65);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
-
-.modal-content{
-  background:white;
-  width:90%;
-  max-width:550px;
-  border-radius:14px;
-  padding:20px;
-}
-
-/* GALERIA */
-.carousel{
-  display:flex;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  gap:10px;
-  margin-bottom:15px;
-}
-
-.slide{
-  min-width:100%;
-  scroll-snap-align:start;
-}
-
-.slide img{
-  width:100%;
-  height:260px;
-  object-fit:cover;
-  border-radius:10px;
+.btn-v:hover{
+  background:#e8eef9;
 }
 
 /* MAPA */
 .btn-map{
   display:block;
-  background:#ff5722;
-  color:white;
+  background:white;
+  color:#4CAF50;
+  border:2px solid #4CAF50;
   text-align:center;
   padding:12px;
-  border-radius:8px;
+  border-radius:10px;
   text-decoration:none;
   margin-top:15px;
+  font-weight:bold;
+  transition:.2s;
 }
 
+.btn-map:hover{
+  background:#4CAF50;
+  color:white;
+}
 /* FOOTER */
 footer{
   text-align:center;
