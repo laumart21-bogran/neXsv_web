@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Cómo funciona - NeXsv</title>
 
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 
-/* =========================
+/* ========================================
 RESET
-========================= */
+======================================== */
 
 *{
 margin:0;
@@ -19,28 +26,42 @@ box-sizing:border-box;
 scroll-behavior:smooth;
 }
 
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
 body{
-font-family:Arial,sans-serif;
-background:#f5f7fb;
-color:#1d1c4b;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
 overflow-x:hidden;
 }
 
-/* =========================
+/* ========================================
 HEADER
-========================= */
+======================================== */
 
 header{
-background:rgba(255,255,255,.75);
-backdrop-filter:blur(12px);
+position:sticky;
+top:0;
+z-index:999;
+
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(14px);
+
 padding:14px 50px;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
-position:sticky;
-top:0;
-z-index:1000;
-border-bottom:1px solid rgba(255,255,255,.4);
+
+border-bottom:1px solid rgba(255,255,255,.5);
 }
 
 header img{
@@ -60,44 +81,63 @@ gap:18px;
 }
 
 nav a{
-color:#1d1c4b;
 text-decoration:none;
+color:var(--primary);
 font-weight:600;
 transition:.3s;
 }
 
 nav a:hover{
-color:#fc9102;
+color:var(--secondary);
 }
 
 .nav-btn{
-background:#fc9102;
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
 padding:12px 18px;
-border-radius:14px;
-color:white;
-box-shadow:0 10px 25px rgba(252,145,2,.25);
+
+border-radius:16px;
+
+color:#1D2A3A;
+
+font-weight:700;
+
+box-shadow:
+0 12px 30px rgba(247,197,49,.28);
 }
 
 .nav-btn:hover{
 transform:translateY(-3px);
-color:white;
+color:#1D2A3A;
 }
 
-/* =========================
+/* ========================================
 HERO
-========================= */
+======================================== */
 
 .hero{
 width:100%;
-min-height:55vh;
+min-height:58vh;
+
 background:
-linear-gradient(rgba(10,10,30,.65),rgba(10,10,30,.65)),
+linear-gradient(
+rgba(9,28,61,.78),
+rgba(9,28,61,.82)
+),
 url('cover-como.jpg') center/cover no-repeat;
+
 display:flex;
 align-items:center;
 justify-content:center;
+
 text-align:center;
+
 padding:40px;
+
 position:relative;
 overflow:hidden;
 }
@@ -105,44 +145,76 @@ overflow:hidden;
 .hero::before{
 content:"";
 position:absolute;
+
 width:450px;
 height:450px;
-background:rgba(252,145,2,.18);
+
+background:rgba(25,194,198,.18);
+
 filter:blur(120px);
+
 border-radius:50%;
+
 top:-100px;
 right:-120px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:300px;
+height:300px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-100px;
+left:-80px;
 }
 
 .hero-content{
 position:relative;
 z-index:2;
-max-width:800px;
+
+max-width:850px;
+
 animation:fadeUp 1s ease;
 }
 
+.hero-logo{
+width:220px;
+margin-bottom:30px;
+}
+
 .hero h1{
-font-size:62px;
-color:white;
+font-size:66px;
+line-height:1.05;
 font-weight:800;
-margin-bottom:20px;
-line-height:1.1;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:25px;
 }
 
 .hero p{
 font-size:22px;
-line-height:1.7;
-color:rgba(255,255,255,.9);
+line-height:1.8;
+color:rgba(255,255,255,.88);
 }
 
-/* =========================
+/* ========================================
 CONTENIDO
-========================= */
+======================================== */
 
 .container{
 max-width:1150px;
 margin:auto;
-padding:90px 20px;
+padding:100px 20px;
 }
 
 .section-title{
@@ -151,56 +223,73 @@ margin-bottom:70px;
 }
 
 .section-title h2{
-font-size:48px;
-margin-bottom:20px;
+font-size:52px;
+line-height:1.15;
 font-weight:800;
+color:var(--primary);
+margin-bottom:20px;
+letter-spacing:-1px;
 }
 
 .section-title p{
 font-size:18px;
-color:#666;
-line-height:1.7;
-max-width:700px;
+line-height:1.9;
+color:#667085;
+max-width:760px;
 margin:auto;
 }
 
-/* =========================
+/* ========================================
 PASOS
-========================= */
+======================================== */
 
 .steps-wrapper{
 display:flex;
 flex-direction:column;
-gap:28px;
+gap:30px;
 }
 
 .step{
 display:flex;
 align-items:center;
 gap:30px;
-background:white;
-padding:35px;
-border-radius:28px;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-transition:.35s;
+
+background:rgba(255,255,255,.78);
+backdrop-filter:blur(14px);
+
+padding:38px;
+
+border-radius:32px;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
 position:relative;
 overflow:hidden;
+
+transition:.4s;
 }
 
 .step::before{
 content:"";
 position:absolute;
-width:140px;
-height:140px;
-background:rgba(252,145,2,.08);
+
+width:160px;
+height:160px;
+
+background:rgba(25,194,198,.08);
+
 border-radius:50%;
-top:-45px;
-right:-45px;
+
+top:-50px;
+right:-50px;
 }
 
 .step:hover{
-transform:translateY(-8px);
-box-shadow:0 20px 45px rgba(0,0,0,.12);
+transform:translateY(-10px);
+
+box-shadow:
+0 22px 50px rgba(0,0,0,.12);
 }
 
 .step img{
@@ -219,52 +308,84 @@ z-index:2;
 display:inline-flex;
 align-items:center;
 justify-content:center;
-width:38px;
-height:38px;
-background:#fc9102;
-color:white;
+
+width:42px;
+height:42px;
+
 border-radius:50%;
-font-weight:bold;
-margin-bottom:15px;
+
+background:linear-gradient(
+135deg,
+var(--secondary),
+var(--success)
+);
+
+color:white;
+
+font-weight:800;
+
+margin-bottom:18px;
+
 font-size:15px;
+
+box-shadow:
+0 10px 25px rgba(25,194,198,.28);
 }
 
 .step h3{
-font-size:30px;
-margin-bottom:12px;
-color:#1d1c4b;
+font-size:32px;
+font-weight:800;
+margin-bottom:14px;
+color:var(--primary);
 }
 
 .step p{
 font-size:17px;
-line-height:1.8;
-color:#666;
+line-height:1.9;
+color:#5d6677;
 }
 
-/* =========================
+/* ========================================
 CTA
-========================= */
+======================================== */
 
 .cta{
-margin-top:80px;
-text-align:center;
-background:white;
-padding:60px 30px;
-border-radius:32px;
-box-shadow:0 10px 35px rgba(0,0,0,.06);
+margin-top:90px;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.95),
+rgba(25,194,198,.92)
+);
+
+padding:70px 35px;
+
+border-radius:36px;
+
 position:relative;
 overflow:hidden;
+
+text-align:center;
+
+box-shadow:
+0 20px 60px rgba(22,87,184,.22);
 }
 
 .cta::before{
 content:"";
 position:absolute;
-width:300px;
-height:300px;
-background:rgba(252,145,2,.12);
-filter:blur(80px);
+
+width:350px;
+height:350px;
+
+background:rgba(255,255,255,.12);
+
+filter:blur(90px);
+
 top:-100px;
 right:-80px;
+
 border-radius:50%;
 }
 
@@ -274,83 +395,107 @@ z-index:2;
 }
 
 .cta h2{
-font-size:42px;
-margin-bottom:18px;
+font-size:46px;
+line-height:1.15;
 font-weight:800;
+
+color:white;
+
+margin-bottom:20px;
 }
 
 .cta p{
 font-size:18px;
-color:#666;
-line-height:1.8;
-max-width:700px;
+line-height:1.9;
+
+color:rgba(255,255,255,.9);
+
+max-width:760px;
 margin:auto;
-margin-bottom:35px;
+
+margin-bottom:40px;
 }
 
 .cta-btn{
 display:inline-flex;
 align-items:center;
 justify-content:center;
-background:#fc9102;
-color:white;
-padding:18px 28px;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:18px 30px;
+
 border-radius:18px;
+
+color:#1D2A3A;
+
 text-decoration:none;
-font-weight:bold;
+
+font-weight:800;
+
 font-size:16px;
-box-shadow:0 10px 25px rgba(252,145,2,.3);
-transition:.3s;
+
+transition:.35s;
+
+box-shadow:
+0 14px 35px rgba(247,197,49,.3);
 }
 
 .cta-btn:hover{
 transform:translateY(-4px);
 }
 
-/* =========================
+/* ========================================
 FOOTER
-========================= */
+======================================== */
 
 footer{
-margin-top:60px;
-padding:40px 20px;
 background:white;
+padding:40px 20px;
 text-align:center;
+margin-top:70px;
+color:#6b7280;
 font-size:14px;
-color:#777;
 }
 
 .footer-line{
 width:100%;
 height:1px;
-background:#ddd;
+background:#e5e7eb;
 margin-bottom:20px;
 }
 
 footer a{
-color:#1d1c4b;
 text-decoration:none;
-font-weight:bold;
+color:var(--primary);
+font-weight:700;
 }
 
-/* =========================
+/* ========================================
 ANIMACIONES
-========================= */
+======================================== */
 
 @keyframes fadeUp{
+
 from{
 opacity:0;
 transform:translateY(40px);
 }
+
 to{
 opacity:1;
 transform:translateY(0);
 }
+
 }
 
-/* =========================
+/* ========================================
 RESPONSIVE
-========================= */
+======================================== */
 
 @media(max-width:900px){
 
@@ -365,12 +510,16 @@ justify-content:center;
 }
 
 .hero{
-min-height:50vh;
+min-height:52vh;
 padding:30px 20px;
 }
 
+.hero-logo{
+width:170px;
+}
+
 .hero h1{
-font-size:42px;
+font-size:44px;
 }
 
 .hero p{
@@ -378,7 +527,7 @@ font-size:18px;
 }
 
 .section-title h2{
-font-size:34px;
+font-size:36px;
 }
 
 .step{
@@ -414,15 +563,25 @@ font-size:34px;
 
 <nav>
 
-<a href="index.html">Inicio</a>
+<a href="index.html">
+Inicio
+</a>
 
-<a href="como.html">Cómo funciona</a>
+<a href="como.html">
+Cómo funciona
+</a>
 
-<a href="beneficios.html">Beneficios</a>
+<a href="beneficios.html">
+Beneficios
+</a>
 
-<a href="negocios.html">Negocios</a>
+<a href="negocios.html">
+Negocios
+</a>
 
-<a href="blog.html">Blog</a>
+<a href="blog.html">
+Blog
+</a>
 
 <a
 class="nav-btn"
@@ -440,6 +599,11 @@ Solicitar acceso
 <section class="hero">
 
 <div class="hero-content">
+
+<img
+src="logo.png"
+class="hero-logo"
+alt="NeXsv">
 
 <h1>
 ¿Cómo funciona NeXsv?
@@ -464,7 +628,7 @@ Empieza a generar clientes en 4 pasos
 </h2>
 
 <p>
-NeXsv conecta negocios y familias dentro de una red privada basada en confianza, cercanía y afinidad.
+NeXsv conecta familias y negocios dentro de una red privada basada en confianza, afinidad y cercanía.
 </p>
 
 </div>
@@ -488,7 +652,7 @@ Te registras en la comunidad
 </h3>
 
 <p>
-Dejas de ser invisible y comienzas a posicionarte frente a personas que realmente buscan lo que ofreces.
+Comienzas a posicionar tu negocio frente a personas que realmente buscan productos y servicios dentro de su entorno.
 </p>
 
 </div>
@@ -512,7 +676,7 @@ Publicas tu negocio
 </h3>
 
 <p>
-Tu negocio trabaja para ti 24/7 con una vitrina digital activa dentro de la comunidad.
+Tu perfil funciona como una vitrina digital activa dentro de una comunidad privada y segmentada.
 </p>
 
 </div>
@@ -536,7 +700,7 @@ Te contactan por WhatsApp
 </h3>
 
 <p>
-Los clientes llegan directo a ti, facilitando conversaciones rápidas y oportunidades reales de venta.
+Las personas interesadas llegan directamente a ti para resolver dudas, solicitar información o comprar.
 </p>
 
 </div>
@@ -580,14 +744,16 @@ Haz visible tu negocio dentro de tu comunidad
 </h2>
 
 <p>
-Únete a la red privada que conecta familias y negocios de forma más cercana, confiable y estratégica.
+Únete a la red privada que conecta familias y negocios de forma más cercana, moderna y estratégica.
 </p>
 
 <a
 class="cta-btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
+
 Quiero formar parte de NeXsv
+
 </a>
 
 </div>
