@@ -6,7 +6,6 @@
 
 <style>
 
-/* BASE */
 body{
   margin:0;
   font-family: Arial;
@@ -48,6 +47,7 @@ nav a{
   color:white;
   position:relative;
 }
+
 .hero::before{
   content:"";
   position:absolute;
@@ -55,6 +55,7 @@ nav a{
   height:100%;
   background:rgba(0,0,0,0.45);
 }
+
 .hero h1{
   position:relative;
   z-index:1;
@@ -128,7 +129,7 @@ nav a{
 }
 
 .btn-w{ background:#4CAF50; }
-.btn-v{ background:#2f4ea2; border:none; cursor:pointer; }
+.btn-v{ background:#2f4ea2; }
 
 /* MODAL */
 #modal{
@@ -170,6 +171,18 @@ nav a{
   object-fit:cover;
 }
 
+/* BOTON MAPA */
+.btn-map{
+  display:block;
+  background:#ff5722;
+  color:white;
+  padding:12px;
+  text-align:center;
+  border-radius:8px;
+  margin-top:10px;
+  text-decoration:none;
+}
+
 /* FOOTER */
 footer{
   text-align:center;
@@ -191,17 +204,17 @@ footer{
 <body>
 
 <header>
-  <img src="logo.png">
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-  </nav>
+<img src="logo.png">
+<nav>
+<a href="index.html">Inicio</a>
+<a href="como.html">Cómo funciona</a>
+<a href="beneficios.html">Beneficios</a>
+<a href="negocios.html">Negocios</a>
+</nav>
 </header>
 
 <section class="hero">
-  <h1>Negocios disponibles</h1>
+<h1>Negocios disponibles</h1>
 </section>
 
 <section class="main">
@@ -215,17 +228,25 @@ footer{
 <!-- MODAL -->
 <div id="modal">
   <div class="modal-content">
+
     <div class="carousel" id="carousel"></div>
+
     <h2 id="m_nombre"></h2>
     <p id="m_desc"></p>
     <p id="m_zona"></p>
+
+    <a id="m_mapa" target="_blank" class="btn-map">
+      📍 Cómo llegar
+    </a>
+
     <button onclick="cerrarModal()">Cerrar</button>
+
   </div>
 </div>
 
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv
+<div class="footer-line"></div>
+© 2026 NeXsv
 </footer>
 
 <script>
@@ -238,15 +259,11 @@ let DATA_MODAL = [];
 fetch(url)
 .then(res => res.json())
 .then(data => {
-
-  /* ORDEN POR PRIORIDAD */
   data.sort((a,b)=> (b["Prioridad"]||0) - (a["Prioridad"]||0));
-
   dataGlobal = data;
   renderizar(data);
 });
 
-/* DRIVE */
 function convertirDrive(link){
   if(!link) return "";
   let id = link.match(/[-\w]{25,}/);
@@ -279,7 +296,7 @@ if(!img1) img1 = "https://via.placeholder.com/300x150";
 
 const images = [img1,img2,img3].filter(i=>i);
 
-/* MAPS */
+/* MAPA TARJETA */
 const zonaHTML = ubicacion
 ? `<a href="${ubicacion}" target="_blank">📍 ${zona}</a>`
 : `📍 ${zona}`;
@@ -289,7 +306,7 @@ const badge = k["Recomendado"] === "si"
 ? `<div class="badge">🔥 Recomendado</div>`
 : "";
 
-DATA_MODAL.push({nombre,descripcion,zona,images});
+DATA_MODAL.push({nombre,descripcion,zona,images,ubicacion});
 const index = DATA_MODAL.length - 1;
 
 return `
@@ -320,8 +337,19 @@ function abrirModal(data){
 document.getElementById("modal").style.display = "flex";
 document.getElementById("m_nombre").innerText = data.nombre;
 document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = data.zona;
+document.getElementById("m_zona").innerText = "📍 " + data.zona;
 
+/* MAPA INTELIGENTE */
+const mapaBtn = document.getElementById("m_mapa");
+
+if(data.ubicacion){
+  mapaBtn.href = data.ubicacion;
+  mapaBtn.style.display = "block";
+}else{
+  mapaBtn.style.display = "none";
+}
+
+/* GALERIA */
 document.getElementById("carousel").innerHTML =
 data.images.map(i => `
 <div class="slide">
