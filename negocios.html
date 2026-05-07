@@ -22,7 +22,9 @@ header{
   border-bottom:1px solid #eee;
 }
 
-header img{ height:70px; }
+header img{
+  height:70px;
+}
 
 nav a{
   color:#2f4ea2;
@@ -59,6 +61,7 @@ nav a{
 .hero h1{
   position:relative;
   z-index:1;
+  font-size:42px;
 }
 
 /* MAIN */
@@ -71,10 +74,11 @@ nav a{
 /* BUSCADOR */
 #buscador{
   width:100%;
-  padding:12px;
-  margin-bottom:20px;
+  padding:14px;
   border-radius:10px;
   border:1px solid #ccc;
+  margin-bottom:25px;
+  font-size:16px;
 }
 
 /* GRID */
@@ -88,16 +92,34 @@ nav a{
 .card{
   position:relative;
   background:white;
-  border-radius:12px;
-  padding:15px;
+  border-radius:14px;
+  overflow:hidden;
   box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  transition:.2s;
+}
+
+.card:hover{
+  transform:translateY(-4px);
 }
 
 .card img{
   width:100%;
-  height:180px;
+  height:190px;
   object-fit:cover;
-  border-radius:8px;
+}
+
+.card-content{
+  padding:15px;
+}
+
+.card h3{
+  margin-top:0;
+  color:#2f4ea2;
+}
+
+.card p{
+  color:#555;
+  font-size:14px;
 }
 
 /* BADGE */
@@ -110,13 +132,14 @@ nav a{
   padding:5px 10px;
   border-radius:6px;
   font-size:12px;
+  z-index:2;
 }
 
 /* BOTONES */
 .botones{
   display:flex;
   gap:10px;
-  margin-top:10px;
+  margin-top:15px;
 }
 
 .btn{
@@ -126,10 +149,17 @@ nav a{
   border-radius:8px;
   text-decoration:none;
   color:white;
+  border:none;
+  cursor:pointer;
 }
 
-.btn-w{ background:#4CAF50; }
-.btn-v{ background:#2f4ea2; }
+.btn-w{
+  background:#4CAF50;
+}
+
+.btn-v{
+  background:#2f4ea2;
+}
 
 /* MODAL */
 #modal{
@@ -139,25 +169,27 @@ nav a{
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,0.65);
   justify-content:center;
   align-items:center;
+  z-index:999;
 }
 
 .modal-content{
   background:white;
-  padding:20px;
-  border-radius:10px;
   width:90%;
-  max-width:500px;
+  max-width:550px;
+  border-radius:14px;
+  padding:20px;
 }
 
-/* SWIPE */
+/* GALERIA */
 .carousel{
   display:flex;
   overflow-x:auto;
   scroll-snap-type:x mandatory;
   gap:10px;
+  margin-bottom:15px;
 }
 
 .slide{
@@ -167,20 +199,21 @@ nav a{
 
 .slide img{
   width:100%;
-  height:220px;
+  height:260px;
   object-fit:cover;
+  border-radius:10px;
 }
 
-/* BOTON MAPA */
+/* MAPA */
 .btn-map{
   display:block;
   background:#ff5722;
   color:white;
-  padding:12px;
   text-align:center;
+  padding:12px;
   border-radius:8px;
-  margin-top:10px;
   text-decoration:none;
+  margin-top:15px;
 }
 
 /* FOOTER */
@@ -193,9 +226,37 @@ footer{
 }
 
 .footer-line{
+  width:100%;
   height:1px;
   background:#ddd;
   margin-bottom:15px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+header{
+  flex-direction:column;
+  padding:15px;
+}
+
+nav{
+  margin-top:10px;
+}
+
+nav a{
+  margin:0 8px;
+  font-size:14px;
+}
+
+.hero h1{
+  font-size:30px;
+}
+
+.main{
+  padding:20px;
+}
+
 }
 
 </style>
@@ -204,22 +265,39 @@ footer{
 <body>
 
 <header>
+
 <img src="logo.png">
+
 <nav>
 <a href="index.html">Inicio</a>
 <a href="como.html">Cómo funciona</a>
 <a href="beneficios.html">Beneficios</a>
 <a href="negocios.html">Negocios</a>
+
+<a class="nav-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
 </nav>
+
 </header>
 
+<!-- HERO -->
 <section class="hero">
 <h1>Negocios disponibles</h1>
 </section>
 
+<!-- MAIN -->
 <section class="main">
 
-<input type="text" id="buscador" placeholder="Buscar negocio..." onkeyup="buscar()">
+<input
+type="text"
+id="buscador"
+placeholder="Buscar negocio..."
+onkeyup="buscar()"
+>
 
 <div class="grid" id="contenedor"></div>
 
@@ -227,126 +305,257 @@ footer{
 
 <!-- MODAL -->
 <div id="modal">
-  <div class="modal-content">
 
-    <div class="carousel" id="carousel"></div>
+<div class="modal-content">
 
-    <h2 id="m_nombre"></h2>
-    <p id="m_desc"></p>
-    <p id="m_zona"></p>
+<div class="carousel" id="carousel"></div>
 
-    <a id="m_mapa" target="_blank" class="btn-map">
-      📍 Cómo llegar
-    </a>
+<h2 id="m_nombre"></h2>
 
-    <button onclick="cerrarModal()">Cerrar</button>
+<p id="m_desc"></p>
 
-  </div>
+<p id="m_zona"></p>
+
+<a
+id="m_mapa"
+target="_blank"
+class="btn-map"
+>
+📍 Cómo llegar
+</a>
+
+<div class="botones">
+
+<button
+onclick="cerrarModal()"
+class="btn btn-v"
+>
+Cerrar
+</button>
+
 </div>
 
+</div>
+
+</div>
+
+<!-- FOOTER -->
 <footer>
+
 <div class="footer-line"></div>
+
 © 2026 NeXsv
+
 </footer>
 
 <script>
 
+/* API */
 const url = "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
 let dataGlobal = [];
 let DATA_MODAL = [];
 
+/* FETCH */
 fetch(url)
 .then(res => res.json())
 .then(data => {
-  data.sort((a,b)=> (b["Prioridad"]||0) - (a["Prioridad"]||0));
+
+  console.log(data);
+
   dataGlobal = data;
+
   renderizar(data);
+
 });
 
+/* DRIVE */
 function convertirDrive(link){
-  if(!link) return "";
-  let id = link.match(/[-\w]{25,}/);
-  return id ? `https://drive.google.com/uc?export=view&id=${id[0]}` : link;
+
+if(!link) return "";
+
+if(link.includes("drive.google.com")){
+
+  const match = link.match(/[-\w]{25,}/);
+
+  if(match){
+    return `https://drive.google.com/uc?export=view&id=${match[0]}`;
+  }
+
 }
 
+return link;
+
+}
+
+/* RENDER */
 function renderizar(data){
 
 const contenedor = document.getElementById("contenedor");
+
 DATA_MODAL = [];
 
 contenedor.innerHTML = data.map(n => {
 
-const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
+const k = Object.keys(n).reduce((a,c)=>{
+a[c.trim()] = n[c];
+return a;
+},{});
 
-if((k["Publicado"] || "").toLowerCase().trim() !== "si") return "";
+/* DEBUG */
+console.log(k);
 
-const nombre = k["Nombre de tu negocio"] || "";
-const descripcion = k["Descripcion_final"] || "";
-const telefono = (k["WhatsApp del negocio"] || "").replace("+","");
-const zona = k["¿En qué zona resides?"] || "";
-const ubicacion = k["Ubicación del Negocio (Link de Google Maps)"] || "";
+/* PUBLICADO */
+if((k["Publicado"] || "").toLowerCase().trim() !== "si"){
+  return "";
+}
+
+/* DATOS */
+const nombre =
+k["Nombre de tu negocio"] ||
+k["Nombre"] ||
+"Negocio";
+
+const descripcion =
+k["Descripcion_final"] ||
+k["Descripción"] ||
+"";
+
+const telefono =
+(k["WhatsApp del negocio"] || "").replace("+","");
+
+const zona =
+k["¿En qué zona resides?"] ||
+k["Zona"] ||
+"";
+
+/* UBICACION GOOGLE MAPS */
+const ubicacion =
+k["Ubicación del Negocio (Link de Google Maps)"] ||
+k["Ubicacion del Negocio (Link de Google Maps)"] ||
+k["Google Maps"] ||
+k["Ubicación"] ||
+k["Ubicacion"] ||
+k["Maps"] ||
+"";
 
 /* IMAGENES */
-let img1 = convertirDrive(k["Imagen_final"]);
-let img2 = convertirDrive(k["Imagen2"]);
-let img3 = convertirDrive(k["Imagen3"]);
+let img1 = convertirDrive(
+k["Imagen_final"] ||
+k["Imagen1"] ||
+""
+);
 
-if(!img1) img1 = "https://via.placeholder.com/300x150";
+let img2 = convertirDrive(
+k["Imagen2"] || ""
+);
+
+let img3 = convertirDrive(
+k["Imagen3"] || ""
+);
+
+if(!img1){
+img1 = "https://via.placeholder.com/300x200";
+}
 
 const images = [img1,img2,img3].filter(i=>i);
 
-/* MAPA TARJETA */
+/* BADGE */
+const badge =
+(k["Recomendado"] || "").toLowerCase() === "si"
+? `<div class="badge">🔥 Recomendado</div>`
+: "";
+
+/* MAPA */
 const zonaHTML = ubicacion
 ? `<a href="${ubicacion}" target="_blank">📍 ${zona}</a>`
 : `📍 ${zona}`;
 
-/* BADGE */
-const badge = k["Recomendado"] === "si"
-? `<div class="badge">🔥 Recomendado</div>`
-: "";
+/* MODAL */
+DATA_MODAL.push({
+nombre,
+descripcion,
+zona,
+images,
+ubicacion
+});
 
-DATA_MODAL.push({nombre,descripcion,zona,images,ubicacion});
 const index = DATA_MODAL.length - 1;
 
+/* CARD */
 return `
+
 <div class="card">
 
 ${badge}
 
 <img src="${img1}">
 
+<div class="card-content">
+
 <h3>${nombre}</h3>
+
 <p>${zonaHTML}</p>
+
 <p>${descripcion.substring(0,80)}...</p>
 
 <div class="botones">
-<a href="#" onclick="irWhatsApp('${telefono}')" class="btn btn-w">WhatsApp</a>
-<button onclick="abrirModal(DATA_MODAL[${index}])" class="btn btn-v">Ver más</button>
+
+<a
+href="#"
+onclick="irWhatsApp('${telefono}')"
+class="btn btn-w"
+>
+WhatsApp
+</a>
+
+<button
+onclick="abrirModal(DATA_MODAL[${index}])"
+class="btn btn-v"
+>
+Ver más
+</button>
+
 </div>
 
 </div>
+
+</div>
+
 `;
 
 }).join("");
 
 }
 
+/* MODAL */
 function abrirModal(data){
 
 document.getElementById("modal").style.display = "flex";
-document.getElementById("m_nombre").innerText = data.nombre;
-document.getElementById("m_desc").innerText = data.descripcion;
-document.getElementById("m_zona").innerText = "📍 " + data.zona;
 
-/* MAPA INTELIGENTE */
-const mapaBtn = document.getElementById("m_mapa");
+document.getElementById("m_nombre").innerText =
+data.nombre;
+
+document.getElementById("m_desc").innerText =
+data.descripcion;
+
+document.getElementById("m_zona").innerText =
+"📍 " + data.zona;
+
+/* MAPA */
+const mapaBtn =
+document.getElementById("m_mapa");
 
 if(data.ubicacion){
-  mapaBtn.href = data.ubicacion;
-  mapaBtn.style.display = "block";
+
+mapaBtn.href = data.ubicacion;
+
+mapaBtn.style.display = "block";
+
 }else{
-  mapaBtn.style.display = "none";
+
+mapaBtn.style.display = "none";
+
 }
 
 /* GALERIA */
@@ -359,20 +568,42 @@ data.images.map(i => `
 
 }
 
+/* CERRAR */
 function cerrarModal(){
 document.getElementById("modal").style.display = "none";
 }
 
+/* WHATSAPP */
 function irWhatsApp(telefono){
 window.open("https://wa.me/" + telefono, "_blank");
 }
 
+/* BUSCAR */
 function buscar(){
-const texto = document.getElementById("buscador").value.toLowerCase();
-renderizar(dataGlobal.filter(n=>{
-const k = Object.keys(n).reduce((a,c)=>{a[c.trim()]=n[c];return a;},{});  
-return (k["Nombre de tu negocio"] || "").toLowerCase().includes(texto);
-}));
+
+const texto =
+document.getElementById("buscador")
+.value
+.toLowerCase();
+
+const filtrados =
+dataGlobal.filter(n => {
+
+const k = Object.keys(n).reduce((a,c)=>{
+a[c.trim()] = n[c];
+return a;
+},{});
+
+return (
+(k["Nombre de tu negocio"] || "")
+.toLowerCase()
+.includes(texto)
+);
+
+});
+
+renderizar(filtrados);
+
 }
 
 </script>
