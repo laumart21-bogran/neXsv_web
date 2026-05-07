@@ -6,10 +6,16 @@
 
 <style>
 
+/* BASE */
+html{
+  font-size:16px;
+}
+
 body{
   margin:0;
-  font-family: Arial;
+  font-family:Arial;
   background:#f5f7fb;
+  color:#333;
 }
 
 /* HEADER */
@@ -30,12 +36,13 @@ nav a{
   color:#2f4ea2;
   margin-left:20px;
   text-decoration:none;
+  font-size:0.95rem;
 }
 
 .nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
+  background:#66b34e;
+  padding:10px 16px;
+  border-radius:10px;
   color:white;
 }
 
@@ -46,6 +53,7 @@ nav a{
   display:flex;
   align-items:center;
   justify-content:center;
+  text-align:center;
   color:white;
   position:relative;
 }
@@ -53,86 +61,94 @@ nav a{
 .hero::before{
   content:"";
   position:absolute;
-  width:100%;
-  height:100%;
+  inset:0;
   background:rgba(0,0,0,0.45);
 }
 
 .hero h1{
   position:relative;
-  z-index:1;
-  font-size:42px;
+  z-index:2;
+  font-size:2.3rem;
 }
 
 /* MAIN */
 .main{
-  padding:40px;
   max-width:1200px;
   margin:auto;
+  padding:40px 20px;
 }
 
 /* BUSCADOR */
 #buscador{
   width:100%;
   padding:14px;
-  border-radius:10px;
-  border:1px solid #ccc;
+  border-radius:12px;
+  border:1px solid #ddd;
+  margin-bottom:20px;
+  font-size:1rem;
+}
+
+/* CATEGORIAS */
+.categorias{
   margin-bottom:25px;
-  font-size:16px;
+}
+
+.categorias button{
+  margin:5px;
+  padding:10px 18px;
+  border:none;
+  border-radius:30px;
+  background:white;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.categorias button:hover{
+  background:#66b34e;
+  color:white;
 }
 
 /* GRID */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:22px;
 }
 
 /* CARD */
 .card{
-  position:relative;
   background:white;
-  border-radius:14px;
+  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
-  transition:.2s;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  transition:0.25s;
 }
 
 .card:hover{
-  transform:translateY(-4px);
+  transform:translateY(-6px);
 }
 
 .card img{
   width:100%;
-  height:190px;
+  height:220px;
   object-fit:cover;
 }
 
 .card-content{
-  padding:15px;
+  padding:18px;
 }
 
 .card h3{
   margin-top:0;
-  color:#2f4ea2;
+  margin-bottom:10px;
+  font-size:1.2rem;
 }
 
 .card p{
-  color:#555;
-  font-size:14px;
-}
-
-/* BADGE */
-.badge{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#ff5722;
-  color:white;
-  padding:5px 10px;
-  border-radius:6px;
-  font-size:12px;
-  z-index:2;
+  color:#666;
+  font-size:0.92rem;
+  line-height:1.5;
 }
 
 /* BOTONES */
@@ -145,62 +161,116 @@ nav a{
 .btn{
   flex:1;
   text-align:center;
+  padding:11px;
+  border-radius:10px;
+  text-decoration:none;
+  color:white;
+  border:none;
+  cursor:pointer;
+  font-size:0.92rem;
+}
+
+.btn-w{
+  background:#66b34e;
+}
+
+.btn-v{
+  background:#ff914d;
+}
+
+.btn-map{
+  display:block;
+  margin-top:12px;
+  text-align:center;
+  background:#f1f5f9;
+  color:#333;
   padding:10px;
   border-radius:10px;
   text-decoration:none;
-  border:none;
-  cursor:pointer;
-  font-weight:bold;
-  transition:.2s;
-}
-
-/* WHATSAPP */
-.btn-w{
-  background:#4CAF50;
-  color:white;
-}
-
-.btn-w:hover{
-  opacity:.9;
-}
-
-/* VER MÁS */
-.btn-v{
-  background:#f1f4f9;
-  color:#2f4ea2;
-  border:1px solid #dbe3f1;
-}
-
-.btn-v:hover{
-  background:#e8eef9;
-}
-
-/* MAPA */
-.btn-map{
-  display:block;
-  background:white;
-  color:#4CAF50;
-  border:2px solid #4CAF50;
-  text-align:center;
-  padding:12px;
-  border-radius:10px;
-  text-decoration:none;
-  margin-top:15px;
-  font-weight:bold;
-  transition:.2s;
+  font-size:0.9rem;
+  transition:0.2s;
 }
 
 .btn-map:hover{
-  background:#4CAF50;
+  background:#66b34e;
   color:white;
 }
+
+/* MODAL */
+#modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.65);
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+  padding:20px;
+}
+
+.modal-content{
+  background:white;
+  width:100%;
+  max-width:520px;
+  border-radius:20px;
+  padding:20px;
+  animation:fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn{
+  from{
+    transform:translateY(20px);
+    opacity:0;
+  }
+  to{
+    transform:translateY(0);
+    opacity:1;
+  }
+}
+
+.carousel{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  scroll-snap-type:x mandatory;
+  margin-bottom:15px;
+}
+
+.carousel img{
+  min-width:100%;
+  height:260px;
+  object-fit:cover;
+  border-radius:14px;
+  scroll-snap-align:center;
+}
+
+.modal-content h2{
+  margin-top:0;
+}
+
+.modal-content p{
+  color:#555;
+  line-height:1.6;
+}
+
+.modal-buttons{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.modal-buttons a{
+  flex:1;
+}
+
 /* FOOTER */
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
+  margin-top:50px;
   background:white;
-  color:#555;
+  padding:25px;
+  text-align:center;
+  color:#666;
+  font-size:0.9rem;
 }
 
 .footer-line{
@@ -210,29 +280,40 @@ footer{
   margin-bottom:15px;
 }
 
+footer a{
+  color:#2f4ea2;
+  text-decoration:none;
+}
+
 /* MOBILE */
 @media(max-width:768px){
 
 header{
   flex-direction:column;
+  gap:10px;
   padding:15px;
 }
 
 nav{
-  margin-top:10px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 
 nav a{
-  margin:0 8px;
-  font-size:14px;
+  margin:5px;
+}
+
+.hero{
+  height:220px;
 }
 
 .hero h1{
-  font-size:30px;
+  font-size:1.7rem;
 }
 
-.main{
-  padding:20px;
+.card img{
+  height:200px;
 }
 
 }
@@ -244,13 +325,16 @@ nav a{
 
 <header>
 
+<a href="index.html">
 <img src="logo.png">
+</a>
 
 <nav>
 <a href="index.html">Inicio</a>
 <a href="como.html">Cómo funciona</a>
 <a href="beneficios.html">Beneficios</a>
 <a href="negocios.html">Negocios</a>
+<a href="blog.html">Blog</a>
 
 <a class="nav-btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
@@ -262,12 +346,10 @@ Solicitar acceso
 
 </header>
 
-<!-- HERO -->
 <section class="hero">
 <h1>Negocios disponibles</h1>
 </section>
 
-<!-- MAIN -->
 <section class="main">
 
 <input
@@ -277,11 +359,20 @@ placeholder="Buscar negocio..."
 onkeyup="buscar()"
 >
 
+<div class="categorias">
+<button onclick="filtrar('Todos')">Todos</button>
+<button onclick="filtrar('Servicios')">Servicios</button>
+<button onclick="filtrar('Comida')">Comida</button>
+<button onclick="filtrar('Belleza')">Belleza</button>
+<button onclick="filtrar('Legal')">Legal</button>
+</div>
+
 <div class="grid" id="contenedor"></div>
 
 </section>
 
 <!-- MODAL -->
+
 <div id="modal">
 
 <div class="modal-content">
@@ -292,22 +383,30 @@ onkeyup="buscar()"
 
 <p id="m_desc"></p>
 
-<p id="m_zona"></p>
+<div class="modal-buttons">
+
+<a
+id="m_whatsapp"
+target="_blank"
+class="btn btn-w">
+WhatsApp
+</a>
 
 <a
 id="m_mapa"
 target="_blank"
-class="btn-map"
->
+class="btn btn-v">
 📍 Cómo llegar
 </a>
 
-<div class="botones">
+</div>
+
+<br>
 
 <button
 onclick="cerrarModal()"
-class="btn btn-v"
->
+class="btn-map"
+style="border:none;width:100%;">
 Cerrar
 </button>
 
@@ -315,50 +414,48 @@ Cerrar
 
 </div>
 
-</div>
-
-<!-- FOOTER -->
 <footer>
-
 <div class="footer-line"></div>
 
-© 2026 NeXsv
+© 2026 NeXsv |
+<a href="terminos.html">Términos y condiciones</a>
 
 </footer>
 
 <script>
 
-/* API */
 const url = "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
+
+const ANALYTICS = url;
 
 let dataGlobal = [];
 let DATA_MODAL = [];
 
-/* FETCH */
 fetch(url)
 .then(res => res.json())
 .then(data => {
 
-  console.log(data);
+console.log(data);
 
-  dataGlobal = data;
+dataGlobal = data;
 
-  renderizar(data);
+renderizar(data);
 
 });
 
-/* DRIVE */
 function convertirDrive(link){
 
-if(!link) return "";
+if(link && link.includes("drive.google.com")){
 
-if(link.includes("drive.google.com")){
+let match = link.match(/\/d\/([a-zA-Z0-9_-]+)/);
 
-  const match = link.match(/[-\w]{25,}/);
+if(!match){
+match = link.match(/id=([a-zA-Z0-9_-]+)/);
+}
 
-  if(match){
-    return `https://drive.google.com/uc?export=view&id=${match[0]}`;
-  }
+if(match){
+return `https://drive.google.com/uc?export=view&id=${match[1]}`;
+}
 
 }
 
@@ -366,37 +463,26 @@ return link;
 
 }
 
-/* RENDER */
 function renderizar(data){
 
 const contenedor = document.getElementById("contenedor");
 
 DATA_MODAL = [];
 
-contenedor.innerHTML = data.map(n => {
+const html = data.map(n => {
 
 const k = Object.keys(n).reduce((a,c)=>{
 a[c.trim()] = n[c];
 return a;
 },{});
 
-/* DEBUG */
-console.log(k);
-
-/* PUBLICADO */
-if((k["Publicado"] || "").toLowerCase().trim() !== "si"){
-  return "";
-}
-
-/* DATOS */
 const nombre =
 k["Nombre de tu negocio"] ||
-k["Nombre"] ||
 "Negocio";
 
 const descripcion =
 k["Descripcion_final"] ||
-k["Descripción"] ||
+k["Describe tu negocio"] ||
 "";
 
 const telefono =
@@ -404,96 +490,86 @@ const telefono =
 
 const zona =
 k["¿En qué zona resides?"] ||
-k["Zona"] ||
 "";
 
-/* UBICACION GOOGLE MAPS */
-const ubicacion =
+const ubicacionLink =
 k["Link de ubicación del Negocio (Link de Google Maps)"] ||
+k["Ubicación del Negocio (Link de Google Maps)"] ||
 k["Google Maps"] ||
 k["Ubicación"] ||
 k["Ubicacion"] ||
 k["Maps"] ||
 "";
 
-/* IMAGENES */
-let img1 = convertirDrive(
+let img1 =
+convertirDrive(
+k["Link de imagen resp"] ||
 k["Imagen_final"] ||
-k["Imagen1"] ||
 ""
 );
 
-let img2 = convertirDrive(
+let img2 =
+convertirDrive(
 k["Imagen2"] || ""
 );
 
-let img3 = convertirDrive(
+let img3 =
+convertirDrive(
 k["Imagen3"] || ""
 );
 
 if(!img1){
-img1 = "https://via.placeholder.com/300x200";
+img1 = "https://via.placeholder.com/400x300";
 }
 
 const images = [img1,img2,img3].filter(i=>i);
 
-/* BADGE */
-const badge =
-(k["Recomendado"] || "").toLowerCase() === "si"
-? `<div class="badge">🔥 Recomendado</div>`
-: "";
-
-/* MAPA */
-const zonaHTML = ubicacion
-? `<a href="${ubicacion}" target="_blank">📍 ${zona}</a>`
-: `📍 ${zona}`;
-
-/* MODAL */
 DATA_MODAL.push({
 nombre,
 descripcion,
 zona,
 images,
-ubicacion
+telefono,
+mapa:ubicacionLink
 });
 
 const index = DATA_MODAL.length - 1;
 
-/* CARD */
 return `
 
 <div class="card">
 
-${badge}
-
-<img src="${img1}">
+<img src="${img1}" loading="lazy">
 
 <div class="card-content">
 
 <h3>${nombre}</h3>
 
-<p>${zonaHTML}</p>
-
-<p>${descripcion.substring(0,80)}...</p>
+<p>${descripcion.substring(0,90)}...</p>
 
 <div class="botones">
 
 <a
 href="#"
-onclick="irWhatsApp('${telefono}')"
-class="btn btn-w"
->
+onclick="event.stopPropagation(); irWhatsApp('${nombre}','${telefono}')"
+class="btn btn-w">
 WhatsApp
 </a>
 
 <button
-onclick="abrirModal(DATA_MODAL[${index}])"
-class="btn btn-v"
->
+onclick="event.stopPropagation(); abrirModal(DATA_MODAL[${index}])"
+class="btn btn-v">
 Ver más
 </button>
 
 </div>
+
+<a
+href="${ubicacionLink}"
+target="_blank"
+class="btn-map">
+📍 Cómo llegar
+</a>
 
 </div>
 
@@ -503,59 +579,60 @@ Ver más
 
 }).join("");
 
+contenedor.innerHTML = html;
+
 }
 
-/* MODAL */
 function abrirModal(data){
+
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({
+tipo:"vista",
+negocio:data.nombre
+})
+});
 
 document.getElementById("modal").style.display = "flex";
 
-document.getElementById("m_nombre").innerText =
-data.nombre;
+document.getElementById("m_nombre").innerText = data.nombre;
 
-document.getElementById("m_desc").innerText =
-data.descripcion;
+document.getElementById("m_desc").innerText = data.descripcion;
 
-document.getElementById("m_zona").innerText =
-"📍 " + data.zona;
-
-/* MAPA */
-const mapaBtn =
-document.getElementById("m_mapa");
-
-if(data.ubicacion){
-
-mapaBtn.href = data.ubicacion;
-
-mapaBtn.style.display = "block";
-
-}else{
-
-mapaBtn.style.display = "none";
-
-}
-
-/* GALERIA */
 document.getElementById("carousel").innerHTML =
-data.images.map(i => `
-<div class="slide">
-<img src="${i}">
-</div>
-`).join("");
+data.images.map(i => `<img src="${i}">`).join("");
+
+document.getElementById("m_whatsapp").href =
+"https://wa.me/" + data.telefono;
+
+document.getElementById("m_mapa").href =
+data.mapa || "#";
 
 }
 
-/* CERRAR */
+function irWhatsApp(nombre,telefono){
+
+fetch(ANALYTICS,{
+method:"POST",
+body:JSON.stringify({
+tipo:"whatsapp",
+negocio:nombre
+})
+});
+
+window.open(
+"https://wa.me/" + telefono,
+"_blank"
+);
+
+}
+
 function cerrarModal(){
+
 document.getElementById("modal").style.display = "none";
+
 }
 
-/* WHATSAPP */
-function irWhatsApp(telefono){
-window.open("https://wa.me/" + telefono, "_blank");
-}
-
-/* BUSCAR */
 function buscar(){
 
 const texto =
@@ -572,10 +649,36 @@ return a;
 },{});
 
 return (
-(k["Nombre de tu negocio"] || "")
+k["Nombre de tu negocio"] || ""
+)
 .toLowerCase()
-.includes(texto)
-);
+.includes(texto);
+
+});
+
+renderizar(filtrados);
+
+}
+
+function filtrar(cat){
+
+if(cat === "Todos"){
+renderizar(dataGlobal);
+return;
+}
+
+const filtrados =
+dataGlobal.filter(n => {
+
+const k = Object.keys(n).reduce((a,c)=>{
+a[c.trim()] = n[c];
+return a;
+},{});
+
+return (
+k["Categoría de tu negocio"] || ""
+)
+.toLowerCase() === cat.toLowerCase();
 
 });
 
