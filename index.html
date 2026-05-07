@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -55,18 +54,59 @@ width:100%;
 height:90px;
 background:rgba(255,255,255,.72);
 backdrop-filter:blur(12px);
+z-index:999;
 border-bottom:1px solid rgba(255,255,255,.5);
-
-/* 👇 FIX */
-z-index:1;
-pointer-events:none;
 }
 
-/* 👇 FIX PARA EL HEADER DINÁMICO */
+/* HEADER REAL */
 
 header{
-position:relative;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:18px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 z-index:1000;
+}
+
+header img{
+height:62px;
+}
+
+nav{
+display:flex;
+align-items:center;
+gap:22px;
+}
+
+nav a{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+font-size:15px;
+transition:.3s;
+}
+
+nav a:hover{
+color:var(--secondary);
+}
+
+.nav-btn{
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:12px 20px;
+border-radius:14px;
+color:#1D2A3A !important;
+font-weight:700;
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
 }
 
 /* ========================================
@@ -435,6 +475,8 @@ border:3px solid var(--accent);
 transform:scale(1.04);
 }
 
+/* PREMIUM FIX */
+
 .premium{
 background:
 linear-gradient(
@@ -448,12 +490,24 @@ color:white;
 
 .premium h3,
 .premium li,
-.premium .future-name{
-color:white;
+.premium .future-name,
+.premium p,
+.premium ul li{
+color:rgba(255,255,255,.92);
 }
 
 .premium .plan-price{
 color:#F7C531;
+font-weight:800;
+}
+
+.premium ul li{
+font-weight:500;
+line-height:1.8;
+}
+
+.premium .future-name{
+opacity:.85;
 }
 
 .popular-badge{
@@ -548,6 +602,18 @@ RESPONSIVE
 
 @media(max-width:900px){
 
+header{
+padding:15px 20px;
+flex-direction:column;
+gap:14px;
+}
+
+nav{
+flex-wrap:wrap;
+justify-content:center;
+gap:12px;
+}
+
 .hero{
 padding:60px 25px;
 min-height:82vh;
@@ -598,11 +664,46 @@ width:100%;
 
 <body>
 
-<!-- BLUR SUPERIOR -->
 <div class="top-blur"></div>
 
-<!-- HEADER DINÁMICO -->
-<script src="components/header.js"></script>
+<!-- HEADER -->
+
+<header>
+
+<a href="index.html">
+<img src="logo.png" alt="NeXsv">
+</a>
+
+<nav>
+
+<a href="index.html">Inicio</a>
+
+<a href="como.html">
+Cómo funciona
+</a>
+
+<a href="beneficios.html">
+Beneficios
+</a>
+
+<a href="negocios.html">
+Negocios
+</a>
+
+<a href="blog.html">
+Blog
+</a>
+
+<a
+class="nav-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
+</nav>
+
+</header>
 
 <!-- HERO -->
 
@@ -637,158 +738,6 @@ href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRc
 target="_blank">
 Solicitar acceso
 </a>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- POSICIONAMIENTO -->
-
-<section class="section section-center">
-
-<div class="container">
-
-<h2>
-Una red privada, no un marketplace abierto
-</h2>
-
-<p>
-NeXsv facilita conexiones reales entre familias y negocios dentro de un mismo entorno, fortaleciendo relaciones basadas en confianza y cercanía.
-</p>
-
-<div class="section-box">
-
-<p>✔ Comunidad privada entre padres de familia</p>
-<p>✔ Conexiones basadas en afinidad y cercanía</p>
-<p>✔ Contacto directo entre miembros</p>
-<p>✔ Negocios activos dentro de la red</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- URGENCIA -->
-
-<section class="section section-center">
-
-<div class="container">
-
-<h2>
-Acceso limitado por categoría
-</h2>
-
-<p>
-Para mantener la calidad de la comunidad, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
-</p>
-
-<br><br>
-
-<p style="font-weight:700;">
-Cuando una categoría alcanza capacidad máxima, se habilita lista de espera.
-</p>
-
-<br><br>
-
-<a
-class="btn btn-primary"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-Solicitar acceso
-</a>
-
-</div>
-
-</section>
-
-<!-- BENEFICIOS -->
-
-<section class="section">
-
-<div class="container">
-
-<div class="grid">
-
-<div class="card">
-
-<h3>
-Clientes reales
-</h3>
-
-<p>
-Accede a personas dentro de tu mismo entorno con interés real en productos y servicios.
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-Comunidad privada
-</h3>
-
-<p>
-Espacio donde las conexiones nacen desde la afinidad y la confianza.
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-Más oportunidades
-</h3>
-
-<p>
-Facilita conversaciones directas y genera nuevas oportunidades de negocio.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- TESTIMONIOS -->
-
-<section class="section">
-
-<div class="container">
-
-<div class="grid">
-
-<div class="testimonial">
-
-<p>
-"He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."
-</p>
-
-<br>
-
-<strong>
-— Miembro de la red
-</strong>
-
-</div>
-
-<div class="testimonial">
-
-<p>
-"Es mucho más fácil generar oportunidades cuando ya existe afinidad entre las personas."
-</p>
-
-<br>
-
-<strong>
-— Emprendedor
-</strong>
-
-</div>
 
 </div>
 
