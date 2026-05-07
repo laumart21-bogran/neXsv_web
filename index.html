@@ -51,16 +51,11 @@ position:fixed;
 top:0;
 left:0;
 width:100%;
-height:88px;
-
-background:rgba(255,255,255,.82);
-
-backdrop-filter:blur(14px);
--webkit-backdrop-filter:blur(14px);
-
-z-index:998;
-
-border-bottom:1px solid rgba(255,255,255,.45);
+height:90px;
+background:rgba(255,255,255,.72);
+backdrop-filter:blur(12px);
+z-index:999;
+border-bottom:1px solid rgba(255,255,255,.5);
 }
 
 /* HEADER REAL */
@@ -70,13 +65,10 @@ position:fixed;
 top:0;
 left:0;
 width:100%;
-
-padding:14px 32px;
-
+padding:18px 40px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-
 z-index:1000;
 }
 
@@ -112,9 +104,7 @@ var(--accent),
 
 padding:12px 20px;
 border-radius:14px;
-
 color:#1D2A3A !important;
-
 font-weight:700;
 
 box-shadow:
@@ -127,22 +117,18 @@ HERO
 
 .hero{
 width:100%;
-
-min-height:100vh;
+min-height:92vh;
 
 background:
 linear-gradient(
 rgba(9,28,61,.78),
 rgba(9,28,61,.82)
 ),
-url('cover-index.jpg') center/cover no-repeat;
+url('cover-index.jpg') center/cover;
 
 display:flex;
 align-items:center;
-
-padding:
-140px 60px 90px;
-
+padding:90px 60px;
 position:relative;
 overflow:hidden;
 }
@@ -280,6 +266,295 @@ color:#5d6677;
 }
 
 /* ========================================
+BOX
+======================================== */
+
+.section-box{
+margin-top:45px;
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(14px);
+padding:40px;
+border-radius:32px;
+
+box-shadow:
+0 10px 40px rgba(0,0,0,.06);
+
+border:1px solid rgba(255,255,255,.6);
+}
+
+.section-box p{
+margin-bottom:14px;
+font-weight:500;
+}
+
+/* ========================================
+GRID
+======================================== */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:32px;
+margin-top:50px;
+}
+
+/* ========================================
+CARDS
+======================================== */
+
+.card{
+background:white;
+padding:38px;
+border-radius:30px;
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.4s;
+}
+
+.card::before{
+content:"";
+position:absolute;
+width:160px;
+height:160px;
+background:rgba(25,194,198,.08);
+border-radius:50%;
+top:-50px;
+right:-50px;
+}
+
+.card:hover{
+transform:translateY(-10px);
+box-shadow:
+0 20px 50px rgba(0,0,0,.12);
+}
+
+.card h3{
+font-size:28px;
+margin-bottom:18px;
+font-weight:700;
+color:var(--primary);
+position:relative;
+z-index:2;
+}
+
+.card p{
+position:relative;
+z-index:2;
+}
+
+/* ========================================
+TESTIMONIOS
+======================================== */
+
+.testimonial{
+background:white;
+padding:40px;
+border-radius:30px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.35s;
+}
+
+.testimonial::before{
+content:"“";
+position:absolute;
+font-size:120px;
+top:-30px;
+left:18px;
+color:rgba(25,194,198,.1);
+font-weight:800;
+}
+
+.testimonial:hover{
+transform:translateY(-8px);
+}
+
+.testimonial p,
+.testimonial strong{
+position:relative;
+z-index:2;
+}
+
+/* ========================================
+PLANES
+======================================== */
+
+.planes-section{
+padding:120px 20px;
+background:
+linear-gradient(
+180deg,
+#eef5ff,
+#f5f7fb
+);
+
+text-align:center;
+}
+
+.planes-title{
+font-size:56px;
+font-weight:800;
+color:var(--primary);
+margin-bottom:20px;
+}
+
+.planes-subtitle{
+max-width:760px;
+margin:auto;
+font-size:19px;
+line-height:1.9;
+color:#667085;
+margin-bottom:70px;
+}
+
+.planes-container{
+display:flex;
+justify-content:center;
+gap:32px;
+flex-wrap:wrap;
+}
+
+.plan-card{
+width:340px;
+background:white;
+padding:45px 35px;
+border-radius:32px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 15px 45px rgba(0,0,0,.08);
+
+transition:.4s;
+}
+
+.plan-card:hover{
+transform:translateY(-12px);
+}
+
+.plan-card h3{
+font-size:32px;
+margin-bottom:10px;
+font-weight:800;
+}
+
+.future-name{
+color:#7b8190;
+margin-bottom:25px;
+}
+
+.plan-price{
+font-size:24px;
+font-weight:800;
+color:var(--secondary);
+margin-bottom:30px;
+}
+
+.plan-card ul{
+list-style:none;
+text-align:left;
+margin-bottom:35px;
+}
+
+.plan-card ul li{
+margin-bottom:16px;
+line-height:1.7;
+color:#596273;
+}
+
+.featured{
+border:3px solid var(--accent);
+transform:scale(1.04);
+}
+
+/* PREMIUM FIX */
+
+.premium{
+background:
+linear-gradient(
+180deg,
+#1657B8,
+#0d3f89
+);
+
+color:white;
+}
+
+.premium h3,
+.premium li,
+.premium .future-name,
+.premium p,
+.premium ul li{
+color:rgba(255,255,255,.92);
+}
+
+.premium .plan-price{
+color:#F7C531;
+font-weight:800;
+}
+
+.premium ul li{
+font-weight:500;
+line-height:1.8;
+}
+
+.premium .future-name{
+opacity:.85;
+}
+
+.popular-badge{
+position:absolute;
+top:18px;
+right:18px;
+background:var(--accent);
+color:#1D2A3A;
+padding:9px 14px;
+border-radius:50px;
+font-size:12px;
+font-weight:800;
+}
+
+.plan-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:18px;
+font-weight:700;
+cursor:pointer;
+font-size:16px;
+transition:.3s;
+}
+
+.default-btn{
+background:var(--primary);
+color:white;
+}
+
+.featured-btn{
+background:var(--accent);
+color:#1D2A3A;
+}
+
+.premium-btn{
+background:white;
+color:var(--primary);
+}
+
+.plan-btn:hover{
+transform:translateY(-3px);
+}
+
+/* ========================================
 FOOTER
 ======================================== */
 
@@ -327,134 +602,61 @@ transform:translateY(0);
 RESPONSIVE
 ======================================== */
 
-@media(max-width:768px){
-
-.top-blur{
-height:135px;
-}
+@media(max-width:900px){
 
 header{
-padding:18px 20px;
+padding:15px 20px;
 flex-direction:column;
-justify-content:center;
 gap:14px;
-}
-
-header img{
-height:58px;
 }
 
 nav{
-width:100%;
-display:flex;
-justify-content:center;
 flex-wrap:wrap;
-gap:14px;
-}
-
-nav a{
-font-size:15px;
-}
-
-.nav-btn{
-padding:14px 24px;
-border-radius:18px;
-font-size:16px;
+justify-content:center;
+gap:12px;
 }
 
 .hero{
-min-height:auto;
-
-padding:
-210px 24px 90px;
-
-text-align:left;
-}
-
-.hero-content{
-max-width:100%;
+padding:60px 25px;
+min-height:82vh;
 }
 
 .hero-logo{
-width:150px;
-margin-bottom:25px;
+width:180px;
 }
 
 .hero h1{
-font-size:54px;
-line-height:1.02;
-margin-bottom:20px;
+font-size:44px;
 }
 
 .hero p{
-font-size:20px;
-line-height:1.7;
-margin-bottom:35px;
+font-size:18px;
+}
+
+.section h2{
+font-size:36px;
+}
+
+.planes-title{
+font-size:38px;
+}
+
+.featured{
+transform:none;
+}
+
+.plan-card{
+width:100%;
+max-width:380px;
 }
 
 .hero-buttons{
-width:100%;
 flex-direction:column;
-gap:16px;
+align-items:flex-start;
 }
 
 .btn{
 width:100%;
-min-height:58px;
-font-size:17px;
-border-radius:20px;
-}
-
-.section{
-padding:80px 22px;
-}
-
-.section h2{
-font-size:42px;
-line-height:1.08;
-}
-
-.section p{
-font-size:18px;
-line-height:1.8;
-}
-
-}
-
-/* ========================================
-MÓVILES PEQUEÑOS
-======================================== */
-
-@media(max-width:480px){
-
-.hero{
-padding:
-220px 20px 80px;
-}
-
-.hero h1{
-font-size:46px;
-}
-
-.hero p{
-font-size:18px;
-}
-
-.hero-logo{
-width:140px;
-}
-
-nav{
-gap:12px;
-}
-
-nav a{
-font-size:14px;
-}
-
-.nav-btn{
-width:100%;
-text-align:center;
 }
 
 }
@@ -476,9 +678,7 @@ text-align:center;
 
 <nav>
 
-<a href="index.html">
-Inicio
-</a>
+<a href="index.html">Inicio</a>
 
 <a href="como.html">
 Cómo funciona
@@ -500,9 +700,7 @@ Blog
 class="nav-btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
-
 Solicitar acceso
-
 </a>
 
 </nav>
@@ -533,19 +731,281 @@ La red privada que conecta negocios y familias dentro de una misma comunidad bas
 <a
 class="btn btn-primary"
 href="negocios.html">
-
 Explorar negocios
-
 </a>
 
 <a
 class="btn btn-secondary"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
-
 Solicitar acceso
-
 </a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- POSICIONAMIENTO -->
+
+<section class="section section-center">
+
+<div class="container">
+
+<h2>
+Una red privada, no un marketplace abierto
+</h2>
+
+<p>
+NeXsv facilita conexiones reales entre familias y negocios dentro de un mismo entorno, fortaleciendo relaciones basadas en confianza y cercanía.
+</p>
+
+<div class="section-box">
+
+<p>✔ Comunidad privada entre padres de familia</p>
+<p>✔ Conexiones basadas en afinidad y cercanía</p>
+<p>✔ Contacto directo entre miembros</p>
+<p>✔ Negocios activos dentro de la red</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- URGENCIA -->
+
+<section class="section section-center">
+
+<div class="container">
+
+<h2>
+Acceso limitado por categoría
+</h2>
+
+<p>
+Para mantener la calidad de la comunidad, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
+</p>
+
+<br><br>
+
+<p style="font-weight:700;">
+Cuando una categoría alcanza capacidad máxima, se habilita lista de espera.
+</p>
+
+<br><br>
+
+<a
+class="btn btn-primary"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
+</div>
+
+</section>
+
+<!-- BENEFICIOS -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+
+<h3>
+Clientes reales
+</h3>
+
+<p>
+Accede a personas dentro de tu mismo entorno con interés real en productos y servicios.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+Comunidad privada
+</h3>
+
+<p>
+Espacio donde las conexiones nacen desde la afinidad y la confianza.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+Más oportunidades
+</h3>
+
+<p>
+Facilita conversaciones directas y genera nuevas oportunidades de negocio.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TESTIMONIOS -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
+
+<div class="testimonial">
+
+<p>
+"He logrado conectar con nuevos clientes dentro de la comunidad de forma rápida y directa."
+</p>
+
+<br>
+
+<strong>
+— Miembro de la red
+</strong>
+
+</div>
+
+<div class="testimonial">
+
+<p>
+"Es mucho más fácil generar oportunidades cuando ya existe afinidad entre las personas."
+</p>
+
+<br>
+
+<strong>
+— Emprendedor
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- PLANES -->
+
+<section class="planes-section">
+
+<h2 class="planes-title">
+Planes para negocios de la comunidad
+</h2>
+
+<p class="planes-subtitle">
+Accede a distintos niveles de visibilidad dentro de la red privada de NeXsv.
+</p>
+
+<div class="planes-container">
+
+<!-- PLAN 1 -->
+
+<div class="plan-card">
+
+<h3>
+Comunidad Fundadora
+</h3>
+
+<p class="future-name">
+(Comunidad)
+</p>
+
+<div class="plan-price">
+Acceso inicial
+</div>
+
+<ul>
+<li>✔ Perfil del negocio</li>
+<li>✔ Categoría visible</li>
+<li>✔ Botón de WhatsApp</li>
+<li>✔ Aparición en búsquedas</li>
+<li>✔ Imagen principal</li>
+</ul>
+
+<button class="plan-btn default-btn">
+Solicitar acceso
+</button>
+
+</div>
+
+<!-- PLAN 2 -->
+
+<div class="plan-card featured">
+
+<div class="popular-badge">
+MÁS SOLICITADO
+</div>
+
+<h3>
+Negocio Recomendado
+</h3>
+
+<p class="future-name">
+(Destacado)
+</p>
+
+<div class="plan-price">
+Mayor visibilidad
+</div>
+
+<ul>
+<li>✔ Todo lo anterior</li>
+<li>✔ Aparecer primero</li>
+<li>✔ Badge recomendado</li>
+<li>✔ Hasta 5 imágenes</li>
+<li>✔ Prioridad por categoría</li>
+<li>✔ Promociones visibles</li>
+</ul>
+
+<button class="plan-btn featured-btn">
+Quiero destacar
+</button>
+
+</div>
+
+<!-- PLAN 3 -->
+
+<div class="plan-card premium">
+
+<h3>
+Aliado Estratégico
+</h3>
+
+<p class="future-name">
+(Élite)
+</p>
+
+<div class="plan-price">
+Máxima exposición
+</div>
+
+<ul>
+<li>✔ Todo lo anterior</li>
+<li>✔ Banner principal</li>
+<li>✔ Prioridad máxima</li>
+<li>✔ Campañas destacadas</li>
+<li>✔ Estadísticas básicas</li>
+<li>✔ Mayor exposición</li>
+</ul>
+
+<button class="plan-btn premium-btn">
+Acceso preferencial
+</button>
 
 </div>
 
