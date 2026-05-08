@@ -7,7 +7,6 @@
 
 <title>Beneficios - NeXsv</title>
 
-<!-- TIPOGRAFÍA -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -48,7 +47,7 @@ color:var(--text);
 }
 
 /* ========================================
-HEADER PREMIUM
+HEADER CORREGIDO
 ======================================== */
 
 .nex-header{
@@ -61,7 +60,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:14px 28px;
+padding:12px 22px;
 
 background:rgba(255,255,255,.88);
 
@@ -77,14 +76,14 @@ box-shadow:
 }
 
 .logo-wrap img{
-height:56px;
+height:50px;
 display:block;
 }
 
 .nex-nav{
 display:flex;
 align-items:center;
-gap:22px;
+gap:18px;
 }
 
 .nex-nav a{
@@ -107,7 +106,7 @@ background:linear-gradient(
 #ffd95e
 );
 
-padding:12px 20px;
+padding:11px 18px;
 
 border-radius:14px;
 
@@ -122,7 +121,7 @@ box-shadow:
 .menu-toggle{
 display:none;
 
-font-size:30px;
+font-size:28px;
 background:none;
 border:none;
 
@@ -136,7 +135,7 @@ HERO
 ======================================== */
 
 .hero{
-margin-top:84px;
+margin-top:76px;
 
 width:100%;
 min-height:48vh;
@@ -204,12 +203,12 @@ animation:fadeUp 1s ease;
 }
 
 .hero-logo{
-width:220px;
-margin-bottom:30px;
+width:190px;
+margin-bottom:24px;
 }
 
 .hero h1{
-font-size:62px;
+font-size:58px;
 line-height:1.05;
 font-weight:800;
 letter-spacing:-2px;
@@ -220,7 +219,7 @@ margin-bottom:22px;
 }
 
 .hero p{
-font-size:21px;
+font-size:20px;
 line-height:1.8;
 color:rgba(255,255,255,.88);
 }
@@ -495,23 +494,6 @@ box-shadow:
 0 20px 60px rgba(22,87,184,.22);
 }
 
-.cta-box::before{
-content:"";
-position:absolute;
-
-width:350px;
-height:350px;
-
-background:rgba(255,255,255,.12);
-
-filter:blur(90px);
-
-top:-100px;
-right:-80px;
-
-border-radius:50%;
-}
-
 .cta-content{
 position:relative;
 z-index:2;
@@ -563,9 +545,6 @@ font-weight:800;
 font-size:16px;
 
 transition:.35s;
-
-box-shadow:
-0 14px 35px rgba(247,197,49,.3);
 }
 
 .cta-btn:hover{
@@ -642,10 +621,10 @@ align-items:flex-start;
 justify-content:flex-start;
 
 padding:
-100px 30px
+90px 30px
 40px;
 
-gap:24px;
+gap:22px;
 
 transition:.4s ease;
 
@@ -659,22 +638,9 @@ z-index:10000;
 right:0;
 }
 
-.nex-nav a{
-font-size:17px;
-}
-
 .nex-btn{
 width:100%;
 text-align:center;
-}
-
-.hero{
-min-height:42vh;
-padding:30px 20px;
-}
-
-.hero-logo{
-width:170px;
 }
 
 .hero h1{
@@ -716,7 +682,7 @@ padding:12px 16px;
 }
 
 .logo-wrap img{
-height:48px;
+height:46px;
 }
 
 .hero{
@@ -725,7 +691,7 @@ min-height:46vh;
 }
 
 .hero-logo{
-width:160px;
+width:150px;
 }
 
 .hero h1{
@@ -772,8 +738,6 @@ grid-template-columns:1fr;
 
 <body>
 
-<!-- HEADER -->
-
 <header class="nex-header">
 
 <a href="index.html" class="logo-wrap">
@@ -786,25 +750,11 @@ grid-template-columns:1fr;
 
 <nav class="nex-nav" id="mobileMenu">
 
-<a href="index.html">
-Inicio
-</a>
-
-<a href="como.html">
-Cómo funciona
-</a>
-
-<a href="beneficios.html">
-Beneficios
-</a>
-
-<a href="negocios.html">
-Negocios
-</a>
-
-<a href="blog.html">
-Blog
-</a>
+<a href="index.html">Inicio</a>
+<a href="como.html">Cómo funciona</a>
+<a href="beneficios.html">Beneficios</a>
+<a href="negocios.html">Negocios</a>
+<a href="blog.html">Blog</a>
 
 <a
 class="nex-btn"
@@ -819,233 +769,6 @@ Solicitar acceso
 
 </header>
 
-<!-- HERO -->
-
-<section class="hero">
-
-<div class="hero-content">
-
-<img
-src="logo.png"
-class="hero-logo"
-alt="NeXsv">
-
-<h1>
-Beneficios de formar parte de NeXsv
-</h1>
-
-<p>
-Conecta con personas reales dentro de tu comunidad y transforma relaciones en oportunidades de negocio.
-</p>
-
-</div>
-
-</section>
-
-<!-- SLIDER -->
-
-<section class="slider-section">
-
-<div class="slider-container" id="sliderContainer">
-
-<button class="arrow left" onclick="mover(-1)">
-❮
-</button>
-
-<div class="slider" id="slider">
-
-<!-- SLIDE 1 -->
-
-<div class="slide">
-
-<img src="imgbeneficio1.jpg">
-
-<div class="text">
-
-<h2>
-Más visibilidad
-</h2>
-
-<p>
-Tu negocio aparece frente a personas que realmente buscan productos y servicios dentro de su entorno.
-</p>
-
-</div>
-
-</div>
-
-<!-- SLIDE 2 -->
-
-<div class="slide">
-
-<img src="imgbeneficio2.jpg">
-
-<div class="text">
-
-<h2>
-Presencia activa 24/7
-</h2>
-
-<p>
-Tu perfil permanece visible incluso cuando no estás conectado.
-</p>
-
-</div>
-
-</div>
-
-<!-- SLIDE 3 -->
-
-<div class="slide">
-
-<img src="imgbeneficio3.jpg">
-
-<div class="text">
-
-<h2>
-Clientes directos
-</h2>
-
-<p>
-Las personas interesadas llegan directamente a tu WhatsApp.
-</p>
-
-</div>
-
-</div>
-
-<!-- SLIDE 4 -->
-
-<div class="slide">
-
-<img src="imgbeneficio4.jpg">
-
-<div class="text">
-
-<h2>
-Más oportunidades
-</h2>
-
-<p>
-Convierte conexiones dentro de la comunidad en relaciones comerciales reales.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<button class="arrow right" onclick="mover(1)">
-❯
-</button>
-
-<div class="dots" id="dots"></div>
-
-</div>
-
-<!-- BENEFICIOS EXTRA -->
-
-<div class="extra-benefits">
-
-<div class="benefit-card">
-
-<div class="benefit-icon">
-🚀
-</div>
-
-<h3>
-Mayor alcance
-</h3>
-
-<p>
-Haz visible tu negocio frente a una comunidad segmentada y con afinidad real.
-</p>
-
-</div>
-
-<div class="benefit-card">
-
-<div class="benefit-icon">
-🤝
-</div>
-
-<h3>
-Conexiones confiables
-</h3>
-
-<p>
-Las relaciones dentro de NeXsv nacen desde la cercanía y la confianza.
-</p>
-
-</div>
-
-<div class="benefit-card">
-
-<div class="benefit-icon">
-💬
-</div>
-
-<h3>
-Contacto inmediato
-</h3>
-
-<p>
-Facilita conversaciones rápidas mediante integración directa con WhatsApp.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- CTA -->
-
-<section class="cta">
-
-<div class="cta-box">
-
-<div class="cta-content">
-
-<h2>
-Haz crecer tu negocio dentro de tu comunidad
-</h2>
-
-<p>
-Únete a una red privada diseñada para conectar familias y negocios.
-</p>
-
-<a
-class="cta-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-
-Quiero formar parte de NeXsv
-
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- FOOTER -->
-
-<footer>
-
-<div class="footer-line"></div>
-
-© 2026 NeXsv |
-<a href="terminos.html">
-Términos y condiciones
-</a>
-
-</footer>
-
-<!-- SCRIPTS -->
-
 <script>
 
 function toggleMenu(){
@@ -1056,112 +779,6 @@ document
 .toggle("active");
 
 }
-
-let index = 0;
-
-const slider = document.getElementById("slider");
-
-const total = slider.children.length;
-
-const dotsContainer = document.getElementById("dots");
-
-/* DOTS */
-
-for(let i = 0; i < total; i++){
-
-const dot = document.createElement("span");
-
-dot.classList.add("dot");
-
-dot.onclick = () => goTo(i);
-
-dotsContainer.appendChild(dot);
-
-}
-
-function actualizarDots(){
-
-const dots = document.querySelectorAll(".dot");
-
-dots.forEach(d => d.classList.remove("active"));
-
-dots[index].classList.add("active");
-
-}
-
-/* MOVER */
-
-function mover(dir){
-
-index += dir;
-
-if(index < 0){
-index = total - 1;
-}
-
-if(index >= total){
-index = 0;
-}
-
-slider.style.transform =
-`translateX(-${index * 100}%)`;
-
-actualizarDots();
-
-}
-
-function goTo(i){
-
-index = i;
-
-slider.style.transform =
-`translateX(-${index * 100}%)`;
-
-actualizarDots();
-
-}
-
-/* AUTOPLAY */
-
-setInterval(() => {
-
-mover(1);
-
-}, 5000);
-
-/* SWIPE MOBILE */
-
-let startX = 0;
-
-document
-.getElementById("sliderContainer")
-.addEventListener("touchstart", e => {
-
-startX = e.touches[0].clientX;
-
-});
-
-document
-.getElementById("sliderContainer")
-.addEventListener("touchend", e => {
-
-let endX = e.changedTouches[0].clientX;
-
-if(startX - endX > 50){
-
-mover(1);
-
-}else if(endX - startX > 50){
-
-mover(-1);
-
-}
-
-});
-
-/* INIT */
-
-actualizarDots();
 
 </script>
 
