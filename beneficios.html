@@ -36,83 +36,99 @@ scroll-behavior:smooth;
 --white:#ffffff;
 }
 
+html,body{
+overflow-x:hidden;
+max-width:100%;
+}
+
 body{
 font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
-overflow-x:hidden;
 }
 
 /* ========================================
-HEADER
+HEADER PREMIUM
 ======================================== */
 
-header{
-position:sticky;
+.nex-header{
+position:fixed;
 top:0;
-z-index:999;
-
-background:rgba(255,255,255,.78);
-backdrop-filter:blur(14px);
-
-padding:14px 50px;
+left:0;
+width:100%;
 
 display:flex;
 justify-content:space-between;
 align-items:center;
 
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
 border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
 }
 
-header img{
-height:72px;
-transition:.3s;
+.logo-wrap img{
+height:56px;
+display:block;
 }
 
-header img:hover{
-transform:scale(1.03);
-}
-
-nav{
+.nex-nav{
 display:flex;
 align-items:center;
-flex-wrap:wrap;
-gap:18px;
+gap:22px;
 }
 
-nav a{
+.nex-nav a{
 text-decoration:none;
-color:var(--primary);
+color:#1657B8;
 font-weight:600;
+font-size:15px;
 transition:.3s;
+white-space:nowrap;
 }
 
-nav a:hover{
-color:var(--secondary);
+.nex-nav a:hover{
+opacity:.75;
 }
 
-.nav-btn{
+.nex-btn{
 background:linear-gradient(
 135deg,
-var(--accent),
+#F7C531,
 #ffd95e
 );
 
-padding:12px 18px;
+padding:12px 20px;
 
-border-radius:16px;
+border-radius:14px;
 
-color:#1D2A3A;
+font-weight:800;
 
-font-weight:700;
+color:#1D2A3A !important;
 
 box-shadow:
-0 12px 30px rgba(247,197,49,.28);
+0 10px 25px rgba(247,197,49,.25);
 }
 
-.nav-btn:hover{
-transform:translateY(-3px);
-color:#1D2A3A;
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:#1657B8;
 }
 
 /* ========================================
@@ -120,6 +136,8 @@ HERO
 ======================================== */
 
 .hero{
+margin-top:84px;
+
 width:100%;
 min-height:48vh;
 
@@ -601,16 +619,53 @@ transform:translateY(0);
 RESPONSIVE
 ======================================== */
 
-@media(max-width:900px){
+@media(max-width:950px){
 
-header{
-padding:15px 20px;
-flex-direction:column;
-gap:15px;
+.menu-toggle{
+display:block;
+z-index:10001;
 }
 
-nav{
-justify-content:center;
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-nav a{
+font-size:17px;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
 }
 
 .hero{
@@ -654,6 +709,64 @@ font-size:36px;
 
 }
 
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero{
+padding:30px 18px;
+min-height:46vh;
+}
+
+.hero-logo{
+width:160px;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.slide img{
+height:230px;
+}
+
+.text h2{
+font-size:26px;
+}
+
+.benefit-card{
+padding:28px;
+}
+
+.cta-box{
+padding:50px 22px;
+}
+
+.cta h2{
+font-size:30px;
+}
+
+.cta p{
+font-size:16px;
+}
+
+.extra-benefits{
+grid-template-columns:1fr;
+}
+
+}
+
 </style>
 </head>
 
@@ -661,11 +774,17 @@ font-size:36px;
 
 <!-- HEADER -->
 
-<header>
+<header class="nex-header">
 
+<a href="index.html" class="logo-wrap">
 <img src="logo.png" alt="NeXsv">
+</a>
 
-<nav>
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
 
 <a href="index.html">
 Inicio
@@ -688,10 +807,12 @@ Blog
 </a>
 
 <a
-class="nav-btn"
+class="nex-btn"
 href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
 target="_blank">
+
 Solicitar acceso
+
 </a>
 
 </nav>
@@ -766,7 +887,7 @@ Presencia activa 24/7
 </h2>
 
 <p>
-Tu perfil permanece visible incluso cuando no estás conectado, permitiendo generar oportunidades constantemente.
+Tu perfil permanece visible incluso cuando no estás conectado.
 </p>
 
 </div>
@@ -786,7 +907,7 @@ Clientes directos
 </h2>
 
 <p>
-Las personas interesadas llegan directamente a tu WhatsApp listas para solicitar información o comprar.
+Las personas interesadas llegan directamente a tu WhatsApp.
 </p>
 
 </div>
@@ -806,7 +927,7 @@ Más oportunidades
 </h2>
 
 <p>
-Convierte conexiones dentro de la comunidad en relaciones comerciales reales y sostenibles.
+Convierte conexiones dentro de la comunidad en relaciones comerciales reales.
 </p>
 
 </div>
@@ -818,8 +939,6 @@ Convierte conexiones dentro de la comunidad en relaciones comerciales reales y s
 <button class="arrow right" onclick="mover(1)">
 ❯
 </button>
-
-<!-- DOTS -->
 
 <div class="dots" id="dots"></div>
 
@@ -894,7 +1013,7 @@ Haz crecer tu negocio dentro de tu comunidad
 </h2>
 
 <p>
-Únete a una red privada diseñada para conectar familias y negocios de forma moderna, estratégica y cercana.
+Únete a una red privada diseñada para conectar familias y negocios.
 </p>
 
 <a
@@ -925,9 +1044,18 @@ Términos y condiciones
 
 </footer>
 
-<!-- SCRIPT -->
+<!-- SCRIPTS -->
 
 <script>
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
+}
 
 let index = 0;
 
