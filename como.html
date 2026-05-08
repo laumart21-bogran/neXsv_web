@@ -7,61 +7,45 @@
 
 <title>Cómo funciona - NeXsv</title>
 
-<!-- TIPOGRAFÍA -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
-/* ========================================
-RESET
-======================================== */
+/* =========================
+BASE
+========================= */
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 scroll-behavior:smooth;
-min-width:0;
-}
-
-html,body{
-overflow-x:hidden;
-max-width:100%;
 }
 
 body{
 font-family:'Inter',sans-serif;
 background:#F5F7FB;
 color:#1D2A3A;
--webkit-font-smoothing:antialiased;
-text-rendering:optimizeLegibility;
+overflow-x:hidden;
 }
 
-/* ========================================
-HEADER (UNIFICADO CON NEXSV)
-======================================== */
+/* =========================
+HEADER
+========================= */
 
 .nex-header{
 position:fixed;
 top:0;
 left:0;
 width:100%;
-
 display:flex;
 justify-content:space-between;
 align-items:center;
-
 padding:14px 28px;
-
 background:rgba(255,255,255,.88);
 backdrop-filter:blur(14px);
-
-border-bottom:1px solid rgba(255,255,255,.5);
-
 z-index:9999;
+border-bottom:1px solid rgba(0,0,0,.05);
 }
 
 .nex-header img{
@@ -82,16 +66,16 @@ font-size:15px;
 }
 
 .nex-btn{
-background:linear-gradient(135deg,#F7C531,#ffd95e);
+background:#F7C531;
 padding:12px 18px;
 border-radius:14px;
 color:#1D2A3A;
 font-weight:800;
 text-decoration:none;
-box-shadow:0 10px 25px rgba(247,197,49,.25);
 }
 
 /* MOBILE MENU */
+
 .menu-toggle{
 display:none;
 font-size:28px;
@@ -103,9 +87,7 @@ color:#1657B8;
 
 @media(max-width:900px){
 
-.menu-toggle{
-display:block;
-}
+.menu-toggle{display:block;}
 
 .nex-nav{
 position:fixed;
@@ -114,15 +96,10 @@ right:-100%;
 width:280px;
 height:100vh;
 background:white;
-
 flex-direction:column;
-align-items:flex-start;
-
 padding:90px 25px;
-gap:25px;
-
-transition:.35s ease;
-box-shadow:-10px 0 30px rgba(0,0,0,.08);
+gap:22px;
+transition:.3s ease;
 }
 
 .nex-nav.active{
@@ -136,59 +113,50 @@ text-align:center;
 
 }
 
-/* ========================================
+/* =========================
 HERO
-======================================== */
+========================= */
 
 .hero{
 margin-top:80px;
-
-width:100%;
 min-height:55vh;
-
-background:
-linear-gradient(rgba(9,28,61,.78),rgba(9,28,61,.82)),
-url('cover-como.jpg') center/cover no-repeat;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
 text-align:center;
-
 padding:60px 20px;
+background:linear-gradient(rgba(9,28,61,.78),rgba(9,28,61,.82)),
+url('cover-como.jpg') center/cover;
 }
 
 .hero-content{
 max-width:850px;
-animation:fadeUp 1s ease;
-}
-
-.hero-logo{
-width:180px;
-margin-bottom:25px;
 }
 
 .hero h1{
-font-size:clamp(2.5rem,6vw,4rem);
+font-size:clamp(2.2rem,5vw,3.5rem);
 color:white;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
 .hero p{
-font-size:clamp(1rem,2vw,1.2rem);
 color:rgba(255,255,255,.85);
+font-size:18px;
 }
 
-/* ========================================
-CONTENIDO
-======================================== */
+/* =========================
+CONTAINER
+========================= */
 
 .container{
-max-width:1150px;
+max-width:1100px;
 margin:auto;
 padding:80px 20px;
 }
+
+/* =========================
+TITLE
+========================= */
 
 .section-title{
 text-align:center;
@@ -196,146 +164,102 @@ margin-bottom:60px;
 }
 
 .section-title h2{
-font-size:clamp(2rem,5vw,3.2rem);
+font-size:clamp(2rem,4vw,3rem);
 color:#1657B8;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 .section-title p{
-font-size:1.05rem;
 color:#667085;
-max-width:750px;
+max-width:700px;
 margin:auto;
 }
 
-/* ========================================
-STEPS
-======================================== */
+/* =========================
+PASOS (EMBUDO)
+========================= */
 
-.steps-wrapper{
+.steps{
 display:flex;
 flex-direction:column;
-gap:25px;
+gap:20px;
 }
 
 .step{
 display:flex;
-gap:25px;
+gap:20px;
 align-items:flex-start;
-
 background:white;
-padding:30px;
-border-radius:26px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-
+padding:28px;
+border-radius:22px;
+box-shadow:0 10px 25px rgba(0,0,0,.06);
 transition:.3s;
 }
 
 .step:hover{
-transform:translateY(-6px);
-}
-
-.step img{
-width:75px;
-min-width:75px;
+transform:translateY(-5px);
 }
 
 .step-number{
-width:38px;
-height:38px;
+width:40px;
+height:40px;
 border-radius:50%;
-
 display:flex;
 align-items:center;
 justify-content:center;
-
-background:linear-gradient(135deg,#19C2C6,#74D67F);
+background:#19C2C6;
 color:white;
 font-weight:800;
-
-margin-bottom:10px;
+flex-shrink:0;
 }
 
 .step h3{
-font-size:24px;
 color:#1657B8;
-margin-bottom:10px;
+margin-bottom:8px;
+font-size:22px;
 }
 
 .step p{
-font-size:15.5px;
-line-height:1.7;
 color:#5d6677;
+line-height:1.7;
 }
 
-/* ========================================
+/* =========================
 CTA
-======================================== */
+========================= */
 
 .cta{
-margin-top:80px;
-
+margin-top:70px;
 background:linear-gradient(135deg,#1657B8,#19C2C6);
-
 padding:60px 25px;
-
 border-radius:28px;
-
 text-align:center;
 color:white;
 }
 
 .cta h2{
-font-size:clamp(1.8rem,4vw,3rem);
-margin-bottom:15px;
+font-size:clamp(1.8rem,3.5vw,2.8rem);
+margin-bottom:10px;
 }
 
 .cta p{
-max-width:700px;
-margin:auto;
 opacity:.9;
-margin-bottom:30px;
+margin-bottom:25px;
 }
 
-.cta-btn{
+.cta a{
 display:inline-block;
-
 background:#F7C531;
+padding:14px 24px;
+border-radius:14px;
 color:#1D2A3A;
-
-padding:16px 28px;
-border-radius:16px;
-
 font-weight:800;
 text-decoration:none;
 }
 
-/* ========================================
-FOOTER
-======================================== */
-
-footer{
-background:white;
-padding:40px 20px;
-text-align:center;
-margin-top:60px;
-font-size:14px;
-color:#6b7280;
-}
-
-/* ========================================
-ANIMACIÓN
-======================================== */
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(30px);}
-to{opacity:1;transform:translateY(0);}
-}
-
-/* ========================================
-MOBILE
-======================================== */
+/* =========================
+RESPONSIVE STEPS
+========================= */
 
 @media(max-width:768px){
 
@@ -345,10 +269,19 @@ text-align:center;
 align-items:center;
 }
 
-.step img{
-width:65px;
 }
 
+/* =========================
+FOOTER
+========================= */
+
+footer{
+text-align:center;
+padding:40px 20px;
+background:white;
+margin-top:60px;
+color:#6b7280;
+font-size:14px;
 }
 
 </style>
@@ -359,11 +292,11 @@ width:65px;
 <!-- HEADER -->
 <header class="nex-header">
 
-<img src="logo.png" alt="NeXsv">
+<img src="logo.png">
 
 <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 
-<nav class="nex-nav" id="mobileMenu">
+<nav class="nex-nav" id="menu">
 
 <a href="index.html">Inicio</a>
 <a href="como.html">Cómo funciona</a>
@@ -381,7 +314,7 @@ Solicitar acceso
 
 <script>
 function toggleMenu(){
-document.getElementById("mobileMenu").classList.toggle("active");
+document.getElementById("menu").classList.toggle("active");
 }
 </script>
 
@@ -390,11 +323,8 @@ document.getElementById("mobileMenu").classList.toggle("active");
 
 <div class="hero-content">
 
-<img src="logo.png" class="hero-logo">
-
 <h1>¿Cómo funciona NeXsv?</h1>
-
-<p>Transformamos conexiones en oportunidades reales dentro de tu comunidad.</p>
+<p>Conectamos negocios con clientes reales dentro de su comunidad.</p>
 
 </div>
 
@@ -404,24 +334,58 @@ document.getElementById("mobileMenu").classList.toggle("active");
 <div class="container">
 
 <div class="section-title">
-<h2>Empieza en 4 pasos</h2>
-<p>Una red privada basada en confianza, afinidad y cercanía.</p>
+
+<h2>Embudo de conversión en 4 pasos</h2>
+<p>Así es como transformamos visibilidad en ventas reales dentro de la red.</p>
+
 </div>
 
-<div class="steps-wrapper">
+<!-- PASOS RESTAURADOS -->
+<div class="steps">
 
-<!-- pasos -->
-<!-- (estructura igual, solo optimizada visualmente) -->
+<div class="step">
+<div class="step-number">1</div>
+<div>
+<h3>Te registras en la comunidad</h3>
+<p>Accedes a una red privada de familias y negocios reales dentro de tu entorno.</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-number">2</div>
+<div>
+<h3>Publicas tu negocio</h3>
+<p>Tu perfil se convierte en una vitrina digital dentro de la comunidad.</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-number">3</div>
+<div>
+<h3>Recibes contactos directos</h3>
+<p>Los clientes te escriben directamente por WhatsApp sin intermediarios.</p>
+</div>
+</div>
+
+<div class="step">
+<div class="step-number">4</div>
+<div>
+<h3>Generas ventas reales</h3>
+<p>Convierte conexiones en ingresos dentro de una red de confianza.</p>
+</div>
+</div>
 
 </div>
 
 <!-- CTA -->
 <div class="cta">
 
-<h2>Haz visible tu negocio</h2>
-<p>Únete a la red privada de comunidades reales.</p>
+<h2>Haz crecer tu negocio hoy</h2>
+<p>Forma parte de una red privada diseñada para generar oportunidades reales.</p>
 
-<a class="cta-btn" href="#">Quiero formar parte</a>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform">
+Quiero formar parte
+</a>
 
 </div>
 
