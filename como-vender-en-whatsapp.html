@@ -1,31 +1,831 @@
-<section style="max-width:800px; margin:40px auto; background:white; padding:30px; border-radius:10px; line-height:1.6;">
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
-<h1>Cómo vender por WhatsApp sin parecer insistente</h1>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cómo vender por WhatsApp sin parecer insistente | NeXsv</title>
+
+<!-- TIPOGRAFÍA -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
+}
+
+/* ========================================
+HEADER
+======================================== */
+
+.nex-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
+}
+
+.logo-wrap img{
+height:54px;
+display:block;
+}
+
+.nex-nav{
+display:flex;
+align-items:center;
+gap:22px;
+}
+
+.nex-nav a{
+text-decoration:none;
+color:#1657B8;
+font-weight:600;
+font-size:15px;
+transition:.3s;
+white-space:nowrap;
+}
+
+.nex-nav a:hover{
+opacity:.75;
+}
+
+.nex-btn{
+background:linear-gradient(
+135deg,
+#F7C531,
+#ffd95e
+);
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:800;
+
+color:#1D2A3A !important;
+
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
+}
+
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:#1657B8;
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+margin-top:84px;
+
+height:520px;
+
+background:
+linear-gradient(
+rgba(9,28,61,.55),
+rgba(9,28,61,.75)
+),
+url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:40px 20px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:450px;
+height:450px;
+
+background:rgba(25,194,198,.16);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-100px;
+right:-120px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:300px;
+height:300px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-100px;
+left:-80px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:900px;
+}
+
+.badge{
+display:inline-block;
+
+padding:10px 18px;
+
+border-radius:999px;
+
+background:rgba(255,255,255,.18);
+
+backdrop-filter:blur(10px);
+
+color:white;
+font-size:14px;
+font-weight:700;
+
+margin-bottom:24px;
+}
+
+.hero h1{
+font-size:clamp(2.4rem,5vw,4.5rem);
+line-height:1.05;
+font-weight:800;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+line-height:1.9;
+color:rgba(255,255,255,.9);
+
+max-width:760px;
+margin:auto;
+}
+
+/* ========================================
+ARTICLE
+======================================== */
+
+.article-container{
+max-width:950px;
+margin:auto;
+padding:80px 20px;
+}
+
+.article-card{
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+
+border-radius:36px;
+
+padding:50px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.08);
+}
+
+.article-card p{
+font-size:19px;
+line-height:2;
+color:#4b5563;
+margin-bottom:30px;
+}
+
+/* ========================================
+DESTACADO
+======================================== */
+
+.highlight{
+background:linear-gradient(
+135deg,
+#1657B8,
+#19C2C6
+);
+
+padding:35px;
+
+border-radius:30px;
+
+margin:45px 0;
+}
+
+.highlight h3{
+font-size:32px;
+font-weight:800;
+color:white;
+margin-bottom:14px;
+}
+
+.highlight p{
+color:rgba(255,255,255,.92);
+margin:0;
+}
+
+/* ========================================
+CARDS
+======================================== */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:22px;
+
+margin:50px 0;
+}
+
+.info-card{
+background:#F5F7FB;
+
+padding:30px;
+
+border-radius:26px;
+
+transition:.35s;
+}
+
+.info-card:hover{
+transform:translateY(-6px);
+}
+
+.info-card .icon{
+font-size:42px;
+margin-bottom:14px;
+}
+
+.info-card h3{
+font-size:24px;
+font-weight:800;
+color:#1657B8;
+margin-bottom:12px;
+}
+
+.info-card p{
+font-size:16px;
+line-height:1.8;
+color:#5d6677;
+margin:0;
+}
+
+/* ========================================
+CTA
+======================================== */
+
+.cta{
+margin-top:60px;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:60px 35px;
+
+border-radius:36px;
+
+text-align:center;
+
+position:relative;
+overflow:hidden;
+}
+
+.cta::before{
+content:"";
+position:absolute;
+
+width:350px;
+height:350px;
+
+background:rgba(255,255,255,.1);
+
+border-radius:50%;
+
+top:-120px;
+right:-80px;
+
+filter:blur(60px);
+}
+
+.cta-content{
+position:relative;
+z-index:2;
+}
+
+.cta h2{
+font-size:clamp(2rem,4vw,3.2rem);
+font-weight:800;
+line-height:1.1;
+
+color:white;
+
+margin-bottom:18px;
+}
+
+.cta p{
+font-size:18px;
+line-height:1.9;
+
+color:rgba(255,255,255,.92);
+
+max-width:700px;
+margin:auto;
+
+margin-bottom:35px;
+}
+
+.cta-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:18px 34px;
+
+border-radius:18px;
+
+text-decoration:none;
+
+font-weight:800;
+font-size:16px;
+
+color:#1D2A3A;
+
+box-shadow:
+0 14px 35px rgba(247,197,49,.35);
+
+transition:.35s;
+}
+
+.cta-btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
+footer{
+background:white;
+padding:40px 20px;
+text-align:center;
+color:#6b7280;
+font-size:14px;
+}
+
+.footer-line{
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
+}
+
+footer a{
+text-decoration:none;
+color:#1657B8;
+font-weight:700;
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:950px){
+
+.menu-toggle{
+display:block;
+z-index:10001;
+}
+
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
+}
+
+.hero{
+height:auto;
+padding:120px 20px 80px;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.article-card{
+padding:35px 25px;
+}
+
+.highlight h3{
+font-size:28px;
+}
+
+.cta{
+padding:50px 25px;
+}
+
+}
+
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.article-card p{
+font-size:17px;
+}
+
+.highlight{
+padding:28px;
+}
+
+.highlight h3{
+font-size:24px;
+}
+
+.info-card{
+padding:24px;
+}
+
+.cta h2{
+font-size:30px;
+}
+
+.cta p{
+font-size:16px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="nex-header">
+
+<a href="../index.html" class="logo-wrap">
+<img src="../logo.png" alt="NeXsv">
+</a>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
+
+<a href="../index.html">
+Inicio
+</a>
+
+<a href="../como.html">
+Cómo funciona
+</a>
+
+<a href="../beneficios.html">
+Beneficios
+</a>
+
+<a href="../negocios.html">
+Negocios
+</a>
+
+<a href="../blog.html">
+Blog
+</a>
+
+<a
+class="nex-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</nav>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<div class="badge">
+Ventas • WhatsApp • Conversión
+</div>
+
+<h1>
+Cómo vender por WhatsApp sin parecer insistente
+</h1>
 
 <p>
-WhatsApp se ha convertido en una de las herramientas más poderosas para vender, pero también en una de las más mal utilizadas. Muchos negocios responden con mensajes fríos, cortos o solo envían precios, lo que hace que el cliente pierda interés rápidamente. Vender por WhatsApp no se trata de responder, se trata de conectar.
+Aprende cómo convertir conversaciones simples en clientes reales utilizando estrategias más humanas y efectivas.
 </p>
 
-<p>
-Uno de los errores más comunes es no hacer preguntas. Cuando un cliente escribe, es porque ya tiene cierto interés, pero si tú no investigas qué necesita, estás perdiendo la oportunidad de personalizar tu oferta. Las ventas ocurren cuando entiendes el problema del cliente y le muestras que tienes la solución adecuada.
-</p>
-
-<p>
-Otro punto clave es cómo presentas tu producto o servicio. En lugar de limitarte a decir precios, debes comunicar beneficios, resultados y valor. Las personas no compran por impulso, compran cuando sienten que lo que ofreces realmente les ayudará. Aquí es donde la forma en la que escribes marca toda la diferencia.
-</p>
-
-<p>
-Si quieres vender más por WhatsApp, necesitas cambiar tu enfoque: haz preguntas, responde con intención, guía al cliente y cierra la conversación. No esperes que el cliente decida solo. Cuando tomas el control del proceso, las ventas dejan de ser casualidad y se convierten en resultados.
-</p>
-
-<h3 style="margin-top:30px;">🚀 ¿Listo para vender mejor por WhatsApp?</h3>
-
-<div style="text-align:center; margin-top:20px;">
-  <a href="https://wa.me/50377448261" target="_blank">
-    <button style="padding:15px 25px; background:#4CAF50; color:white; border:none; border-radius:8px; font-size:16px;">
-      Quiero vender más por WhatsApp
-    </button>
-  </a>
 </div>
 
 </section>
+
+<!-- ARTÍCULO -->
+
+<section class="article-container">
+
+<div class="article-card">
+
+<p>
+
+WhatsApp se ha convertido en una de las herramientas más poderosas para vender, pero también en una de las más mal utilizadas. Muchos negocios responden con mensajes fríos, cortos o simplemente envían precios sin contexto, haciendo que el cliente pierda interés rápidamente.
+
+</p>
+
+<p>
+
+Vender por WhatsApp no se trata únicamente de responder mensajes. Se trata de crear conversaciones que hagan sentir al cliente escuchado, comprendido y guiado durante todo el proceso.
+
+</p>
+
+<!-- DESTACADO -->
+
+<div class="highlight">
+
+<h3>
+El error más común
+</h3>
+
+<p>
+
+Muchos negocios responden únicamente con precios. Pero las personas no compran precios… compran soluciones, beneficios y confianza.
+
+</p>
+
+</div>
+
+<p>
+
+Uno de los errores más frecuentes es no hacer preguntas. Cuando un cliente escribe, ya existe interés. Pero si no descubres qué necesita, qué problema tiene o qué está buscando realmente, pierdes la oportunidad de conectar de forma más humana.
+
+</p>
+
+<p>
+
+Las ventas ocurren cuando entiendes el problema del cliente y le muestras cómo tu producto o servicio puede ayudarle. Ahí es donde la conversación cambia completamente.
+
+</p>
+
+<!-- CARDS -->
+
+<div class="cards">
+
+<div class="info-card">
+
+<div class="icon">
+💬
+</div>
+
+<h3>
+Haz preguntas
+</h3>
+
+<p>
+Descubre qué necesita realmente el cliente antes de ofrecer tu producto.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<div class="icon">
+✨
+</div>
+
+<h3>
+Comunica valor
+</h3>
+
+<p>
+Habla de beneficios, resultados y experiencias, no solo de precios.
+</p>
+
+</div>
+
+<div class="info-card">
+
+<div class="icon">
+🚀
+</div>
+
+<h3>
+Guía la conversación
+</h3>
+
+<p>
+No esperes que el cliente decida solo. Ayúdalo a avanzar hacia la compra.
+</p>
+
+</div>
+
+</div>
+
+<p>
+
+Cuando tomas el control del proceso y conviertes tus respuestas en conversaciones estratégicas, las ventas dejan de depender de la suerte y comienzan a convertirse en resultados constantes.
+
+</p>
+
+<!-- CTA -->
+
+<div class="cta">
+
+<div class="cta-content">
+
+<h2>
+🚀 ¿Listo para vender mejor por WhatsApp?
+</h2>
+
+<p>
+
+Aprende cómo convertir conversaciones simples en clientes reales utilizando estrategias más humanas y efectivas.
+
+</p>
+
+<a
+href="https://wa.me/50377448261"
+target="_blank"
+class="cta-btn">
+
+Quiero vender más por WhatsApp
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+
+<a href="../terminos.html">
+Términos y condiciones
+</a>
+
+</footer>
+
+<!-- SCRIPT -->
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
+}
+
+</script>
+
+</body>
+</html>
