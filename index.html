@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>NeXsv</title>
 
@@ -27,18 +28,23 @@ body{
 header{
   width:100%;
   background:#f3f6fb;
-  position:relative;
-  z-index:999;
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:9999;
+  border-bottom:1px solid rgba(0,0,0,0.05);
 }
 
 .top-logo{
   text-align:center;
-  padding:22px 20px 10px;
+  padding:18px 20px 8px;
 }
 
 .top-logo img{
   width:170px;
   max-width:90%;
+  display:block;
+  margin:auto;
 }
 
 /* NAV */
@@ -50,7 +56,7 @@ nav{
   justify-content:center;
   align-items:center;
   gap:18px;
-  padding:10px 20px 28px;
+  padding:10px 20px 22px;
 }
 
 nav a{
@@ -69,9 +75,8 @@ nav a:hover{
   background:#f7cf42;
   color:#1d2d50 !important;
   padding:16px 34px;
-  border-radius:22px;
+  border-radius:20px;
   box-shadow:0 10px 25px rgba(247,207,66,0.25);
-  margin-left:10px;
 }
 
 /* =========================
@@ -85,6 +90,7 @@ nav a:hover{
   display:flex;
   align-items:center;
   overflow:hidden;
+  padding-top:180px;
 }
 
 .hero::before{
@@ -92,8 +98,9 @@ nav a:hover{
   position:absolute;
   inset:0;
   background:
-    linear-gradient(rgba(8,30,66,0.72), rgba(8,30,66,0.72)),
-    url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop');
+  linear-gradient(rgba(8,30,66,0.74), rgba(8,30,66,0.74)),
+  url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600&auto=format&fit=crop');
+
   background-size:cover;
   background-position:center;
 }
@@ -102,16 +109,14 @@ nav a:hover{
   position:relative;
   z-index:2;
   width:100%;
-  max-width:1250px;
+  max-width:1200px;
   margin:auto;
-  padding:90px 80px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  padding:60px 80px 100px;
 }
 
 .hero-logo{
-  width:240px;
+  width:220px;
+  display:block;
   margin-bottom:35px;
 }
 
@@ -121,15 +126,15 @@ nav a:hover{
   line-height:0.95;
   font-weight:800;
   max-width:700px;
-  margin-bottom:30px;
+  margin-bottom:28px;
 }
 
 .hero p{
   color:white;
-  font-size:32px;
+  font-size:31px;
   line-height:1.6;
   max-width:760px;
-  margin-bottom:45px;
+  margin-bottom:42px;
 }
 
 .hero-buttons{
@@ -154,9 +159,9 @@ nav a:hover{
 }
 
 .btn-secondary{
-  background:rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.10);
   color:white;
-  border:2px solid rgba(255,255,255,0.18);
+  border:2px solid rgba(255,255,255,0.16);
   backdrop-filter:blur(10px);
 }
 
@@ -170,10 +175,12 @@ nav a:hover{
 
 @media(max-width:768px){
 
-  /* HEADER */
+  header{
+    position:relative;
+  }
 
   .top-logo{
-    padding:18px 20px 8px;
+    padding:20px 20px 10px;
   }
 
   .top-logo img{
@@ -181,8 +188,8 @@ nav a:hover{
   }
 
   nav{
-    gap:14px 24px;
-    padding:10px 20px 24px;
+    gap:14px 22px;
+    padding:10px 18px 22px;
   }
 
   nav a{
@@ -190,26 +197,23 @@ nav a:hover{
   }
 
   .nav-btn{
-    margin-left:0;
-    padding:14px 28px;
+    padding:14px 26px;
     border-radius:18px;
-    font-size:17px;
+    font-size:16px;
   }
-
-  /* HERO */
 
   .hero{
     min-height:auto;
+    padding-top:0;
   }
 
   .hero-content{
     padding:70px 28px 80px;
-    align-items:flex-start;
   }
 
+  /* ELIMINÉ LA IMAGEN ROTA */
   .hero-logo{
-    width:150px;
-    margin-bottom:26px;
+    display:none;
   }
 
   .hero h1{
@@ -220,10 +224,10 @@ nav a:hover{
   }
 
   .hero p{
-    font-size:21px;
+    font-size:22px;
     line-height:1.7;
     max-width:100%;
-    margin-bottom:35px;
+    margin-bottom:36px;
   }
 
   .hero-buttons{
@@ -259,7 +263,7 @@ nav a:hover{
   .nav-btn{
     width:100%;
     text-align:center;
-    margin-top:8px;
+    margin-top:5px;
   }
 
   .hero-content{
@@ -267,7 +271,7 @@ nav a:hover{
   }
 
   .hero h1{
-    font-size:44px;
+    font-size:46px;
   }
 
   .hero p{
@@ -283,11 +287,13 @@ nav a:hover{
 }
 
 </style>
+
 </head>
 
 <body>
 
 <!-- HEADER -->
+
 <header>
 
   <div class="top-logo">
@@ -295,46 +301,69 @@ nav a:hover{
   </div>
 
   <nav>
+
     <a href="index.html">Inicio</a>
-    <a href="como.html">Cómo funciona</a>
-    <a href="beneficios.html">Beneficios</a>
-    <a href="negocios.html">Negocios</a>
-    <a href="blog.html">Blog</a>
+
+    <a href="como.html">
+      Cómo funciona
+    </a>
+
+    <a href="beneficios.html">
+      Beneficios
+    </a>
+
+    <a href="negocios.html">
+      Negocios
+    </a>
+
+    <a href="blog.html">
+      Blog
+    </a>
 
     <a class="nav-btn"
     href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
     target="_blank">
+
       Solicitar acceso
+
     </a>
+
   </nav>
 
 </header>
 
 <!-- HERO -->
+
 <section class="hero">
 
   <div class="hero-content">
 
-    <img src="logo-blanco.png" class="hero-logo" alt="NeXsv">
-
     <h1>
-      Conecta, compra y crece
+      Conecta,
+      compra y crece
     </h1>
 
     <p>
-      La red privada que conecta negocios y familias dentro de una misma comunidad basada en confianza, cercanía y afinidad.
+      La red privada que conecta negocios y familias
+      dentro de una misma comunidad basada en
+      confianza, cercanía y afinidad.
     </p>
 
     <div class="hero-buttons">
 
-      <a href="negocios.html" class="btn-primary">
+      <a href="negocios.html"
+      class="btn-primary">
+
         Explorar negocios
+
       </a>
 
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
       target="_blank"
       class="btn-secondary">
+
         Solicitar acceso
+
       </a>
 
     </div>
