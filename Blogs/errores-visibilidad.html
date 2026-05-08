@@ -1,152 +1,685 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Errores que hacen invisible tu negocio</title>
 
 <meta name="description" content="Descubre los errores que hacen que tu negocio no sea visible y por qué los clientes no te encuentran. Aprende cómo solucionarlo.">
 
+<!-- GOOGLE FONT -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
 }
 
-/* HEADER */
-header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
+/* ========================================
+HEADER PREMIUM
+======================================== */
+
+.nex-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
 }
 
-header img{ height:70px; }
-
-nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
+.logo-wrap img{
+height:56px;
+display:block;
 }
 
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+.nex-nav{
+display:flex;
+align-items:center;
+gap:22px;
 }
 
-/* BLOG */
+.nex-nav a{
+text-decoration:none;
+color:#1657B8;
+font-weight:600;
+font-size:15px;
+transition:.3s;
+white-space:nowrap;
+}
+
+.nex-nav a:hover{
+opacity:.75;
+}
+
+.nex-btn{
+background:linear-gradient(
+135deg,
+#F7C531,
+#ffd95e
+);
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:800;
+
+color:#1D2A3A !important;
+
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
+}
+
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:#1657B8;
+}
+
+/* ========================================
+BLOG HERO
+======================================== */
+
+.hero{
+margin-top:84px;
+
+background:
+linear-gradient(
+rgba(9,28,61,.80),
+rgba(9,28,61,.82)
+),
+url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d') center/cover no-repeat;
+
+min-height:45vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:40px 20px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:420px;
+height:420px;
+
+background:rgba(25,194,198,.16);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-100px;
+right:-120px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:280px;
+height:280px;
+
+background:rgba(247,197,49,.10);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-100px;
+left:-80px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:850px;
+}
+
+.hero h1{
+font-size:60px;
+line-height:1.05;
+font-weight:800;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+line-height:1.8;
+
+color:rgba(255,255,255,.88);
+}
+
+/* ========================================
+BLOG CONTAINER
+======================================== */
+
+.blog-wrapper{
+padding:70px 20px;
+}
+
 .blog-container{
-  max-width:900px;
-  margin:40px auto;
-  background:white;
-  padding:40px;
-  border-radius:12px;
-  line-height:1.7;
+max-width:950px;
+margin:auto;
+
+background:rgba(255,255,255,.86);
+
+backdrop-filter:blur(14px);
+
+padding:50px;
+
+border-radius:34px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.08);
 }
 
 .blog-container img{
-  width:100%;
-  border-radius:12px;
-  margin:25px 0;
-}
+width:100%;
 
-.blog-container h1{
-  text-align:center;
+border-radius:24px;
+
+margin:35px 0;
+
+object-fit:cover;
+
+max-height:480px;
 }
 
 .blog-container p{
-  font-size:16px;
-  color:#333;
+font-size:18px;
+line-height:2;
+color:#5d6677;
+margin-bottom:22px;
 }
 
-/* CTA */
+/* ========================================
+DESTACADOS
+======================================== */
+
+.highlight{
+background:#f3f8ff;
+
+border-left:5px solid var(--secondary);
+
+padding:22px 24px;
+
+border-radius:18px;
+
+margin:35px 0;
+}
+
+.highlight strong{
+display:block;
+margin-bottom:10px;
+color:var(--primary);
+font-size:20px;
+}
+
+/* ========================================
+ERRORES
+======================================== */
+
+.error-box{
+background:white;
+
+padding:26px;
+
+border-radius:22px;
+
+margin:22px 0;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,.05);
+}
+
+.error-box h3{
+color:var(--primary);
+font-size:24px;
+margin-bottom:10px;
+}
+
+.error-box p{
+margin-bottom:0;
+}
+
+/* ========================================
+CTA
+======================================== */
+
 .cta-box{
-  background:#f0f4ff;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-  margin:30px 0;
+margin:45px 0;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:40px 30px;
+
+border-radius:28px;
+
+text-align:center;
+
+color:white;
+
+box-shadow:
+0 20px 50px rgba(22,87,184,.18);
+}
+
+.cta-box h2{
+font-size:34px;
+margin-bottom:16px;
+}
+
+.cta-box p{
+color:rgba(255,255,255,.92);
+margin-bottom:28px;
+font-size:17px;
 }
 
 .cta-box a{
-  background:#4CAF50;
-  color:white;
-  padding:10px 20px;
-  border-radius:8px;
-  text-decoration:none;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+padding:16px 28px;
+
+border-radius:16px;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+color:#1D2A3A;
+
+font-weight:800;
+
+text-decoration:none;
+
+transition:.3s;
 }
 
-/* SHARE */
+.cta-box a:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+LINK RELACIONADO
+======================================== */
+
+.related{
+margin-top:50px;
+
+padding:28px;
+
+background:#f7fbff;
+
+border-radius:22px;
+}
+
+.related strong{
+display:block;
+margin-bottom:10px;
+color:var(--primary);
+font-size:20px;
+}
+
+.related a{
+color:var(--secondary);
+font-weight:700;
+text-decoration:none;
+}
+
+/* ========================================
+SHARE
+======================================== */
+
 .share{
-  margin-top:30px;
-  display:flex;
-  gap:10px;
+margin-top:40px;
+
+display:flex;
+flex-wrap:wrap;
+gap:12px;
 }
 
 .share a{
-  text-decoration:none;
-  padding:10px 15px;
-  border-radius:6px;
-  color:white;
-  font-size:14px;
+text-decoration:none;
+
+padding:12px 18px;
+
+border-radius:12px;
+
+color:white;
+
+font-size:14px;
+font-weight:700;
+
+transition:.3s;
 }
 
-.fb{ background:#3b5998; }
-.wa{ background:#25D366; }
-.tw{ background:#1DA1F2; }
+.share a:hover{
+transform:translateY(-3px);
+}
 
-/* FOOTER */
+.fb{
+background:#3b5998;
+}
+
+.wa{
+background:#25D366;
+}
+
+.tw{
+background:#1DA1F2;
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-  font-size:14px;
+background:white;
+padding:40px 20px;
+text-align:center;
+color:#6b7280;
+font-size:14px;
+margin-top:70px;
 }
 
 .footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
 }
+
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:950px){
+
+.menu-toggle{
+display:block;
+z-index:10001;
+}
+
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-nav a{
+font-size:17px;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.blog-container{
+padding:35px 25px;
+}
+
+.blog-container p{
+font-size:17px;
+}
+
+.cta-box h2{
+font-size:28px;
+}
+
+}
+
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero{
+padding:30px 18px;
+min-height:42vh;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.blog-wrapper{
+padding:50px 14px;
+}
+
+.blog-container{
+padding:28px 20px;
+border-radius:26px;
+}
+
+.blog-container p{
+font-size:16px;
+line-height:1.9;
+}
+
+.error-box h3{
+font-size:22px;
+}
+
+.cta-box{
+padding:32px 22px;
+}
+
+.cta-box h2{
+font-size:26px;
+}
+
+.share{
+flex-direction:column;
+}
+
+.share a{
+text-align:center;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <img src="../logo.png">
+<!-- HEADER -->
 
-  <nav>
-    <a href="../index.html">Inicio</a>
-    <a href="../como.html">Cómo funciona</a>
-    <a href="../beneficios.html">Beneficios</a>
-    <a href="../negocios.html">Negocios</a>
-    <a href="../blog.html">Blog</a>
+<header class="nex-header">
 
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="../index.html" class="logo-wrap">
+<img src="../logo.png" alt="NeXsv">
+</a>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
+
+<a href="../index.html">
+Inicio
+</a>
+
+<a href="../como.html">
+Cómo funciona
+</a>
+
+<a href="../beneficios.html">
+Beneficios
+</a>
+
+<a href="../negocios.html">
+Negocios
+</a>
+
+<a href="../blog.html">
+Blog
+</a>
+
+<a
+class="nex-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</nav>
+
 </header>
 
-<section class="blog-container">
+<!-- HERO -->
 
-<h1>Errores que hacen invisible tu negocio</h1>
+<section class="hero">
 
-<p style="text-align:center; color:#666;">
-No es que no quieran comprarte… es que no te están viendo
+<div class="hero-content">
+
+<h1>
+Errores que hacen invisible tu negocio
+</h1>
+
+<p>
+No es que no quieran comprarte… es que simplemente no te están viendo.
 </p>
 
-<img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
+</div>
+
+</section>
+
+<!-- BLOG -->
+
+<section class="blog-wrapper">
+
+<div class="blog-container">
 
 <p>
 Muchos negocios creen que no venden porque el mercado está saturado o porque la competencia es muy fuerte. Sin embargo, en la mayoría de los casos el problema es mucho más simple: los clientes no los están encontrando.
@@ -158,59 +691,165 @@ La invisibilidad es uno de los mayores enemigos de cualquier negocio. Puedes ten
 
 <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
 
-<p><strong>Error #1: Depender solo de publicaciones</strong><br>
-Publicar contenido no garantiza ventas. Si no estás en un lugar donde las personas ya están buscando, dependes de la suerte.
+<div class="highlight">
+
+<strong>
+La realidad es simple:
+</strong>
+
+Si tu negocio no aparece cuando el cliente está buscando, alguien más ocupará ese lugar.
+
+</div>
+
+<div class="error-box">
+
+<h3>
+Error #1: Depender solo de publicaciones
+</h3>
+
+<p>
+Publicar contenido no garantiza ventas. Si no estás en un lugar donde las personas ya están buscando, dependes completamente de la suerte y del alcance de las redes sociales.
 </p>
 
-<p><strong>Error #2: No estar donde el cliente busca</strong><br>
-Hoy las personas buscan opciones antes de comprar. Si tu negocio no aparece en ese momento, quedas fuera automáticamente.
+</div>
+
+<div class="error-box">
+
+<h3>
+Error #2: No estar donde el cliente busca
+</h3>
+
+<p>
+Hoy las personas comparan opciones antes de comprar. Si tu negocio no aparece en ese momento, automáticamente quedas fuera de la decisión.
 </p>
 
-<p><strong>Error #3: Falta de presencia constante</strong><br>
-Si tu negocio no está disponible todo el tiempo, pierdes oportunidades todos los días.
+</div>
+
+<div class="error-box">
+
+<h3>
+Error #3: Falta de presencia constante
+</h3>
+
+<p>
+Si tu negocio no está visible todo el tiempo, pierdes oportunidades todos los días. Los clientes compran cuando sienten necesidad, no cuando tú publicas.
 </p>
 
-<div class="cta-box">
-<strong>¿Tu negocio está cometiendo estos errores?</strong><br><br>
-En neXsv puedes aparecer frente a clientes que ya están buscando lo que ofreces.<br><br>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform">
-Solicitar acceso
-</a>
 </div>
 
 <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
 
 <p>
-Los negocios que crecen no necesariamente hacen más, hacen mejor. Se posicionan en los lugares correctos y facilitan que el cliente los encuentre.
+Los negocios que crecen no necesariamente hacen más… hacen mejor. Se posicionan en los lugares correctos y facilitan que el cliente los encuentre rápidamente.
 </p>
 
 <p>
-No se trata de trabajar más, sino de estar donde realmente importa.
+No se trata de trabajar más, sino de estar presente cuando realmente importa.
 </p>
 
 <p>
 Y cuando logras eso, dejas de perseguir clientes… y comienzas a recibirlos.
 </p>
 
-<!-- SIGUIENTE BLOG -->
-<p style="margin-top:40px;">
-👉 <strong>También te puede interesar:</strong><br>
-<a href="negocios-que-si-venden.html">Por qué algunos negocios venden y otros no</a>
+<!-- CTA -->
+
+<div class="cta-box">
+
+<h2>
+¿Tu negocio está cometiendo estos errores?
+</h2>
+
+<p>
+En NeXsv puedes aparecer frente a personas que ya están buscando productos y servicios dentro de su comunidad.
 </p>
 
+<a
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</div>
+
+<!-- RELACIONADO -->
+
+<div class="related">
+
+<strong>
+👉 También te puede interesar:
+</strong>
+
+<a href="negocios-que-si-venden.html">
+Por qué algunos negocios venden y otros no
+</a>
+
+</div>
+
+<!-- SHARE -->
+
 <div class="share">
-  <a class="fb" href="#">Facebook</a>
-  <a class="wa" href="https://wa.me/?text=Errores%20que%20hacen%20invisible%20tu%20negocio" target="_blank">WhatsApp</a>
-  <a class="tw" href="#">Twitter</a>
+
+<a
+class="fb"
+href="#">
+
+Facebook
+
+</a>
+
+<a
+class="wa"
+href="https://wa.me/?text=Errores%20que%20hacen%20invisible%20tu%20negocio"
+target="_blank">
+
+WhatsApp
+
+</a>
+
+<a
+class="tw"
+href="#">
+
+Twitter
+
+</a>
+
+</div>
+
 </div>
 
 </section>
 
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="../terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+
+<a href="../terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
+
+<!-- SCRIPT -->
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
+}
+
+</script>
 
 </body>
 </html>
