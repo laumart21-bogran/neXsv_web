@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -71,14 +72,25 @@ padding:0 50px;
 z-index:999;
 }
 
+.logo{
+display:flex;
+align-items:center;
+}
+
 .logo img{
 height:62px;
+transition:.3s;
+}
+
+.logo img:hover{
+transform:scale(1.03);
 }
 
 .nav{
 display:flex;
 align-items:center;
 gap:25px;
+flex-wrap:wrap;
 }
 
 .nav a{
@@ -87,6 +99,7 @@ color:var(--primary);
 font-weight:600;
 font-size:15px;
 transition:.3s;
+white-space:nowrap;
 }
 
 .nav a:hover{
@@ -107,6 +120,8 @@ color:#1D2A3A !important;
 
 box-shadow:
 0 10px 25px rgba(247,197,49,.28);
+
+transition:.3s;
 }
 
 .nav-btn:hover{
@@ -316,10 +331,54 @@ padding:110px 20px;
 text-align:center;
 }
 
+.cta-box{
+max-width:1150px;
+margin:auto;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:70px 35px;
+
+border-radius:40px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 20px 60px rgba(22,87,184,.22);
+}
+
+.cta-box::before{
+content:"";
+position:absolute;
+
+width:350px;
+height:350px;
+
+background:rgba(255,255,255,.12);
+
+filter:blur(90px);
+
+top:-100px;
+right:-80px;
+
+border-radius:50%;
+}
+
+.cta-content{
+position:relative;
+z-index:2;
+}
+
 .cta h2{
 font-size:52px;
 font-weight:800;
-color:var(--primary);
+color:white;
 margin-bottom:25px;
 letter-spacing:-1px;
 }
@@ -327,7 +386,7 @@ letter-spacing:-1px;
 .cta p{
 font-size:19px;
 line-height:1.9;
-color:#5d6677;
+color:rgba(255,255,255,.92);
 max-width:850px;
 margin:auto;
 margin-bottom:40px;
@@ -348,14 +407,14 @@ font-size:16px;
 
 background:linear-gradient(
 135deg,
-var(--secondary),
-#48d7da
+var(--accent),
+#ffd95e
 );
 
-color:white;
+color:#1D2A3A;
 
 box-shadow:
-0 15px 35px rgba(25,194,198,.28);
+0 15px 35px rgba(247,197,49,.28);
 
 transition:.35s;
 }
@@ -408,53 +467,186 @@ transform:translateY(0);
 }
 
 /* ========================================
-RESPONSIVE
+RESPONSIVE TABLET
 ======================================== */
 
 @media(max-width:900px){
 
 .custom-header{
-padding:0 20px;
+padding:14px 20px;
 flex-direction:column;
 height:auto;
-padding-top:15px;
-padding-bottom:15px;
 gap:14px;
 }
 
 .top-blur{
-height:130px;
+height:150px;
 }
 
 .logo img{
-height:52px;
+height:54px;
 }
 
 .nav{
-flex-wrap:wrap;
 justify-content:center;
 gap:12px;
 }
 
+.nav a{
+font-size:14px;
+}
+
+.nav-btn{
+padding:12px 18px;
+font-size:14px;
+}
+
 .slider-container{
-margin-top:130px;
-height:88vh;
+margin-top:150px;
+height:85vh;
+}
+
+.slide-content{
+padding:20px 25px;
 }
 
 .slide-content h2{
-font-size:38px;
+font-size:42px;
+line-height:1.15;
 }
 
 .slide-content p{
-font-size:17px;
+font-size:18px;
+line-height:1.8;
 }
 
 .arrow{
 display:none;
 }
 
+.cta{
+padding:80px 20px;
+}
+
+.cta-box{
+padding:50px 25px;
+border-radius:30px;
+}
+
 .cta h2{
-font-size:34px;
+font-size:36px;
+}
+
+.cta p{
+font-size:17px;
+}
+
+}
+
+/* ========================================
+RESPONSIVE MOBILE
+======================================== */
+
+@media(max-width:600px){
+
+.top-blur{
+height:190px;
+}
+
+.custom-header{
+padding:14px 15px;
+gap:16px;
+}
+
+.logo img{
+height:48px;
+}
+
+.nav{
+width:100%;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+.nav a{
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:white;
+
+padding:12px 10px;
+
+border-radius:14px;
+
+font-size:13px;
+font-weight:700;
+
+box-shadow:
+0 6px 18px rgba(0,0,0,.05);
+}
+
+.nav-btn{
+grid-column:1/-1;
+padding:14px;
+}
+
+.slider-container{
+margin-top:190px;
+height:78vh;
+}
+
+.slide-content{
+padding:20px;
+}
+
+.slide-content h2{
+font-size:32px;
+line-height:1.2;
+letter-spacing:-1px;
+margin-bottom:18px;
+}
+
+.slide-content p{
+font-size:16px;
+line-height:1.8;
+margin-bottom:28px;
+}
+
+.slide-content a{
+width:100%;
+padding:16px;
+font-size:15px;
+}
+
+.cta{
+padding:70px 16px;
+}
+
+.cta-box{
+padding:45px 20px;
+border-radius:26px;
+}
+
+.cta h2{
+font-size:30px;
+line-height:1.2;
+}
+
+.cta p{
+font-size:16px;
+line-height:1.8;
+}
+
+.cta a{
+width:100%;
+padding:16px;
+font-size:15px;
+}
+
+.dots{
+bottom:18px;
 }
 
 }
@@ -636,6 +828,10 @@ Leer artículo
 
 <section class="cta">
 
+<div class="cta-box">
+
+<div class="cta-content">
+
 <h2>
 Empieza a posicionar tu negocio
 </h2>
@@ -651,6 +847,10 @@ target="_blank">
 Quiero empezar a recibir clientes
 
 </a>
+
+</div>
+
+</div>
 
 </section>
 
