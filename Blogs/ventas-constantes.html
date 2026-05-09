@@ -1,152 +1,702 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Cómo lograr ventas constantes teniendo presencia donde los clientes buscan</title>
 
 <meta name="description" content="Descubre cómo lograr ventas constantes aumentando la visibilidad de tu negocio y apareciendo donde los clientes ya están buscando.">
 
+<!-- FUENTE -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
 }
 
-/* HEADER */
-header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
+/* ========================================
+HEADER
+======================================== */
+
+.nex-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+border-bottom:1px solid rgba(0,0,0,.05);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
 }
 
-header img{ height:70px; }
-
-nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
+.logo-wrap img{
+height:54px;
+display:block;
 }
 
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+.nex-nav{
+display:flex;
+align-items:center;
+gap:22px;
 }
 
-/* BLOG */
+.nex-nav a{
+text-decoration:none;
+color:var(--primary);
+font-weight:600;
+font-size:15px;
+transition:.3s;
+white-space:nowrap;
+}
+
+.nex-nav a:hover{
+opacity:.75;
+}
+
+.nex-btn{
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:800;
+
+color:#1D2A3A !important;
+
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
+}
+
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:var(--primary);
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+margin-top:84px;
+
+min-height:48vh;
+
+background:
+linear-gradient(
+rgba(9,28,61,.80),
+rgba(9,28,61,.82)
+),
+url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1400&auto=format&fit=crop') center/cover;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:60px 20px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:400px;
+height:400px;
+
+background:rgba(25,194,198,.15);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-120px;
+right:-100px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:850px;
+}
+
+.hero h1{
+font-size:clamp(2.2rem,5vw,4rem);
+line-height:1.1;
+font-weight:800;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+max-width:700px;
+margin:auto;
+}
+
+/* ========================================
+BLOG
+======================================== */
+
+.blog-wrapper{
+max-width:1100px;
+margin:auto;
+padding:70px 20px;
+}
+
 .blog-container{
-  max-width:900px;
-  margin:40px auto;
-  background:white;
-  padding:40px;
-  border-radius:12px;
-  line-height:1.7;
+max-width:900px;
+margin:auto;
+
+background:rgba(255,255,255,.92);
+
+backdrop-filter:blur(14px);
+
+padding:50px;
+
+border-radius:32px;
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.06);
+}
+
+.blog-intro{
+text-align:center;
+margin-bottom:35px;
+}
+
+.blog-intro span{
+display:inline-block;
+
+background:rgba(25,194,198,.12);
+
+color:var(--secondary);
+
+padding:10px 18px;
+
+border-radius:999px;
+
+font-size:14px;
+font-weight:700;
+
+margin-bottom:18px;
+}
+
+.blog-intro h2{
+font-size:clamp(2rem,4vw,3rem);
+line-height:1.15;
+font-weight:800;
+
+color:var(--primary);
+
+margin-bottom:18px;
+}
+
+.blog-intro p{
+font-size:18px;
+line-height:1.8;
+color:#667085;
 }
 
 .blog-container img{
-  width:100%;
-  border-radius:12px;
-  margin:25px 0;
-}
+width:100%;
+border-radius:24px;
+margin:35px 0;
 
-.blog-container h1{
-  text-align:center;
+object-fit:cover;
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.08);
 }
 
 .blog-container p{
-  font-size:16px;
-  color:#333;
+font-size:18px;
+line-height:2;
+color:#445164;
+margin-bottom:24px;
 }
 
-/* CTA BLOQUE */
+/* ========================================
+CTA
+======================================== */
+
 .cta-box{
-  background:#f0f4ff;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-  margin:30px 0;
+margin:45px 0;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:45px 30px;
+
+border-radius:30px;
+
+text-align:center;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 18px 45px rgba(22,87,184,.18);
 }
 
-.cta-box a{
-  background:#4CAF50;
-  color:white;
-  padding:10px 20px;
-  border-radius:8px;
-  text-decoration:none;
+.cta-box::before{
+content:"";
+position:absolute;
+
+width:250px;
+height:250px;
+
+background:rgba(255,255,255,.12);
+
+border-radius:50%;
+
+filter:blur(80px);
+
+top:-80px;
+right:-60px;
 }
 
-/* SHARE */
+.cta-box-content{
+position:relative;
+z-index:2;
+}
+
+.cta-box h3{
+font-size:34px;
+line-height:1.2;
+color:white;
+margin-bottom:18px;
+}
+
+.cta-box p{
+font-size:17px;
+line-height:1.8;
+color:rgba(255,255,255,.9);
+margin-bottom:30px;
+}
+
+.cta-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+padding:16px 28px;
+
+border-radius:16px;
+
+text-decoration:none;
+
+font-weight:800;
+font-size:16px;
+
+color:#1D2A3A;
+
+transition:.3s;
+
+box-shadow:
+0 14px 35px rgba(247,197,49,.28);
+}
+
+.cta-btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+BLOG NAV
+======================================== */
+
+.blog-nav{
+margin-top:45px;
+
+padding:25px;
+
+background:#f7f9fc;
+
+border-radius:22px;
+
+border:1px solid rgba(0,0,0,.05);
+}
+
+.blog-nav strong{
+display:block;
+margin-bottom:10px;
+color:var(--primary);
+font-size:18px;
+}
+
+.blog-nav a{
+color:var(--secondary);
+font-weight:700;
+text-decoration:none;
+}
+
+/* ========================================
+SHARE
+======================================== */
+
 .share{
-  margin-top:30px;
-  display:flex;
-  gap:10px;
+margin-top:35px;
+
+display:flex;
+flex-wrap:wrap;
+gap:14px;
 }
 
 .share a{
-  text-decoration:none;
-  padding:10px 15px;
-  border-radius:6px;
-  color:white;
-  font-size:14px;
+text-decoration:none;
+
+padding:12px 18px;
+
+border-radius:14px;
+
+color:white;
+
+font-size:14px;
+font-weight:700;
+
+transition:.3s;
 }
 
-.fb{ background:#3b5998; }
-.wa{ background:#25D366; }
-.tw{ background:#1DA1F2; }
+.share a:hover{
+transform:translateY(-3px);
+}
 
-/* FOOTER */
+.fb{
+background:#1877F2;
+}
+
+.wa{
+background:#25D366;
+}
+
+.tw{
+background:#1DA1F2;
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-  font-size:14px;
+margin-top:80px;
+
+background:white;
+
+padding:40px 20px;
+
+text-align:center;
+
+color:#6b7280;
+font-size:14px;
 }
 
 .footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
 }
+
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:950px){
+
+.menu-toggle{
+display:block;
+z-index:10001;
+}
+
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-nav a{
+font-size:17px;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
+}
+
+.blog-container{
+padding:35px 25px;
+}
+
+.hero{
+min-height:42vh;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.cta-box h3{
+font-size:28px;
+}
+
+}
+
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero{
+padding:40px 18px;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.blog-container{
+padding:28px 20px;
+border-radius:24px;
+}
+
+.blog-container p{
+font-size:16px;
+}
+
+.blog-intro h2{
+font-size:30px;
+}
+
+.share{
+flex-direction:column;
+}
+
+.share a{
+text-align:center;
+}
+
+.cta-box{
+padding:38px 22px;
+}
+
+.cta-box h3{
+font-size:24px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <img src="../logo.png">
+<!-- HEADER -->
 
-  <nav>
-    <a href="../index.html">Inicio</a>
-    <a href="../como.html">Cómo funciona</a>
-    <a href="../beneficios.html">Beneficios</a>
-    <a href="../negocios.html">Negocios</a>
-    <a href="../blog.html">Blog</a>
+<header class="nex-header">
 
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="../index.html" class="logo-wrap">
+<img src="../logo.png" alt="NeXsv">
+</a>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
+
+<a href="../index.html">
+Inicio
+</a>
+
+<a href="../como.html">
+Cómo funciona
+</a>
+
+<a href="../beneficios.html">
+Beneficios
+</a>
+
+<a href="../negocios.html">
+Negocios
+</a>
+
+<a href="../blog.html">
+Blog
+</a>
+
+<a
+class="nex-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</nav>
+
 </header>
 
-<section class="blog-container">
+<!-- HERO -->
 
-<h1>Cómo lograr ventas constantes teniendo presencia donde los clientes buscan</h1>
+<section class="hero">
 
-<p style="text-align:center; color:#666;">
-El problema no es tu producto… es que no te están encontrando
+<div class="hero-content">
+
+<h1>
+Cómo lograr ventas constantes
+</h1>
+
+<p>
+El problema no es tu producto… es que no te están encontrando cuando están listos para comprar.
 </p>
 
-<img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
+</div>
+
+</section>
+
+<!-- BLOG -->
+
+<section class="blog-wrapper">
+
+<div class="blog-container">
+
+<div class="blog-intro">
+
+<span>
+Ventas • Visibilidad • Estrategia
+</span>
+
+<h2>
+Cómo lograr ventas constantes teniendo presencia donde los clientes buscan
+</h2>
+
+<p>
+Los negocios que venden de forma constante no siempre son los mejores… son los que aparecen en el momento correcto.
+</p>
+
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1400&auto=format&fit=crop"
+alt="Clientes buscando negocios">
 
 <p>
 Muchos negocios tienen días buenos y días malos en ventas. A veces venden mucho, otras veces casi nada. Esto genera frustración e incertidumbre, porque no existe estabilidad.
@@ -156,57 +706,136 @@ Muchos negocios tienen días buenos y días malos en ventas. A veces venden much
 La mayoría cree que el problema está en el precio, el producto o la competencia. Pero en realidad, el problema más grande suele ser otro: la falta de visibilidad.
 </p>
 
-<img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
+<img
+src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1400&auto=format&fit=crop"
+alt="Clientes comparando opciones">
 
 <p>
-Hoy los clientes no esperan a que les vendas. Ellos buscan. Comparan. Deciden. Y eligen entre las opciones que tienen disponibles en ese momento.
+Hoy los clientes no esperan a que les vendas. Ellos buscan, comparan y toman decisiones rápidamente entre las opciones que encuentran disponibles.
 </p>
 
 <p>
-Esto significa algo clave: si tu negocio no aparece cuando el cliente está buscando, no compites. Simplemente quedas fuera.
+Y aquí ocurre algo importante: si tu negocio no aparece cuando el cliente está buscando, simplemente quedas fuera de la decisión.
 </p>
 
 <div class="cta-box">
-<strong>¿Tu negocio no está siendo encontrado?</strong><br><br>
-En neXsv puedes aparecer frente a clientes que ya están listos para comprar.<br><br>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform">
+
+<div class="cta-box-content">
+
+<h3>
+¿Tu negocio no está siendo encontrado?
+</h3>
+
+<p>
+En NeXsv puedes aparecer frente a personas que ya están listas para comprar productos y servicios como el tuyo.
+</p>
+
+<a
+class="cta-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
 Solicitar acceso
+
 </a>
+
 </div>
 
-<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
+</div>
+
+<img
+src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1400&auto=format&fit=crop"
+alt="Negocio creciendo">
 
 <p>
 Los negocios que venden constantemente no necesariamente son los mejores, sino los que están presentes en el momento correcto. La visibilidad no es un lujo, es una necesidad.
 </p>
 
 <p>
-Plataformas como neXsv están diseñadas para eso: conectar tu negocio con clientes reales que ya están buscando lo que ofreces.
+Plataformas como NeXsv están diseñadas precisamente para eso: conectar tu negocio con clientes reales que ya están buscando lo que ofreces.
 </p>
 
 <p>
-Cuando estás en el lugar correcto, en el momento correcto, las ventas dejan de ser un esfuerzo constante y se convierten en una consecuencia.
+Cuando estás en el lugar correcto, en el momento correcto, las ventas dejan de ser un esfuerzo constante y comienzan a convertirse en una consecuencia natural.
 </p>
 
-<!-- SIGUIENTE BLOG -->
-<p style="margin-top:40px;">
-👉 <strong>También te puede interesar:</strong><br>
-<a href="errores-visibilidad.html">Errores que hacen invisible tu negocio</a>
-</p>
+<!-- NAVEGACIÓN BLOG -->
+
+<div class="blog-nav">
+
+<strong>
+👉 También te puede interesar:
+</strong>
+
+<a href="errores-visibilidad.html">
+Errores que hacen invisible tu negocio
+</a>
+
+</div>
+
+<!-- SHARE -->
 
 <div class="share">
-  <a class="fb" href="#">Facebook</a>
-  <a class="wa" href="https://wa.me/?text=Cómo%20lograr%20ventas%20constantes" target="_blank">WhatsApp</a>
-  <a class="tw" href="#">Twitter</a>
+
+<a
+class="fb"
+href="#">
+
+Facebook
+
+</a>
+
+<a
+class="wa"
+href="https://wa.me/?text=Cómo%20lograr%20ventas%20constantes"
+target="_blank">
+
+WhatsApp
+
+</a>
+
+<a
+class="tw"
+href="#">
+
+Twitter
+
+</a>
+
+</div>
+
 </div>
 
 </section>
 
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="../terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+
+<a href="../terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
+
+<!-- SCRIPT -->
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
+}
+
+</script>
 
 </body>
 </html>
