@@ -1,216 +1,913 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<title>Por qué algunos negocios venden y otros no</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Por qué algunos negocios venden y otros no | NeXsv</title>
 
 <meta name="description" content="Descubre por qué algunos negocios venden constantemente y otros no, y cómo la visibilidad influye en las decisiones de compra.">
 
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
+html,body{
+overflow-x:hidden;
+max-width:100%;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
 }
 
-/* HEADER */
-header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
+/* ========================================
+HEADER
+======================================== */
+
+.nex-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
 }
 
-header img{ height:70px; }
-
-nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
+.logo-wrap img{
+height:56px;
+display:block;
 }
 
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+.nex-nav{
+display:flex;
+align-items:center;
+gap:22px;
 }
 
-/* BLOG */
+.nex-nav a{
+text-decoration:none;
+color:#1657B8;
+font-weight:600;
+font-size:15px;
+transition:.3s;
+white-space:nowrap;
+}
+
+.nex-nav a:hover{
+opacity:.75;
+}
+
+.nex-btn{
+background:linear-gradient(
+135deg,
+#F7C531,
+#ffd95e
+);
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:800;
+
+color:#1D2A3A !important;
+
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
+}
+
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:#1657B8;
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+margin-top:84px;
+
+background:
+linear-gradient(
+rgba(9,28,61,.78),
+rgba(9,28,61,.82)
+),
+url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+
+min-height:42vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:60px 20px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:400px;
+height:400px;
+
+background:rgba(25,194,198,.16);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-120px;
+right:-80px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:280px;
+height:280px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-90px;
+left:-70px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:900px;
+}
+
+.hero h1{
+font-size:clamp(2.2rem,5vw,4rem);
+font-weight:800;
+line-height:1.05;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+line-height:1.8;
+color:rgba(255,255,255,.88);
+
+max-width:750px;
+margin:auto;
+}
+
+/* ========================================
+BLOG CONTAINER
+======================================== */
+
+.blog-wrapper{
+padding:70px 20px;
+}
+
 .blog-container{
-  max-width:900px;
-  margin:40px auto;
-  background:white;
-  padding:40px;
-  border-radius:12px;
-  line-height:1.7;
+max-width:920px;
+margin:auto;
+
+background:rgba(255,255,255,.85);
+
+backdrop-filter:blur(14px);
+
+padding:50px;
+
+border-radius:36px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.08);
+
+animation:fadeUp .8s ease;
+}
+
+/* ========================================
+ARTICLE
+======================================== */
+
+.blog-tag{
+display:inline-flex;
+align-items:center;
+gap:8px;
+
+background:#eef4ff;
+
+padding:10px 16px;
+
+border-radius:999px;
+
+font-size:13px;
+font-weight:700;
+color:var(--primary);
+
+margin-bottom:25px;
+}
+
+.blog-intro{
+font-size:20px;
+line-height:1.9;
+color:#5d6677;
+
+margin-bottom:30px;
 }
 
 .blog-container img{
-  width:100%;
-  border-radius:12px;
-  margin:25px 0;
-}
+width:100%;
+border-radius:24px;
+margin:35px 0;
 
-.blog-container h1{
-  text-align:center;
+box-shadow:
+0 12px 30px rgba(0,0,0,.08);
+
+object-fit:cover;
 }
 
 .blog-container p{
-  font-size:16px;
-  color:#333;
+font-size:18px;
+line-height:2;
+color:#4b5565;
+margin-bottom:24px;
 }
 
-/* CTA */
+.highlight{
+background:linear-gradient(
+135deg,
+rgba(25,194,198,.08),
+rgba(22,87,184,.05)
+);
+
+border-left:5px solid var(--secondary);
+
+padding:24px;
+border-radius:20px;
+
+margin:35px 0;
+}
+
+.highlight p{
+margin:0;
+font-weight:600;
+color:var(--primary);
+}
+
+/* ========================================
+CTA
+======================================== */
+
 .cta-box{
-  background:#f0f4ff;
-  padding:20px;
-  border-radius:10px;
-  text-align:center;
-  margin:30px 0;
+margin:45px 0;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:45px 30px;
+
+border-radius:30px;
+
+text-align:center;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 20px 45px rgba(22,87,184,.18);
 }
 
-.cta-box a{
-  background:#4CAF50;
-  color:white;
-  padding:10px 20px;
-  border-radius:8px;
-  text-decoration:none;
+.cta-box::before{
+content:"";
+position:absolute;
+
+width:280px;
+height:280px;
+
+background:rgba(255,255,255,.12);
+
+filter:blur(80px);
+
+top:-120px;
+right:-80px;
+
+border-radius:50%;
 }
 
-/* SHARE */
+.cta-content{
+position:relative;
+z-index:2;
+}
+
+.cta-box h3{
+font-size:34px;
+line-height:1.2;
+color:white;
+margin-bottom:16px;
+font-weight:800;
+}
+
+.cta-box p{
+color:rgba(255,255,255,.9);
+font-size:17px;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+.cta-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+padding:16px 28px;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+border-radius:18px;
+
+text-decoration:none;
+
+color:#1D2A3A;
+
+font-weight:800;
+
+font-size:16px;
+
+transition:.3s;
+
+box-shadow:
+0 12px 30px rgba(247,197,49,.3);
+}
+
+.cta-btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+RELATED
+======================================== */
+
+.related{
+margin-top:50px;
+
+padding:30px;
+
+background:#f7f9ff;
+
+border-radius:24px;
+}
+
+.related span{
+display:block;
+font-size:14px;
+font-weight:700;
+color:var(--secondary);
+
+margin-bottom:10px;
+}
+
+.related a{
+font-size:22px;
+font-weight:800;
+
+color:var(--primary);
+
+text-decoration:none;
+
+line-height:1.4;
+
+transition:.3s;
+}
+
+.related a:hover{
+opacity:.7;
+}
+
+/* ========================================
+SHARE
+======================================== */
+
 .share{
-  margin-top:30px;
-  display:flex;
-  gap:10px;
+margin-top:40px;
+
+display:flex;
+flex-wrap:wrap;
+gap:14px;
 }
 
 .share a{
-  text-decoration:none;
-  padding:10px 15px;
-  border-radius:6px;
-  color:white;
-  font-size:14px;
+text-decoration:none;
+
+padding:14px 18px;
+
+border-radius:14px;
+
+color:white;
+
+font-size:14px;
+font-weight:700;
+
+transition:.3s;
 }
 
-.fb{ background:#3b5998; }
-.wa{ background:#25D366; }
-.tw{ background:#1DA1F2; }
+.share a:hover{
+transform:translateY(-3px);
+}
 
-/* FOOTER */
+.fb{
+background:#1877F2;
+}
+
+.wa{
+background:#25D366;
+}
+
+.tw{
+background:#1DA1F2;
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-  font-size:14px;
+margin-top:70px;
+
+background:white;
+
+padding:40px 20px;
+
+text-align:center;
+
+color:#6b7280;
+font-size:14px;
 }
 
 .footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
 }
+
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+/* ========================================
+ANIMATION
+======================================== */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:950px){
+
+.menu-toggle{
+display:block;
+z-index:10001;
+}
+
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-nav a{
+font-size:17px;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
+}
+
+.blog-container{
+padding:35px 25px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.cta-box h3{
+font-size:28px;
+}
+
+}
+
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero{
+padding:40px 18px;
+min-height:38vh;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.blog-wrapper{
+padding:40px 15px;
+}
+
+.blog-container{
+padding:28px 22px;
+border-radius:26px;
+}
+
+.blog-container p{
+font-size:16px;
+line-height:1.9;
+}
+
+.blog-intro{
+font-size:18px;
+}
+
+.cta-box{
+padding:35px 22px;
+}
+
+.cta-box h3{
+font-size:24px;
+}
+
+.related a{
+font-size:20px;
+}
+
+.share{
+flex-direction:column;
+}
+
+.share a{
+text-align:center;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <img src="../logo.png">
+<!-- HEADER -->
 
-  <nav>
-    <a href="../index.html">Inicio</a>
-    <a href="../como.html">Cómo funciona</a>
-    <a href="../beneficios.html">Beneficios</a>
-    <a href="../negocios.html">Negocios</a>
-    <a href="../blog.html">Blog</a>
+<header class="nex-header">
 
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="../index.html" class="logo-wrap">
+<img src="../logo.png" alt="NeXsv">
+</a>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
+
+<a href="../index.html">
+Inicio
+</a>
+
+<a href="../como.html">
+Cómo funciona
+</a>
+
+<a href="../beneficios.html">
+Beneficios
+</a>
+
+<a href="../negocios.html">
+Negocios
+</a>
+
+<a href="../blog.html">
+Blog
+</a>
+
+<a
+class="nex-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</nav>
+
 </header>
 
-<section class="blog-container">
+<!-- HERO -->
 
-<h1>Por qué algunos negocios venden y otros no</h1>
+<section class="hero">
 
-<p style="text-align:center; color:#666;">
-No siempre gana el mejor… gana el que aparece en el momento correcto
-</p>
+<div class="hero-content">
 
-<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d">
-
-<p>
-Si observas el mercado, notarás algo curioso: hay negocios con productos normales que venden constantemente, mientras otros con mejores productos apenas generan ventas. Esto no es casualidad.
-</p>
+<h1>
+Por qué algunos negocios venden y otros no
+</h1>
 
 <p>
-La diferencia no está únicamente en la calidad, sino en la visibilidad. Los negocios que venden más son los que están presentes cuando el cliente toma la decisión.
+No siempre gana el mejor… gana el que aparece en el momento correcto.
 </p>
 
-<img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d">
-
-<p>
-Hoy el comportamiento del cliente ha cambiado. Antes, el vendedor buscaba al cliente. Ahora, el cliente busca opciones, compara y elige rápidamente.
-</p>
-
-<p>
-Y aquí ocurre algo clave: el cliente no elige entre todas las opciones del mercado… elige entre las que puede ver.
-</p>
-
-<p>
-Eso significa que, si tu negocio no aparece en ese momento, no importa qué tan bueno sea tu producto. Simplemente no entras en la decisión.
-</p>
-
-<div class="cta-box">
-<strong>¿Tu negocio está siendo considerado por los clientes?</strong><br><br>
-En neXsv puedes aparecer justo cuando las personas están listas para comprar.<br><br>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform">
-Solicitar acceso
-</a>
-</div>
-
-<img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d">
-
-<p>
-Los negocios que entienden esto dejan de competir por precio y comienzan a competir por presencia. Y eso cambia completamente los resultados.
-</p>
-
-<p>
-No se trata de ser el mejor, se trata de ser visible en el momento correcto.
-</p>
-
-<p>
-Cuando logras eso, dejas de depender de la suerte y empiezas a generar ventas de forma constante.
-</p>
-
-<!-- SIGUIENTE BLOG -->
-<p style="margin-top:40px;">
-👉 <strong>También te puede interesar:</strong><br>
-<a href="como-recibir-clientes.html">Cómo empezar a recibir clientes reales</a>
-</p>
-
-<div class="share">
-  <a class="fb" href="#">Facebook</a>
-  <a class="wa" href="https://wa.me/?text=Por%20qué%20algunos%20negocios%20venden%20y%20otros%20no" target="_blank">WhatsApp</a>
-  <a class="tw" href="#">Twitter</a>
 </div>
 
 </section>
 
+<!-- BLOG -->
+
+<section class="blog-wrapper">
+
+<div class="blog-container">
+
+<div class="blog-tag">
+📈 Marketing y visibilidad
+</div>
+
+<p class="blog-intro">
+Muchos negocios creen que las ventas dependen únicamente de tener un buen producto. Pero en la práctica, las decisiones de compra funcionan de otra manera.
+</p>
+
+<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1400&auto=format&fit=crop">
+
+<p>
+Si observas el mercado, notarás algo curioso: existen negocios con productos normales que venden constantemente, mientras otros con mejores productos apenas generan ventas. Esto no es casualidad.
+</p>
+
+<p>
+La diferencia no está únicamente en la calidad, sino en la visibilidad. Los negocios que más venden suelen estar presentes exactamente cuando el cliente está buscando una solución.
+</p>
+
+<div class="highlight">
+
+<p>
+El cliente no elige entre todas las opciones del mercado… elige entre las opciones que puede ver.
+</p>
+
+</div>
+
+<img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1400&auto=format&fit=crop">
+
+<p>
+Hoy el comportamiento del consumidor cambió. Antes el vendedor buscaba al cliente. Ahora el cliente busca, compara y decide rápidamente entre las alternativas disponibles.
+</p>
+
+<p>
+Y aquí ocurre algo importante: si tu negocio no aparece en ese momento, no importa qué tan bueno sea tu producto. Simplemente no entras en la decisión de compra.
+</p>
+
+<p>
+Por eso algunos negocios logran vender constantemente mientras otros dependen de la suerte o de promociones para sobrevivir.
+</p>
+
+<!-- CTA -->
+
+<div class="cta-box">
+
+<div class="cta-content">
+
+<h3>
+Haz que tu negocio sea visible
+</h3>
+
+<p>
+En NeXsv puedes aparecer frente a personas que ya están buscando productos y servicios dentro de su comunidad.
+</p>
+
+<a
+class="cta-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</div>
+
+</div>
+
+<img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1400&auto=format&fit=crop">
+
+<p>
+Los negocios que entienden esto dejan de competir únicamente por precio y comienzan a competir por presencia. Y eso cambia completamente los resultados.
+</p>
+
+<p>
+No se trata solo de trabajar más. Se trata de estar en el lugar correcto, frente a las personas correctas y en el momento correcto.
+</p>
+
+<p>
+Cuando logras eso, las ventas dejan de depender de la casualidad y comienzan a convertirse en oportunidades constantes.
+</p>
+
+<!-- RELATED -->
+
+<div class="related">
+
+<span>
+TAMBIÉN TE PUEDE INTERESAR
+</span>
+
+<a href="como-recibir-clientes.html">
+Cómo empezar a recibir clientes reales →
+</a>
+
+</div>
+
+<!-- SHARE -->
+
+<div class="share">
+
+<a
+class="fb"
+href="#">
+
+Facebook
+
+</a>
+
+<a
+class="wa"
+href="https://wa.me/?text=Por%20qué%20algunos%20negocios%20venden%20y%20otros%20no"
+target="_blank">
+
+WhatsApp
+
+</a>
+
+<a
+class="tw"
+href="#">
+
+Twitter
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="../terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+<a href="../terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
+
+<!-- SCRIPT -->
+
+<script>
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
+}
+
+</script>
 
 </body>
 </html>
