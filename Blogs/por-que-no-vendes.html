@@ -1,277 +1,1108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<title>¿Por qué mi negocio no vende? 5 razones clave y cómo solucionarlo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>¿Por qué mi negocio no vende? | NeXsv</title>
 
 <meta name="description" content="Descubre por qué tu negocio no está vendiendo aunque tengas un buen producto y cómo solucionarlo con una estrategia clara que genere resultados.">
 
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
+html,body{
+overflow-x:hidden;
+max-width:100%;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  background:#f5f7fb;
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
 }
 
-/* HEADER */
-header{
-  background:white;
-  padding:12px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #eee;
+/* ========================================
+HEADER
+======================================== */
+
+.nex-header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:14px 28px;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:9999;
+
+box-shadow:
+0 4px 20px rgba(0,0,0,.04);
 }
 
-header img{
-  height:70px;
+.logo-wrap img{
+height:56px;
+display:block;
 }
 
-nav a{
-  color:#2f4ea2;
-  margin-left:20px;
-  text-decoration:none;
+.nex-nav{
+display:flex;
+align-items:center;
+gap:22px;
 }
 
-.nav-btn{
-  background:#4CAF50;
-  padding:10px 15px;
-  border-radius:8px;
-  color:white;
+.nex-nav a{
+text-decoration:none;
+color:#1657B8;
+font-weight:600;
+font-size:15px;
+transition:.3s;
+white-space:nowrap;
 }
 
-/* BLOG */
+.nex-nav a:hover{
+opacity:.75;
+}
+
+.nex-btn{
+background:linear-gradient(
+135deg,
+#F7C531,
+#ffd95e
+);
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:800;
+
+color:#1D2A3A !important;
+
+box-shadow:
+0 10px 25px rgba(247,197,49,.25);
+}
+
+.menu-toggle{
+display:none;
+
+font-size:30px;
+background:none;
+border:none;
+
+cursor:pointer;
+
+color:#1657B8;
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+margin-top:84px;
+
+background:
+linear-gradient(
+rgba(9,28,61,.80),
+rgba(9,28,61,.82)
+),
+url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+
+min-height:45vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+
+padding:60px 20px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:450px;
+height:450px;
+
+background:rgba(25,194,198,.18);
+
+filter:blur(120px);
+
+border-radius:50%;
+
+top:-120px;
+right:-100px;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:300px;
+height:300px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+border-radius:50%;
+
+bottom:-100px;
+left:-70px;
+}
+
+.hero-content{
+position:relative;
+z-index:2;
+max-width:900px;
+}
+
+.hero h1{
+font-size:clamp(2.3rem,5vw,4rem);
+font-weight:800;
+line-height:1.05;
+letter-spacing:-2px;
+
+color:white;
+
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:20px;
+line-height:1.8;
+
+color:rgba(255,255,255,.88);
+
+max-width:760px;
+margin:auto;
+}
+
+/* ========================================
+BLOG WRAPPER
+======================================== */
+
+.blog-wrapper{
+padding:70px 20px;
+}
+
 .blog-container{
-  max-width:900px;
-  margin:40px auto;
-  background:white;
-  padding:40px;
-  border-radius:12px;
-  line-height:1.7;
+max-width:920px;
+margin:auto;
+
+background:rgba(255,255,255,.88);
+
+backdrop-filter:blur(14px);
+
+padding:50px;
+
+border-radius:36px;
+
+box-shadow:
+0 20px 55px rgba(0,0,0,.08);
+
+animation:fadeUp .8s ease;
+}
+
+/* ========================================
+CONTENT
+======================================== */
+
+.blog-tag{
+display:inline-flex;
+align-items:center;
+gap:8px;
+
+background:#eef4ff;
+
+padding:10px 16px;
+
+border-radius:999px;
+
+font-size:13px;
+font-weight:700;
+
+color:var(--primary);
+
+margin-bottom:25px;
+}
+
+.blog-intro{
+font-size:20px;
+line-height:1.9;
+color:#5d6677;
+
+margin-bottom:35px;
 }
 
 .blog-container img{
-  width:100%;
-  border-radius:12px;
-  margin:25px 0;
-}
+width:100%;
 
-.blog-container h1{
-  text-align:center;
+border-radius:26px;
+
+margin:38px 0;
+
+object-fit:cover;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.08);
 }
 
 .blog-container p{
-  font-size:16px;
-  color:#333;
+font-size:18px;
+line-height:2;
+color:#4b5565;
+
+margin-bottom:24px;
 }
 
-/* SHARE */
+.highlight{
+background:linear-gradient(
+135deg,
+rgba(25,194,198,.08),
+rgba(22,87,184,.05)
+);
+
+border-left:5px solid var(--secondary);
+
+padding:24px;
+
+border-radius:20px;
+
+margin:35px 0;
+}
+
+.highlight p{
+margin:0;
+font-weight:600;
+color:var(--primary);
+}
+
+/* ========================================
+CTA
+======================================== */
+
+.cta-box{
+margin:45px 0;
+
+background:
+linear-gradient(
+135deg,
+rgba(22,87,184,.96),
+rgba(25,194,198,.92)
+);
+
+padding:45px 30px;
+
+border-radius:30px;
+
+text-align:center;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 20px 45px rgba(22,87,184,.18);
+}
+
+.cta-box::before{
+content:"";
+position:absolute;
+
+width:280px;
+height:280px;
+
+background:rgba(255,255,255,.12);
+
+filter:blur(80px);
+
+top:-120px;
+right:-80px;
+
+border-radius:50%;
+}
+
+.cta-content{
+position:relative;
+z-index:2;
+}
+
+.cta-box h3{
+font-size:34px;
+line-height:1.2;
+
+color:white;
+
+margin-bottom:16px;
+
+font-weight:800;
+}
+
+.cta-box p{
+color:rgba(255,255,255,.92);
+
+font-size:17px;
+line-height:1.8;
+
+margin-bottom:30px;
+}
+
+.cta-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+padding:16px 28px;
+
+background:linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+border-radius:18px;
+
+text-decoration:none;
+
+color:#1D2A3A;
+
+font-weight:800;
+
+font-size:16px;
+
+transition:.3s;
+
+box-shadow:
+0 12px 30px rgba(247,197,49,.3);
+}
+
+.cta-btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+RELATED
+======================================== */
+
+.related{
+margin-top:50px;
+
+padding:30px;
+
+background:#f7f9ff;
+
+border-radius:24px;
+}
+
+.related span{
+display:block;
+
+font-size:14px;
+font-weight:700;
+
+color:var(--secondary);
+
+margin-bottom:10px;
+}
+
+.related a{
+font-size:22px;
+font-weight:800;
+
+color:var(--primary);
+
+text-decoration:none;
+
+line-height:1.4;
+
+transition:.3s;
+}
+
+.related a:hover{
+opacity:.7;
+}
+
+/* ========================================
+SHARE
+======================================== */
+
 .share{
-  margin-top:30px;
-  display:flex;
-  gap:10px;
+margin-top:40px;
+
+display:flex;
+flex-wrap:wrap;
+gap:14px;
 }
 
 .share a{
-  text-decoration:none;
-  padding:10px 15px;
-  border-radius:6px;
-  color:white;
-  font-size:14px;
+text-decoration:none;
+
+padding:14px 18px;
+
+border-radius:14px;
+
+color:white;
+
+font-size:14px;
+font-weight:700;
+
+transition:.3s;
 }
 
-.fb{ background:#3b5998; }
-.wa{ background:#25D366; }
-.tw{ background:#1DA1F2; }
+.share a:hover{
+transform:translateY(-3px);
+}
 
-/* FOOTER */
+.fb{
+background:#1877F2;
+}
+
+.wa{
+background:#25D366;
+}
+
+.tw{
+background:#1DA1F2;
+}
+
+/* ========================================
+CHAT WIDGET
+======================================== */
+
+.chat-button{
+position:fixed;
+
+bottom:24px;
+right:24px;
+
+width:64px;
+height:64px;
+
+border-radius:50%;
+
+background:linear-gradient(
+135deg,
+var(--success),
+#5acb68
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:28px;
+
+cursor:pointer;
+
+z-index:9999;
+
+color:white;
+
+box-shadow:
+0 12px 35px rgba(116,214,127,.35);
+
+transition:.3s;
+}
+
+.chat-button:hover{
+transform:scale(1.08);
+}
+
+.chat-box{
+position:fixed;
+
+bottom:100px;
+right:24px;
+
+width:320px;
+
+background:white;
+
+border-radius:28px;
+
+overflow:hidden;
+
+display:none;
+
+z-index:9999;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.18);
+
+animation:fadeUp .35s ease;
+}
+
+.chat-header{
+padding:18px 20px;
+
+background:
+linear-gradient(
+135deg,
+var(--primary),
+var(--secondary)
+);
+
+color:white;
+
+font-weight:800;
+font-size:18px;
+}
+
+.chat-body{
+padding:22px;
+}
+
+.chat-body p{
+font-size:15px;
+line-height:1.8;
+color:#5d6677;
+margin-bottom:18px;
+}
+
+.chat-body a{
+display:flex;
+align-items:center;
+justify-content:center;
+
+padding:14px;
+
+background:linear-gradient(
+135deg,
+var(--success),
+#5acb68
+);
+
+border-radius:16px;
+
+color:white;
+
+font-weight:700;
+
+text-decoration:none;
+
+transition:.3s;
+}
+
+.chat-body a:hover{
+transform:translateY(-3px);
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
 footer{
-  text-align:center;
-  padding:20px;
-  margin-top:40px;
-  background:white;
-  color:#555;
-  font-size:14px;
+margin-top:70px;
+
+background:white;
+
+padding:40px 20px;
+
+text-align:center;
+
+color:#6b7280;
+font-size:14px;
 }
 
 .footer-line{
-  width:100%;
-  height:1px;
-  background:#ddd;
-  margin-bottom:15px;
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
 }
 
-/* ================= CHAT WIDGET ================= */
-
-/* BOTÓN */
-.chat-button{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#4CAF50;
-  color:white;
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:22px;
-  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
 }
 
-/* CAJA */
+/* ========================================
+ANIMATION
+======================================== */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ========================================
+RESPONSIVE
+======================================== */
+
+@media(max-width:950px){
+
+.menu-toggle{
+display:block;
+z-index:10001;
+}
+
+.nex-nav{
+position:fixed;
+
+top:0;
+right:-100%;
+
+width:280px;
+height:100vh;
+
+background:white;
+
+flex-direction:column;
+align-items:flex-start;
+justify-content:flex-start;
+
+padding:
+100px 30px
+40px;
+
+gap:24px;
+
+transition:.4s ease;
+
+box-shadow:
+-10px 0 30px rgba(0,0,0,.08);
+
+z-index:10000;
+}
+
+.nex-nav.active{
+right:0;
+}
+
+.nex-nav a{
+font-size:17px;
+}
+
+.nex-btn{
+width:100%;
+text-align:center;
+}
+
+.blog-container{
+padding:35px 25px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.cta-box h3{
+font-size:28px;
+}
+
+}
+
+@media(max-width:480px){
+
+.nex-header{
+padding:12px 16px;
+}
+
+.logo-wrap img{
+height:48px;
+}
+
+.hero{
+padding:40px 18px;
+min-height:40vh;
+}
+
+.hero h1{
+font-size:34px;
+letter-spacing:-1px;
+}
+
+.hero p{
+font-size:16px;
+}
+
+.blog-wrapper{
+padding:40px 15px;
+}
+
+.blog-container{
+padding:28px 22px;
+border-radius:26px;
+}
+
+.blog-container p{
+font-size:16px;
+line-height:1.9;
+}
+
+.blog-intro{
+font-size:18px;
+}
+
+.cta-box{
+padding:35px 22px;
+}
+
+.cta-box h3{
+font-size:24px;
+}
+
+.related a{
+font-size:20px;
+}
+
+.share{
+flex-direction:column;
+}
+
+.share a{
+text-align:center;
+}
+
 .chat-box{
-  position:fixed;
-  bottom:85px;
-  right:20px;
-  width:300px;
-  background:white;
-  border-radius:12px;
-  box-shadow:0 4px 25px rgba(0,0,0,0.25);
-  display:none;
-  overflow:hidden;
+width:90%;
+right:5%;
+bottom:90px;
 }
 
-/* HEADER CHAT */
-.chat-header{
-  background:#4CAF50;
-  color:white;
-  padding:12px;
-  font-weight:bold;
+.chat-button{
+width:58px;
+height:58px;
+font-size:24px;
 }
 
-/* BODY */
-.chat-body{
-  padding:15px;
 }
 
-/* BOTÓN INTERNO */
-.chat-body a{
-  display:block;
-  margin-top:12px;
-  background:#4CAF50;
-  color:white;
-  text-align:center;
-  padding:10px;
-  border-radius:8px;
-  text-decoration:none;
-}
 </style>
 </head>
 
 <body>
 
 <!-- HEADER -->
-<header>
-  <img src="../logo.png">
 
-  <nav>
-    <a href="../index.html">Inicio</a>
-    <a href="../como.html">Cómo funciona</a>
-    <a href="../beneficios.html">Beneficios</a>
-    <a href="../negocios.html">Negocios</a>
-    <a href="../blog.html">Blog</a>
+<header class="nex-header">
 
-    <a class="nav-btn"
-    href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-    target="_blank">
-    Solicitar acceso
-    </a>
-  </nav>
+<a href="../index.html" class="logo-wrap">
+<img src="../logo.png" alt="NeXsv">
+</a>
+
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
+
+<nav class="nex-nav" id="mobileMenu">
+
+<a href="../index.html">
+Inicio
+</a>
+
+<a href="../como.html">
+Cómo funciona
+</a>
+
+<a href="../beneficios.html">
+Beneficios
+</a>
+
+<a href="../negocios.html">
+Negocios
+</a>
+
+<a href="../blog.html">
+Blog
+</a>
+
+<a
+class="nex-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</nav>
+
 </header>
 
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>
+¿Por qué tu negocio no está vendiendo?
+</h1>
+
+<p>
+Descubre las razones reales por las que muchos negocios no generan ventas constantes aunque tengan buenos productos.
+</p>
+
+</div>
+
+</section>
+
 <!-- BLOG -->
-<section class="blog-container">
 
-<h1>¿Por qué tu negocio no está vendiendo aunque tengas un buen producto?</h1>
-<p style="text-align:center; color:#666;">
-Descubre las razones reales por las que no vendes y cómo solucionarlo con una estrategia clara
+<section class="blog-wrapper">
+
+<div class="blog-container">
+
+<div class="blog-tag">
+🚀 Estrategia y ventas
+</div>
+
+<p class="blog-intro">
+Muchos negocios tienen buenos productos, buenos precios e incluso clientes interesados… pero aún así no logran vender de forma constante.
 </p>
 
-<img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df">
+<img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?q=80&w=1400&auto=format&fit=crop">
 
 <p>
-Muchos negocios tienen buenos productos, precios competitivos e incluso clientes interesados, pero aún así no logran generar ventas constantes. Esto no ocurre por casualidad. En la mayoría de los casos, el problema no está en lo que vendes, sino en cómo lo estás estructurando y comunicando.
-</p>
-
-<p>
-La falta de una estrategia clara es uno de los principales factores que limita el crecimiento. Cuando no existe un sistema que guíe al cliente desde el interés hasta la compra, las ventas se vuelven impredecibles. Un negocio sin estructura depende del esfuerzo diario, pero no de resultados sostenibles.
-</p>
-
-<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f">
-
-<p>
-Otro error frecuente es no tener una propuesta de valor definida. Si tu cliente no entiende rápidamente qué haces, cómo lo haces y por qué debería elegirte, simplemente no tomará acción. La claridad es clave para vender. Cuando el mensaje es confuso, el cliente se aleja.
+Esto no ocurre por casualidad. En la mayoría de los casos, el problema no está en lo que vendes, sino en cómo estás comunicando y estructurando tu negocio.
 </p>
 
 <p>
-Además, muchos negocios intentan venderle a todo el mundo. Esto diluye el mensaje y reduce su impacto. Los clientes no compran productos, compran soluciones a problemas específicos. Mientras más claro tengas a quién ayudas y cómo lo haces, más fácil será generar ventas.
+La falta de una estrategia clara es uno de los principales factores que limita el crecimiento. Cuando no existe un proceso que acompañe al cliente desde el interés hasta la compra, las ventas se vuelven impredecibles.
 </p>
 
-<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7">
-
-<p>
-Finalmente, la ausencia de un proceso de ventas hace que se pierdan oportunidades todos los días. No dar seguimiento, no resolver objeciones o no facilitar la decisión son errores que afectan directamente tus ingresos. Vender no es improvisar, es guiar.
-</p>
+<div class="highlight">
 
 <p>
-Cuando defines tu cliente ideal, estructuras tu mensaje y creas un proceso claro, todo cambia. Dejas de depender de la suerte y comienzas a construir un negocio que realmente genera resultados.
+Un negocio sin estructura depende del esfuerzo diario… no de resultados sostenibles.
 </p>
 
-<p style="font-weight:bold; text-align:center; margin-top:30px;">
-¿Quieres saber qué está frenando tu negocio exactamente? En neXsv te ayudamos a identificarlo y crear un sistema que sí genere ventas. 
+</div>
+
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop">
+
+<p>
+Otro error frecuente es no tener una propuesta de valor clara. Si el cliente no entiende rápidamente qué haces, cómo lo haces y por qué debería elegirte, simplemente no tomará acción.
 </p>
+
+<p>
+La claridad vende. Cuando el mensaje es confuso, el cliente se aleja.
+</p>
+
+<p>
+Además, muchos negocios intentan venderle a todo el mundo. Esto debilita el mensaje y reduce el impacto. Los clientes no compran productos… compran soluciones específicas a problemas concretos.
+</p>
+
+<img src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?q=80&w=1400&auto=format&fit=crop">
+
+<p>
+También existe otro problema importante: la falta de seguimiento. Muchos negocios pierden oportunidades por no responder correctamente, no resolver objeciones o no facilitar la decisión de compra.
+</p>
+
+<p>
+Vender no es improvisar. Vender es guiar al cliente correctamente.
+</p>
+
+<!-- CTA -->
+
+<div class="cta-box">
+
+<div class="cta-content">
+
+<h3>
+Haz que tu negocio genere más oportunidades
+</h3>
+
+<p>
+En NeXsv ayudamos a los negocios a ganar visibilidad y conectar con personas reales dentro de su comunidad.
+</p>
+
+<a
+class="cta-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+
+Solicitar acceso
+
+</a>
+
+</div>
+
+</div>
+
+<p>
+Cuando defines correctamente tu cliente ideal, mejoras tu mensaje y creas un sistema claro, todo cambia. Las ventas dejan de depender de la suerte y comienzan a convertirse en resultados reales.
+</p>
+
+<!-- RELATED -->
+
+<div class="related">
+
+<span>
+TAMBIÉN TE PUEDE INTERESAR
+</span>
+
+<a href="errores-negocio-invisible.html">
+Errores que hacen invisible tu negocio →
+</a>
+
+</div>
 
 <!-- SHARE -->
+
 <div class="share">
-  <a class="fb" href="#">Facebook</a>
-  <a class="wa" href="https://wa.me/?text=Descubre%20por%20qué%20tu%20negocio%20no%20está%20vendiendo" target="_blank">WhatsApp</a>
-  <a class="tw" href="#">Twitter</a>
+
+<a
+class="fb"
+href="#">
+
+Facebook
+
+</a>
+
+<a
+class="wa"
+href="https://wa.me/?text=Descubre%20por%20qué%20tu%20negocio%20no%20está%20vendiendo"
+target="_blank">
+
+WhatsApp
+
+</a>
+
+<a
+class="tw"
+href="#">
+
+Twitter
+
+</a>
+
+</div>
+
 </div>
 
 </section>
 
 <!-- FOOTER -->
+
 <footer>
-  <div class="footer-line"></div>
-  © 2026 NeXsv | 
-  <a href="../terminos.html">Términos y condiciones</a>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+<a href="../terminos.html">
+Términos y condiciones
+</a>
+
 </footer>
 
-<!-- CHAT BOTÓN -->
+<!-- CHAT BUTTON -->
+
 <div class="chat-button" onclick="toggleChat()">
-  💬
+💬
 </div>
 
-<!-- CHAT CAJA -->
+<!-- CHAT BOX -->
+
 <div class="chat-box" id="chatBox">
 
-  <div class="chat-header">
-    NeXsv
-  </div>
+<div class="chat-header">
+NeXsv
+</div>
 
-  <div class="chat-body">
-    <p>Hola, ¿te gustaría mejorar tus ventas?</p>
+<div class="chat-body">
 
-    <a href="https://wa.me/50377448261" target="_blank">
-      Hablar con un asesor
-    </a>
-  </div>
+<p>
+Hola 👋 ¿Te gustaría recibir más clientes y mejorar tus ventas?
+</p>
+
+<a
+href="https://wa.me/50377448261"
+target="_blank">
+
+Hablar con un asesor
+
+</a>
+
+</div>
 
 </div>
 
 <!-- SCRIPT -->
+
 <script>
-function toggleChat(){
-  var chat = document.getElementById("chatBox");
-  if(chat.style.display === "block"){
-    chat.style.display = "none";
-  } else {
-    chat.style.display = "block";
-  }
+
+function toggleMenu(){
+
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
+
 }
+
+function toggleChat(){
+
+var chat =
+document.getElementById("chatBox");
+
+if(chat.style.display === "block"){
+
+chat.style.display = "none";
+
+}else{
+
+chat.style.display = "block";
+
+}
+
+}
+
 </script>
 
 </body>
