@@ -198,7 +198,7 @@ const params =
 new URLSearchParams(window.location.search);
 
 const id =
-decodeURIComponent(params.get("id") || "");
+decodeURIComponent(params.get("id") || "").trim().toLowerCase();
 
 function convertirDrive(link){
 
@@ -234,8 +234,10 @@ fetch(url)
 
 const negocio = data.find(n => {
 
-const nombre =
-(n["Nombre de tu negocio"] || "").trim();
+cconst nombre =
+(n["Nombre de tu negocio"] || "")
+.trim()
+.toLowerCase();
 
 return nombre === id;
 
