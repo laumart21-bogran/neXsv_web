@@ -21,304 +21,131 @@ box-sizing:border-box;
 scroll-behavior:smooth;
 }
 
-:root{
---primary:#1657B8;
---secondary:#19C2C6;
---accent:#F7C531;
---success:#74D67F;
---bg:#F5F7FB;
---text:#1D2A3A;
---white:#ffffff;
-}
-
 body{
 font-family:'Inter',sans-serif;
-background:var(--bg);
-color:var(--text);
-overflow-x:hidden;
+background:#F5F7FB;
+color:#1D2A3A;
 }
 
 header{
-position:sticky;
-top:0;
-z-index:999;
-background:rgba(255,255,255,.78);
-backdrop-filter:blur(14px);
-padding:14px 50px;
+padding:20px 40px;
+background:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
-border-bottom:1px solid rgba(255,255,255,.5);
+box-shadow:0 2px 15px rgba(0,0,0,.05);
 }
 
 header img{
-height:72px;
-transition:.3s;
-}
-
-header img:hover{
-transform:scale(1.03);
-}
-
-nav{
-display:flex;
-align-items:center;
-flex-wrap:wrap;
-gap:18px;
-}
-
-nav a{
-text-decoration:none;
-color:var(--primary);
-font-weight:600;
-transition:.3s;
-}
-
-nav a:hover{
-color:var(--secondary);
-}
-
-.nav-btn{
-background:linear-gradient(
-135deg,
-var(--accent),
-#ffd95e
-);
-
-padding:12px 18px;
-border-radius:16px;
-color:#1D2A3A;
-font-weight:700;
-
-box-shadow:
-0 12px 30px rgba(247,197,49,.28);
-}
-
-.nav-btn:hover{
-transform:translateY(-3px);
-color:#1D2A3A;
+height:70px;
 }
 
 .hero{
-background:
-linear-gradient(
-rgba(9,28,61,.78),
-rgba(9,28,61,.82)
-),
-url('cover-negocios.jpg') center/cover no-repeat;
-
-height:340px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
+padding:80px 20px;
 text-align:center;
-
-position:relative;
-overflow:hidden;
-}
-
-.hero-content{
-position:relative;
-z-index:2;
-max-width:800px;
-padding:20px;
+background:linear-gradient(135deg,#1657B8,#19C2C6);
+color:white;
 }
 
 .hero h1{
-font-size:60px;
-font-weight:800;
-line-height:1.05;
-letter-spacing:-2px;
-color:white;
-margin-bottom:18px;
+font-size:52px;
+margin-bottom:15px;
 }
 
 .hero p{
-font-size:20px;
+font-size:18px;
+max-width:700px;
+margin:auto;
 line-height:1.8;
-color:rgba(255,255,255,.9);
 }
 
 .main{
-max-width:1300px;
+max-width:1200px;
 margin:auto;
-padding:70px 20px;
-}
-
-.search-box{
-position:relative;
-margin-bottom:30px;
-}
-
-#buscador{
-width:100%;
-padding:20px 24px;
-border:none;
-outline:none;
-border-radius:22px;
-background:rgba(255,255,255,.82);
-backdrop-filter:blur(12px);
-font-size:16px;
-font-family:'Inter',sans-serif;
-
-box-shadow:
-0 10px 30px rgba(0,0,0,.06);
-
-transition:.3s;
-}
-
-.categorias{
-display:flex;
-flex-wrap:wrap;
-gap:14px;
-margin-bottom:40px;
-}
-
-.categorias button{
-border:none;
-cursor:pointer;
-padding:12px 22px;
-border-radius:999px;
-background:rgba(255,255,255,.82);
-font-family:'Inter',sans-serif;
-font-weight:700;
-color:var(--primary);
-transition:.3s;
-
-box-shadow:
-0 8px 20px rgba(0,0,0,.05);
-}
-
-.categorias button:hover{
-background:linear-gradient(
-135deg,
-var(--secondary),
-var(--primary)
-);
-
-color:white;
-transform:translateY(-3px);
+padding:50px 20px;
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-gap:28px;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:30px;
 }
 
 .card{
-background:rgba(255,255,255,.82);
-backdrop-filter:blur(14px);
+background:white;
 border-radius:28px;
 overflow:hidden;
-position:relative;
-transition:.35s;
-
-box-shadow:
-0 12px 35px rgba(0,0,0,.07);
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+transition:.3s;
 }
 
 .card:hover{
-transform:translateY(-10px);
-
-box-shadow:
-0 24px 55px rgba(0,0,0,.12);
-}
-
-.card-image{
-position:relative;
-overflow:hidden;
+transform:translateY(-8px);
 }
 
 .card img{
 width:100%;
 height:240px;
 object-fit:cover;
-transition:.5s;
-}
-
-.card:hover img{
-transform:scale(1.05);
-}
-
-.badge{
-position:absolute;
-top:16px;
-left:16px;
-background:rgba(255,255,255,.88);
-padding:8px 14px;
-border-radius:999px;
-font-size:12px;
-font-weight:800;
-color:var(--primary);
 }
 
 .card-content{
 padding:24px;
 }
 
+.badge{
+display:inline-block;
+padding:8px 16px;
+border-radius:999px;
+background:#EAF2FF;
+color:#1657B8;
+font-size:13px;
+font-weight:700;
+margin-bottom:15px;
+}
+
 .card h3{
-font-size:24px;
-font-weight:800;
+font-size:28px;
 margin-bottom:14px;
-color:var(--primary);
+color:#1657B8;
 }
 
 .card p{
-font-size:15px;
-line-height:1.8;
 color:#5d6677;
+line-height:1.8;
+margin-bottom:20px;
 }
 
 .botones{
 display:flex;
-gap:12px;
-margin-top:22px;
 flex-wrap:wrap;
+gap:12px;
 }
 
 .btn{
 flex:1;
-text-align:center;
 padding:14px;
-border:none;
 border-radius:14px;
 text-decoration:none;
 font-weight:700;
-font-family:'Inter',sans-serif;
-cursor:pointer;
+text-align:center;
 transition:.3s;
+border:none;
+cursor:pointer;
 }
 
-.btn-w{
-background:linear-gradient(
-135deg,
-var(--success),
-#5acb68
-);
-
+.btn-whatsapp{
+background:#74D67F;
 color:white;
 }
 
-.btn-v{
-background:linear-gradient(
-135deg,
-var(--secondary),
-var(--primary)
-);
-
+.btn-ver{
+background:#1657B8;
 color:white;
 }
 
 .btn-share{
-background:linear-gradient(
-135deg,
-#F7C531,
-#ffd95e
-);
-
+background:#F7C531;
 color:#1D2A3A;
 }
 
@@ -326,82 +153,8 @@ color:#1D2A3A;
 transform:translateY(-3px);
 }
 
-.btn-map{
-display:block;
-margin-top:14px;
-padding:13px;
-text-align:center;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-background:#eef3ff;
-color:var(--primary);
-transition:.3s;
-}
-
-.btn-map:hover{
-background:var(--primary);
-color:white;
-}
-
-footer{
-margin-top:70px;
-background:white;
-padding:40px 20px;
-text-align:center;
-color:#6b7280;
-font-size:14px;
-}
-
-.footer-line{
-width:100%;
-height:1px;
-background:#e5e7eb;
-margin-bottom:20px;
-}
-
-footer a{
-text-decoration:none;
-color:var(--primary);
-font-weight:700;
-}
-
-@media(max-width:900px){
-
-header{
-padding:15px 18px;
-flex-direction:column;
-gap:14px;
-}
-
-header img{
-height:60px;
-}
-
-nav{
-justify-content:center;
-gap:10px;
-}
-
-.hero h1{
-font-size:38px;
-}
-
-.hero p{
-font-size:17px;
-}
-
-.grid{
-grid-template-columns:1fr;
-}
-
-.botones{
-flex-direction:column;
-}
-
-}
-
 </style>
+
 </head>
 
 <body>
@@ -412,92 +165,30 @@ flex-direction:column;
 <img src="logo.png" alt="NeXsv">
 </a>
 
-<nav>
-
-<a href="index.html">Inicio</a>
-<a href="como.html">Cómo funciona</a>
-<a href="beneficios.html">Beneficios</a>
-<a href="negocios.html">Negocios</a>
-<a href="blog.html">Blog</a>
-
-<a
-class="nav-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-
-Solicitar acceso
-
-</a>
-
-</nav>
-
 </header>
 
 <section class="hero">
 
-<div class="hero-content">
-
 <h1>
-Explora negocios dentro de tu comunidad
+Explora negocios dentro de NeXsv
 </h1>
 
 <p>
-Conecta con emprendedores, servicios y marcas que forman parte de la red privada NeXsv.
+Conecta con negocios y emprendedores confiables dentro de la comunidad privada.
 </p>
-
-</div>
 
 </section>
 
 <section class="main">
 
-<div class="search-box">
-
-<input
-type="text"
-id="buscador"
-placeholder="Buscar negocio..."
-onkeyup="buscar()">
-
-</div>
-
-<div class="categorias">
-
-<button onclick="filtrar('Todos')">Todos</button>
-<button onclick="filtrar('Servicios')">Servicios</button>
-<button onclick="filtrar('Comida')">Comida</button>
-<button onclick="filtrar('Belleza')">Belleza</button>
-<button onclick="filtrar('Legal')">Legal</button>
-
-</div>
-
 <div class="grid" id="contenedor"></div>
 
 </section>
-
-<footer>
-
-<div class="footer-line"></div>
-
-© 2026 NeXsv |
-<a href="terminos.html">
-Términos y condiciones
-</a>
-
-</footer>
 
 <script>
 
 const url =
 "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
-
-const ANALYTICS = url;
-
-let dataGlobal = [];
-
-/* ========================================
-FETCH
-======================================== */
 
 fetch(url)
 
@@ -505,17 +196,9 @@ fetch(url)
 
 .then(data => {
 
-console.log(data);
-
-dataGlobal = data;
-
 renderizar(data);
 
 });
-
-/* ========================================
-DRIVE
-======================================== */
 
 function convertirDrive(link){
 
@@ -543,10 +226,6 @@ return link;
 
 }
 
-/* ========================================
-RENDER
-======================================== */
-
 function renderizar(data){
 
 const contenedor =
@@ -554,96 +233,73 @@ document.getElementById("contenedor");
 
 const html = data.map(n => {
 
-const k =
-Object.keys(n).reduce((a,c)=>{
-
-a[c.trim()] = n[c];
-
-return a;
-
-},{});
-
 const nombre =
-k["Nombre de tu negocio"] ||
-"Negocio";
+n["Nombre de tu negocio"] || "Negocio";
 
 const descripcion =
-k["Descripcion_final"] ||
-k["Describe tu negocio"] ||
+n["Descripcion_final"] ||
+n["Describe tu negocio"] ||
 "";
 
-const telefono =
-(k["WhatsApp del negocio"] || "")
-.replace("+","");
-
 const categoria =
-k["Categoría de tu negocio"] ||
+n["Categoría de tu negocio"] ||
 "Comunidad";
 
-const ubicacionLink =
-k["Link de ubicación del Negocio (Link de Google Maps)"] ||
-k["Ubicación del Negocio (Link de Google Maps)"] ||
-"#";
+const telefono =
+(n["WhatsApp del negocio"] || "")
+.replace("+","");
 
-let img1 =
+const imagen =
 convertirDrive(
-k["Link de imagen resp"] ||
-k["Imagen_final"] ||
+n["Link de imagen resp"] ||
+n["Imagen_final"] ||
 ""
 );
 
-if(!img1){
-
-img1 =
-"https://via.placeholder.com/600x400";
-
-}
+const id =
+encodeURIComponent(nombre.trim());
 
 return `
 
 <div class="card">
 
-<div class="card-image">
+<img src="${imagen}">
 
-<img src="${img1}" loading="lazy">
+<div class="card-content">
 
 <div class="badge">
 ${categoria}
 </div>
-
-</div>
-
-<div class="card-content">
 
 <h3>
 ${nombre}
 </h3>
 
 <p>
-${descripcion.substring(0,95)}...
+${descripcion.substring(0,120)}...
 </p>
 
 <div class="botones">
 
 <a
-href="#"
-onclick="event.preventDefault(); irWhatsApp('${nombre}','${telefono}')"
-class="btn btn-w">
+href="https://wa.me/${telefono}"
+target="_blank"
+class="btn btn-whatsapp">
 
 WhatsApp
 
 </a>
 
 <a
-href="negocio.html?id=${encodeURIComponent(nombre)}"
-class="btn btn-v">
+href="negocio.html?id=${id}"
+class="btn btn-ver">
 
 Ver más
 
 </a>
 
 <button
-onclick='compartirNegocio("${encodeURIComponent(nombre)}","${nombre.replace(/"/g, '&quot;')}")'
+onclick='compartirNegocio("${id}","${nombre.replace(/'/g,"")}");'
 class="btn btn-share">
 
 Compartir
@@ -651,15 +307,6 @@ Compartir
 </button>
 
 </div>
-
-<a
-href="${ubicacionLink}"
-target="_blank"
-class="btn-map">
-
-📍 Cómo llegar
-
-</a>
 
 </div>
 
@@ -673,10 +320,6 @@ contenedor.innerHTML = html;
 
 }
 
-/* ========================================
-COMPARTIR
-======================================== */
-
 function compartirNegocio(id,nombre){
 
 const enlace =
@@ -687,114 +330,13 @@ const mensaje =
 
 ${nombre}
 
-Conecta con negocios y emprendedores confiables dentro de una comunidad privada.
-
 ${enlace}`;
 
-const link =
+const whatsapp =
 "https://wa.me/?text=" +
 encodeURIComponent(mensaje);
 
-window.open(link,"_blank");
-
-}
-
-/* ========================================
-WHATSAPP
-======================================== */
-
-function irWhatsApp(nombre,telefono){
-
-fetch(ANALYTICS,{
-
-method:"POST",
-
-body:JSON.stringify({
-
-tipo:"whatsapp",
-negocio:nombre
-
-})
-
-});
-
-window.open(
-"https://wa.me/" + telefono,
-"_blank"
-);
-
-}
-
-/* ========================================
-BUSCAR
-======================================== */
-
-function buscar(){
-
-const texto =
-document
-.getElementById("buscador")
-.value
-.toLowerCase();
-
-const filtrados =
-dataGlobal.filter(n => {
-
-const k =
-Object.keys(n).reduce((a,c)=>{
-
-a[c.trim()] = n[c];
-
-return a;
-
-},{});
-
-return (
-k["Nombre de tu negocio"] || ""
-)
-.toLowerCase()
-.includes(texto);
-
-});
-
-renderizar(filtrados);
-
-}
-
-/* ========================================
-FILTRAR
-======================================== */
-
-function filtrar(cat){
-
-if(cat === "Todos"){
-
-renderizar(dataGlobal);
-
-return;
-
-}
-
-const filtrados =
-dataGlobal.filter(n => {
-
-const k =
-Object.keys(n).reduce((a,c)=>{
-
-a[c.trim()] = n[c];
-
-return a;
-
-},{});
-
-return (
-k["Categoría de tu negocio"] || ""
-)
-.toLowerCase() === cat.toLowerCase();
-
-});
-
-renderizar(filtrados);
+window.open(whatsapp,"_blank");
 
 }
 
