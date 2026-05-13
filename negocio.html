@@ -30,9 +30,6 @@ header{
 padding:20px 40px;
 background:white;
 box-shadow:0 2px 15px rgba(0,0,0,.05);
-display:flex;
-justify-content:space-between;
-align-items:center;
 }
 
 header img{
@@ -57,22 +54,21 @@ width:100%;
 height:320px;
 object-fit:cover;
 border-radius:24px;
-box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
 .info{
 background:white;
 padding:40px;
 border-radius:28px;
-box-shadow:0 12px 35px rgba(0,0,0,.06);
+box-shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
 .badge{
 display:inline-block;
-background:#EAF2FF;
-color:#1657B8;
 padding:10px 18px;
 border-radius:999px;
+background:#EAF2FF;
+color:#1657B8;
 font-size:14px;
 font-weight:700;
 margin-bottom:18px;
@@ -104,67 +100,30 @@ text-decoration:none;
 font-weight:700;
 transition:.3s;
 display:inline-block;
-}
-
-.btn-whatsapp{
-background:linear-gradient(135deg,#74D67F,#56c76a);
-color:white;
-}
-
-.btn-mapa{
-background:linear-gradient(135deg,#19C2C6,#1657B8);
-color:white;
-}
-
-.btn-share{
-background:linear-gradient(135deg,#F7C531,#ffd95e);
-color:#1D2A3A;
 border:none;
 cursor:pointer;
 }
 
-.btn:hover{
-transform:translateY(-3px);
+.btn-whatsapp{
+background:#74D67F;
+color:white;
+}
+
+.btn-mapa{
+background:#1657B8;
+color:white;
+}
+
+.btn-share{
+background:#F7C531;
+color:#1D2A3A;
 }
 
 .loading{
 text-align:center;
 padding:100px 20px;
-font-size:22px;
+font-size:24px;
 font-weight:700;
-}
-
-@media(max-width:768px){
-
-header{
-padding:18px;
-}
-
-header img{
-height:55px;
-}
-
-h1{
-font-size:34px;
-}
-
-.descripcion{
-font-size:16px;
-}
-
-.info{
-padding:25px;
-}
-
-.botones{
-flex-direction:column;
-}
-
-.btn{
-width:100%;
-text-align:center;
-}
-
 }
 
 </style>
@@ -198,7 +157,7 @@ const params =
 new URLSearchParams(window.location.search);
 
 const id =
-decodeURIComponent(params.get("id") || "").trim().toLowerCase();
+decodeURIComponent(params.get("id") || "").trim();
 
 function convertirDrive(link){
 
@@ -234,10 +193,8 @@ fetch(url)
 
 const negocio = data.find(n => {
 
-cconst nombre =
-(n["Nombre de tu negocio"] || "")
-.trim()
-.toLowerCase();
+const nombre =
+(n["Nombre de tu negocio"] || "").trim();
 
 return nombre === id;
 
@@ -258,8 +215,7 @@ return;
 }
 
 const nombre =
-negocio["Nombre de tu negocio"] ||
-"Negocio";
+negocio["Nombre de tu negocio"] || "Negocio";
 
 const descripcion =
 negocio["Descripcion_final"] ||
@@ -276,7 +232,6 @@ const telefono =
 
 const mapa =
 negocio["Link de ubicación del Negocio (Link de Google Maps)"] ||
-negocio["Ubicación del Negocio (Link de Google Maps)"] ||
 "#";
 
 const img1 =
@@ -297,17 +252,14 @@ negocio["Imagen3"] || ""
 );
 
 const imagenes =
-[img1,img2,img3]
-.filter(i => i);
+[img1,img2,img3].filter(i => i);
 
 document.getElementById("contenido").innerHTML = `
 
 <div class="galeria">
 
 ${imagenes.map(img => `
-
 <img src="${img}">
-
 `).join("")}
 
 </div>
@@ -342,12 +294,12 @@ href="${mapa}"
 target="_blank"
 class="btn btn-mapa">
 
-📍 Cómo llegar
+Cómo llegar
 
 </a>
 
 <button
-onclick='compartirNegocio("${encodeURIComponent(nombre)}","${nombre.replace(/"/g, '&quot;')}")'
+onclick='compartirNegocio("${encodeURIComponent(nombre)}","${nombre.replace(/'/g,"")}");'
 class="btn btn-share">
 
 Compartir
@@ -372,15 +324,13 @@ const mensaje =
 
 ${nombre}
 
-Conecta con negocios y emprendedores confiables dentro de una comunidad privada.
-
 ${enlace}`;
 
-const link =
+const whatsapp =
 "https://wa.me/?text=" +
 encodeURIComponent(mensaje);
 
-window.open(link,"_blank");
+window.open(whatsapp,"_blank");
 
 }
 
