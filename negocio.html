@@ -347,7 +347,7 @@ class="btn btn-mapa">
 </a>
 
 <button
-onclick="compartirNegocio('${encodeURIComponent(nombre)}','${nombre}')"
+onclick='compartirNegocio("${encodeURIComponent(nombre)}","${nombre.replace(/"/g, '&quot;')}")'
 class="btn btn-share">
 
 Compartir
