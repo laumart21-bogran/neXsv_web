@@ -1263,17 +1263,18 @@ COMPARTIR
 
 function compartirNegocio(nombre){
 
-const texto =
-`Descubre este negocio recomendado dentro de la comunidad privada NeXsv
+const mensaje =
+`Descubre este negocio recomendado dentro de la comunidad privada NeXsv:
 
-Negocio: ${nombre}
+${nombre}
 
 Conecta con negocios confiables dentro de la comunidad.
 
-${URL_COMPARTIR}`;
+https://goo.su/myvvG`;
 
 const link =
-`https://wa.me/?text=${encodeURIComponent(texto)}`;
+"https://wa.me/?text=" +
+encodeURIComponent(mensaje);
 
 window.open(link,"_blank");
 
