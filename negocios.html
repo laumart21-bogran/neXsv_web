@@ -1171,19 +1171,21 @@ WhatsApp
 
 </a>
 
-<button
-onclick="event.stopPropagation(); abrirModal(DATA_MODAL[${index}])"
+<a
+href="negocio.html?id=${nombre.toLowerCase().replace(/\s+/g,'-')}"
 class="btn btn-v">
 
 Ver más
 
-</button>
+</a>
 
 <button
-onclick="compartirNegocio('${nombre}')"
+onclick="compartirNegocio('${nombre.toLowerCase().replace(/\s+/g,'-')}','${nombre}')"
 class="btn btn-share">
 
 Compartir
+
+</button>
 
 </button>
 
@@ -1261,16 +1263,19 @@ document.getElementById("m_share")
 COMPARTIR
 ======================================== */
 
-function compartirNegocio(nombre){
+function compartirNegocio(id,nombre){
+
+const enlace =
+`https://laumart21-bogran.github.io/neXsv_web/negocio.html?id=${id}`;
 
 const mensaje =
-`Descubre este negocio recomendado dentro de la comunidad privada NeXsv:
+`Descubre este negocio recomendado dentro de NeXsv.
 
 ${nombre}
 
-Conecta con negocios confiables dentro de la comunidad.
+Conecta con negocios y emprendedores confiables dentro de una comunidad privada.
 
-https://goo.su/myvvG`;
+${enlace}`;
 
 const link =
 "https://wa.me/?text=" +
