@@ -387,6 +387,7 @@ BOTONES
 display:flex;
 gap:12px;
 margin-top:22px;
+flex-wrap:wrap;
 }
 
 .btn{
@@ -420,10 +421,6 @@ var(--success),
 color:white;
 }
 
-.btn-w:hover{
-transform:translateY(-3px);
-}
-
 .btn-v{
 background:linear-gradient(
 135deg,
@@ -434,7 +431,19 @@ var(--primary)
 color:white;
 }
 
-.btn-v:hover{
+/* NUEVO BOTÓN SHARE */
+
+.btn-share{
+background:linear-gradient(
+135deg,
+#F7C531,
+#ffd95e
+);
+
+color:#1D2A3A;
+}
+
+.btn:hover{
 transform:translateY(-3px);
 }
 
@@ -566,6 +575,7 @@ color:#5d6677;
 display:flex;
 gap:12px;
 margin-top:24px;
+flex-wrap:wrap;
 }
 
 .close-btn{
@@ -624,7 +634,7 @@ font-weight:700;
 }
 
 /* ========================================
-RESPONSIVE MEJORADO
+RESPONSIVE
 ======================================== */
 
 @media(max-width:900px){
@@ -778,10 +788,6 @@ font-size:13px;
 
 }
 
-/* ========================================
-MOBILE EXTRA SMALL
-======================================== */
-
 @media(max-width:480px){
 
 .hero h1{
@@ -872,8 +878,6 @@ Conecta con emprendedores, servicios y marcas que forman parte de la red privada
 
 <section class="main">
 
-<!-- BUSCADOR -->
-
 <div class="search-box">
 
 <input
@@ -883,8 +887,6 @@ placeholder="Buscar negocio..."
 onkeyup="buscar()">
 
 </div>
-
-<!-- CATEGORÍAS -->
 
 <div class="categorias">
 
@@ -909,8 +911,6 @@ Legal
 </button>
 
 </div>
-
-<!-- GRID -->
 
 <div class="grid" id="contenedor"></div>
 
@@ -945,6 +945,15 @@ target="_blank"
 class="btn btn-v">
 
 📍 Cómo llegar
+
+</a>
+
+<a
+id="m_share"
+href="#"
+class="btn btn-share">
+
+📤 Compartir
 
 </a>
 
@@ -983,6 +992,9 @@ const url =
 "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
 const ANALYTICS = url;
+
+const URL_COMPARTIR =
+"https://goo.su/myvvG";
 
 let dataGlobal = [];
 
@@ -1167,6 +1179,14 @@ Ver más
 
 </button>
 
+<button
+onclick="compartirNegocio('${nombre}')"
+class="btn btn-share">
+
+Compartir
+
+</button>
+
 </div>
 
 <a
@@ -1231,6 +1251,25 @@ document.getElementById("m_whatsapp")
 document.getElementById("m_mapa")
 .href =
 data.mapa || "#";
+
+document.getElementById("m_share")
+.onclick = () => compartirNegocio(data.nombre);
+
+}
+
+/* ========================================
+COMPARTIR
+======================================== */
+
+function compartirNegocio(nombre){
+
+const texto =
+`Te comparto este negocio de la comunidad NeXsv: ${nombre} ${URL_COMPARTIR}`;
+
+const link =
+`https://wa.me/?text=${encodeURIComponent(texto)}`;
+
+window.open(link,"_blank");
 
 }
 
