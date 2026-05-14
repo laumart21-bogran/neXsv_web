@@ -208,7 +208,8 @@ return texto
 .replace(/[\u0300-\u036f]/g, "")
 .replace(/[^\w\s-]/g, "")
 .replace(/\s+/g, "-")
-.replace(/-+/g, "-");
+.replace(/-+/g, "-")
+.replace(/^-+|-+$/g, "");
 
 }
 
@@ -272,8 +273,17 @@ BUSCAR NEGOCIO
 
 const negocio = data.find(n => {
 
+const k =
+Object.keys(n).reduce((a,c)=>{
+
+a[c.trim()] = n[c];
+
+return a;
+
+},{});
+
 const nombreOriginal =
-(n["Nombre de tu negocio"] || "");
+k["Nombre de tu negocio"] || "";
 
 const slug =
 crearSlug(nombreOriginal);
@@ -301,46 +311,60 @@ return;
 }
 
 /* ========================================
+NORMALIZAR KEYS
+======================================== */
+
+const k =
+Object.keys(negocio).reduce((a,c)=>{
+
+a[c.trim()] = negocio[c];
+
+return a;
+
+},{});
+
+/* ========================================
 DATOS
 ======================================== */
 
 const nombre =
-negocio["Nombre de tu negocio"] ||
+k["Nombre de tu negocio"] ||
 "Negocio";
 
 const descripcion =
-negocio["Descripcion_final"] ||
-negocio["Describe tu negocio"] ||
+k["Descripcion_final"] ||
+k["Describe tu negocio"] ||
 "";
 
 const categoria =
-negocio["Categoría de tu negocio"] ||
+k["Categoría de tu negocio"] ||
 "Comunidad";
 
 const telefono =
-(negocio["WhatsApp del negocio"] || "")
-.replace("+","");
+(k["WhatsApp del negocio"] || "")
+.replace("+","")
+.replace(/\s/g,"");
 
 const mapa =
-negocio["Link de ubicación del Negocio (Link de Google Maps)"] ||
-negocio["Ubicación del Negocio (Link de Google Maps)"] ||
+k["Link de ubicación del Negocio (Link de Google Maps)"] ||
+k["Ubicación del Negocio (Link de Google Maps)"] ||
 "#";
 
 const img1 =
 convertirDrive(
-negocio["Link de imagen resp"] ||
-negocio["Imagen_final"] ||
+k["Link de imagen resp"] ||
+k["Imagen_final"] ||
 ""
 );
 
 const img2 =
 convertirDrive(
-negocio["Imagen2"] || ""
+k["Imagen2"] || ""
 );
 
 const img3 =
 convertirDrive(
-negocio["Imagen3"] || ""
+k["Imagen3"] || ""
 );
 
 const imagenes =
@@ -398,7 +422,7 @@ class="btn btn-mapa">
 </a>
 
 <button
-onclick='compartirNegocio("${encodeURIComponent(nombre)}","${nombre.replace(/"/g, '&quot;')}")'
+onclick='compartirNegocio("${encodeURIComponent(crearSlug(nombre))}","${nombre.replace(/"/g, '&quot;')}")'
 class="btn btn-share">
 
 Compartir
@@ -407,6 +431,20 @@ Compartir
 
 </div>
 
+</div>
+
+`;
+
+})
+
+.catch(error => {
+
+console.error(error);
+
+document.getElementById("contenido").innerHTML = `
+
+<div class="loading">
+Error cargando negocio
 </div>
 
 `;
@@ -440,6 +478,6 @@ window.open(link,"_blank");
 }
 
 </script>
-
+  
 </body>
 </html>
