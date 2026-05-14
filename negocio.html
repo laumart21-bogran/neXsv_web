@@ -194,11 +194,29 @@ Cargando negocio...
 const url =
 "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
+function crearSlug(texto){
+
+return texto
+.toString()
+.trim()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/[^\w\s-]/g, "")
+.replace(/\s+/g, "-")
+.replace(/-+/g, "-");
+
+}
+
 const params =
 new URLSearchParams(window.location.search);
 
 const id =
-decodeURIComponent(params.get("id") || "").trim();
+crearSlug(
+decodeURIComponent(
+params.get("id") || ""
+)
+);
 
 function convertirDrive(link){
 
@@ -237,12 +255,8 @@ const negocio = data.find(n => {
 const nombreOriginal =
 (n["Nombre de tu negocio"] || "");
 
-const slug = nombreOriginal
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.replace(/[^a-z0-9\s-]/g, "")
-.replace(/\s+/g, "-");
+const slug =
+crearSlug(nombreOriginal);
 
 return slug === id;
 
