@@ -617,15 +617,16 @@ return texto
 FETCH
 ======================================== */
 
+```javascript
 fetch(url)
 
 .then(res => res.json())
 
 .then(data => {
 
-dataGlobal = data;
+dataGlobal = data.negocios || [];
 
-renderizar(data);
+renderizar(dataGlobal);
 
 })
 
@@ -649,6 +650,7 @@ Error cargando negocios
 `;
 
 });
+```
 
 /* ========================================
 DRIVE
