@@ -234,6 +234,31 @@ fetch(url)
 
 const negocio = data.find(n => {
 
+const nombreOriginal =
+(n["Nombre de tu negocio"] || "");
+
+const slug = nombreOriginal
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/[^a-z0-9\s-]/g, "")
+.replace(/\s+/g, "-");
+
+return slug === id;
+
+});
+
+const slug = nombreOriginal
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/[^a-z0-9\s-]/g, "")
+.replace(/\s+/g, "-");
+
+return slug === id;
+
+});
+
 const nombre =
 (n["Nombre de tu negocio"] || "")
 .trim();
