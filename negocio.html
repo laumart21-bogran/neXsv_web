@@ -189,6 +189,7 @@ Cargando negocio...
 
 </div>
 
+```html
 <script>
 
 const url =
@@ -268,10 +269,18 @@ fetch(url)
 .then(data => {
 
 /* ========================================
+REVIEWS
+======================================== */
+
+const reviews =
+data.reviews || [];
+
+/* ========================================
 BUSCAR NEGOCIO
 ======================================== */
 
-const negocio = data.find(n => {
+const negocio =
+(data.negocios || []).find(n => {
 
 const k =
 Object.keys(n).reduce((a,c)=>{
@@ -372,6 +381,68 @@ const imagenes =
 .filter(i => i);
 
 /* ========================================
+REVIEWS NEGOCIO
+======================================== */
+
+const reviewsNegocio =
+reviews.filter(r => {
+
+const slugReview =
+crearSlug(r.slug || "");
+
+return slugReview === id;
+
+});
+
+const totalReviews =
+reviewsNegocio.length;
+
+const promedio = totalReviews
+? (
+reviewsNegocio.reduce((acc,r)=>
+acc + Number(r.estrellas || 0)
+,0) / totalReviews
+).toFixed(1)
+: "0.0";
+
+/* ========================================
+HTML REVIEWS
+======================================== */
+
+const htmlReviews =
+reviewsNegocio.map(r => `
+
+<div style="
+padding:18px;
+background:#F8FAFF;
+border-radius:18px;
+margin-top:16px;
+">
+
+<div style="
+font-weight:800;
+margin-bottom:8px;
+color:#1657B8;
+">
+
+⭐ ${r.estrellas} — ${r.nombre}
+
+</div>
+
+<div style="
+line-height:1.7;
+color:#5d6677;
+">
+
+${r.comentario}
+
+</div>
+
+</div>
+
+`).join("");
+
+/* ========================================
 RENDER
 ======================================== */
 
@@ -401,6 +472,35 @@ ${nombre}
 ${descripcion}
 </p>
 
+<div style="
+margin-bottom:30px;
+padding:24px;
+background:#F8FAFF;
+border-radius:24px;
+">
+
+<div style="
+font-size:34px;
+font-weight:800;
+color:#1657B8;
+margin-bottom:10px;
+">
+
+⭐ ${promedio}
+
+</div>
+
+<div style="
+color:#5d6677;
+font-weight:700;
+">
+
+${totalReviews} reviews
+
+</div>
+
+</div>
+
 <div class="botones">
 
 <a
@@ -428,6 +528,36 @@ class="btn btn-share">
 Compartir
 
 </button>
+
+</div>
+
+<div style="margin-top:50px;">
+
+<h2 style="
+font-size:28px;
+margin-bottom:20px;
+color:#1657B8;
+">
+
+Reviews
+
+</h2>
+
+${htmlReviews || `
+
+<div style="
+padding:20px;
+background:#F8FAFF;
+border-radius:18px;
+color:#5d6677;
+font-weight:600;
+">
+
+Este negocio aún no tiene reviews.
+
+</div>
+
+`}
 
 </div>
 
@@ -478,6 +608,7 @@ window.open(link,"_blank");
 }
 
 </script>
+```
   
 </body>
 </html>
