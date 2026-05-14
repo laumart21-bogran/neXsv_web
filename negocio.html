@@ -190,6 +190,7 @@ Cargando negocio...
 </div>
 
 ```html
+```html id="q8v4kj"
 <script>
 
 const url =
@@ -561,6 +562,108 @@ Este negocio aún no tiene reviews.
 
 </div>
 
+<div style="
+margin-top:40px;
+padding:30px;
+background:#F8FAFF;
+border-radius:24px;
+">
+
+<h2 style="
+font-size:28px;
+margin-bottom:25px;
+color:#1657B8;
+">
+
+Deja tu review
+
+</h2>
+
+<input
+type="text"
+id="reviewNombre"
+placeholder="Tu nombre"
+style="
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+margin-bottom:18px;
+font-family:Inter,sans-serif;
+font-size:15px;
+background:white;
+">
+
+<select
+id="reviewEstrellas"
+style="
+width:100%;
+padding:16px;
+border:none;
+border-radius:16px;
+margin-bottom:18px;
+font-family:Inter,sans-serif;
+font-size:15px;
+background:white;
+">
+
+<option value="5">⭐⭐⭐⭐⭐ Excelente</option>
+<option value="4">⭐⭐⭐⭐ Muy bueno</option>
+<option value="3">⭐⭐⭐ Bueno</option>
+<option value="2">⭐⭐ Regular</option>
+<option value="1">⭐ Malo</option>
+
+</select>
+
+<textarea
+id="reviewComentario"
+placeholder="Comparte tu experiencia..."
+style="
+width:100%;
+height:140px;
+padding:16px;
+border:none;
+border-radius:16px;
+margin-bottom:20px;
+font-family:Inter,sans-serif;
+font-size:15px;
+resize:none;
+background:white;
+"></textarea>
+
+<button
+onclick="enviarReview('${id}')"
+style="
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+font-weight:800;
+font-size:16px;
+cursor:pointer;
+background:linear-gradient(
+135deg,
+#19C2C6,
+#1657B8
+);
+color:white;
+">
+
+Enviar review
+
+</button>
+
+<div
+id="mensajeReview"
+style="
+margin-top:18px;
+font-weight:700;
+color:#1657B8;
+text-align:center;
+"></div>
+
+</div>
+
 </div>
 
 `;
@@ -607,8 +710,89 @@ window.open(link,"_blank");
 
 }
 
+/* ========================================
+ENVIAR REVIEW
+======================================== */
+
+function enviarReview(slug){
+
+const nombre =
+document
+.getElementById("reviewNombre")
+.value
+.trim();
+
+const estrellas =
+document
+.getElementById("reviewEstrellas")
+.value;
+
+const comentario =
+document
+.getElementById("reviewComentario")
+.value
+.trim();
+
+const mensaje =
+document.getElementById("mensajeReview");
+
+if(!nombre || !comentario){
+
+mensaje.innerHTML =
+"Completa todos los campos";
+
+return;
+
+}
+
+fetch(url,{
+
+method:"POST",
+
+body:JSON.stringify({
+
+slug:slug,
+nombre:nombre,
+estrellas:estrellas,
+comentario:comentario
+
+})
+
+})
+
+.then(res => res.json())
+
+.then(data => {
+
+mensaje.innerHTML =
+"✅ Review enviada correctamente";
+
+document.getElementById("reviewNombre").value = "";
+document.getElementById("reviewComentario").value = "";
+document.getElementById("reviewEstrellas").value = "5";
+
+setTimeout(()=>{
+
+location.reload();
+
+},1200);
+
+})
+
+.catch(error => {
+
+console.error(error);
+
+mensaje.innerHTML =
+"Error enviando review";
+
+});
+
+}
+
 </script>
 ```
+
   
 </body>
 </html>
