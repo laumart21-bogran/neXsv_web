@@ -762,9 +762,19 @@ Términos y condiciones
 const url =
 "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
-const ANALYTICS = url;
+function crearSlug(texto){
 
-let dataGlobal = [];
+return texto
+.toString()
+.trim()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.replace(/[^\w\s-]/g, "")
+.replace(/\s+/g, "-")
+.replace(/-+/g, "-");
+
+}
 
 /* ========================================
 FETCH
