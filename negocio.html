@@ -194,6 +194,10 @@ Cargando negocio...
 const url =
 "https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 
+/* ========================================
+SLUG
+======================================== */
+
 function crearSlug(texto){
 
 return texto
@@ -208,6 +212,10 @@ return texto
 
 }
 
+/* ========================================
+PARAMETRO URL
+======================================== */
+
 const params =
 new URLSearchParams(window.location.search);
 
@@ -217,6 +225,10 @@ decodeURIComponent(
 params.get("id") || ""
 )
 );
+
+/* ========================================
+DRIVE
+======================================== */
 
 function convertirDrive(link){
 
@@ -244,11 +256,19 @@ return link;
 
 }
 
+/* ========================================
+FETCH
+======================================== */
+
 fetch(url)
 
 .then(res => res.json())
 
 .then(data => {
+
+/* ========================================
+BUSCAR NEGOCIO
+======================================== */
 
 const negocio = data.find(n => {
 
@@ -262,24 +282,9 @@ return slug === id;
 
 });
 
-const slug = nombreOriginal
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.replace(/[^a-z0-9\s-]/g, "")
-.replace(/\s+/g, "-");
-
-return slug === id;
-
-});
-
-const nombre =
-(n["Nombre de tu negocio"] || "")
-.trim();
-
-return nombre === id;
-
-});
+/* ========================================
+NO ENCONTRADO
+======================================== */
 
 if(!negocio){
 
@@ -294,6 +299,10 @@ Negocio no encontrado
 return;
 
 }
+
+/* ========================================
+DATOS
+======================================== */
 
 const nombre =
 negocio["Nombre de tu negocio"] ||
@@ -337,6 +346,10 @@ negocio["Imagen3"] || ""
 const imagenes =
 [img1,img2,img3]
 .filter(i => i);
+
+/* ========================================
+RENDER
+======================================== */
 
 document.getElementById("contenido").innerHTML = `
 
@@ -399,6 +412,10 @@ Compartir
 `;
 
 });
+
+/* ========================================
+COMPARTIR
+======================================== */
 
 function compartirNegocio(id,nombre){
 
