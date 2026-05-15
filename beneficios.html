@@ -25,6 +25,13 @@ margin:0;
 padding:0;
 box-sizing:border-box;
 scroll-behavior:smooth;
+min-width:0;
+}
+
+html,
+body{
+overflow-x:hidden;
+max-width:100%;
 }
 
 :root{
@@ -46,6 +53,11 @@ body{
 font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
+
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+
+overflow-x:hidden;
 
 padding-top:80px;
 }
