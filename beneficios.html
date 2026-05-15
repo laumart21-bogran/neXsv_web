@@ -8,6 +8,7 @@
 <title>Beneficios - NeXsv</title>
 
 <!-- TIPOGRAFÍA -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -45,29 +46,8 @@ body{
 font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
-}
 
-/* ========================================
-HEADER GLOBAL
-======================================== */
-
-.top-blur{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:90px;
-
-background:rgba(255,255,255,.72);
-
-backdrop-filter:blur(12px);
--webkit-backdrop-filter:blur(12px);
-
-border-bottom:1px solid rgba(255,255,255,.5);
-
-z-index:998;
-
-pointer-events:none;
+padding-top:80px;
 }
 
 /* ========================================
@@ -75,7 +55,6 @@ HERO
 ======================================== */
 
 .hero{
-margin-top:76px;
 
 width:100%;
 min-height:48vh;
@@ -574,6 +553,10 @@ font-size:36px;
 
 @media(max-width:480px){
 
+body{
+padding-top:72px;
+}
+
 .hero{
 padding:30px 18px;
 min-height:46vh;
@@ -623,13 +606,12 @@ grid-template-columns:1fr;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- HEADER GLOBAL -->
-
-<div class="top-blur"></div>
+<!-- HEADER -->
 
 <script src="components/header.js"></script>
 
@@ -852,6 +834,7 @@ Quiero formar parte de NeXsv
 <div class="footer-line"></div>
 
 © 2026 NeXsv |
+
 <a href="terminos.html">
 Términos y condiciones
 </a>
