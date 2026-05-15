@@ -46,6 +46,7 @@ font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
 }
+
 /* ========================================
 HEADER GLOBAL
 ======================================== */
@@ -67,17 +68,6 @@ border-bottom:1px solid rgba(255,255,255,.5);
 z-index:998;
 
 pointer-events:none;
-}
-<div class="top-blur"></div>
-
-<script src="components/header.js"></script>
-font-size:28px;
-background:none;
-border:none;
-
-cursor:pointer;
-
-color:#1657B8;
 }
 
 /* ========================================
@@ -550,49 +540,6 @@ RESPONSIVE
 
 @media(max-width:950px){
 
-.menu-toggle{
-display:block;
-z-index:10001;
-}
-
-.nex-nav{
-position:fixed;
-
-top:0;
-right:-100%;
-
-width:280px;
-height:100vh;
-
-background:white;
-
-flex-direction:column;
-align-items:flex-start;
-justify-content:flex-start;
-
-padding:
-90px 30px
-40px;
-
-gap:22px;
-
-transition:.4s ease;
-
-box-shadow:
--10px 0 30px rgba(0,0,0,.08);
-
-z-index:10000;
-}
-
-.nex-nav.active{
-right:0;
-}
-
-.nex-btn{
-width:100%;
-text-align:center;
-}
-
 .hero h1{
 font-size:42px;
 }
@@ -626,14 +573,6 @@ font-size:36px;
 }
 
 @media(max-width:480px){
-
-.nex-header{
-padding:12px 16px;
-}
-
-.logo-wrap img{
-height:46px;
-}
 
 .hero{
 padding:30px 18px;
@@ -688,52 +627,11 @@ grid-template-columns:1fr;
 
 <body>
 
-<!-- HEADER -->
+<!-- HEADER GLOBAL -->
 
-<header class="nex-header">
+<div class="top-blur"></div>
 
-<a href="index.html" class="logo-wrap">
-<img src="logo.png" alt="NeXsv">
-</a>
-
-<button class="menu-toggle" onclick="toggleMenu()">
-☰
-</button>
-
-<nav class="nex-nav" id="mobileMenu">
-
-<a href="index.html">
-Inicio
-</a>
-
-<a href="como.html">
-Cómo funciona
-</a>
-
-<a href="beneficios.html">
-Beneficios
-</a>
-
-<a href="negocios.html">
-Negocios
-</a>
-
-<a href="blog.html">
-Blog
-</a>
-
-<a
-class="nex-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-
-Solicitar acceso
-
-</a>
-
-</nav>
-
-</header>
+<script src="components/header.js"></script>
 
 <!-- HERO -->
 
