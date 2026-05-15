@@ -70,8 +70,8 @@ BOTÓN
 .nex-btn{
 background:linear-gradient(
 135deg,
-#4CAF50,
-#43a047
+#F7C531,
+#f0b400
 );
 
 color:white !important;
