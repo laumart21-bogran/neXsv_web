@@ -16,7 +16,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:14px 28px;
+padding:12px 22px;
 
 background:rgba(255,255,255,.88);
 
@@ -36,18 +36,18 @@ LOGO
 ======================================== */
 
 .nex-logo img{
-height:56px;
+height:50px;
 display:block;
 }
 
 /* ========================================
-NAV
+NAV DESKTOP
 ======================================== */
 
 .nex-nav{
 display:flex;
 align-items:center;
-gap:22px;
+gap:18px;
 }
 
 .nex-nav a{
@@ -71,12 +71,12 @@ BOTÓN
 background:linear-gradient(
 135deg,
 #F7C531,
-#f0b400
+#ffcf33
 );
 
 color:white !important;
 
-padding:12px 22px;
+padding:11px 18px;
 
 border-radius:14px;
 
@@ -84,7 +84,7 @@ text-decoration:none;
 font-weight:700;
 
 box-shadow:
-0 8px 20px rgba(76,175,80,.25);
+0 8px 20px rgba(247,197,49,.25);
 
 transition:.3s;
 }
@@ -94,7 +94,7 @@ transform:translateY(-2px);
 }
 
 /* ========================================
-MENU MOBILE BUTTON
+BOTÓN MOBILE
 ======================================== */
 
 .menu-toggle{
@@ -116,7 +116,11 @@ RESPONSIVE
 @media(max-width:950px){
 
 .nex-header{
-padding:14px 20px;
+padding:12px 18px;
+}
+
+.nex-logo img{
+height:44px;
 }
 
 .menu-toggle{
@@ -124,31 +128,33 @@ display:block;
 z-index:10001;
 }
 
+/* MENU MOBILE */
+
 .nex-nav{
 position:fixed;
 
-top:0;
+top:72px;
 right:-100%;
 
-width:280px;
-height:100vh;
+width:260px;
+height:auto;
 
 background:white;
 
 flex-direction:column;
 align-items:flex-start;
-justify-content:flex-start;
 
-padding:
-100px 30px
-40px;
+padding:24px;
 
-gap:24px;
+gap:18px;
 
-transition:.4s ease;
+transition:.35s ease;
 
 box-shadow:
 -10px 0 30px rgba(0,0,0,.08);
+
+border-radius:
+0 0 0 24px;
 
 z-index:10000;
 }
@@ -158,14 +164,15 @@ right:0;
 }
 
 .nex-nav a{
-font-size:17px;
+font-size:16px;
 margin:0;
 }
 
 .nex-btn{
 width:100%;
 text-align:center;
-padding:15px 20px;
+padding:14px 18px;
+margin-top:5px;
 }
 
 }
@@ -177,15 +184,31 @@ MOBILE SMALL
 @media(max-width:480px){
 
 .nex-header{
-padding:12px 16px;
+padding:10px 16px;
 }
 
 .nex-logo img{
-height:48px;
+height:40px;
+}
+
+.menu-toggle{
+font-size:28px;
 }
 
 .nex-nav{
-width:100%;
+width:240px;
+top:68px;
+padding:22px;
+gap:16px;
+}
+
+.nex-nav a{
+font-size:15px;
+}
+
+.nex-btn{
+font-size:15px;
+padding:13px 16px;
 }
 
 }
@@ -194,46 +217,52 @@ width:100%;
 
 <header class="nex-header">
 
-  <!-- LOGO -->
-  <a href="index.html" class="nex-logo">
-    <img src="logo.png" alt="NeXsv">
-  </a>
+<!-- LOGO -->
 
-  <!-- BOTÓN MOBILE -->
-  <button class="menu-toggle" onclick="toggleMenu()">
-    ☰
-  </button>
+<a href="index.html" class="nex-logo">
+<img src="logo.png" alt="NeXsv">
+</a>
 
-  <!-- NAV -->
-  <nav class="nex-nav" id="mobileMenu">
+<!-- BOTÓN MOBILE -->
 
-    <a href="index.html">Inicio</a>
+<button class="menu-toggle" onclick="toggleMenu()">
+☰
+</button>
 
-    <a href="como.html">
-      Cómo funciona
-    </a>
+<!-- NAV -->
 
-    <a href="beneficios.html">
-      Beneficios
-    </a>
+<nav class="nex-nav" id="mobileMenu">
 
-    <a href="negocios.html">
-      Negocios
-    </a>
+<a href="index.html">
+Inicio
+</a>
 
-    <a href="blog.html">
-      Blog
-    </a>
+<a href="como.html">
+Cómo funciona
+</a>
 
-    <a
-      href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-      target="_blank"
-      class="nex-btn"
-    >
-      Solicitar acceso →
-    </a>
+<a href="beneficios.html">
+Beneficios
+</a>
 
-  </nav>
+<a href="negocios.html">
+Negocios
+</a>
+
+<a href="blog.html">
+Blog
+</a>
+
+<a
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank"
+class="nex-btn">
+
+Solicitar acceso →
+
+</a>
+
+</nav>
 
 </header>
 
@@ -241,10 +270,10 @@ width:100%;
 
 function toggleMenu(){
 
-  document
-    .getElementById("mobileMenu")
-    .classList
-    .toggle("active");
+document
+.getElementById("mobileMenu")
+.classList
+.toggle("active");
 
 }
 
