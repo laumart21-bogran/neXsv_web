@@ -44,11 +44,6 @@ max-width:100%;
 --white:#ffffff;
 }
 
-html,body{
-overflow-x:hidden;
-max-width:100%;
-}
-
 body{
 font-family:'Inter',sans-serif;
 background:var(--bg);
@@ -58,8 +53,29 @@ text-rendering:optimizeLegibility;
 -webkit-font-smoothing:antialiased;
 
 overflow-x:hidden;
+}
 
-padding-top:80px;
+/* ========================================
+HEADER BLUR
+======================================== */
+
+.top-blur{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:90px;
+
+background:rgba(255,255,255,.72);
+
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:998;
+
+pointer-events:none;
 }
 
 /* ========================================
@@ -84,7 +100,9 @@ justify-content:center;
 
 text-align:center;
 
-padding:40px;
+padding:
+140px 40px
+70px;
 
 position:relative;
 overflow:hidden;
@@ -565,12 +583,11 @@ font-size:36px;
 
 @media(max-width:480px){
 
-body{
-padding-top:72px;
-}
-
 .hero{
-padding:30px 18px;
+padding:
+120px 18px
+60px;
+
 min-height:46vh;
 }
 
@@ -622,6 +639,8 @@ grid-template-columns:1fr;
 </head>
 
 <body>
+
+<div class="top-blur"></div>
 
 <!-- HEADER -->
 
