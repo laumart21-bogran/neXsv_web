@@ -1,0 +1,109 @@
+/* ========================================
+GLOBAL LAYOUT SYSTEM
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+min-width:0;
+}
+
+html,
+body{
+overflow-x:hidden;
+max-width:100%;
+}
+
+/* ========================================
+BODY
+======================================== */
+
+body{
+
+font-family:'Inter',sans-serif;
+
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+
+background:#F5F7FB;
+color:#1D2A3A;
+
+padding-top:72px;
+
+overflow-x:hidden;
+}
+
+/* ========================================
+GLOBAL CONTAINER
+======================================== */
+
+.nex-container{
+width:100%;
+max-width:1300px;
+margin:auto;
+padding-left:20px;
+padding-right:20px;
+}
+
+/* ========================================
+GLOBAL HERO
+======================================== */
+
+.nex-hero{
+
+position:relative;
+
+width:100%;
+
+padding:
+90px 20px
+60px;
+
+overflow:hidden;
+}
+
+.nex-hero-content{
+position:relative;
+z-index:2;
+
+max-width:850px;
+margin:auto;
+
+text-align:center;
+}
+
+/* ========================================
+GLOBAL SECTION
+======================================== */
+
+.nex-section{
+padding:90px 20px;
+}
+
+/* ========================================
+MOBILE
+======================================== */
+
+@media(max-width:768px){
+
+body{
+padding-top:72px;
+}
+
+.nex-hero{
+padding:
+72px 18px
+42px;
+}
+
+.nex-section{
+padding:70px 16px;
+}
+
+.nex-container{
+padding-left:16px;
+padding-right:16px;
+}
+
+}
