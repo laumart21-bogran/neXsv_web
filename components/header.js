@@ -3,20 +3,32 @@ document.write(`
 <style>
 
 /* ========================================
-HEADER GLOBAL
+RESET AISLADO HEADER
+======================================== */
+
+.nex-header,
+.nex-header *{
+box-sizing:border-box;
+}
+
+/* ========================================
+HEADER FIJO GLOBAL
 ======================================== */
 
 .nex-header{
+
 position:fixed;
 top:0;
 left:0;
+
 width:100%;
+height:72px;
 
 display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:10px 18px;
+padding:0 18px;
 
 background:rgba(255,255,255,.88);
 
@@ -25,19 +37,27 @@ backdrop-filter:blur(14px);
 
 border-bottom:1px solid rgba(255,255,255,.5);
 
-z-index:9999;
+z-index:999999;
 
 box-shadow:
 0 4px 20px rgba(0,0,0,.04);
+
 }
 
 /* ========================================
 LOGO
 ======================================== */
 
+.nex-logo{
+display:flex;
+align-items:center;
+text-decoration:none;
+}
+
 .nex-logo img{
-height:44px;
+height:42px;
 display:block;
+object-fit:contain;
 }
 
 /* ========================================
@@ -51,12 +71,17 @@ gap:18px;
 }
 
 .nex-nav a{
-color:#2f4ea2;
+
 text-decoration:none;
-font-weight:600;
+
+font-family:'Inter',sans-serif;
+
 font-size:15px;
+font-weight:600;
+
+color:#2f4ea2;
+
 transition:.3s;
-white-space:nowrap;
 }
 
 .nex-nav a:hover{
@@ -68,6 +93,7 @@ BOTÓN
 ======================================== */
 
 .nex-btn{
+
 background:linear-gradient(
 135deg,
 #F7C531,
@@ -80,10 +106,8 @@ padding:11px 18px;
 
 border-radius:14px;
 
-text-decoration:none;
-font-weight:700;
-
 font-size:14px;
+font-weight:700;
 
 box-shadow:
 0 8px 20px rgba(247,197,49,.25);
@@ -96,15 +120,17 @@ transform:translateY(-2px);
 }
 
 /* ========================================
-BOTÓN MOBILE
+BOTÓN MENU
 ======================================== */
 
 .menu-toggle{
+
 display:none;
 
-font-size:26px;
 background:none;
 border:none;
+
+font-size:24px;
 
 cursor:pointer;
 
@@ -112,47 +138,43 @@ color:#2f4ea2;
 }
 
 /* ========================================
-RESPONSIVE
+MOBILE
 ======================================== */
 
 @media(max-width:950px){
 
-.nex-header{
-padding:10px 16px;
-}
-
 .menu-toggle{
 display:block;
-z-index:10001;
 }
 
 .nex-nav{
+
 position:fixed;
 
-top:62px;
+top:72px;
 right:-100%;
 
-width:230px;
-height:auto;
+width:220px;
 
-background:white;
-
+display:flex;
 flex-direction:column;
 align-items:flex-start;
 
-padding:22px;
+padding:20px;
 
-gap:16px;
+gap:14px;
 
-transition:.35s ease;
+background:white;
+
+border-radius:
+0 0 0 20px;
 
 box-shadow:
 -10px 0 30px rgba(0,0,0,.08);
 
-border-radius:
-0 0 0 22px;
+transition:.35s ease;
 
-z-index:10000;
+z-index:999998;
 }
 
 .nex-nav.active{
@@ -160,50 +182,24 @@ right:0;
 }
 
 .nex-nav a{
-font-size:15px;
-margin:0;
+font-size:14px;
 }
 
 .nex-btn{
 width:100%;
 text-align:center;
-padding:13px 14px;
-font-size:14px;
-margin-top:4px;
+padding:12px;
+font-size:13px;
 }
 
 }
 
 /* ========================================
-MOBILE SMALL
+BODY OFFSET GLOBAL
 ======================================== */
 
-@media(max-width:480px){
-
-.nex-logo img{
-height:40px;
-}
-
-.menu-toggle{
-font-size:24px;
-}
-
-.nex-nav{
-width:220px;
-top:60px;
-padding:20px;
-gap:14px;
-}
-
-.nex-nav a{
-font-size:14px;
-}
-
-.nex-btn{
-font-size:13px;
-padding:12px;
-}
-
+body{
+padding-top:72px !important;
 }
 
 </style>
@@ -211,11 +207,17 @@ padding:12px;
 <header class="nex-header">
 
 <a href="index.html" class="nex-logo">
+
 <img src="logo.png" alt="NeXsv">
+
 </a>
 
-<button class="menu-toggle" onclick="toggleMenu()">
+<button
+class="menu-toggle"
+onclick="toggleMenu()">
+
 ☰
+
 </button>
 
 <nav class="nex-nav" id="mobileMenu">
