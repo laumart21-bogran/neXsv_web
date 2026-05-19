@@ -13,6 +13,25 @@ html,
 body{
 overflow-x:hidden;
 max-width:100%;
+
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+}
+
+/* ========================================
+PREVENIR ESCALADO MOBILE
+======================================== */
+
+body,
+button,
+input,
+textarea,
+select,
+a{
+
+-webkit-text-size-adjust:100%;
+text-size-adjust:100%;
+
 }
 
 /* ========================================
