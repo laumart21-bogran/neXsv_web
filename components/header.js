@@ -3,7 +3,7 @@ document.write(`
 <style>
 
 /* ========================================
-HEADER PREMIUM RESPONSIVE
+HEADER GLOBAL
 ======================================== */
 
 .nex-header{
@@ -16,7 +16,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:12px 22px;
+padding:10px 18px;
 
 background:rgba(255,255,255,.88);
 
@@ -36,7 +36,7 @@ LOGO
 ======================================== */
 
 .nex-logo img{
-height:50px;
+height:44px;
 display:block;
 }
 
@@ -83,6 +83,8 @@ border-radius:14px;
 text-decoration:none;
 font-weight:700;
 
+font-size:14px;
+
 box-shadow:
 0 8px 20px rgba(247,197,49,.25);
 
@@ -100,7 +102,7 @@ BOTÓN MOBILE
 .menu-toggle{
 display:none;
 
-font-size:30px;
+font-size:26px;
 background:none;
 border:none;
 
@@ -116,11 +118,7 @@ RESPONSIVE
 @media(max-width:950px){
 
 .nex-header{
-padding:12px 18px;
-}
-
-.nex-logo img{
-height:44px;
+padding:10px 16px;
 }
 
 .menu-toggle{
@@ -128,15 +126,13 @@ display:block;
 z-index:10001;
 }
 
-/* MENU MOBILE */
-
 .nex-nav{
 position:fixed;
 
-top:72px;
+top:62px;
 right:-100%;
 
-width:260px;
+width:230px;
 height:auto;
 
 background:white;
@@ -144,9 +140,9 @@ background:white;
 flex-direction:column;
 align-items:flex-start;
 
-padding:24px;
+padding:22px;
 
-gap:18px;
+gap:16px;
 
 transition:.35s ease;
 
@@ -154,7 +150,7 @@ box-shadow:
 -10px 0 30px rgba(0,0,0,.08);
 
 border-radius:
-0 0 0 24px;
+0 0 0 22px;
 
 z-index:10000;
 }
@@ -164,15 +160,16 @@ right:0;
 }
 
 .nex-nav a{
-font-size:16px;
+font-size:15px;
 margin:0;
 }
 
 .nex-btn{
 width:100%;
 text-align:center;
-padding:14px 18px;
-margin-top:5px;
+padding:13px 14px;
+font-size:14px;
+margin-top:4px;
 }
 
 }
@@ -183,32 +180,28 @@ MOBILE SMALL
 
 @media(max-width:480px){
 
-.nex-header{
-padding:10px 16px;
-}
-
 .nex-logo img{
 height:40px;
 }
 
 .menu-toggle{
-font-size:28px;
+font-size:24px;
 }
 
 .nex-nav{
-width:240px;
-top:68px;
-padding:22px;
-gap:16px;
+width:220px;
+top:60px;
+padding:20px;
+gap:14px;
 }
 
 .nex-nav a{
-font-size:15px;
+font-size:14px;
 }
 
 .nex-btn{
-font-size:15px;
-padding:13px 16px;
+font-size:13px;
+padding:12px;
 }
 
 }
@@ -217,19 +210,13 @@ padding:13px 16px;
 
 <header class="nex-header">
 
-<!-- LOGO -->
-
 <a href="index.html" class="nex-logo">
 <img src="logo.png" alt="NeXsv">
 </a>
 
-<!-- BOTÓN MOBILE -->
-
 <button class="menu-toggle" onclick="toggleMenu()">
 ☰
 </button>
-
-<!-- NAV -->
 
 <nav class="nex-nav" id="mobileMenu">
 
