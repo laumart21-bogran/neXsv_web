@@ -7,8 +7,6 @@
 
 <title>Beneficios - NeXsv</title>
 
-<!-- TIPOGRAFÍA -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -56,17 +54,13 @@ overflow-x:hidden;
 }
 
 /* ========================================
-HEADER BLUR
-======================================== */
-
-/* ========================================
-HERO
+HERO AJUSTADO
 ======================================== */
 
 .hero{
 
 width:100%;
-min-height:48vh;
+min-height:42vh;
 
 background:
 linear-gradient(
@@ -81,11 +75,11 @@ justify-content:center;
 
 text-align:center;
 
-/* AJUSTE EXACTO PARA IGUALAR INDEX */
+/* AJUSTE REAL */
 
 padding:
-110px 40px
-70px;
+72px 40px
+45px;
 
 position:relative;
 overflow:hidden;
@@ -135,23 +129,23 @@ animation:fadeUp 1s ease;
 }
 
 .hero-logo{
-width:190px;
-margin-bottom:24px;
+width:170px;
+margin-bottom:20px;
 }
 
 .hero h1{
-font-size:58px;
+font-size:54px;
 line-height:1.05;
 font-weight:800;
 letter-spacing:-2px;
 
 color:white;
 
-margin-bottom:22px;
+margin-bottom:18px;
 }
 
 .hero p{
-font-size:20px;
+font-size:19px;
 line-height:1.8;
 color:rgba(255,255,255,.88);
 }
@@ -161,7 +155,7 @@ SLIDER
 ======================================== */
 
 .slider-section{
-padding:100px 20px;
+padding:90px 20px;
 position:relative;
 }
 
@@ -568,21 +562,22 @@ font-size:36px;
 
 .hero{
 
-/* AJUSTE MOBILE EXACTO */
+/* AJUSTE FINAL MOBILE */
 
 padding:
-92px 18px
-60px;
+72px 18px
+40px;
 
-min-height:46vh;
+min-height:40vh;
 }
 
 .hero-logo{
-width:150px;
+width:135px;
+margin-bottom:16px;
 }
 
 .hero h1{
-font-size:34px;
+font-size:32px;
 letter-spacing:-1px;
 }
 
@@ -626,7 +621,7 @@ grid-template-columns:1fr;
 
 <body>
 
-<!-- HEADER -->
+<!-- HEADER GLOBAL -->
 
 <script src="components/header.js"></script>
 
@@ -665,8 +660,6 @@ Conecta con personas reales dentro de tu comunidad y transforma relaciones en op
 
 <div class="slider" id="slider">
 
-<!-- SLIDE 1 -->
-
 <div class="slide">
 
 <img src="imgbeneficio1.jpg">
@@ -684,8 +677,6 @@ Tu negocio aparece frente a personas que realmente buscan productos y servicios 
 </div>
 
 </div>
-
-<!-- SLIDE 2 -->
 
 <div class="slide">
 
@@ -705,8 +696,6 @@ Tu perfil permanece visible incluso cuando no estás conectado.
 
 </div>
 
-<!-- SLIDE 3 -->
-
 <div class="slide">
 
 <img src="imgbeneficio3.jpg">
@@ -724,8 +713,6 @@ Las personas interesadas llegan directamente a tu WhatsApp.
 </div>
 
 </div>
-
-<!-- SLIDE 4 -->
 
 <div class="slide">
 
@@ -754,8 +741,6 @@ Convierte conexiones dentro de la comunidad en relaciones comerciales reales.
 <div class="dots" id="dots"></div>
 
 </div>
-
-<!-- BENEFICIOS EXTRA -->
 
 <div class="extra-benefits">
 
@@ -811,8 +796,6 @@ Facilita conversaciones rápidas mediante integración directa con WhatsApp.
 
 </section>
 
-<!-- CTA -->
-
 <section class="cta">
 
 <div class="cta-box">
@@ -842,8 +825,6 @@ Quiero formar parte de NeXsv
 
 </section>
 
-<!-- FOOTER -->
-
 <footer>
 
 <div class="footer-line"></div>
@@ -856,8 +837,6 @@ Términos y condiciones
 
 </footer>
 
-<!-- SCRIPTS -->
-
 <script>
 
 let index = 0;
@@ -867,8 +846,6 @@ const slider = document.getElementById("slider");
 const total = slider.children.length;
 
 const dotsContainer = document.getElementById("dots");
-
-/* DOTS */
 
 for(let i = 0; i < total; i++){
 
@@ -891,8 +868,6 @@ dots.forEach(d => d.classList.remove("active"));
 dots[index].classList.add("active");
 
 }
-
-/* MOVER */
 
 function mover(dir){
 
@@ -924,15 +899,11 @@ actualizarDots();
 
 }
 
-/* AUTOPLAY */
-
 setInterval(() => {
 
 mover(1);
 
 }, 5000);
-
-/* SWIPE MOBILE */
 
 let startX = 0;
 
@@ -961,8 +932,6 @@ mover(-1);
 }
 
 });
-
-/* INIT */
 
 actualizarDots();
 
