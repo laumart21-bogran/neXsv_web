@@ -378,6 +378,26 @@ line-height:1.8;
 color:#5d6677;
 }
 
+.verified-badge{
+
+display:inline-flex;
+align-items:center;
+
+margin-bottom:12px;
+
+padding:6px 12px;
+
+border-radius:999px;
+
+background:rgba(116,214,127,.15);
+
+color:#2e7d32;
+
+font-size:12px;
+font-weight:700;
+
+}
+  
 /* ========================================
 BOTONES
 ======================================== */
@@ -759,6 +779,10 @@ ${categoria}
 <h3>
 ${nombre}
 </h3>
+
+<div class="verified-badge">
+🟢 Miembro Verificado
+</div>
 
 <p>
 ${descripcion.substring(0,95)}...
