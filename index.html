@@ -818,6 +818,45 @@ font-size:28px;
 
 }
 
+.community-stats{
+    max-width:1200px;
+    margin:60px auto;
+    padding:0 20px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:24px;
+}
+
+.stat-card{
+    background:#ffffff;
+    border-radius:20px;
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.05);
+}
+
+.stat-number{
+    display:block;
+
+    font-size:42px;
+    font-weight:800;
+
+    color:#2F56D3;
+
+    margin-bottom:10px;
+}
+
+.stat-label{
+    color:#5B6475;
+    font-weight:600;
+}
+
+</style>
+  
 </style>
 </head>
 
@@ -865,6 +904,30 @@ Solicitar acceso
 </div>
 
 </div>
+
+</section>
+
+<section class="community-stats">
+
+    <div class="stat-card">
+        <span class="stat-number">2+</span>
+        <span class="stat-label">Negocios activos</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Colegios representados</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Desean recibir oportunidades</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Desean publicar su negocio</span>
+    </div>
 
 </section>
 
