@@ -42,36 +42,6 @@ color:var(--text);
 overflow-x:hidden;
 }
 
-/* ========================================
-HEADER
-======================================== */
-
-header{
-position:sticky;
-top:0;
-z-index:999;
-
-background:rgba(255,255,255,.78);
-backdrop-filter:blur(14px);
-
-padding:14px 50px;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-border-bottom:1px solid rgba(255,255,255,.5);
-}
-
-header img{
-height:72px;
-transition:.3s;
-}
-
-header img:hover{
-transform:scale(1.03);
-}
-
 nav{
 display:flex;
 align-items:center;
@@ -554,33 +524,8 @@ font-weight:700;
 
 <body>
 
-<header>
-
-<a href="index.html">
-<img src="logo.png" alt="NeXsv">
-</a>
-
-<nav>
-
-<a href="index.html">Inicio</a>
-<a href="como.html">Cómo funciona</a>
-<a href="beneficios.html">Beneficios</a>
-<a href="negocios.html">Negocios</a>
-<a href="blog.html">Blog</a>
-
-<a
-class="nav-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-
-Solicitar acceso
-
-</a>
-
-</nav>
-
-</header>
-
+<script src="components/header.js"></script>
+  
 <section class="hero">
 
 <div class="hero-content">
