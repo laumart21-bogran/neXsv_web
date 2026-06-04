@@ -172,8 +172,6 @@ border-radius:
 box-shadow:
 -10px 0 30px rgba(0,0,0,.08);
 
-outline:3px solid red !important;
-
 transition:.35s ease;
 
 z-index:999998;
