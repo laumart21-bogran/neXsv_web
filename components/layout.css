@@ -1,3 +1,4 @@
+```css
 /* ========================================
 GLOBAL LAYOUT SYSTEM
 ======================================== */
@@ -51,6 +52,7 @@ color:#1D2A3A;
 padding-top:72px;
 
 overflow-x:hidden;
+
 }
 
 /* ========================================
@@ -58,38 +60,16 @@ GLOBAL CONTAINER
 ======================================== */
 
 .nex-container{
+
 width:100%;
+
 max-width:1300px;
+
 margin:auto;
+
 padding-left:20px;
 padding-right:20px;
-}
 
-/* ========================================
-GLOBAL HERO
-======================================== */
-
-.nex-hero{
-
-position:relative;
-
-width:100%;
-
-padding:
-90px 20px
-60px;
-
-overflow:hidden;
-}
-
-.nex-hero-content{
-position:relative;
-z-index:2;
-
-max-width:850px;
-margin:auto;
-
-text-align:center;
 }
 
 /* ========================================
@@ -97,35 +77,11 @@ GLOBAL SECTION
 ======================================== */
 
 .nex-section{
+
 padding:90px 20px;
-}
-
-/* ========================================
-MOBILE
-======================================== */
-
-@media(max-width:768px){
-
-body{
-padding-top:72px;
-}
-
-.nex-hero{
-padding:
-72px 18px
-42px;
-}
-
-.nex-section{
-padding:70px 16px;
-}
-
-.nex-container{
-padding-left:16px;
-padding-right:16px;
-}
 
 }
+
 /* ========================================
 HERO GLOBAL
 ======================================== */
@@ -154,9 +110,13 @@ overflow:hidden;
 
 .nex-hero-content{
 
+position:relative;
+
 max-width:850px;
 
 margin:auto;
+
+z-index:2;
 
 }
 
@@ -170,9 +130,9 @@ font-size:clamp(
 
 font-weight:800;
 
-color:white;
-
 line-height:1.1;
+
+color:white;
 
 margin-bottom:16px;
 
@@ -184,8 +144,7 @@ font-size:18px;
 
 line-height:1.8;
 
-color:
-rgba(255,255,255,.9);
+color:rgba(255,255,255,.90);
 
 max-width:720px;
 
@@ -198,6 +157,23 @@ MOBILE
 ======================================== */
 
 @media(max-width:768px){
+
+body{
+padding-top:72px;
+}
+
+.nex-container{
+
+padding-left:16px;
+padding-right:16px;
+
+}
+
+.nex-section{
+
+padding:70px 16px;
+
+}
 
 .nex-hero-global{
 
@@ -222,3 +198,4 @@ font-size:16px;
 }
 
 }
+```
