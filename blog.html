@@ -43,89 +43,7 @@ color:var(--text);
 }
 
 /* ========================================
-HEADER FIX
-======================================== */
 
-.top-blur{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:95px;
-background:rgba(255,255,255,.78);
-backdrop-filter:blur(14px);
-z-index:998;
-border-bottom:1px solid rgba(255,255,255,.6);
-}
-
-.custom-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:14px 50px;
-
-z-index:999;
-}
-
-.logo img{
-height:72px;
-transition:.3s;
-}
-
-.logo img:hover{
-transform:scale(1.03);
-}
-
-.nav{
-display:flex;
-align-items:center;
-flex-wrap:wrap;
-gap:18px;
-}
-
-.nav a{
-text-decoration:none;
-color:var(--primary);
-font-weight:600;
-transition:.3s;
-}
-
-.nav a:hover{
-color:var(--secondary);
-}
-
-.nav-btn{
-background:linear-gradient(
-135deg,
-var(--accent),
-#ffd95e
-);
-
-padding:12px 18px;
-
-border-radius:16px;
-
-color:#1D2A3A !important;
-
-font-weight:700 !important;
-
-box-shadow:
-0 12px 30px rgba(247,197,49,.28);
-}
-
-.nav-btn:hover{
-transform:translateY(-3px);
-color:#1D2A3A !important;
-}
-
-/* ========================================
-SLIDER
 ======================================== */
 
 .slider-container{
@@ -497,30 +415,6 @@ line-height:1.8;
 
 <!-- HEADER -->
 
-<header class="custom-header">
-
-<a href="index.html" class="logo">
-<img src="logo.png" alt="NeXsv">
-</a>
-
-<nav class="nav">
-
-<a href="index.html">Inicio</a>
-<a href="como.html">Cómo funciona</a>
-<a href="beneficios.html">Beneficios</a>
-<a href="negocios.html">Negocios</a>
-<a href="blog.html">Blog</a>
-
-<a
-class="nav-btn"
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank">
-Solicitar acceso
-</a>
-
-</nav>
-
-</header>
 
 <!-- SLIDER -->
 
@@ -844,4 +738,7 @@ actualizarDots();
 </script>
 
 </body>
+
+ <script src="components/header.js"></script>
+  
 </html>
