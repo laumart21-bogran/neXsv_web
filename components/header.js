@@ -247,7 +247,7 @@ href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRc
 target="_blank"
 class="nex-btn">
 
-Solicitar acceso →
+Acceso neXsv →
 
 </a>
 
