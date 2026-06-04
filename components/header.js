@@ -154,7 +154,7 @@ position:fixed;
 top:72px;
 right:-100%;
 
-width:220px;
+width:180px;
 
 display:flex;
 flex-direction:column;
