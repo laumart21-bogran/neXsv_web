@@ -243,9 +243,12 @@ Blog
 </a>
 
 <a
-href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
-target="_blank"
+href="acceso/index.html"
 class="nex-btn">
+
+Ingresar →
+
+</a>
 
 Acceso neXsv →
 
