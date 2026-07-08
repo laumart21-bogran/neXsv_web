@@ -408,6 +408,134 @@ position:relative;
 z-index:2;
 }
 
+/*==========================
+EXPLORA NEXSV
+==========================*/
+
+.explore-section{
+padding:70px 0;
+}
+
+.explore-title{
+
+font-size:2.2rem;
+font-weight:800;
+color:var(--primary);
+
+margin-bottom:12px;
+}
+
+.explore-subtitle{
+
+max-width:700px;
+
+color:#667085;
+
+line-height:1.8;
+
+margin-bottom:40px;
+}
+
+.explore-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:24px;
+}
+
+.explore-card{
+
+background:#fff;
+
+border-radius:24px;
+
+padding:30px;
+
+text-decoration:none;
+
+color:inherit;
+
+transition:.35s;
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+border:1px solid #edf0f6;
+
+position:relative;
+
+overflow:hidden;
+}
+
+.explore-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+.explore-icon{
+
+font-size:38px;
+
+margin-bottom:20px;
+}
+
+.explore-card h3{
+
+font-size:24px;
+
+margin-bottom:12px;
+
+color:var(--primary);
+}
+
+.explore-card p{
+
+font-size:15px;
+
+line-height:1.7;
+
+color:#667085;
+
+margin-bottom:24px;
+}
+
+.explore-card span{
+
+font-weight:700;
+
+color:var(--primary);
+}
+
+.disabled{
+
+background:#fafcfb;
+
+border:1px solid #dfe8dc;
+}
+
+.coming-badge{
+
+position:absolute;
+
+top:18px;
+right:18px;
+
+background:#e8f7e8;
+
+color:#2f8b41;
+
+padding:6px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:700;
+}
+    
 /* ========================================
 TESTIMONIOS
 ======================================== */
@@ -964,6 +1092,89 @@ Exclusivo para comunidades privadas • Negocios seleccionados • Relaciones de
     </div>
 
 </section>
+
+ <!-- EXPLORA NEXSV -->
+
+<section class="section explore-section">
+
+<div class="container">
+
+<h2 class="explore-title">
+Explora neXsv
+</h2>
+
+<p class="explore-subtitle">
+Todo comienza dentro de una comunidad de confianza.
+Descubre lo que ya puedes hacer hoy y lo que viene en las próximas versiones.
+</p>
+
+<div class="explore-grid">
+
+<a href="negocios.html" class="explore-card">
+
+<div class="explore-icon">🏪</div>
+
+<h3>Explorar negocios</h3>
+
+<p>
+Encuentra negocios recomendados por tu comunidad.
+</p>
+
+<span>Explorar →</span>
+
+</a>
+
+<a href="blog.html" class="explore-card">
+
+<div class="explore-icon">📰</div>
+
+<h3>Blog</h3>
+
+<p>
+Consejos, artículos y novedades para familias y negocios.
+</p>
+
+<span>Leer más →</span>
+
+</a>
+
+<a href="#" class="explore-card">
+
+<div class="explore-icon">👤</div>
+
+<h3>Ingresar</h3>
+
+<p>
+Accede a tu cuenta para consultar recomendaciones y tu comunidad.
+</p>
+
+<span>Próximamente →</span>
+
+</a>
+
+<div class="explore-card disabled">
+
+<div class="coming-badge">
+Versión 2.0
+</div>
+
+<div class="explore-icon">🎁</div>
+
+<h3>Oportunidades para familias</h3>
+
+<p>
+Compra, vende, dona o encuentra oportunidades dentro de tu comunidad.
+</p>
+
+<span>Muy pronto</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>   
 
 <!-- POSICIONAMIENTO -->
 
