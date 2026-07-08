@@ -390,3 +390,44 @@ RESPONSIVE
 }
 
 }
+/* ========================================
+RECUPERAR CONTRASEÑA
+======================================== */
+
+.recover-link{
+
+    margin:40px 0 10px;
+
+    text-align:center;
+
+}
+
+.recover-link p{
+
+    color:#6b7280;
+
+    font-size:15px;
+
+    line-height:1.8;
+
+}
+
+.recover-link a{
+
+    color:var(--primary);
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.recover-link a:hover{
+
+    opacity:.8;
+
+    text-decoration:underline;
+
+}
