@@ -1,1 +1,130 @@
+/* ========================================
+VARIABLES
+======================================== */
 
+:root{
+
+    --primary:#1657B8;
+    --secondary:#19C2C6;
+    --accent:#F7C531;
+
+    --bg:#F5F7FB;
+
+    --text:#1D2A3A;
+
+    --white:#FFFFFF;
+
+}
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:'Montserrat',sans-serif;
+
+    background:var(--bg);
+
+    color:var(--text);
+
+    min-height:100vh;
+
+}
+
+/* ========================================
+IMÁGENES
+======================================== */
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
+
+}
+
+/* ========================================
+ENLACES
+======================================== */
+
+a{
+
+    text-decoration:none;
+
+    color:inherit;
+
+}
+
+/* ========================================
+BOTÓN VOLVER
+======================================== */
+
+.back-link{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    font-weight:600;
+
+    color:var(--primary);
+
+    margin-bottom:30px;
+
+    transition:.25s;
+
+}
+
+.back-link:hover{
+
+    opacity:.8;
+
+}
+
+/* ========================================
+LOGO
+======================================== */
+
+.logo{
+
+    width:220px;
+
+    margin:0 auto 30px;
+
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
+.auth-footer{
+
+    margin-top:50px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    color:#6B7280;
+
+}
