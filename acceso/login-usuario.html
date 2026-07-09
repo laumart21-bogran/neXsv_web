@@ -89,50 +89,76 @@
 
                     Correo electrónico
 
-                </label>
+<div class="form-group">
 
-                <input
+    <label for="email">
 
-                    id="email"
+        Correo electrónico
 
-                    name="email"
+    </label>
 
-                    type="email"
+    <div class="input-group">
 
-                    autocomplete="email"
+        <i class="fa-regular fa-envelope"></i>
 
-                    placeholder="correo@ejemplo.com"
+        <input
 
-                    required>
+            id="email"
 
-            </div>
+            name="email"
+
+            type="email"
+
+            autocomplete="email"
+
+            placeholder="correo@ejemplo.com"
+
+            required>
+
+    </div>
+
+</div>
 
             <!-- Contraseña -->
 
             <div class="form-group">
 
-                <label for="password">
+    <label for="password">
 
-                    Contraseña
+        Contraseña
 
-                </label>
+    </label>
 
-                <input
+    <div class="input-group">
 
-                    id="password"
+        <i class="fa-solid fa-lock"></i>
 
-                    name="password"
+        <input
 
-                    type="password"
+            id="password"
 
-                    autocomplete="current-password"
+            name="password"
 
-                    placeholder="••••••••"
+            type="password"
 
-                    required>
+            autocomplete="current-password"
 
-            </div>
+            placeholder="••••••••"
 
+            required>
+
+        <button
+            type="button"
+            class="toggle-password"
+            aria-label="Mostrar contraseña">
+
+            <i class="fa-regular fa-eye"></i>
+
+        </button>
+
+    </div>
+
+</div>
             <!-- Mensajes -->
 
             <div id="loginMessage"></div>
