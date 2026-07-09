@@ -128,3 +128,166 @@ FOOTER
     color:#6B7280;
 
 }
+
+/* ========================================
+AUTH CARD
+======================================== */
+
+.auth-card{
+
+    max-width:480px;
+
+    margin:40px auto;
+
+    background:#FFFFFF;
+
+    border-radius:28px;
+
+    padding:40px;
+
+    box-shadow:
+    0 15px 45px rgba(0,0,0,.08);
+
+    border:1px solid rgba(22,87,184,.08);
+
+}
+
+/* ========================================
+FORMULARIO
+======================================== */
+
+.auth-card form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    margin-bottom:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    color:var(--text);
+
+}
+
+.form-group input{
+
+    width:100%;
+
+    padding:16px 18px;
+
+    border-radius:14px;
+
+    border:1px solid #D8DFEA;
+
+    background:#FFFFFF;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.form-group input:focus{
+
+    outline:none;
+
+    border-color:var(--primary);
+
+    box-shadow:
+    0 0 0 4px rgba(22,87,184,.10);
+
+}
+
+/* ========================================
+BOTÓN PRINCIPAL
+======================================== */
+
+.primary-btn{
+
+    width:100%;
+
+    border:none;
+
+    border-radius:16px;
+
+    padding:18px;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+    135deg,
+    var(--accent),
+    #FFD95E
+    );
+
+    color:#1D2A3A;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    transition:.30s;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+    0 15px 30px rgba(247,197,49,.28);
+
+}
+
+/* ========================================
+LINKS AUTENTICACIÓN
+======================================== */
+
+.auth-links{
+
+    margin-top:30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.auth-links a{
+
+    color:var(--primary);
+
+    font-weight:600;
+
+    text-decoration:none;
+
+    transition:.25s;
+
+}
+
+.auth-links a:hover{
+
+    text-decoration:underline;
+
+}
