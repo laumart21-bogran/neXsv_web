@@ -402,6 +402,30 @@ LINKS AUTENTICACIÓN
 }
 
 /* ========================================
+BUSINESS REGISTER
+======================================== */
+
+.business-register{
+
+    margin-top:10px;
+
+    text-align:center;
+
+}
+
+.business-register p{
+
+    margin-bottom:10px;
+
+    font-size:14px;
+
+    color:#6B7280;
+
+    line-height:1.5;
+
+}
+
+/* ========================================
 ACCESS PAGE
 ======================================== */
 
