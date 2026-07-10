@@ -479,3 +479,105 @@ HERO
     font-size:17px;
 
 }
+
+/* ========================================
+BUSINESS ACCESS
+======================================== */
+
+.business-title{
+
+    font-size:22px;
+
+    font-weight:700;
+
+    color:var(--primary);
+
+    text-align:center;
+
+    margin-bottom:12px;
+
+}
+
+.business-text{
+
+    text-align:center;
+
+    color:#667085;
+
+    line-height:1.7;
+
+    margin-bottom:24px;
+
+}
+
+.business-divider{
+
+    margin:32px 0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+
+}
+
+.business-divider::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:100%;
+
+    height:1px;
+
+    background:#E5E7EB;
+
+}
+
+.business-divider span{
+
+    position:relative;
+
+    background:#FFFFFF;
+
+    padding:0 18px;
+
+    color:#98A2B3;
+
+    font-weight:600;
+
+}
+
+.secondary-btn{
+
+    display:block;
+
+    width:100%;
+
+    padding:18px;
+
+    text-align:center;
+
+    border-radius:16px;
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+    font-weight:700;
+
+    transition:.25s;
+
+}
+
+.secondary-btn:hover{
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+}
