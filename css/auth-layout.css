@@ -145,10 +145,23 @@ AUTH CARD
 
     padding:40px;
 
-    box-shadow:
-    0 15px 45px rgba(0,0,0,.08);
-
     border:1px solid rgba(22,87,184,.08);
+
+    box-shadow:
+        0 15px 45px rgba(0,0,0,.08);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+
+}
+
+.auth-card:focus-within{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 22px 55px rgba(22,87,184,.12);
 
 }
 
