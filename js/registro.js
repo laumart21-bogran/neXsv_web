@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         try{
 
             const response=
-            await fetch("https://script.google.com/macros/s/AKfycbyG0WVu7rB3A7HTgEeZyAUXIM1yATouP57St49ZYcYTNi-D2JBU0cyCOSfSzMjaGrIr/exec",{
+            await fetch("https://ne-xsv-api.vercel.app/api/register",{
 
                 method:"POST",
 
