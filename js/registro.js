@@ -12,6 +12,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     form.addEventListener("submit",async(e)=>{
 
         e.preventDefault();
+        const submitButton =
+form.querySelector("button[type='submit']");
+
+submitButton.disabled = true;
 
         const nombre=
             document.getElementById("fullName").value.trim();
@@ -36,6 +40,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             "Las contraseñas no coinciden.";
 
             message.style.color="#D32F2F";
+
+            submitButton.disabled = false;
 
             return;
 
@@ -84,14 +90,18 @@ document.addEventListener("DOMContentLoaded",()=>{
 
             }else{
 
+                submitButton.disabled = false;
+
                 message.style.color="#D32F2F";
 
                 message.innerHTML=
-                "Ocurrió un error al crear la cuenta.";
+                data.message || "Ocurrió un error al crear la cuenta.";
 
             }
 
         }catch(error){
+
+            submitButton.disabled = false;
 
             console.error(error);
 
