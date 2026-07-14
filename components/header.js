@@ -55,7 +55,7 @@ text-decoration:none;
 }
 
 .nex-logo img{
-height:42px;
+height:50px;
 display:block;
 object-fit:contain;
 }
@@ -67,7 +67,7 @@ NAV DESKTOP
 .nex-nav{
 display:flex;
 align-items:center;
-gap:18px;
+gap:24px;
 }
 
 .nex-nav a{
