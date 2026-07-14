@@ -246,11 +246,7 @@ Blog
 href="acceso/index.html"
 class="nex-btn">
 
-Ingresar →
-
-</a>
-
-Acceso neXsv →
+<i class="fa-regular fa-user"></i> Acceder →
 
 </a>
 
