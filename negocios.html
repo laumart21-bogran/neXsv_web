@@ -572,22 +572,65 @@ id="buscador"
 placeholder="Buscar negocio..."
 onkeyup="buscar()">
 
-</div>
-
 <div class="categorias">
 
-<button onclick="filtrar('Todos')">Todos</button>
-<button onclick="filtrar('Servicios')">Servicios</button>
-<button onclick="filtrar('Comida')">Comida</button>
-<button onclick="filtrar('Belleza')">Belleza</button>
-<button onclick="filtrar('Legal')">Legal</button>
+    <button class="activo" onclick="filtrar('Todos',this)">
+        Todos
+    </button>
+
+    <button onclick="filtrar('Hogar',this)">
+        🏠 Hogar
+    </button>
+
+    <button onclick="filtrar('Hijos',this)">
+        👨‍👧 Hijos
+    </button>
+
+    <button onclick="filtrar('Salud',this)">
+        ❤️ Salud
+    </button>
+
+    <button onclick="filtrar('Profesionales',this)">
+        ⚖️ Profesionales
+    </button>
+
+    <button onclick="mostrarMas(this)">
+        Más ▾
+    </button>
 
 </div>
 
-<div class="grid" id="contenedor"></div>
+<div class="categorias categorias-secundarias" id="masCategorias">
 
-</section>
+    <button onclick="filtrar('Automotriz',this)">
+        🚗 Automotriz
+    </button>
 
+    <button onclick="filtrar('Educación',this)">
+        🎓 Educación
+    </button>
+
+    <button onclick="filtrar('Restaurantes',this)">
+        🍽 Restaurantes
+    </button>
+
+    <button onclick="filtrar('Tecnología',this)">
+        💻 Tecnología
+    </button>
+
+    <button onclick="filtrar('Compras',this)">
+        🛍 Compras
+    </button>
+
+    <button onclick="filtrar('Viajes',this)">
+        ✈️ Viajes
+    </button>
+
+    <button onclick="filtrar('Otros',this)">
+        📦 Otros
+    </button>
+
+</div>
 <footer>
 
 <div class="footer-line"></div>
@@ -927,9 +970,19 @@ renderizar(filtrados);
 FILTRAR
 ======================================== */
 
-function filtrar(cat){
+function filtrar(cat, boton){
 
-if(cat === "Todos"){
+document
+.querySelectorAll(".categorias button")
+.forEach(b=>b.classList.remove("activo"));
+
+if(boton){
+
+boton.classList.add("activo");
+
+}
+
+if(cat==="Todos"){
 
 renderizar(dataGlobal);
 
@@ -937,22 +990,19 @@ return;
 
 }
 
-const filtrados =
-dataGlobal.filter(n => {
+const filtrados=dataGlobal.filter(n=>{
 
-const k =
-Object.keys(n).reduce((a,c)=>{
+const k=Object.keys(n).reduce((a,c)=>{
 
-a[c.trim()] = n[c];
+a[c.trim()]=n[c];
 
 return a;
 
 },{});
 
-return (
-k["Categoría de tu negocio"] || ""
-)
-.toLowerCase() === cat.toLowerCase();
+return (k["Categoría de tu negocio"]||"")
+.toLowerCase()
+===cat.toLowerCase();
 
 });
 
@@ -960,6 +1010,14 @@ renderizar(filtrados);
 
 }
 
+ function mostrarMas(){
+
+document
+.getElementById("masCategorias")
+.classList.toggle("mostrar");
+
+} 
+  
 </script>
 
 </body>
