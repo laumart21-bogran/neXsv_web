@@ -259,6 +259,62 @@ color:white;
 transform:translateY(-3px);
 }
 
+.categorias button.activo{
+
+background:linear-gradient(
+135deg,
+var(--primary),
+var(--secondary)
+);
+
+color:white;
+
+box-shadow:
+0 12px 28px rgba(22,87,184,.22);
+
+}
+
+.categorias-secundarias{
+
+display:none;
+
+margin-top:-18px;
+margin-bottom:40px;
+
+}
+
+.categorias-secundarias.mostrar{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:14px;
+
+animation:fadeCategorias .25s ease;
+
+}
+
+@keyframes fadeCategorias{
+
+from{
+
+opacity:0;
+
+transform:translateY(-10px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
 /* ========================================
 GRID
 ======================================== */
@@ -594,9 +650,9 @@ onkeyup="buscar()">
         ⚖️ Profesionales
     </button>
 
-    <button onclick="mostrarMas(this)">
-        Más ▾
-    </button>
+   <button onclick="mostrarMas()">
+➕ Más categorías
+</button>
 
 </div>
 
@@ -631,6 +687,13 @@ onkeyup="buscar()">
     </button>
 
 </div>
+
+<div id="contenedor" class="grid">
+
+</div>
+
+</section>  
+  
 <footer>
 
 <div class="footer-line"></div>
