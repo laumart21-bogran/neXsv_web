@@ -353,20 +353,41 @@ box-shadow:
 }
 
 .card-image{
-position:relative;
-overflow:hidden;
+
+    position:relative;
+
+    height:240px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    background:#ffffff;
 }
 
 .card img{
-width:100%;
-height:240px;
-object-fit:cover;
 
-transition:.5s;
+    max-width:85%;
+
+    max-height:85%;
+
+    width:auto;
+
+    height:auto;
+
+    object-fit:contain;
+
+    object-position:center;
+
+    transition:.5s;
 }
 
 .card:hover img{
-transform:scale(1.05);
+transform:scale(1.02);
 }
 
 .badge{
