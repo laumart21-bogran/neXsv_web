@@ -87,10 +87,7 @@ function initLogin() {
                 message.innerHTML = "✅ Bienvenido.";
 
                 // Guardar sesión
-                localStorage.setItem(
-                    "nexsvUser",
-                    JSON.stringify(data.user)
-                );
+                login(data.user);
 
                 console.log("Usuario autenticado:", data.user);
 
