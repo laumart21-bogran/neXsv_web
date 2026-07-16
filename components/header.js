@@ -1,6 +1,6 @@
-alert("HEADER CARGADO");
-
 const usuario = getCurrentUser();
+
+console.log("USUARIO HEADER:", usuario);
 
 document.write(`
 
