@@ -1,3 +1,5 @@
+const usuario = getCurrentUser();
+
 document.write(`
 
 <style>
@@ -242,18 +244,29 @@ Negocios
 Blog
 </a>
 
+${usuario ? `
 <a
-id="memberButton"
-href="acceso/index.html"
-class="nex-btn">
+    id="memberButton"
+    href="#"
+    class="nex-btn">
 
-<i class="fa-regular fa-user"></i>
-
-<span id="memberButtonText">
-Acceder →
-</span>
+    👋 ${usuario.nombre.split(" ")[0]}
 
 </a>
+` : `
+<a
+    id="memberButton"
+    href="acceso/index.html"
+    class="nex-btn">
+
+    <i class="fa-regular fa-user"></i>
+
+    <span id="memberButtonText">
+        Acceder →
+    </span>
+
+</a>
+`}
 
 </nav>
 
