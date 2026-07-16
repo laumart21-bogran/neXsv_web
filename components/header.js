@@ -243,10 +243,15 @@ Blog
 </a>
 
 <a
+id="memberButton"
 href="acceso/index.html"
 class="nex-btn">
 
-<i class="fa-regular fa-user"></i> Acceder →
+<i class="fa-regular fa-user"></i>
+
+<span id="memberButtonText">
+Acceder →
+</span>
 
 </a>
 
@@ -264,6 +269,24 @@ document
 .toggle("active");
 
 }
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+    const button =
+        document.getElementById("memberButton");
+
+    const text =
+        document.getElementById("memberButtonText");
+
+    if(typeof isLogged === "function" && isLogged()){
+
+        button.href="perfil.html";
+
+        text.textContent="Mi cuenta";
+
+    }
+
+});
 
 </script>
 
