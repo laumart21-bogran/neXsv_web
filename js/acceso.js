@@ -93,23 +93,29 @@ function initLogin(){
 
             const data = await response.json();
 
-            if(data.success){
+    if(data.success){
 
-                message.style.color="#1B8A3B";
+    message.style.color="#1B8A3B";
 
-                message.innerHTML="✅ Bienvenido.";
+    message.innerHTML="✅ Bienvenido.";
 
-                console.log(data.user);
+    // Guardar la sesión del usuario
+    localStorage.setItem(
+        "nexsvUser",
+        JSON.stringify(data.user)
+    );
 
-            }else{
+    // (Opcional por ahora)
+    console.log(data.user);
 
-                message.style.color="#D32F2F";
+    // Esperar un momento para que el usuario vea el mensaje
+    setTimeout(()=>{
 
-                message.innerHTML=data.message;
+        window.location.href="../index.html";
 
-            }
+    },1000);
 
-        }
+}
 
         catch(error){
 
