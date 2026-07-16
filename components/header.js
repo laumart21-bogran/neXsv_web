@@ -1,3 +1,5 @@
+alert("HEADER CARGADO");
+
 const usuario = getCurrentUser();
 
 document.write(`
