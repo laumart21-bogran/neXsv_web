@@ -73,8 +73,7 @@ function initLogin(){
         try{
 
             const response = await fetch(
-                "https://script.google.com/macros/s/AKfycbzRyJ7TCcemV_5Sx8HjX7dkbXn3lHmS2EMuXB2-OlX3GsW8NpnGab69ErCOjVr3qK_5/exec",
-                {
+               "https://ne-xsv-api.vercel.app/api/login",{
                     method:"POST",
 
                     headers:{
