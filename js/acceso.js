@@ -3,10 +3,9 @@ neXsv
 Sistema de Acceso
 =========================================*/
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", () => {
 
     initPasswordToggle();
-    
     initLogin();
 
 });
@@ -15,30 +14,22 @@ document.addEventListener("DOMContentLoaded",()=>{
 Mostrar / Ocultar contraseña
 =========================================*/
 
-function initPasswordToggle(){
+function initPasswordToggle() {
 
-    const passwordInput=document.getElementById("password");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("togglePassword");
+    const toggleIcon = document.getElementById("togglePasswordIcon");
 
-    const togglePassword=document.getElementById("togglePassword");
+    if (!passwordInput || !togglePassword) return;
 
-    const toggleIcon=document.getElementById("togglePasswordIcon");
+    togglePassword.addEventListener("click", () => {
 
-    if(!passwordInput || !togglePassword){
+        const visible = passwordInput.type === "text";
 
-        return;
+        passwordInput.type = visible ? "password" : "text";
 
-    }
-
-    togglePassword.addEventListener("click",()=>{
-
-        const visible=passwordInput.type==="text";
-
-        passwordInput.type=visible ? "password" : "text";
-
-        toggleIcon.className=visible
-
+        toggleIcon.className = visible
             ? "fa-regular fa-eye"
-
             : "fa-regular fa-eye-slash";
 
     });
@@ -49,81 +40,83 @@ function initPasswordToggle(){
 Login
 =========================================*/
 
-function initLogin(){
+function initLogin() {
 
     const form = document.getElementById("loginForm");
 
-    if(!form) return;
+    if (!form) return;
 
-    form.addEventListener("submit", async (e)=>{
+    form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
 
-        const correo =
-            document.getElementById("email").value.trim();
+        const correo = document
+            .getElementById("email")
+            .value
+            .trim();
 
-        const password =
-            document.getElementById("password").value;
+        const password = document
+            .getElementById("password")
+            .value;
 
-        const message =
-            document.getElementById("loginMessage");
+        const message = document.getElementById("loginMessage");
 
         message.innerHTML = "";
 
-        try{
+        try {
 
             const response = await fetch(
-               "https://ne-xsv-api.vercel.app/api/login",{
-                    method:"POST",
-
-                    headers:{
-                        "Content-Type":"application/json"
+                "https://ne-xsv-api.vercel.app/api/login",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
                     },
-
-                    body:JSON.stringify({
-
-                        correo:correo,
-
-                        password:password
-
+                    body: JSON.stringify({
+                        correo,
+                        password
                     })
-
                 }
             );
 
             const data = await response.json();
 
-    if(data.success){
+            if (data.success) {
 
-    message.style.color="#1B8A3B";
+                message.style.color = "#1B8A3B";
+                message.innerHTML = "✅ Bienvenido.";
 
-    message.innerHTML="✅ Bienvenido.";
+                // Guardar sesión
+                localStorage.setItem(
+                    "nexsvUser",
+                    JSON.stringify(data.user)
+                );
 
-    // Guardar la sesión del usuario
-    localStorage.setItem(
-        "nexsvUser",
-        JSON.stringify(data.user)
-    );
+                console.log("Usuario autenticado:", data.user);
 
-    // (Opcional por ahora)
-    console.log(data.user);
+                setTimeout(() => {
 
-    // Esperar un momento para que el usuario vea el mensaje
-    setTimeout(()=>{
+                    window.location.href = "../index.html";
 
-        window.location.href="../index.html";
+                }, 1000);
 
-    },1000);
+            } else {
 
-}
+                message.style.color = "#D32F2F";
 
-        catch(error){
+                message.innerHTML =
+                    data.message || "Correo o contraseña incorrectos.";
+
+            }
+
+        } catch (error) {
 
             console.error(error);
 
-            message.style.color="#D32F2F";
+            message.style.color = "#D32F2F";
 
-            message.innerHTML="No fue posible conectar con el servidor.";
+            message.innerHTML =
+                "No fue posible conectar con el servidor.";
 
         }
 
