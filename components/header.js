@@ -285,23 +285,6 @@ document
 
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-
-    const button =
-        document.getElementById("memberButton");
-
-    const text =
-        document.getElementById("memberButtonText");
-
-    if(typeof isLogged === "function" && isLogged()){
-
-        button.href="perfil.html";
-
-        text.textContent="Mi cuenta";
-
-    }
-
-});
 
 </script>
 
