@@ -1,134 +1,114 @@
-/*=========================================
-neXsv
-Authentication Manager
-Versión 1.0
-=========================================*/
+document.addEventListener("DOMContentLoaded", () => {
 
-const SESSION_KEY = "nexsv.member";
+    const usuario = getCurrentUser();
 
-/*=========================================
-Obtener usuario actual
-=========================================*/
-
-function getCurrentUser() {
-
-    const user = localStorage.getItem(SESSION_KEY);
-
-    if (!user) return null;
-
-    try {
-
-        return JSON.parse(user);
-
-    } catch (error) {
-
-        console.error("Sesión corrupta.", error);
-
-        logout();
-
-        return null;
-
+    if (!usuario) {
+        window.location.href = "acceso/";
+        return;
     }
 
-}
+    const container = document.getElementById("profile-container");
 
-/*=========================================
-¿Existe sesión?
-=========================================*/
+    container.innerHTML = `
 
-function isLogged() {
+<div class="nex-profile">
 
-    return getCurrentUser() !== null;
+    <div class="nex-profile-card">
 
-}
+        <div class="nex-profile-header">
 
-/*=========================================
-Iniciar sesión
-=========================================*/
+            <div class="nex-avatar">
+                👤
+            </div>
 
-function login(userData) {
+            <div>
 
-    localStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify(userData)
-    );
+                <h1>${usuario.nombre}</h1>
 
-}
+                <span class="nex-role">
+                    ${usuario.rol || "Miembro"}
+                </span>
 
-/*=========================================
-Cerrar sesión
-=========================================*/
+            </div>
 
-function logout() {
+        </div>
 
-    localStorage.removeItem(SESSION_KEY);
+        <div class="nex-profile-grid">
 
-    window.location.reload();
+            <div class="nex-info-card">
 
-}
+                <h3>Correo electrónico</h3>
 
-/*=========================================
-Proteger funcionalidades privadas
-=========================================*/
+                <p>${usuario.correo}</p>
 
-function requireMember(callback) {
+            </div>
 
-    if (isLogged()) {
+            <div class="nex-info-card">
 
-        callback();
+                <h3>Miembro desde</h3>
 
-        return true;
+                <p>2026</p>
 
-    }
+            </div>
 
-    if (typeof showMemberModal === "function") {
+            <div class="nex-info-card">
 
-        showMemberModal();
+                <h3>Estado</h3>
 
-    }
+                <p>Activo</p>
 
-    return false;
+            </div>
 
-}
+        </div>
 
-/*=========================================
-Obtener nombre del usuario
-=========================================*/
+        <div class="nex-stats">
 
-function getUserName() {
+            <div class="nex-stat">
 
-    const user = getCurrentUser();
+                <h2>0</h2>
 
-    if (!user) return "";
+                <p>Favoritos</p>
 
-    return user.nombre || "";
+            </div>
 
-}
+            <div class="nex-stat">
 
-/*=========================================
-Obtener correo
-=========================================*/
+                <h2>0</h2>
 
-function getUserEmail() {
+                <p>Recomendaciones</p>
 
-    const user = getCurrentUser();
+            </div>
 
-    if (!user) return "";
+            <div class="nex-stat">
 
-    return user.correo || "";
+                <h2>0</h2>
 
-}
+                <p>Oportunidades</p>
 
-/*=========================================
-Obtener rol
-=========================================*/
+            </div>
 
-function getUserRole() {
+        </div>
 
-    const user = getCurrentUser();
+        <div class="nex-actions">
 
-    if (!user) return null;
+            <button
+                class="nex-btn nex-btn-primary"
+                id="logoutBtn">
 
-    return user.rol || null;
+                Cerrar sesión
 
-}
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+`;
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener("click", logout);
+
+});
