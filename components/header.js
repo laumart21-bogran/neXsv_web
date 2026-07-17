@@ -5,8 +5,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const usuario = getCurrentUser();
-   console.log("USUARIO:", usuario);
-   alert(usuario ? usuario.nombre : "NO HAY SESIÓN");
 
     const header = document.createElement("header");
 
