@@ -36,16 +36,29 @@ document.addEventListener("DOMContentLoaded", () => {
             usuario
             ?
 
-            `
-            <a
-                href="perfil.html"
-                class="nex-btn"
-                id="memberButton">
+          `
+<a
+    href="perfil.html"
+    class="nex-btn member-btn"
+    id="memberButton">
 
-                👋 ${usuario.nombre.split(" ")[0]}
+    <span class="member-avatar">
+        ${
+            ((usuario.nombre || "U")
+                .split(" ")[0][0] || "U") +
+            ((usuario.nombre || "U")
+                .split(" ").length > 1
+                ? (usuario.nombre.split(" ")[1][0] || "")
+                : "")
+        }
+    </span>
 
-            </a>
-            `
+    <span class="member-name">
+        ${(usuario.nombre || "Usuario").split(" ")[0]}
+    </span>
+
+</a>
+`
 
             :
 
