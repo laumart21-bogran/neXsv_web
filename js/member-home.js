@@ -33,19 +33,55 @@ return `
 
         <section class="dashboard-hero">
 
-            <span class="welcome-badge">
-                👋 Bienvenida de nuevo
-            </span>
+    <div class="hero-content">
 
-            <h1>${nombre}</h1>
+        <span class="welcome-badge">
+            ✨ Comunidad exclusiva
+        </span>
 
-            <p>
-                Qué bueno tenerte nuevamente en neXsv.
-                Explora negocios confiables y mantente al día con lo que sucede dentro de tu comunidad.
-            </p>
+        <h1>
+            ¡Hola, ${nombre}!
+        </h1>
 
-        </section>
+        <p class="hero-description">
+            Bienvenida nuevamente a <strong>neXsv</strong>.
+            Descubre negocios recomendados, promociones exclusivas y mantente conectada con una comunidad construida sobre confianza.
+        </p>
 
+        <div class="hero-actions">
+
+            <a href="negocios.html" class="hero-primary">
+                Explorar negocios
+            </a>
+
+            <a href="perfil.html" class="hero-secondary">
+                Mi perfil
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="hero-summary">
+
+        <div class="summary-card">
+            <span class="summary-number">127</span>
+            <span class="summary-label">Miembros</span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-number">18</span>
+            <span class="summary-label">Negocios</span>
+        </div>
+
+        <div class="summary-card">
+            <span class="summary-number">8</span>
+            <span class="summary-label">Promociones</span>
+        </div>
+
+    </div>
+
+</section>
         <section class="quick-actions">
 
             <div class="quick-card">
