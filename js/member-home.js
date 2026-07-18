@@ -1,10 +1,10 @@
 /* ==========================================
-   neXsv - Home para miembros
+   neXsv - Dashboard del Miembro v1.0
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Verificar si existe una sesión
+    // Verificar sesión
     if (typeof getCurrentUser !== "function") return;
 
     const usuario = getCurrentUser();
@@ -16,103 +16,394 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!publicHome || !memberHome) return;
 
-    // Oculta el Home público
     publicHome.style.display = "none";
-
-    // Construye el Home del miembro
     memberHome.style.display = "block";
+
+    const nombre = (usuario.nombre || "Miembro").split(" ")[0];
 
     memberHome.innerHTML = `
 
-<section class="hero">
+<section class="member-dashboard">
 
-    <div class="hero-content">
+<div class="dashboard-container">
+
+<!-- ===========================
+BIENVENIDA
+=========================== -->
+
+<section class="dashboard-hero">
+
+    <div class="dashboard-hero-content">
+
+        <span class="welcome-badge">
+            👋 Bienvenida de nuevo
+        </span>
 
         <h1>
-            👋 Hola ${usuario.nombre.split(" ")[0]}
+
+            ${nombre}
+
         </h1>
 
         <p>
-            Bienvenido nuevamente a tu comunidad.
-            Desde aquí podrás descubrir negocios,
-            encontrar oportunidades y administrar tu experiencia dentro de neXsv.
+
+            Qué bueno tenerte nuevamente en neXsv.
+
+            Descubre negocios confiables y mantente al día con lo que sucede dentro de tu comunidad.
+
         </p>
-
-        <div class="hero-buttons">
-
-            <a href="negocios.html" class="btn btn-primary">
-                🏪 Explorar negocios
-            </a>
-
-            <a href="perfil.html" class="btn btn-secondary">
-                👤 Mi perfil
-            </a>
-
-        </div>
 
     </div>
 
 </section>
 
-<section class="section">
+<!-- ===========================
+ACCIONES RÁPIDAS
+=========================== -->
 
-<div class="container">
+<section class="quick-actions">
+
+<div class="quick-card">
+
+<div class="quick-icon">
+🏪
+</div>
+
+<h3>
+
+Buscar negocios
+
+</h3>
+
+<p>
+
+Explora negocios confiables dentro de tu comunidad.
+
+</p>
+
+<a
+href="negocios.html"
+class="quick-button">
+
+Explorar
+
+</a>
+
+</div>
+
+<div class="quick-card">
+
+<div class="quick-icon">
+👤
+</div>
+
+<h3>
+
+Mi perfil
+
+</h3>
+
+<p>
+
+Consulta y administra la información de tu cuenta.
+
+</p>
+
+<a
+href="perfil.html"
+class="quick-button">
+
+Abrir perfil
+
+</a>
+
+</div>
+
+<div class="quick-card disabled">
+
+<div class="quick-icon">
+📢
+</div>
+
+<h3>
+
+Oportunidades
+
+</h3>
+
+<p>
+
+Muy pronto podrás descubrir oportunidades para tu familia.
+
+</p>
+
+<span class="coming">
+
+Próximamente
+
+</span>
+
+</div>
+
+</section>
+
+<!-- ===========================
+LO NUEVO
+=========================== -->
+
+<section class="community-news">
 
 <h2>
-Tu comunidad
+
+Lo nuevo en tu comunidad
+
 </h2>
 
-<div class="grid">
+<div class="stats-grid">
 
-<div class="card">
+<div class="stat-card">
+
+<div class="stat-number">
+
+127
+
+</div>
+
+<div class="stat-label">
+
+Miembros
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-number">
+
+18
+
+</div>
+
+<div class="stat-label">
+
+Negocios
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-number">
+
+8
+
+</div>
+
+<div class="stat-label">
+
+Promociones
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-number">
+
+3
+
+</div>
+
+<div class="stat-label">
+
+Eventos
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===========================
+NEGOCIOS RECOMENDADOS
+=========================== -->
+
+<section class="recommended-section">
+
+<div class="section-header">
+
+<h2>
+
+Negocios recomendados para ti
+
+</h2>
+
+<a href="negocios.html" class="section-link">
+
+Ver todos →
+
+</a>
+
+</div>
+
+<p class="section-description">
+
+Explora negocios verificados que forman parte de la comunidad neXsv.
+
+</p>
+
+<div class="recommended-placeholder">
+
+<div class="placeholder-icon">
+
+🏪
+
+</div>
 
 <h3>
-❤️ Favoritos
+
+Explora negocios de confianza
+
 </h3>
 
 <p>
-Guarda los negocios que más te interesan y encuéntralos fácilmente.
+
+Accede al directorio completo de negocios recomendados por la comunidad.
+
 </p>
 
-<p style="margin-top:20px;color:#888;font-weight:bold;">
-Próximamente
-</p>
+<a href="negocios.html" class="quick-button">
+
+Ir al directorio
+
+</a>
 
 </div>
 
-<div class="card">
+</section>
 
-<h3>
-🎁 Oportunidades
-</h3>
+<!-- ===========================
+ACTIVIDAD RECIENTE
+=========================== -->
+
+<section class="activity-section">
+
+<div class="section-header">
+
+<h2>
+
+Actividad reciente
+
+</h2>
+
+</div>
+
+<div class="activity-list">
+
+<div class="activity-item">
+
+<div class="activity-circle">
+
+🏪
+
+</div>
+
+<div class="activity-content">
+
+<strong>
+
+Nuevo negocio incorporado
+
+</strong>
 
 <p>
-Compra, vende, dona o comparte artículos dentro de una comunidad basada en confianza.
+
+Un nuevo emprendimiento se unió a la comunidad.
+
 </p>
 
-<p style="margin-top:20px;color:#888;font-weight:bold;">
-Próximamente
-</p>
+<span>
+
+Hace unas horas
+
+</span>
 
 </div>
 
-<div class="card">
+</div>
 
-<h3>
-⭐ Recomendaciones
-</h3>
+<div class="activity-item">
+
+<div class="activity-circle">
+
+🎉
+
+</div>
+
+<div class="activity-content">
+
+<strong>
+
+Nueva promoción disponible
+
+</strong>
 
 <p>
-Consulta las recomendaciones realizadas por otros miembros de tu comunidad.
+
+Hay promociones activas para miembros de la comunidad.
+
 </p>
 
-<p style="margin-top:20px;color:#888;font-weight:bold;">
-Próximamente
-</p>
+<span>
+
+Hoy
+
+</span>
 
 </div>
 
 </div>
+
+<div class="activity-item">
+
+<div class="activity-circle">
+
+👥
+
+</div>
+
+<div class="activity-content">
+
+<strong>
+
+La comunidad continúa creciendo
+
+</strong>
+
+<p>
+
+Cada vez más familias forman parte de neXsv.
+
+</p>
+
+<span>
+
+Esta semana
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
 
 </div>
 
@@ -120,4 +411,244 @@ Próximamente
 
 `;
 
-});
+}); // Fin del DOMContentLoaded
+
+/* ===================================
+   DASHBOARD DEL MIEMBRO
+=================================== */
+
+.member-dashboard{
+    padding:40px 20px 60px;
+    background:#f5f7fb;
+    min-height:100vh;
+}
+
+.dashboard-container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.dashboard-hero{
+    background:linear-gradient(135deg,#1d4ed8,#2563eb);
+    color:#fff;
+    border-radius:24px;
+    padding:50px;
+    margin-bottom:35px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.welcome-badge{
+    display:inline-block;
+    background:rgba(255,255,255,.15);
+    padding:8px 16px;
+    border-radius:30px;
+    margin-bottom:18px;
+    font-size:.9rem;
+}
+
+.dashboard-hero h1{
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+.dashboard-hero p{
+    max-width:650px;
+    font-size:1.1rem;
+    line-height:1.7;
+}
+
+.quick-actions{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;
+    margin-bottom:40px;
+}
+
+.quick-card{
+    background:#fff;
+    border-radius:20px;
+    padding:28px;
+    box-shadow:0 8px 25px rgba(0,0,0,.06);
+    transition:.25s;
+}
+
+.quick-card:hover{
+    transform:translateY(-5px);
+}
+
+.quick-icon{
+    font-size:2.3rem;
+    margin-bottom:15px;
+}
+
+.quick-card h3{
+    margin-bottom:12px;
+    color:#1f2937;
+}
+
+.quick-card p{
+    color:#6b7280;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+.quick-button{
+    display:inline-block;
+    background:#2563eb;
+    color:#fff;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:10px;
+    font-weight:600;
+}
+
+.quick-button:hover{
+    background:#1d4ed8;
+}
+
+.disabled{
+    opacity:.75;
+}
+
+.coming{
+    display:inline-block;
+    background:#eef2ff;
+    color:#2563eb;
+    padding:8px 16px;
+    border-radius:20px;
+    font-weight:600;
+}
+
+.community-news,
+.recommended-section,
+.activity-section{
+    background:#fff;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:30px;
+    box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.community-news h2,
+.recommended-section h2,
+.activity-section h2{
+    margin-bottom:25px;
+    color:#1f2937;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+}
+
+.stat-card{
+    background:#f8fafc;
+    border-radius:18px;
+    padding:28px;
+    text-align:center;
+}
+
+.stat-number{
+    font-size:2rem;
+    font-weight:700;
+    color:#2563eb;
+}
+
+.stat-label{
+    margin-top:8px;
+    color:#6b7280;
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.section-link{
+    text-decoration:none;
+    color:#2563eb;
+    font-weight:600;
+}
+
+.section-description{
+    color:#6b7280;
+    margin-bottom:25px;
+}
+
+.recommended-placeholder{
+    background:#f8fafc;
+    border-radius:18px;
+    padding:45px;
+    text-align:center;
+}
+
+.placeholder-icon{
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.activity-list{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.activity-item{
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+    padding-bottom:18px;
+    border-bottom:1px solid #ececec;
+}
+
+.activity-item:last-child{
+    border:none;
+}
+
+.activity-circle{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#eef4ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.4rem;
+    flex-shrink:0;
+}
+
+.activity-content strong{
+    display:block;
+    margin-bottom:6px;
+}
+
+.activity-content p{
+    color:#6b7280;
+    margin-bottom:6px;
+}
+
+.activity-content span{
+    font-size:.85rem;
+    color:#9ca3af;
+}
+
+@media(max-width:768px){
+
+.dashboard-hero{
+    padding:35px 25px;
+}
+
+.dashboard-hero h1{
+    font-size:2rem;
+}
+
+.section-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+}
+
+}
