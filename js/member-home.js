@@ -23,6 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 memberHome.innerHTML = renderDashboard(nombre);
 
+loadDashboardStats();
+
+function loadDashboardStats(){
+
+    document.getElementById("totalMembers").textContent = "127";
+    document.getElementById("totalBusinesses").textContent = "18";
+    document.getElementById("totalPromotions").textContent = "8";
+
+    document.getElementById("statMembers").textContent = "127";
+    document.getElementById("statBusinesses").textContent = "18";
+    document.getElementById("statPromotions").textContent = "8";
+    document.getElementById("statEvents").textContent = "3";
+
+}
+
 function renderDashboard(nombre){
 
 return `
@@ -69,17 +84,17 @@ return `
 </section>
 
         <div class="summary-card">
-            <span class="summary-number">127</span>
+            <span class="summary-number" id="totalMembers">--</span>
             <span class="summary-label">Miembros</span>
         </div>
 
         <div class="summary-card">
-            <span class="summary-number">18</span>
+            <span class="summary-number" id="totalBusinesses">--</span>
             <span class="summary-label">Negocios</span>
         </div>
 
         <div class="summary-card">
-            <span class="summary-number">8</span>
+            <span class="summary-number" id="totalPromotions">--</span>
             <span class="summary-label">Promociones</span>
         </div>
 
@@ -161,22 +176,22 @@ return `
             <div class="stats-grid">
 
                 <div class="stat-card">
-                    <div class="stat-number">127</div>
+                    <div class="stat-number" id="statMembers">--</div>
                     <div class="stat-label">Miembros</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">18</div>
+                    <div class="stat-number" id="statBusinesses">--</div>
                     <div class="stat-label">Negocios</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">8</div>
+                    <div class="stat-number" id="statPromotions">--</div>
                     <div class="stat-label">Promociones</div>
                 </div>
 
                 <div class="stat-card">
-                    <div class="stat-number">3</div>
+                    <div class="stat-number" id="statEvents">--</div>
                     <div class="stat-label">Eventos</div>
                 </div>
 
@@ -186,34 +201,125 @@ return `
 
         <section class="recommended-section">
 
-            <div class="section-header">
+    <div class="section-header">
 
-                <h2>Negocios destacados</h2>
+        <div>
 
-                <a href="negocios.html" class="section-link">
-                    Ver todos →
-                </a>
+            <span class="section-tag">
+                Recomendados para ti
+            </span>
 
-            </div>
+            <h2>Negocios destacados</h2>
 
-            <div class="recommended-placeholder">
+        </div>
 
-                <div class="placeholder-icon">
-                    🏪
-                </div>
+        <a href="negocios.html" class="section-link">
+            Ver todos →
+        </a>
 
-                <h3>
-                    Descubre negocios confiables
-                </h3>
+    </div>
+
+    <div class="business-grid">
+
+        <article class="business-card">
+
+            <div class="business-cover"></div>
+
+            <div class="business-body">
+
+                <span class="business-category">
+                    Restaurante
+                </span>
+
+                <h3>La Casa del Café</h3>
 
                 <p>
-                    Muy pronto mostraremos recomendaciones personalizadas.
+                    Café artesanal y desayunos preparados con ingredientes locales.
                 </p>
+
+                <div class="business-footer">
+
+                    <span class="rating">
+                        ⭐ 4.9
+                    </span>
+
+                    <a href="negocios.html">
+                        Ver →
+                    </a>
+
+                </div>
 
             </div>
 
-        </section>
+        </article>
 
+        <article class="business-card">
+
+            <div class="business-cover"></div>
+
+            <div class="business-body">
+
+                <span class="business-category">
+                    Salud
+                </span>
+
+                <h3>Clínica Vital</h3>
+
+                <p>
+                    Atención médica con profesionales recomendados por la comunidad.
+                </p>
+
+                <div class="business-footer">
+
+                    <span class="rating">
+                        ⭐ 4.8
+                    </span>
+
+                    <a href="negocios.html">
+                        Ver →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        <article class="business-card">
+
+            <div class="business-cover"></div>
+
+            <div class="business-body">
+
+                <span class="business-category">
+                    Educación
+                </span>
+
+                <h3>Academia Futuro</h3>
+
+                <p>
+                    Cursos y talleres para niños, jóvenes y adultos.
+                </p>
+
+                <div class="business-footer">
+
+                    <span class="rating">
+                        ⭐ 5.0
+                    </span>
+
+                    <a href="negocios.html">
+                        Ver →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
         <section class="activity-section">
 
             <h2>Actividad reciente</h2>
