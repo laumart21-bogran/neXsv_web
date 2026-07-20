@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mi Dashboard | neXsv</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+    <header id="header-container"></header>
+
+    <main class="dashboard-page">
+
+        <aside class="dashboard-sidebar">
+
+            <!-- Perfil -->
+            <section class="profile-card">
+
+                <div class="profile-photo">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <h2 id="memberName">Miembro neXsv</h2>
+
+                <p id="memberEmail">
+                    Cargando...
+                </p>
+
+            </section>
+
+            <!-- Menú -->
+            <nav class="dashboard-menu">
+
+                <a href="#" class="active">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+
+                <a href="perfil.html">
+                    <i class="fa-regular fa-user"></i>
+                    Mi perfil
+                </a>
+
+                <a href="#">
+                    <i class="fa-regular fa-bookmark"></i>
+                    Guardados
+                </a>
+
+                <a href="#">
+                    <i class="fa-regular fa-envelope"></i>
+                    Mensajes
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Oportunidades
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Configuración
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <section class="dashboard-content">
+
+            <h1>
+                ¡Bienvenido a neXsv!
+            </h1>
+
+            <p>
+                Este será tu espacio personal dentro de la comunidad.
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="components/header.js"></script>
+
+</body>
+</html>
