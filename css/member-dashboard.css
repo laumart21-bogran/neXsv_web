@@ -467,9 +467,8 @@ grid-template-columns:1fr;
 
     display:inline-block;
 
-    background:#FFF6D8;
-
-    color:#C58B00;
+    background:linear-gradient(135deg,#18C37E,#2F80ED);
+    color:#fff;
 
     padding:8px 16px;
 
