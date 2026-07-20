@@ -1,102 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Mi Dashboard | neXsv</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
 
-    <!-- Estilos -->
+    <!-- CSS existente -->
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/dashboard.css">
+
+    <!-- CSS exclusivo del Dashboard -->
+    <link rel="stylesheet" href="css/member-dashboard.css">
+
 </head>
 
 <body>
 
-    <header id="header-container"></header>
+<header id="header-container"></header>
 
-    <main class="dashboard-page">
+<main class="dashboard">
 
-        <aside class="dashboard-sidebar">
+    <!-- ================= SIDEBAR ================= -->
 
-            <!-- Perfil -->
-            <section class="profile-card">
+    <aside class="dashboard-sidebar">
 
-                <div class="profile-photo">
-                    <i class="fa-solid fa-user"></i>
-                </div>
+        <div class="profile-card">
 
-                <h2 id="memberName">Miembro neXsv</h2>
+            <div class="profile-avatar">
+                <i class="fa-solid fa-user"></i>
+            </div>
 
-                <p id="memberEmail">
-                    Cargando...
+            <h2 id="memberName">Miembro neXsv</h2>
+
+            <p id="memberEmail">
+                usuario@nexsv.com
+            </p>
+
+        </div>
+
+        <nav class="dashboard-menu">
+
+            <a class="active" href="#">
+                <i class="fa-solid fa-house"></i>
+                Inicio
+            </a>
+
+            <a href="perfil.html">
+                <i class="fa-regular fa-user"></i>
+                Mi Perfil
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-handshake"></i>
+                Oportunidades
+            </a>
+
+            <a href="#">
+                <i class="fa-regular fa-bookmark"></i>
+                Guardados
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-gear"></i>
+                Configuración
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- ================= CONTENIDO ================= -->
+
+    <section class="dashboard-content">
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    ¡Bienvenido!
+                </h1>
+
+                <p>
+                    Este será tu espacio personal dentro de la comunidad neXsv.
                 </p>
 
-            </section>
+            </div>
 
-            <!-- Menú -->
-            <nav class="dashboard-menu">
+        </section>
 
-                <a href="#" class="active">
-                    <i class="fa-solid fa-house"></i>
-                    Dashboard
-                </a>
+        <!-- MÉTRICAS -->
 
-                <a href="perfil.html">
-                    <i class="fa-regular fa-user"></i>
-                    Mi perfil
-                </a>
+        <section class="stats-grid">
 
-                <a href="#">
-                    <i class="fa-regular fa-bookmark"></i>
-                    Guardados
-                </a>
+            <article class="card stat-card">
 
-                <a href="#">
-                    <i class="fa-regular fa-envelope"></i>
-                    Mensajes
-                </a>
+                <h3>Negocios Guardados</h3>
 
-                <a href="#">
-                    <i class="fa-solid fa-briefcase"></i>
-                    Oportunidades
-                </a>
+                <strong>0</strong>
 
-                <a href="#">
-                    <i class="fa-solid fa-gear"></i>
-                    Configuración
-                </a>
+            </article>
 
-            </nav>
+            <article class="card stat-card">
 
-        </aside>
+                <h3>Oportunidades</h3>
 
-        <section class="dashboard-content">
+                <strong>0</strong>
 
-            <h1>
-                ¡Bienvenido a neXsv!
-            </h1>
+            </article>
+
+            <article class="card stat-card">
+
+                <h3>Actividad</h3>
+
+                <strong>0</strong>
+
+            </article>
+
+        </section>
+
+        <!-- ACTIVIDAD -->
+
+        <section class="card">
+
+            <h2>Actividad reciente</h2>
 
             <p>
-                Este será tu espacio personal dentro de la comunidad.
+                Aquí aparecerán tus últimas acciones dentro de neXsv.
             </p>
 
         </section>
 
-    </main>
+        <!-- OPORTUNIDADES -->
 
-    <script src="components/header.js"></script>
+        <section class="card">
+
+            <h2>Oportunidades para la comunidad</h2>
+
+            <p>
+
+                Compra, vende o intercambia libros, uniformes y artículos escolares
+                con otros miembros de confianza.
+
+            </p>
+
+        </section>
+
+    </section>
+
+</main>
+
+<script src="components/header.js"></script>
 
 </body>
+
 </html>
