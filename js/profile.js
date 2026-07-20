@@ -43,6 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const preview = document.getElementById("profilePreview");
     const initials = document.getElementById("profileInitials");
     const changePhotoBtn = document.getElementById("changePhotoBtn");
+    const topAvatarImage = document.getElementById("topAvatarImage");
+const topAvatarInitials = document.getElementById("topAvatarInitials");
+
+const sidebarAvatarImage = document.getElementById("sidebarAvatarImage");
+const sidebarAvatarInitials = document.getElementById("sidebarAvatarInitials");
 
     /*=========================================
     Header
