@@ -780,3 +780,57 @@ Foto de Perfil
     background:#F5F7FB;
 
 }
+
+/*=========================================
+Avatar Usuario
+=========================================*/
+
+.user-avatar,
+.profile-avatar{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.user-avatar img,
+.profile-avatar img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+}
+
+.user-avatar span,
+.profile-avatar span{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:100%;
+    height:100%;
+
+    font-weight:700;
+
+    color:#4F46E5;
+
+}
+
+/* Borde degradado */
+
+.profile-avatar{
+
+    padding:4px;
+
+    background:linear-gradient(
+        135deg,
+        #18C37E,
+        #2F80ED
+    );
+
+}
