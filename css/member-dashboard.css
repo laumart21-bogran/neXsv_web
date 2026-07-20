@@ -260,3 +260,117 @@ grid-template-columns:1fr;
 }
 
 }
+
+/* ==========================================
+   Topbar privada
+========================================== */
+
+.dashboard-topbar{
+
+    height:78px;
+
+    background:#fff;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 40px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.05);
+
+    margin-bottom:35px;
+
+}
+
+.dashboard-logo img{
+
+    height:42px;
+
+}
+
+.dashboard-user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.notification-btn{
+
+    width:46px;
+    height:46px;
+
+    border:none;
+
+    background:#F5F7FB;
+
+    border-radius:50%;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    color:#3D5BA9;
+
+    transition:.25s;
+
+}
+
+.notification-btn:hover{
+
+    background:#FFD54A;
+
+}
+
+.user-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    text-align:right;
+
+}
+
+.user-name{
+
+    font-weight:700;
+
+    color:#233A72;
+
+}
+
+.user-info small{
+
+    color:#7B8794;
+
+}
+
+.user-avatar{
+
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:#FFD54A;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#233A72;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
