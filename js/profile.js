@@ -1,101 +1,95 @@
+/*=========================================
+neXsv
+Perfil del Miembro
+=========================================*/
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    if (typeof getCurrentUser !== "function") return;
+    if (!isLogged()) {
 
-    const usuario = getCurrentUser();
-
-    if (!usuario) {
-
-        window.location.href = "acceso/";
-
+        window.location.href = "acceso/login-usuario.html";
         return;
 
     }
 
-    const contenedor = document.getElementById("profile-container");
+    const usuario = getCurrentUser();
 
-    contenedor.innerHTML = `
+    //========================
+    // Header
+    //========================
 
-<div class="profile-card">
+    const topUserName = document.getElementById("topUserName");
+    const topUserRole = document.getElementById("topUserRole");
 
-    <div class="profile-avatar">
+    if (topUserName)
+        topUserName.textContent = usuario.nombre || "Miembro";
 
-        👤
+    if (topUserRole)
+        topUserRole.textContent = usuario.rol || "Miembro";
 
-    </div>
+    //========================
+    // Sidebar
+    //========================
 
-    <h1>${usuario.nombre}</h1>
+    document.getElementById("memberName").textContent =
+        usuario.nombre || "";
 
-    <span class="profile-role">
+    document.getElementById("memberEmail").textContent =
+        usuario.correo || usuario.email || "";
 
-        ${usuario.rol}
+    //========================
+    // Formulario
+    //========================
 
-    </span>
+    document.getElementById("nombre").value =
+        usuario.nombre || "";
 
-    <hr>
+    document.getElementById("correo").value =
+        usuario.correo || usuario.email || "";
 
-    <div class="profile-item">
+    document.getElementById("telefono").value =
+        usuario.telefono || "";
 
-        <strong>Correo</strong>
+    document.getElementById("ciudad").value =
+        usuario.ciudad || "";
 
-        <p>${usuario.email}</p>
+    document.getElementById("colegio").value =
+        usuario.colegio || "";
 
-    </div>
+    //========================
+    // Guardar cambios
+    //========================
 
-    <div class="profile-item">
-
-        <strong>Miembro desde</strong>
-
-        <p>2026</p>
-
-    </div>
-
-    <hr>
-
-    <div class="profile-stats">
-
-        <div>
-
-            <h2>0</h2>
-
-            <p>Favoritos</p>
-
-        </div>
-
-        <div>
-
-            <h2>0</h2>
-
-            <p>Recomendaciones</p>
-
-        </div>
-
-        <div>
-
-            <h2>0</h2>
-
-            <p>Oportunidades</p>
-
-        </div>
-
-    </div>
-
-    <button class="btn btn-primary" id="logoutBtn">
-
-        Cerrar sesión
-
-    </button>
-
-</div>
-
-`;
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-
-        localStorage.removeItem("nexsv_user");
-
-        window.location.href = "index.html";
-
-    });
+    document
+        .getElementById("profileForm")
+        .addEventListener("submit", guardarPerfil);
 
 });
+
+/*=========================================
+Guardar Perfil
+=========================================*/
+
+function guardarPerfil(e){
+
+    e.preventDefault();
+
+    const usuario = getCurrentUser();
+
+    usuario.nombre =
+        document.getElementById("nombre").value;
+
+    usuario.telefono =
+        document.getElementById("telefono").value;
+
+    usuario.ciudad =
+        document.getElementById("ciudad").value;
+
+    usuario.colegio =
+        document.getElementById("colegio").value;
+
+    login(usuario);
+
+    alert("Perfil actualizado correctamente.");
+
+}
