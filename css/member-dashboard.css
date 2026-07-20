@@ -913,3 +913,87 @@ Avatar Usuario
     box-shadow:0 16px 35px rgba(47,128,237,.28);
 
 }
+
+/*=========================================
+  Formulario de Perfil
+=========================================*/
+
+.profile-form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:22px;
+
+    margin-top:40px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.form-group label{
+
+    margin-bottom:8px;
+
+    font-size:.90rem;
+
+    font-weight:600;
+
+    color:#233A72;
+
+}
+
+.form-group input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid #DCE3EF;
+
+    border-radius:12px;
+
+    background:#FFFFFF;
+
+    font-size:.95rem;
+
+    color:#233A72;
+
+    transition:.25s;
+
+}
+
+.form-group input:focus{
+
+    outline:none;
+
+    border-color:#2F80ED;
+
+    box-shadow:0 0 0 4px rgba(47,128,237,.12);
+
+}
+
+.form-group input:disabled{
+
+    background:#F7F8FA;
+
+    color:#94A3B8;
+
+}
+
+@media(max-width:768px){
+
+    .profile-form-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
