@@ -8,22 +8,237 @@
 
     <title>Mi Perfil | neXsv</title>
 
-    <link rel="stylesheet" href="components/layout.css">
-    <link rel="stylesheet" href="components/header.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/member-dashboard.css">
 
 </head>
 
 <body>
 
-<script src="js/auth.js"></script>
-<script src="components/header.js"></script>
+<header class="dashboard-topbar">
 
-<main class="container" style="padding:50px 20px;">
+    <a href="index.html" class="dashboard-logo">
+        <img src="logo.png" alt="neXsv">
+    </a>
 
-    <div id="profile-container"></div>
+    <div class="dashboard-user">
+
+        <button class="notification-btn">
+            <i class="fa-regular fa-bell"></i>
+        </button>
+
+        <div class="user-info">
+
+            <span class="user-name" id="topUserName">
+                Miembro
+            </span>
+
+            <small id="topUserRole">
+                Miembro
+            </small>
+
+        </div>
+
+        <div class="user-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+    </div>
+
+</header>
+
+<main class="dashboard">
+
+    <aside class="dashboard-sidebar">
+
+        <div class="profile-card">
+
+            <div class="profile-avatar">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <h2 id="memberName">
+
+                Miembro
+
+            </h2>
+
+            <p class="member-since">
+
+                Miembro desde 2026
+
+            </p>
+
+            <span class="member-badge">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Miembro verificado
+
+            </span>
+
+            <p class="member-email" id="memberEmail"></p>
+
+        </div>
+
+        <nav class="dashboard-menu">
+
+            <a href="dashboard.html">
+
+                <i class="fa-solid fa-house"></i>
+
+                Inicio
+
+            </a>
+
+            <a class="active" href="#">
+
+                <i class="fa-regular fa-user"></i>
+
+                Mi Perfil
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-handshake"></i>
+
+                Oportunidades
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-regular fa-bookmark"></i>
+
+                Guardados
+
+            </a>
+
+            <a href="#">
+
+                <i class="fa-solid fa-gear"></i>
+
+                Configuración
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <section class="dashboard-content">
+
+        <section class="dashboard-header">
+
+            <span class="welcome-tag">
+
+                Mi Perfil
+
+            </span>
+
+            <h1>
+
+                Completa tu información
+
+            </h1>
+
+            <p>
+
+                Mantén tu perfil actualizado para generar confianza dentro de la comunidad.
+
+            </p>
+
+        </section>
+
+        <section class="card">
+
+            <form id="profileForm">
+
+                <div class="profile-form-grid">
+
+                    <div class="form-group">
+
+                        <label>Nombre completo</label>
+
+                        <input
+                            type="text"
+                            id="nombre">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Correo electrónico</label>
+
+                        <input
+                            type="email"
+                            id="correo"
+                            disabled>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Teléfono</label>
+
+                        <input
+                            type="text"
+                            id="telefono"
+                            placeholder="0000-0000">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Ciudad</label>
+
+                        <input
+                            type="text"
+                            id="ciudad">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>Colegio de interés</label>
+
+                        <input
+                            type="text"
+                            id="colegio">
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    type="submit">
+
+                    Guardar cambios
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </section>
 
 </main>
 
+<script src="js/auth.js"></script>
 <script src="js/profile.js"></script>
 
 </body>
