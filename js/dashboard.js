@@ -62,7 +62,7 @@ const usuario = getCurrentUser();
 
     }
 
-});
+
 
 /*=========================================
 Fotografía del usuario
@@ -133,3 +133,5 @@ function obtenerIniciales(nombre){
     return texto.toUpperCase();
 
 }
+
+});                          
