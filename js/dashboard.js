@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nombre = getUserName();
     const correo = getUserEmail();
     const rol = getUserRole();
+    // Usuario completo
+const usuario = getCurrentUser();
 
     // Header
     const topUserName = document.getElementById("topUserName");
@@ -61,3 +63,73 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+/*=========================================
+Fotografía del usuario
+=========================================*/
+
+const topAvatarImage = document.getElementById("topAvatarImage");
+const topAvatarInitials = document.getElementById("topAvatarInitials");
+
+const sidebarAvatarImage = document.getElementById("sidebarAvatarImage");
+const sidebarAvatarInitials = document.getElementById("sidebarAvatarInitials");
+
+const iniciales = obtenerIniciales(usuario.nombre || "Miembro");
+
+if (usuario.foto) {
+
+    if (topAvatarImage) {
+
+        topAvatarImage.src = usuario.foto;
+        topAvatarImage.style.display = "block";
+
+    }
+
+    if (sidebarAvatarImage) {
+
+        sidebarAvatarImage.src = usuario.foto;
+        sidebarAvatarImage.style.display = "block";
+
+    }
+
+    if (topAvatarInitials)
+        topAvatarInitials.style.display = "none";
+
+    if (sidebarAvatarInitials)
+        sidebarAvatarInitials.style.display = "none";
+
+} else {
+
+    if (topAvatarInitials)
+        topAvatarInitials.textContent = iniciales;
+
+    if (sidebarAvatarInitials)
+        sidebarAvatarInitials.textContent = iniciales;
+
+}
+
+/*=========================================
+Obtener Iniciales
+=========================================*/
+
+function obtenerIniciales(nombre){
+
+    const partes = nombre.trim().split(" ");
+
+    let texto = "";
+
+    if(partes.length > 0 && partes[0].length){
+
+        texto += partes[0][0];
+
+    }
+
+    if(partes.length > 1 && partes[1].length){
+
+        texto += partes[1][0];
+
+    }
+
+    return texto.toUpperCase();
+
+}
