@@ -999,3 +999,25 @@ Avatar Usuario
     }
 
 }
+
+/*=========================================
+Información Perfil
+=========================================*/
+
+.profile-info{
+
+    margin:28px 0 34px;
+
+}
+
+.profile-info p{
+
+    margin:0;
+
+    color:#64748B;
+
+    line-height:1.8;
+
+    max-width:700px;
+
+}
