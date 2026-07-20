@@ -115,6 +115,32 @@ const sidebarAvatarInitials = document.getElementById("sidebarAvatarInitials");
 
     });
 
+    /*=========================================
+Sincronizar avatares
+=========================================*/
+
+if (usuario.foto) {
+
+    if (topAvatarImage) {
+        topAvatarImage.src = usuario.foto;
+        topAvatarImage.style.display = "block";
+    }
+
+    if (topAvatarInitials) {
+        topAvatarInitials.style.display = "none";
+    }
+
+    if (sidebarAvatarImage) {
+        sidebarAvatarImage.src = usuario.foto;
+        sidebarAvatarImage.style.display = "block";
+    }
+
+    if (sidebarAvatarInitials) {
+        sidebarAvatarInitials.style.display = "none";
+    }
+
+}
+
     imageInput.addEventListener("change", async () => {
 
         const file = imageInput.files[0];
