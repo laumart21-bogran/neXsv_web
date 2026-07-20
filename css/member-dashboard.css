@@ -616,3 +616,15 @@ grid-template-columns:1fr;
     margin-bottom:20px;
 
 }
+
+.member-email{
+
+    margin-top:18px;
+
+    color:#64748B;
+
+    font-size:.90rem;
+
+    word-break:break-word;
+
+}
