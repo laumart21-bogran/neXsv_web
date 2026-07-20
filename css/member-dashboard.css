@@ -628,3 +628,77 @@ grid-template-columns:1fr;
     word-break:break-word;
 
 }
+
+/*=========================================
+Perfil Progress
+=========================================*/
+
+.profile-progress{
+
+    margin-bottom:30px;
+
+}
+
+.profile-checklist{
+
+    list-style:none;
+
+    margin:25px 0;
+
+    padding:0;
+
+}
+
+.profile-checklist li{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-bottom:14px;
+
+    color:#4B5563;
+
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:10px;
+
+    background:#ECECEC;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    margin-top:15px;
+
+}
+
+.progress-fill{
+
+    width:25%;
+
+    height:100%;
+
+    background:#FFD54A;
+
+    transition:.4s;
+
+}
+
+#progressText{
+
+    display:block;
+
+    margin-top:12px;
+
+    color:#64748B;
+
+    font-size:.90rem;
+
+}
