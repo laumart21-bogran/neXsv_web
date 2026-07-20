@@ -43,11 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const preview = document.getElementById("profilePreview");
     const initials = document.getElementById("profileInitials");
     const changePhotoBtn = document.getElementById("changePhotoBtn");
-    const topAvatarImage = document.getElementById("topAvatarImage");
-    const topAvatarInitials = document.getElementById("topAvatarInitials");
-
-    const sidebarAvatarImage = document.getElementById("sidebarAvatarImage");
-    const sidebarAvatarInitials = document.getElementById("sidebarAvatarInitials");
 
     /*=========================================
     Header
@@ -85,51 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (usuario.foto) {
 
-    preview.src = usuario.foto;
-    preview.style.display = "block";
-    initials.style.display = "none";
+        preview.src = usuario.foto;
+        preview.style.display = "block";
+        initials.style.display = "none";
 
-    if (topAvatarImage) {
-        topAvatarImage.src = usuario.foto;
-        topAvatarImage.style.display = "block";
-    }
-
-    if (topAvatarInitials) {
-        topAvatarInitials.style.display = "none";
-    }
-
-    if (sidebarAvatarImage) {
-        sidebarAvatarImage.src = usuario.foto;
-        sidebarAvatarImage.style.display = "block";
-    }
-
-    if (sidebarAvatarInitials) {
-        sidebarAvatarInitials.style.display = "none";
-    }
-
-} else {
-
-    const partes = (usuario.nombre || "").trim().split(" ");
-
-    let texto = "";
-
-    if (partes.length > 0 && partes[0].length)
-        texto += partes[0][0];
-
-    if (partes.length > 1 && partes[1].length)
-        texto += partes[1][0];
-
-    texto = texto.toUpperCase();
-
-    initials.textContent = texto;
-
-    if (topAvatarInitials)
-        topAvatarInitials.textContent = texto;
-
-    if (sidebarAvatarInitials)
-        sidebarAvatarInitials.textContent = texto;
-
-}
+    } else {
 
         const partes = (usuario.nombre || "").trim().split(" ");
 
