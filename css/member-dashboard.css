@@ -834,3 +834,45 @@ Avatar Usuario
     );
 
 }
+
+/*=========================================
+  Avatar con fotografía
+=========================================*/
+
+.user-avatar,
+.profile-avatar{
+
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+}
+
+.user-avatar img,
+.profile-avatar img{
+
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+
+}
+
+.user-avatar span,
+.profile-avatar span{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:700;
+    font-size:1rem;
+
+    color:#233A72;
+    background:#FFD54A;
+
+}
