@@ -166,6 +166,47 @@
 
             <form id="profileForm">
 
+                <div class="profile-photo-section">
+
+    <div class="profile-photo">
+
+        <img
+            id="profilePreview"
+            src=""
+            alt="Foto de perfil"
+            style="display:none;">
+
+        <div id="profileInitials" class="profile-initials">
+            LM
+        </div>
+
+    </div>
+
+    <input
+        type="file"
+        id="profileImage"
+        accept="image/png,image/jpeg,image/webp"
+        hidden>
+
+    <button
+        type="button"
+        id="changePhotoBtn"
+        class="secondary-btn">
+
+        <i class="fa-solid fa-camera"></i>
+
+        Cambiar fotografía
+
+    </button>
+
+    <small>
+
+        JPG, PNG o WEBP · Máximo 5 MB
+
+    </small>
+
+</div>
+
                 <div class="profile-form-grid">
 
                     <div class="form-group">
