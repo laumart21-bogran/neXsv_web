@@ -875,3 +875,41 @@ Avatar Usuario
     background:#FFD54A;
 
 }
+
+/*=========================================
+  Botón Completar Perfil
+=========================================*/
+
+.primary-btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:14px 30px;
+
+    border:none;
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#18C37E,#2F80ED);
+
+    color:#FFFFFF;
+
+    font-weight:700;
+    font-size:.95rem;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    box-shadow:0 10px 25px rgba(47,128,237,.20);
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 16px 35px rgba(47,128,237,.28);
+
+}
