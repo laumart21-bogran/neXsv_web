@@ -444,3 +444,61 @@ grid-template-columns:1fr;
     line-height:1.7;
 
 }
+
+/* ==========================================
+   Bienvenida
+========================================== */
+
+.dashboard-header{
+
+    background:#fff;
+
+    padding:35px;
+
+    border-radius:18px;
+
+    margin-bottom:28px;
+
+    box-shadow:0 8px 24px rgba(0,0,0,.05);
+
+}
+
+.welcome-tag{
+
+    display:inline-block;
+
+    background:#FFF6D8;
+
+    color:#C58B00;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    font-size:.85rem;
+
+    font-weight:700;
+
+    margin-bottom:16px;
+
+}
+
+.dashboard-header h1{
+
+    font-size:2rem;
+
+    color:#233A72;
+
+    margin-bottom:14px;
+
+}
+
+.dashboard-header p{
+
+    max-width:700px;
+
+    line-height:1.8;
+
+    color:#64748B;
+
+}
