@@ -209,20 +209,62 @@ if (usuario.foto) {
     Guardar Perfil
     =========================================*/
 
-    profileForm.addEventListener("submit", (e) => {
+  profileForm.addEventListener("submit", async (e) => {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        usuario.nombre = nombre.value.trim();
-        usuario.telefono = telefono.value.trim();
-        usuario.ciudad = ciudad.value.trim();
-        usuario.colegio = colegio.value.trim();
+    usuario.nombre = nombre.value.trim();
+    usuario.telefono = telefono.value.trim();
+    usuario.ciudad = ciudad.value.trim();
+    usuario.colegio = colegio.value.trim();
+
+    try {
+
+        const response = await fetch("/api/profile", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                id: usuario.id,
+                nombre: usuario.nombre,
+                foto: usuario.foto,
+                telefono: usuario.telefono,
+                ciudad: usuario.ciudad,
+                colegio: usuario.colegio
+
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+
+            alert(data.message || "No fue posible actualizar el perfil.");
+            return;
+
+        }
 
         login(usuario);
 
         alert("Perfil actualizado correctamente.");
 
-    });
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("Ocurrió un error al actualizar el perfil.");
+
+    }
+
+});
 
 });
 
