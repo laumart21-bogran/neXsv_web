@@ -213,6 +213,10 @@ if (usuario.foto) {
 
     e.preventDefault();
 
+    const submitButton = profileForm.querySelector("button[type='submit']");
+submitButton.disabled = true;
+submitButton.textContent = "Guardando...";
+      
     usuario.nombre = nombre.value.trim();
     usuario.telefono = telefono.value.trim();
     usuario.ciudad = ciudad.value.trim();
@@ -245,20 +249,28 @@ if (usuario.foto) {
 
         if (!data.success) {
 
-            alert(data.message || "No fue posible actualizar el perfil.");
-            return;
+    submitButton.disabled = false;
+    submitButton.textContent = "Guardar cambios";
 
-        }
+    alert(data.message || "No fue posible actualizar el perfil.");
+    return;
 
-        login(usuario);
+}
+       login(usuario);
 
-        alert("Perfil actualizado correctamente.");
+submitButton.disabled = false;
+submitButton.textContent = "Guardar cambios";
+
+alert("Perfil actualizado correctamente.");
 
     }
 
     catch (error) {
 
         console.error(error);
+
+        submitButton.disabled = false;
+submitButton.textContent = "Guardar cambios";
 
         alert("Ocurrió un error al actualizar el perfil.");
 
