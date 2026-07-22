@@ -224,7 +224,7 @@ submitButton.textContent = "Guardando...";
 
     try {
 
-        const response = await fetch("/api/profile", {
+        const response = await fetch("https://ne-xsv-api.vercel.app/api/profile", {
 
             method: "POST",
 
