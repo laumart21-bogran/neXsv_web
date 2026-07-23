@@ -93,7 +93,7 @@ function initLogin() {
 
                 setTimeout(() => {
 
-                    window.location.href = "../dashboard.html";
+                    window.location.href = "../member-home.html";
 
                 }, 1000);
 
