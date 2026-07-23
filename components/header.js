@@ -1,4 +1,4 @@
-const usuario = JSON.parse(localStorage.getItem("nexsv_user") || "null");
+const usuario = JSON.parse(localStorage.getItem("nexsv.member") || "null");
 
 const botonCuenta = usuario
     ? `
