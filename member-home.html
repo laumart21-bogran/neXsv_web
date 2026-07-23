@@ -1,1 +1,1488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NeXsv</title>
+
+<!-- TIPOGRAFÍA -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ========================================
+RESET
+======================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+scroll-behavior:smooth;
+min-width:0;
+}
+
+html,
+body{
+overflow-x:hidden;
+max-width:100%;
+}
+
+:root{
+--primary:#1657B8;
+--secondary:#19C2C6;
+--accent:#F7C531;
+--success:#74D67F;
+--bg:#F5F7FB;
+--text:#1D2A3A;
+--white:#ffffff;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:var(--bg);
+color:var(--text);
+
+text-rendering:optimizeLegibility;
+-webkit-font-smoothing:antialiased;
+overflow-x:hidden;
+}
+
+/* ========================================
+IMÁGENES
+======================================== */
+
+img{
+max-width:100%;
+height:auto;
+display:block;
+}
+
+/* ========================================
+HEADER
+======================================== */
+
+.top-blur{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:90px;
+
+background:rgba(255,255,255,.72);
+
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+
+border-bottom:1px solid rgba(255,255,255,.5);
+
+z-index:998;
+
+/* IMPORTANTE */
+pointer-events:none;
+}
+
+/* ASEGURA VISIBILIDAD DEL MENÚ */
+header,
+nav,
+.navbar,
+.nav-container{
+position:relative;
+z-index:1200;
+}
+
+/* ========================================
+CONTAINER
+======================================== */
+
+.container{
+width:100%;
+max-width:1200px;
+margin:auto;
+padding-inline:20px;
+}
+
+/* ========================================
+HERO
+======================================== */
+
+.hero{
+width:100%;
+min-height:100vh;
+
+background:
+linear-gradient(
+rgba(9,28,61,.78),
+rgba(9,28,61,.82)
+),
+url('cover-index.jpg') center/cover no-repeat;
+
+display:flex;
+align-items:center;
+
+padding:
+120px 24px
+80px;
+
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+
+width:500px;
+height:500px;
+
+background:rgba(25,194,198,.18);
+
+filter:blur(120px);
+
+top:-100px;
+right:-100px;
+
+border-radius:50%;
+}
+
+.hero::after{
+content:"";
+position:absolute;
+
+width:350px;
+height:350px;
+
+background:rgba(247,197,49,.12);
+
+filter:blur(100px);
+
+bottom:-120px;
+left:-80px;
+
+border-radius:50%;
+}
+
+.hero-content{
+position:relative;
+z-index:5;
+
+width:100%;
+max-width:700px;
+
+animation:fadeUp 1s ease;
+}
+
+.hero-logo{
+width:100%;
+max-width:230px;
+margin-bottom:30px;
+}
+
+.hero h1{
+font-size:clamp(2.8rem, 7vw, 4.5rem);
+line-height:1.05;
+font-weight:800;
+color:white;
+margin-bottom:25px;
+letter-spacing:-2px;
+}
+
+.hero p{
+font-size:clamp(1rem, 2vw, 1.35rem);
+line-height:1.8;
+color:rgba(255,255,255,.88);
+margin-bottom:40px;
+max-width:650px;
+}
+
+/* ========================================
+BOTONES
+======================================== */
+
+.hero-buttons{
+display:flex;
+flex-wrap:wrap;
+gap:18px;
+
+position:relative;
+z-index:10;
+}
+
+.hero-trust{
+
+margin-top:24px;
+
+font-size:15px;
+
+font-weight:600;
+
+color:rgba(255,255,255,.85);
+
+}
+
+.btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+padding:17px 30px;
+
+border-radius:18px;
+
+text-decoration:none;
+font-weight:700;
+
+transition:.35s;
+
+font-size:16px;
+min-height:58px;
+}
+
+.btn-primary{
+background:
+linear-gradient(
+135deg,
+var(--accent),
+#ffd95e
+);
+
+color:#1D2A3A;
+
+box-shadow:
+0 15px 35px rgba(247,197,49,.28);
+}
+
+.btn-secondary{
+background:rgba(255,255,255,.16);
+
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,.28);
+
+color:white !important;
+
+position:relative;
+z-index:20;
+}
+
+.btn-secondary:hover{
+background:rgba(255,255,255,.24);
+}
+
+.btn:hover{
+transform:translateY(-4px);
+}
+
+/* ========================================
+SECCIONES
+======================================== */
+
+.section{
+padding:100px 0;
+position:relative;
+}
+
+.section-center{
+text-align:center;
+}
+
+.section h2{
+font-size:clamp(2rem,5vw,3.5rem);
+line-height:1.15;
+font-weight:800;
+margin-bottom:25px;
+color:var(--primary);
+letter-spacing:-1px;
+}
+
+.section p{
+font-size:clamp(1rem,2vw,1.15rem);
+line-height:1.9;
+color:#5d6677;
+}
+
+/* ========================================
+BOX
+======================================== */
+
+.section-box{
+margin-top:45px;
+
+background:rgba(255,255,255,.7);
+
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+
+padding:40px;
+
+border-radius:32px;
+
+box-shadow:
+0 10px 40px rgba(0,0,0,.06);
+
+border:1px solid rgba(255,255,255,.6);
+}
+
+.section-box p{
+margin-bottom:14px;
+font-weight:500;
+}
+
+/* ========================================
+GRID
+======================================== */
+
+.grid{
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(260px,1fr));
+
+gap:32px;
+
+margin-top:50px;
+}
+
+/* ========================================
+CARDS
+======================================== */
+
+.card{
+background:white;
+
+padding:38px;
+
+border-radius:30px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.4s;
+
+width:100%;
+}
+
+.card::before{
+content:"";
+position:absolute;
+
+width:160px;
+height:160px;
+
+background:rgba(25,194,198,.08);
+
+border-radius:50%;
+
+top:-50px;
+right:-50px;
+}
+
+.card:hover{
+transform:translateY(-10px);
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.12);
+}
+
+.card h3{
+font-size:28px;
+margin-bottom:18px;
+font-weight:700;
+color:var(--primary);
+
+position:relative;
+z-index:2;
+}
+
+.card p{
+position:relative;
+z-index:2;
+}
+
+/*==========================
+EXPLORA NEXSV
+==========================*/
+
+.explore-section{
+padding:70px 0;
+}
+
+.explore-title{
+
+font-size:2.2rem;
+font-weight:800;
+color:var(--primary);
+
+margin-bottom:12px;
+}
+
+.explore-subtitle{
+
+max-width:700px;
+
+color:#667085;
+
+line-height:1.8;
+
+margin-bottom:40px;
+}
+
+.explore-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+gap:24px;
+}
+
+.explore-card{
+
+background:#fff;
+
+border-radius:24px;
+
+padding:30px;
+
+text-decoration:none;
+
+color:inherit;
+
+transition:.35s;
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+border:1px solid #edf0f6;
+
+position:relative;
+
+overflow:hidden;
+}
+
+.explore-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 18px 40px rgba(0,0,0,.08);
+}
+
+.explore-icon{
+
+font-size:38px;
+
+margin-bottom:20px;
+}
+
+.explore-card h3{
+
+font-size:24px;
+
+margin-bottom:12px;
+
+color:var(--primary);
+}
+
+.explore-card p{
+
+font-size:15px;
+
+line-height:1.7;
+
+color:#667085;
+
+margin-bottom:24px;
+}
+
+.explore-card span{
+
+font-weight:700;
+
+color:var(--primary);
+}
+
+.disabled{
+
+background:#fafcfb;
+
+border:1px solid #dfe8dc;
+}
+
+.coming-badge{
+
+position:absolute;
+
+top:18px;
+right:18px;
+
+background:#e8f7e8;
+
+color:#2f8b41;
+
+padding:6px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:700;
+}
+    
+/* ========================================
+TESTIMONIOS
+======================================== */
+
+.testimonial{
+background:white;
+
+padding:40px;
+
+border-radius:30px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.06);
+
+transition:.35s;
+
+width:100%;
+}
+
+.testimonial::before{
+content:"“";
+
+position:absolute;
+
+font-size:120px;
+
+top:-30px;
+left:18px;
+
+color:rgba(25,194,198,.1);
+
+font-weight:800;
+}
+
+.testimonial:hover{
+transform:translateY(-8px);
+}
+
+.testimonial p,
+.testimonial strong{
+position:relative;
+z-index:2;
+}
+
+/* ========================================
+PLANES
+======================================== */
+
+.planes-section{
+padding:120px 20px;
+
+background:
+linear-gradient(
+180deg,
+#eef5ff,
+#f5f7fb
+);
+
+text-align:center;
+}
+
+.planes-title{
+font-size:clamp(2.2rem,5vw,3.6rem);
+font-weight:800;
+color:var(--primary);
+margin-bottom:20px;
+}
+
+.planes-subtitle{
+max-width:760px;
+
+margin:auto;
+
+font-size:clamp(1rem,2vw,1.18rem);
+
+line-height:1.9;
+color:#667085;
+
+margin-bottom:70px;
+}
+
+.planes-container{
+display:flex;
+justify-content:center;
+gap:32px;
+flex-wrap:wrap;
+}
+
+.plan-card{
+width:100%;
+max-width:340px;
+
+background:white;
+
+padding:45px 35px;
+
+border-radius:32px;
+
+position:relative;
+overflow:hidden;
+
+box-shadow:
+0 15px 45px rgba(0,0,0,.08);
+
+transition:.4s;
+}
+
+.plan-card:hover{
+transform:translateY(-12px);
+}
+
+.plan-card h3{
+font-size:32px;
+margin-bottom:10px;
+font-weight:800;
+}
+
+.future-name{
+color:#7b8190;
+margin-bottom:25px;
+}
+
+.plan-price{
+font-size:24px;
+font-weight:800;
+color:var(--secondary);
+margin-bottom:30px;
+}
+
+.plan-card ul{
+list-style:none;
+text-align:left;
+margin-bottom:35px;
+}
+
+.plan-card ul li{
+margin-bottom:16px;
+line-height:1.7;
+color:#596273;
+}
+
+/* PLAN DESTACADO */
+
+.featured{
+border:3px solid var(--accent);
+transform:scale(1.04);
+}
+
+/* PLAN PREMIUM */
+
+.premium{
+background:
+linear-gradient(
+180deg,
+#1657B8,
+#0d3f89
+);
+
+color:white;
+}
+
+.premium h3{
+color:white;
+}
+
+.premium .future-name{
+color:rgba(255,255,255,.82);
+}
+
+.premium ul li{
+color:rgba(255,255,255,.94);
+}
+
+.premium .plan-price{
+color:#FFD95E;
+
+text-shadow:
+0 2px 10px rgba(0,0,0,.2);
+}
+
+.popular-badge{
+position:absolute;
+
+top:18px;
+right:18px;
+
+background:var(--accent);
+color:#1D2A3A;
+
+padding:9px 14px;
+
+border-radius:50px;
+
+font-size:12px;
+font-weight:800;
+
+z-index:20;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.popular-badge{
+
+top:10px;
+right:10px;
+
+font-size:10px;
+
+padding:6px 10px;
+
+}
+
+}
+    
+.plan-btn{
+width:100%;
+
+padding:17px;
+
+border:none;
+
+border-radius:18px;
+
+font-weight:700;
+cursor:pointer;
+
+font-size:16px;
+
+transition:.3s;
+
+text-decoration:none;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+}
+
+.default-btn{
+background:var(--primary);
+color:white;
+}
+
+.featured-btn{
+background:var(--accent);
+color:#1D2A3A;
+}
+
+.premium-btn{
+background:white;
+color:var(--primary);
+}
+
+.plan-btn:hover{
+transform:translateY(-3px);
+}
+
+/* ========================================
+FOOTER
+======================================== */
+
+footer{
+background:white;
+
+padding:40px 20px;
+
+text-align:center;
+
+margin-top:60px;
+
+color:#6b7280;
+font-size:14px;
+}
+
+.footer-line{
+width:100%;
+height:1px;
+background:#e5e7eb;
+margin-bottom:20px;
+}
+
+footer a{
+text-decoration:none;
+color:var(--primary);
+font-weight:700;
+}
+
+/* ========================================
+ANIMACIONES
+======================================== */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ========================================
+TABLET
+======================================== */
+
+@media(max-width:900px){
+
+.hero{
+min-height:auto;
+padding:
+120px 20px
+70px;
+}
+
+.hero-logo{
+max-width:180px;
+}
+
+.hero-buttons{
+width:100%;
+flex-direction:column;
+align-items:stretch;
+}
+
+.btn{
+width:100%;
+}
+
+.featured{
+transform:none;
+}
+
+.plan-card{
+max-width:100%;
+}
+
+}
+
+/* ========================================
+MOBILE
+======================================== */
+
+@media(max-width:768px){
+
+.section{
+padding:80px 0;
+}
+
+.section-box{
+padding:30px 24px;
+border-radius:24px;
+}
+
+.card,
+.testimonial,
+.plan-card{
+padding:30px;
+border-radius:24px;
+}
+
+.card h3{
+font-size:24px;
+}
+
+.hero{
+text-align:center;
+}
+
+.hero-content{
+margin:auto;
+}
+
+.hero p{
+margin-inline:auto;
+}
+
+.hero-buttons{
+justify-content:center;
+}
+
+.planes-container{
+gap:24px;
+}
+
+}
+
+/* ========================================
+SMALL MOBILE
+======================================== */
+
+@media(max-width:480px){
+
+.hero{
+padding:
+110px 18px
+60px;
+}
+
+.hero h1{
+line-height:1.1;
+letter-spacing:-1px;
+}
+
+.hero p{
+line-height:1.7;
+}
+
+.card,
+.testimonial,
+.plan-card{
+padding:26px;
+}
+
+.section{
+padding:70px 0;
+}
+
+.section-box{
+padding:24px 20px;
+}
+
+.btn{
+padding:16px 22px;
+font-size:15px;
+}
+
+.plan-card h3{
+font-size:28px;
+}
+
+}
+
+.community-stats{
+    max-width:1200px;
+    margin:30px auto 20px auto;
+    padding:0 20px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:24px;
+}
+
+.stat-card{
+    background:#ffffff;
+    border-radius:20px;
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.05);
+}
+
+.stat-number{
+    display:block;
+
+    font-size:42px;
+    font-weight:800;
+
+    color:#2F56D3;
+
+    margin-bottom:10px;
+}
+
+.stat-label{
+    color:#5B6475;
+    font-weight:600;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-blur"></div>
+
+<!-- HEADER DINÁMICO -->
+<script src="js/auth.js"></script>    
+<script src="components/header-member.js"></script>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<img
+src="logo.png"
+class="hero-logo"
+alt="NeXsv">
+
+<h1>
+Más Confianza.<br>
+Más Oportunidades.
+</h1>
+
+<p>
+La red privada que conecta negocios y familias dentro de una misma comunidad basada en confianza, cercanía y afinidad.
+</p>
+
+<div class="hero-buttons">
+
+<a
+class="btn btn-primary"
+href="acceso/">
+Acceder a neXsv
+</a>
+
+<a
+class="btn btn-secondary"
+href="negocios.html">
+Explorar negocios
+</a>
+
+</div>
+
+<p class="hero-trust">
+Exclusivo para comunidades privadas • Negocios seleccionados • Relaciones de confianza
+</p>
+
+</div>
+
+</section>
+
+<section class="community-stats">
+
+    <div class="stat-card">
+        <span class="stat-number">2+</span>
+        <span class="stat-label">Negocios activos</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">2</span>
+        <span class="stat-label">Colegios representados</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Negocios verificados</span>
+    </div>
+
+    <div class="stat-card">
+        <span class="stat-number">Por invitación</span>
+        <span class="stat-label">Acceso controlado</span>
+    </div>
+
+</section>
+
+ <!-- EXPLORA NEXSV -->
+
+<section class="section explore-section">
+
+<div class="container">
+
+<h2 class="explore-title">
+Explora neXsv
+</h2>
+
+<p class="explore-subtitle">
+Todo comienza dentro de una comunidad de confianza.
+Descubre lo que ya puedes hacer hoy y lo que viene en las próximas versiones.
+</p>
+
+<div class="explore-grid">
+
+<a href="negocios.html" class="explore-card">
+
+<div class="explore-icon">🏪</div>
+
+<h3>Explorar negocios</h3>
+
+<p>
+Encuentra negocios recomendados por tu comunidad.
+</p>
+
+<span>Explorar →</span>
+
+</a>
+
+<a href="blog.html" class="explore-card">
+
+<div class="explore-icon">📰</div>
+
+<h3>Blog</h3>
+
+<p>
+Consejos, artículos y novedades para familias y negocios.
+</p>
+
+<span>Leer más →</span>
+
+<a href="acceso/" class="explore-card">
+
+<div class="explore-icon">🔐</div>
+
+<h3>Acceder</h3>
+
+<p>
+Ingresa como miembro o negocio para acceder a tu comunidad privada.
+</p>
+
+<span>Ingresar →</span>
+
+</a>
+    
+<div class="explore-card disabled">
+
+<div class="coming-badge">
+Versión 2.0
+</div>
+
+<div class="explore-icon">🎁</div>
+
+<h3>Oportunidades para familias</h3>
+
+<p>
+Compra, vende, dona o encuentra oportunidades dentro de tu comunidad.
+</p>
+
+<span>Muy pronto</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>   
+
+<!-- POSICIONAMIENTO -->
+
+<section class="section section-center">
+
+<div class="container">
+
+<h2>
+Una red privada, no un marketplace abierto
+</h2>
+
+<p>
+neXsv facilita conexiones reales entre familias y negocios dentro de un mismo entorno, fortaleciendo relaciones basadas en confianza y cercanía.
+</p>
+
+<div class="section-box">
+
+<p>✔ Los miembros ya comparten una comunidad en común</p>
+<p>✔ Los negocios son seleccionados antes de ingresar</p>
+<p>✔ Las recomendaciones tienen mayor credibilidad</p>
+<p>✔ Las conexiones ocurren dentro de un entorno de confianza</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- URGENCIA -->
+
+<section class="section section-center">
+
+<div class="container">
+
+<h2>
+Acceso limitado por categoría
+</h2>
+
+<p>
+Para mantener la calidad de la comunidad, el acceso está sujeto a validación y disponibilidad dentro de cada categoría.
+</p>
+
+<br><br>
+
+<p style="font-weight:700;">
+Cuando una categoría alcanza capacidad máxima, se habilita lista de espera.
+</p>
+
+<br><br>
+
+<a
+class="btn btn-primary"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Solicitar acceso
+</a>
+
+</div>
+
+</section>
+
+<!-- BENEFICIOS -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
+
+<div class="card">
+
+<h3>
+Clientes reales
+</h3>
+
+<p>
+Accede a personas dentro de tu mismo entorno con interés real en productos y servicios.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+Comunidad privada
+</h3>
+
+<p>
+Espacio donde las conexiones nacen desde la afinidad y la confianza.
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>
+Más oportunidades
+</h3>
+
+<p>
+Facilita conversaciones directas y genera nuevas oportunidades de negocio.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- TESTIMONIOS -->
+
+<section class="section">
+
+<div class="container">
+
+<div class="grid">
+
+<div class="testimonial">
+
+<p>
+"La confianza cambia completamente la forma de hacer negocios. Cuando ya existe una conexión previa dentro de la comunidad, las oportunidades surgen de manera más natural."
+</p>
+
+<br>
+
+<strong>
+— Miembro de la comunidad
+</strong>
+
+</div>
+
+<div class="testimonial">
+
+<p>
+"No se trata solo de aparecer en un directorio. Se trata de formar parte de una red donde las personas buscan y recomiendan negocios de confianza."
+</p>
+
+<br>
+
+<strong>
+— Negocio participante
+</strong>
+
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- PLANES -->
+
+<section class="planes-section">
+
+<h2 class="planes-title">
+Más oportunidades comienzan con la comunidad correcta.
+</h2>
+
+<p class="planes-subtitle">
+Elige el nivel que mejor se adapte a tus objetivos y forma parte de una comunidad donde la confianza genera oportunidades de negocio reales.
+</p>
+
+<div class="planes-container">
+
+<!-- PLAN 1 -->
+
+<div class="plan-card">
+
+<h3>
+Fundador
+</h3>
+
+<p class="future-name">
+Conecta
+</p>
+
+<div class="plan-price">
+Tu punto de partida
+</div>
+
+<ul>
+
+<li>✓ Perfil profesional del negocio</li>
+
+<li>✓ Categoría visible</li>
+
+<li>✓ Información de contacto</li>
+
+<li>✓ Botón directo de WhatsApp</li>
+
+<li>✓ Presencia dentro de la comunidad</li>
+
+<li>✓ Imagen principal</li>
+
+<li>✓ Recepción de valoraciones</li>
+
+<li>✓ Soporte básico</li>
+
+</ul>
+
+<a
+class="plan-btn default-btn"
+href="https://wa.me/50377448261?text=Hola%20NeXsv,%20me%20interesa%20el%20plan%20Comunidad%20Fundadora"
+target="_blank">
+Solicitar acceso
+</a>
+
+</div>
+
+<!-- PLAN 2 -->
+
+<div class="plan-card featured">
+
+<div class="popular-badge">
+⭐ MÁS ELEGIDO
+</div>
+
+<h3>
+Recomendado
+</h3>
+
+<p class="future-name">
+Crece
+</p>
+
+<div class="plan-price">
+Más oportunidades
+</div>
+    
+<ul>
+<li>✓ Todo lo incluido en Fundador</li>
+
+<li>✓ Hasta 5 imágenes adicionales</li>
+
+<li>✓ Badge "Negocio Recomendado"</li>
+
+<li>✓ Mayor participación dentro de la comunidad</li>
+
+<li>✓ Promociones compartidas con la comunidad</li>
+
+<li>✓ Participación en campañas comunitarias</li>
+
+<li>✓ Soporte prioritario</li>
+</ul>
+
+<a
+class="plan-btn featured-btn"
+href="https://wa.me/50377448261?text=Hola%20NeXsv,%20quiero%20información%20del%20plan%20Negocio%20Recomendado"
+target="_blank">
+Quiero destacar
+</a>
+
+</div>
+
+<!-- PLAN 3 -->
+
+<div class="plan-card premium">
+
+<h3>
+Referente
+</h3>
+
+<p class="future-name">
+Lidera
+</p>
+
+<div class="plan-price">
+Mayor confianza
+</div>
+
+<ul>
+<li>✓ Todo lo incluido en Recomendado</li>
+
+<li>✓ Badge "Negocio Referente"</li>
+
+<li>✓ Espacios destacados dentro de la plataforma</li>
+
+<li>✓ Participación preferencial en campañas especiales</li>
+
+<li>✓ Estadísticas básicas de interacción</li>
+
+<li>✓ Reconocimiento como negocio referente</li>
+
+<li>✓ Soporte prioritario</li>
+</ul>
+
+<a
+class="plan-btn premium-btn"
+href="https://docs.google.com/forms/d/e/1FAIpQLSeDIKEEkzAxlmfRmTNLVBQoiiNxrbpbRcqk3C3iL73QCDMhyw/viewform"
+target="_blank">
+Acceso preferencial
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="footer-line"></div>
+
+© 2026 NeXsv |
+<a href="terminos.html">
+Términos y condiciones
+</a>
+
+</footer>
+
+</body>
+</html>
