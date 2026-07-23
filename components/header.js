@@ -1,3 +1,17 @@
+const usuario = JSON.parse(localStorage.getItem("nexsv_user") || "null");
+
+const botonCuenta = usuario
+    ? `
+<a href="dashboard.html" class="nex-btn">
+    <i class="fa-regular fa-user"></i> Mi Cuenta
+</a>
+`
+    : `
+<a href="acceso/index.html" class="nex-btn">
+    <i class="fa-regular fa-user"></i> Acceder →
+</a>
+`;
+
 document.write(`
 
 <style>
