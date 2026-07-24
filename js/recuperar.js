@@ -35,7 +35,7 @@ function initRecovery() {
         try {
 
             const response = await fetch(
-                "AQUI_VA_LA_URL_DE_TU_WEB_APP",
+                 API_MEMBERS,
                 {
 
                     method: "POST",
