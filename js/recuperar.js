@@ -35,7 +35,7 @@ function initRecovery() {
         try {
 
             const response = await fetch(
-    "https://ne-xsv-api.vercel.app/api/recovery",
+    "https://ne-xsv-api.vercel.app/api/request-recovery",
     {
 
                     method: "POST",
