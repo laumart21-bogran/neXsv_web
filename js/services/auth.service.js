@@ -2,7 +2,7 @@
 // neXsv - Auth Service
 // ==========================================
 
-import { supabase } from "../config/supabase.js";
+import { supabase } from "../configu/supabase.js";
 
 const authService = {
 
