@@ -34,13 +34,26 @@ function initRecovery() {
 
         try {
 
+            if (!correo) {
+
+    message.style.color = "#D32F2F";
+    message.innerHTML = "Ingresa tu correo electrónico.";
+
+    return;
+
+}
+
             const response = await fetch(
     "https://ne-xsv-api.vercel.app/api/request-recovery",
     {
 
-                    method: "POST",
+                  method: "POST",
 
-                    body: JSON.stringify({
+headers: {
+    "Content-Type": "application/json"
+},
+
+body: JSON.stringify({
 
                         action: "requestPasswordRecovery",
 
@@ -58,6 +71,17 @@ function initRecovery() {
 
                 message.style.color = "#1B8A3B";
                 message.innerHTML = "✅ " + data.message;
+                sessionStorage.setItem(
+    "recoveryEmail",
+    correo
+);
+
+setTimeout(() => {
+
+    window.location.href =
+        "validar-codigo.html";
+
+}, 1200);
 
             } else {
 
