@@ -3,12 +3,13 @@ neXsv
 Nueva contraseña
 =========================================*/
 
+import authService from "./services/auth.service.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initPasswordReset();
 
 });
-
 
 /*=========================================
 Actualizar contraseña
@@ -20,32 +21,21 @@ function initPasswordReset() {
 
     if (!form) return;
 
-    const correo = sessionStorage.getItem("recoveryEmail");
-    const codigo = sessionStorage.getItem("recoveryCode");
-
-    if (!correo || !codigo) {
-
-        window.location.href = "recuperar.html";
-        return;
-
-    }
-
     form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
 
-        const password =
-            document.getElementById("password")
+        const password = document
+            .getElementById("password")
             .value
             .trim();
 
-        const confirmPassword =
-            document.getElementById("confirmPassword")
+        const confirmPassword = document
+            .getElementById("confirmPassword")
             .value
             .trim();
 
-        const message =
-            document.getElementById("resetMessage");
+        const message = document.getElementById("resetMessage");
 
         message.innerHTML = "";
 
@@ -71,58 +61,17 @@ function initPasswordReset() {
 
         try {
 
-            const response = await fetch(
+            await authService.updatePassword(password);
 
-                "https://ne-xsv-api.vercel.app/api/request-recovery",
+            message.style.color = "#1B8A3B";
+            message.innerHTML =
+                "✅ Contraseña actualizada correctamente.";
 
-                {
+            setTimeout(() => {
 
-                    method: "POST",
+                window.location.href = "login-usuario.html";
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        action: "resetPassword",
-                        correo,
-                        codigo,
-                        password
-
-                    })
-
-                }
-
-            );
-
-            const data = await response.json();
-
-            if (data.success) {
-
-                message.style.color = "#1B8A3B";
-                message.innerHTML =
-                    "✅ Contraseña actualizada correctamente.";
-
-                sessionStorage.removeItem("recoveryEmail");
-                sessionStorage.removeItem("recoveryCode");
-
-                setTimeout(() => {
-
-                    window.location.href =
-                        "login-usuario.html";
-
-                }, 1500);
-
-            }
-
-            else {
-
-                message.style.color = "#D32F2F";
-                message.innerHTML =
-                    data.message;
-
-            }
+            }, 1500);
 
         }
 
@@ -131,8 +80,7 @@ function initPasswordReset() {
             console.error(error);
 
             message.style.color = "#D32F2F";
-            message.innerHTML =
-                "No fue posible conectar con el servidor.";
+            message.innerHTML = error.message;
 
         }
 
