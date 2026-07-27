@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Validar código | neXsv</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../css/auth-layout.css">
+    <link rel="stylesheet" href="../css/acceso.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<main class="access-page">
+
+    <!-- Volver -->
+
+    <a href="recuperar.html" class="back-link">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Volver
+
+    </a>
+
+    <!-- Logo -->
+
+    <a href="../index.html">
+
+        <img src="../logo.png"
+             alt="neXsv"
+             class="logo">
+
+    </a>
+
+    <!-- Encabezado -->
+
+    <section class="hero">
+
+        <h1>
+
+            Verifica tu identidad
+
+        </h1>
+
+        <p>
+
+            Hemos enviado un código de 6 dígitos a tu correo electrónico.
+            Escríbelo para continuar con el cambio de contraseña.
+
+        </p>
+
+    </section>
+
+    <!-- Tarjeta -->
+
+    <section class="auth-card">
+
+        <form id="codeForm">
+
+            <div class="form-group">
+
+                <label for="code">
+
+                    Código de recuperación
+
+                </label>
+
+                <div class="input-group">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <input
+                        id="code"
+                        name="code"
+                        type="text"
+                        maxlength="6"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        placeholder="123456"
+                        required>
+
+                </div>
+
+            </div>
+
+            <div id="codeMessage"></div>
+
+            <button
+                id="validateButton"
+                class="primary-btn"
+                type="submit">
+
+                Validar código
+
+            </button>
+
+        </form>
+
+        <div
+            style="margin-top:20px;text-align:center;">
+
+            <a href="recuperar.html">
+
+                ¿No recibiste el código? Enviarlo nuevamente
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <footer class="auth-footer">
+
+        Exclusivo para comunidades privadas • Relaciones de confianza
+
+    </footer>
+
+</main>
+
+<script src="../js/config.js"></script>
+<script src="../js/validar-codigo.js"></script>
+
+</body>
+
+</html>
