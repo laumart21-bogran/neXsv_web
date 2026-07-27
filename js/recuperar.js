@@ -3,6 +3,8 @@ neXsv
 Recuperación de contraseña
 =========================================*/
 
+import authService from "./services/auth.service.js";
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initRecovery();
@@ -36,59 +38,17 @@ function initRecovery() {
 
             if (!correo) {
 
-    message.style.color = "#D32F2F";
-    message.innerHTML = "Ingresa tu correo electrónico.";
-
-    return;
-
-}
-
-            const response = await fetch(
-    "https://ne-xsv-api.vercel.app/api/request-recovery",
-    {
-
-                  method: "POST",
-
-headers: {
-    "Content-Type": "application/json"
-},
-
-body: JSON.stringify({
-
-                        action: "requestPasswordRecovery",
-
-                        correo
-
-                    })
-
-                }
-
-            );
-
-            const data = await response.json();
-
-            if (data.success) {
-
-                message.style.color = "#1B8A3B";
-                message.innerHTML = "✅ " + data.message;
-                sessionStorage.setItem(
-    "recoveryEmail",
-    correo
-);
-
-setTimeout(() => {
-
-    window.location.href =
-        "validar-codigo.html";
-
-}, 1200);
-
-            } else {
-
                 message.style.color = "#D32F2F";
-                message.innerHTML = data.message;
+                message.innerHTML = "Ingresa tu correo electrónico.";
+                return;
 
             }
+
+            await authService.resetPassword(correo);
+
+            message.style.color = "#1B8A3B";
+            message.innerHTML =
+                "✅ Hemos enviado un enlace para restablecer tu contraseña. Revisa tu correo.";
 
         }
 
@@ -97,8 +57,7 @@ setTimeout(() => {
             console.error(error);
 
             message.style.color = "#D32F2F";
-            message.innerHTML =
-                "No fue posible conectar con el servidor.";
+            message.innerHTML = error.message;
 
         }
 
