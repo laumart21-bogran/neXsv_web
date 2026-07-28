@@ -1,79 +1,56 @@
-/*=========================================
-neXsv
-Authentication Manager
-Versión 1.0
-=========================================*/
+/* ==========================================
+   neXsv
+   Authentication Manager
+   Supabase
+========================================== */
 
-const SESSION_KEY = "nexsv.member";
+/* ==========================================
+   Usuario actual
+========================================== */
 
-/*=========================================
-Obtener usuario actual
-=========================================*/
+async function getCurrentUser() {
 
-function getCurrentUser() {
+    const {
+        data: { user }
+    } = await supabase.auth.getUser();
 
-    const user = localStorage.getItem(SESSION_KEY);
-
-    if (!user) return null;
-
-    try {
-
-        return JSON.parse(user);
-
-    } catch (error) {
-
-        console.error("Sesión corrupta.", error);
-
-        logout();
-
-        return null;
-
-    }
+    return user;
 
 }
 
-/*=========================================
-¿Existe sesión?
-=========================================*/
+/* ==========================================
+   ¿Existe sesión?
+========================================== */
 
-function isLogged() {
+async function isLogged() {
 
-    return getCurrentUser() !== null;
+    const user = await getCurrentUser();
 
-}
-
-/*=========================================
-Iniciar sesión
-=========================================*/
-
-function login(userData) {
-
-    localStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify(userData)
-    );
+    return user !== null;
 
 }
 
-/*=========================================
-Cerrar sesión
-=========================================*/
+/* ==========================================
+   Cerrar sesión
+========================================== */
 
-function logout() {
+async function logout() {
 
-    localStorage.removeItem(SESSION_KEY);
+    await supabase.auth.signOut();
 
     window.location.href = "/";
 
 }
 
-/*=========================================
-Proteger funcionalidades privadas
-=========================================*/
+/* ==========================================
+   Proteger páginas privadas
+========================================== */
 
-function requireMember(callback) {
+async function requireMember(callback) {
 
-    if (isLogged()) {
+    const logged = await isLogged();
+
+    if (logged) {
 
         callback();
 
@@ -85,50 +62,54 @@ function requireMember(callback) {
 
         showMemberModal();
 
+    } else {
+
+        window.location.href = "../acceso/login-usuario.html";
+
     }
 
     return false;
 
 }
 
-/*=========================================
-Obtener nombre
-=========================================*/
+/* ==========================================
+   Nombre del usuario
+========================================== */
 
-function getUserName() {
+async function getUserName() {
 
-    const user = getCurrentUser();
+    const user = await getCurrentUser();
 
     if (!user) return "";
 
-    return user.nombre || "";
+    return user.user_metadata?.nombre || "";
 
 }
 
-/*=========================================
-Correo
-=========================================*/
+/* ==========================================
+   Correo
+========================================== */
 
-function getUserEmail() {
+async function getUserEmail() {
 
-    const user = getCurrentUser();
+    const user = await getCurrentUser();
 
     if (!user) return "";
 
-    return user.correo || "";
+    return user.email || "";
 
 }
 
-/*=========================================
-Rol
-=========================================*/
+/* ==========================================
+   Rol
+========================================== */
 
-function getUserRole() {
+async function getUserRole() {
 
-    const user = getCurrentUser();
+    const user = await getCurrentUser();
 
     if (!user) return "";
 
-    return user.rol || "";
+    return user.user_metadata?.rol || "usuario";
 
 }
