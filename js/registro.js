@@ -1,114 +1,95 @@
-/*=========================================
-neXsv
-Registro de Miembros
-=========================================*/
+/* ==========================================
+   neXsv
+   Registro de Miembros
+========================================== */
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded", () => {
 
-    const form=document.getElementById("loginForm");
+    const form = document.getElementById("loginForm");
 
-    if(!form) return;
+    if (!form) return;
 
-    form.addEventListener("submit",async(e)=>{
+    form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
+
         const submitButton =
-form.querySelector("button[type='submit']");
+            form.querySelector("button[type='submit']");
 
-submitButton.disabled = true;
+        submitButton.disabled = true;
 
-        const nombre=
+        const nombre =
             document.getElementById("fullName").value.trim();
 
-        const correo=
+        const correo =
             document.getElementById("email").value.trim();
 
-        const password=
+        const password =
             document.getElementById("password").value;
 
-        const confirmPassword=
+        const confirmPassword =
             document.getElementById("confirmPassword").value;
 
-        const message=
+        const message =
             document.getElementById("loginMessage");
 
-        message.innerHTML="";
+        message.innerHTML = "";
 
-        if(password!==confirmPassword){
+        if (password !== confirmPassword) {
 
-            message.innerHTML=
-            "Las contraseñas no coinciden.";
-
-            message.style.color="#D32F2F";
+            message.style.color = "#D32F2F";
+            message.innerHTML = "Las contraseñas no coinciden.";
 
             submitButton.disabled = false;
 
             return;
-
         }
 
-        try{
+        try {
 
-            const response=
-            await registerUser(...)
+            const data = await registerUser(
+                nombre,
+                correo,
+                password
+            );
 
-                method:"POST",
+            if (data.success) {
 
-                headers:{
-                    "Content-Type":"application/json"
-                },
-
-                body:JSON.stringify({
-
-                    nombre:nombre,
-
-                    correo:correo,
-
-                    password:password
-
-                })
-
-            });
-
-            const data=
-            await response.json();
-
-            if(data.success){
-
-                message.style.color="#1B8A3B";
-
-                message.innerHTML=
-                "✅ Cuenta creada correctamente.";
+                message.style.color = "#1B8A3B";
+                message.innerHTML =
+                    "✅ Cuenta creada correctamente.";
 
                 form.reset();
 
-                setTimeout(()=>{
+                setTimeout(() => {
 
-                    window.location.href="login-usuario.html";
+                    window.location.href =
+                        "login-usuario.html";
 
-                },2000);
+                }, 2000);
 
-            }else{
+            } else {
 
                 submitButton.disabled = false;
 
-                message.style.color="#D32F2F";
+                message.style.color = "#D32F2F";
 
-                message.innerHTML=
-                data.message || "Ocurrió un error al crear la cuenta.";
+                message.innerHTML =
+                    data.message ||
+                    "Ocurrió un error al crear la cuenta.";
 
             }
 
-        }catch(error){
-
-            submitButton.disabled = false;
+        } catch (error) {
 
             console.error(error);
 
-            message.style.color="#D32F2F";
+            submitButton.disabled = false;
 
-            message.innerHTML=
-            "No fue posible conectar con el servidor.";
+            message.style.color = "#D32F2F";
+
+            message.innerHTML =
+                "No fue posible conectar con Supabase.";
 
         }
 
