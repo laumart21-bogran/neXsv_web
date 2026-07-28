@@ -65,35 +65,9 @@ function initLogin() {
 
         try {
 
-            const response = await loginUser(...)
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        correo,
-                        password
-                    })
-                }
-            );
+           const data = await loginUser(correo, password);
 
-            const data = await response.json();
-
-            if (data.success) {
-
-                message.style.color = "#1B8A3B";
-                message.innerHTML = "✅ Bienvenido.";
-
-                // Guardar sesión
-                login(data.user);
-
-                console.log("Usuario autenticado:", data.user);
-
-                setTimeout(() => {
-
-                    window.location.href = "../member-home.html";
-
-                }, 1000);
+           
 
             } else {
 
