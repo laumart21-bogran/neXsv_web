@@ -50,7 +50,7 @@ submitButton.disabled = true;
         try{
 
             const response=
-            await fetch("https://ne-xsv-api.vercel.app/api/register",{
+            await registerUser(...)
 
                 method:"POST",
 
