@@ -65,9 +65,7 @@ function initLogin() {
 
         try {
 
-            const response = await fetch(
-                "https://ne-xsv-api.vercel.app/api/login",
-                {
+            const response = await loginUser(...)
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
