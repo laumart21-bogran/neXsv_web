@@ -2,7 +2,8 @@
    neXsv - Supabase
 ========================================== */
 
-const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
+const SUPABASE_URL = "https://verswqljdxiaveicdtfq.supabase.co
+";
 
 const SUPABASE_KEY =
 "sb_publishable_4jUefYv7Yd6Bw8q31IPTQQ_5eBgILOp";
