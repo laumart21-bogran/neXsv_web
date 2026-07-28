@@ -1,100 +1,169 @@
-/*=========================================
-neXsv
-Supabase Manager
-=========================================*/
+/* ==========================================
+   neXsv - Supabase
+========================================== */
 
-const SUPABASE_URL = "https://verswqljdxiaveicdtfq.supabase.co";
+const SUPABASE_URL = "https://TU-PROYECTO.supabase.co";
 
-const SUPABASE_KEY = "sb_publishable_4jUefYv7Yd6Bw8q31IPTQQ_5eBgILOp";
+const SUPABASE_KEY =
+"sb_publishable_4jUefYv7Yd6Bw8q31IPTQQ_5eBgILOp";
 
 const supabase = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
 );
 
-/*=========================================
-Registrar usuario
-=========================================*/
-async function registerUser(nombre, correo, password){
+/* ==========================================
+   REGISTRO
+========================================== */
 
-    const { data, error } = await supabase.auth.signUp({
+async function registerUser(nombre, correo, password) {
 
-        email: correo,
-        password: password
+    try {
 
-    });
+        const { data, error } = await supabase.auth.signUp({
 
-    if(error){
+            email: correo,
+            password: password,
 
-        return{
+            options: {
 
-            success:false,
-            message:error.message
+                data: {
+                    nombre: nombre
+                }
+
+            }
+
+        });
+
+        if (error) {
+
+            return {
+                success: false,
+                message: error.message
+            };
+
+        }
+
+        const user = data.user;
+
+        if (!user) {
+
+            return {
+                success: false,
+                message: "No fue posible crear el usuario."
+            };
+
+        }
+
+        const { error: profileError } = await supabase
+            .from("profiles")
+            .insert([{
+
+                auth_user_id: user.id,
+                nombre: nombre,
+                email: correo,
+                tipo_usuario: "usuario"
+
+            }]);
+
+        if (profileError) {
+
+            return {
+                success: false,
+                message: profileError.message
+            };
+
+        }
+
+        return {
+
+            success: true,
+            user
+
+        };
+
+    } catch (err) {
+
+        return {
+
+            success: false,
+            message: err.message
 
         };
 
     }
-
-    async function loginUser(correo,password){
-
-    const { data,error } =
-    await supabase.auth.signInWithPassword({
-
-        email:correo,
-        password:password
-
-    });
-
-    if(error){
-
-        return{
-
-            success:false,
-            message:error.message
-
-        };
-
-    }
-
-    return{
-
-        success:true,
-        user:data.user
-
-    };
 
 }
 
-    const { error: profileError } =
-    await supabase
-    .from("profiles")
-    .insert({
+/* ==========================================
+   LOGIN
+========================================== */
 
-        auth_user_id: data.user.id,
-        nombre: nombre,
-        email: correo
+async function loginUser(correo, password) {
 
-    });
+    try {
 
-    if(profileError){
+        const { data, error } =
+            await supabase.auth.signInWithPassword({
 
-        return{
+                email: correo,
+                password: password
 
-            success:false,
-            message:profileError.message
+            });
+
+        if (error) {
+
+            return {
+
+                success: false,
+                message: error.message
+
+            };
+
+        }
+
+        return {
+
+            success: true,
+            user: data.user
+
+        };
+
+    } catch (err) {
+
+        return {
+
+            success: false,
+            message: err.message
 
         };
 
     }
 
-    return{
+}
 
-        success:true,
-        user:data.user
+/* ==========================================
+   SESION ACTUAL
+========================================== */
 
-    };
+async function getCurrentUser() {
+
+    const {
+
+        data: { user }
+
+    } = await supabase.auth.getUser();
+
+    return user;
 
 }
 
-window.registerUser = registerUser;
-window.loginUser = loginUser;
+/* ==========================================
+   LOGOUT
+========================================== */
+
+async function logoutUser() {
+
+    await supabase.auth.signOut();
+
+}
