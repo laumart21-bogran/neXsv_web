@@ -1,46 +1,9 @@
-/*=========================================
-neXsv
-Sistema de Acceso
-=========================================*/
+/* ==========================================
+   neXsv
+   Acceso de Usuarios
+========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    initPasswordToggle();
-    initLogin();
-
-});
-
-/*=========================================
-Mostrar / Ocultar contraseña
-=========================================*/
-
-function initPasswordToggle() {
-
-    const passwordInput = document.getElementById("password");
-    const togglePassword = document.getElementById("togglePassword");
-    const toggleIcon = document.getElementById("togglePasswordIcon");
-
-    if (!passwordInput || !togglePassword) return;
-
-    togglePassword.addEventListener("click", () => {
-
-        const visible = passwordInput.type === "text";
-
-        passwordInput.type = visible ? "password" : "text";
-
-        toggleIcon.className = visible
-            ? "fa-regular fa-eye"
-            : "fa-regular fa-eye-slash";
-
-    });
-
-}
-
-/*=========================================
-Login
-=========================================*/
-
-function initLogin() {
 
     const form = document.getElementById("loginForm");
 
@@ -50,31 +13,50 @@ function initLogin() {
 
         e.preventDefault();
 
-        const correo = document
-            .getElementById("email")
-            .value
-            .trim();
+        const submitButton =
+            form.querySelector("button[type='submit']");
 
-        const password = document
-            .getElementById("password")
-            .value;
+        submitButton.disabled = true;
 
-        const message = document.getElementById("loginMessage");
+        const correo =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("loginMessage");
 
         message.innerHTML = "";
 
         try {
 
-           const data = await loginUser(correo, password);
+            const data = await loginUser(
+                correo,
+                password
+            );
 
-           
+            if (data.success) {
+
+                message.style.color = "#1B8A3B";
+                message.innerHTML = "✅ Bienvenido.";
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "../member-home/index.html";
+
+                }, 800);
 
             } else {
+
+                submitButton.disabled = false;
 
                 message.style.color = "#D32F2F";
 
                 message.innerHTML =
-                    data.message || "Correo o contraseña incorrectos.";
+                    data.message ||
+                    "Correo o contraseña incorrectos.";
 
             }
 
@@ -82,13 +64,15 @@ function initLogin() {
 
             console.error(error);
 
+            submitButton.disabled = false;
+
             message.style.color = "#D32F2F";
 
             message.innerHTML =
-                "No fue posible conectar con el servidor.";
+                "No fue posible conectar con Supabase.";
 
         }
 
     });
 
-}
+});
