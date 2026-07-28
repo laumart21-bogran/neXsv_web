@@ -35,6 +35,36 @@ async function registerUser(nombre, correo, password){
 
     }
 
+    async function loginUser(correo,password){
+
+    const { data,error } =
+    await supabase.auth.signInWithPassword({
+
+        email:correo,
+        password:password
+
+    });
+
+    if(error){
+
+        return{
+
+            success:false,
+            message:error.message
+
+        };
+
+    }
+
+    return{
+
+        success:true,
+        user:data.user
+
+    };
+
+}
+
     const { error: profileError } =
     await supabase
     .from("profiles")
@@ -65,3 +95,6 @@ async function registerUser(nombre, correo, password){
     };
 
 }
+
+window.registerUser = registerUser;
+window.loginUser = loginUser;
