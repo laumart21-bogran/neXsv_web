@@ -1,72 +1,105 @@
 /**
  * ==========================================================
  * neXsv Platform v2
- * AuthSession
- * Gestión centralizada de la sesión del usuario
+ * AuthService
+ * Servicio único de autenticación
  * ==========================================================
  */
 
-import AuthService from "./auth.service.js";
+import { supabase } from "../core/supabase-client.js";
 
-class AuthSession {
-    constructor() {
-        this.session = null;
-        this.user = null;
-    }
+class AuthService {
 
     /**
-     * Inicializa la sesión al cargar la aplicación.
+     * Iniciar sesión
      */
-    async initialize() {
-        const { data, error } = await AuthService.getSession();
+    async signIn(email, password) {
 
-        if (error) {
-            console.error("Error al recuperar la sesión:", error);
-            return;
-        }
-
-        this.session = data.session;
-        this.user = data.session?.user ?? null;
-    }
-
-    /**
-     * Devuelve la sesión actual.
-     */
-    getSession() {
-        return this.session;
-    }
-
-    /**
-     * Devuelve el usuario autenticado.
-     */
-    getCurrentUser() {
-        return this.user;
-    }
-
-    /**
-     * Indica si existe una sesión activa.
-     */
-    isAuthenticated() {
-        return this.session !== null;
-    }
-
-    /**
-     * Escucha cambios de autenticación.
-     */
-    listen() {
-        AuthService.onAuthStateChange(({ session }) => {
-            this.session = session;
-            this.user = session?.user ?? null;
+        return await supabase.auth.signInWithPassword({
+            email,
+            password
         });
+
     }
 
     /**
-     * Limpia la información local de la sesión.
+     * Registrar usuario
      */
-    clear() {
-        this.session = null;
-        this.user = null;
+    async signUp({ firstName, lastName, email, password }) {
+
+        return await supabase.auth.signUp({
+
+            email,
+
+            password,
+
+            options: {
+
+                data: {
+
+                    first_name: firstName,
+                    last_name: lastName
+
+                }
+
+            }
+
+        });
+
     }
+
+    /**
+     * Recuperar contraseña
+     */
+    async resetPassword(email) {
+
+        return await supabase.auth.resetPasswordForEmail(email);
+
+    }
+
+    /**
+     * Obtener la sesión actual
+     */
+    async getSession() {
+
+        return await supabase.auth.getSession();
+
+    }
+
+    /**
+     * Obtener el usuario autenticado
+     */
+    async getUser() {
+
+        return await supabase.auth.getUser();
+
+    }
+
+    /**
+     * Escuchar cambios de autenticación
+     */
+    onAuthStateChange(callback) {
+
+        return supabase.auth.onAuthStateChange((event, session) => {
+
+            callback({
+                event,
+                session
+            });
+
+        });
+
+    }
+
+    /**
+     * Cerrar sesión
+     */
+    async signOut() {
+
+        return await supabase.auth.signOut();
+
+    }
+
 }
 
-export default new AuthSession();
+export default new AuthService();
