@@ -1,38 +1,41 @@
 /**
  * ==========================================================
- * neXsv Platform
- * Bootstrap de la aplicación
+ * neXsv Platform v2
+ * App
+ * Punto de entrada de la aplicación
  * ==========================================================
  */
 
-import { supabase } from "./core/supabase-client.js";
+import AuthSession from "./auth/auth.session.js";
 
-async function initializeApp() {
+async function bootstrap() {
 
     try {
 
-        const { data, error } = await supabase.auth.getSession();
+        // Inicializa la sesión del usuario
+        await AuthSession.initialize();
 
-        if (error) {
+        // Escucha cambios de autenticación
+        AuthSession.startListener();
 
-            console.error("Error inicializando Supabase:", error);
+        console.log("✅ neXsv inicializado correctamente.");
 
-            return;
+        if (AuthSession.isAuthenticated()) {
+
+            console.log("👤 Usuario autenticado:", AuthSession.getCurrentUser());
+
+        } else {
+
+            console.log("👤 No existe una sesión activa.");
 
         }
 
-        console.log("✔ neXsv Platform inicializada");
+    } catch (error) {
 
-        console.log("Sesión actual:", data.session);
-
-    }
-
-    catch (error) {
-
-        console.error("Error inesperado:", error);
+        console.error("❌ Error al iniciar la aplicación:", error);
 
     }
 
 }
 
-initializeApp();
+bootstrap();
