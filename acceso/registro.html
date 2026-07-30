@@ -81,14 +81,12 @@
 
         <form id="loginForm">
 
-    <!-- Nombre completo -->
+   <!-- Nombre -->
 
 <div class="form-group">
 
-    <label for="fullName">
-
-        Nombre completo
-
+    <label for="firstName">
+        Nombre
     </label>
 
     <div class="input-group">
@@ -96,23 +94,40 @@
         <i class="fa-regular fa-user"></i>
 
         <input
-
-            id="fullName"
-
-            name="fullName"
-
+            id="firstName"
+            name="firstName"
             type="text"
-
-            autocomplete="name"
-
-            placeholder="Tu nombre completo"
-
+            autocomplete="given-name"
+            placeholder="Tu nombre"
             required>
 
     </div>
 
-</div>      
+</div>
 
+<!-- Apellido -->
+
+<div class="form-group">
+
+    <label for="lastName">
+        Apellido
+    </label>
+
+    <div class="input-group">
+
+        <i class="fa-regular fa-user"></i>
+
+        <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            autocomplete="family-name"
+            placeholder="Tu apellido"
+            required>
+
+    </div>
+
+</div>
             <!-- Correo -->
 
            <div class="form-group">
