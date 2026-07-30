@@ -1,105 +1,101 @@
 /**
  * ==========================================================
  * neXsv Platform v2
- * AuthService
- * Servicio único de autenticación
+ * AuthSession
+ * Gestión centralizada de la sesión
  * ==========================================================
  */
 
-import { supabase } from "../core/supabase-client.js";
+import AuthService from "./auth.service.js";
 
-class AuthService {
+class AuthSession {
+
+    constructor() {
+        this.session = null;
+        this.user = null;
+        this.initialized = false;
+    }
 
     /**
-     * Iniciar sesión
+     * Inicializa la sesión al cargar la aplicación.
      */
-    async signIn(email, password) {
+    async initialize() {
 
-        return await supabase.auth.signInWithPassword({
-            email,
-            password
-        });
+        const { data, error } = await AuthService.getSession();
+
+        if (error) {
+
+            console.error("Error al obtener la sesión:", error);
+            return;
+
+        }
+
+        this.session = data.session;
+        this.user = data.session?.user ?? null;
+        this.initialized = true;
 
     }
 
     /**
-     * Registrar usuario
+     * Escucha cambios en la autenticación.
      */
-    async signUp({ firstName, lastName, email, password }) {
+    startListener() {
 
-        return await supabase.auth.signUp({
+        AuthService.onAuthStateChange(({ session }) => {
 
-            email,
-
-            password,
-
-            options: {
-
-                data: {
-
-                    first_name: firstName,
-                    last_name: lastName
-
-                }
-
-            }
-
-        });
-
-    }
-
-    /**
-     * Recuperar contraseña
-     */
-    async resetPassword(email) {
-
-        return await supabase.auth.resetPasswordForEmail(email);
-
-    }
-
-    /**
-     * Obtener la sesión actual
-     */
-    async getSession() {
-
-        return await supabase.auth.getSession();
-
-    }
-
-    /**
-     * Obtener el usuario autenticado
-     */
-    async getUser() {
-
-        return await supabase.auth.getUser();
-
-    }
-
-    /**
-     * Escuchar cambios de autenticación
-     */
-    onAuthStateChange(callback) {
-
-        return supabase.auth.onAuthStateChange((event, session) => {
-
-            callback({
-                event,
-                session
-            });
+            this.session = session;
+            this.user = session?.user ?? null;
 
         });
 
     }
 
     /**
-     * Cerrar sesión
+     * Devuelve la sesión actual.
      */
-    async signOut() {
+    getSession() {
 
-        return await supabase.auth.signOut();
+        return this.session;
+
+    }
+
+    /**
+     * Devuelve el usuario autenticado.
+     */
+    getCurrentUser() {
+
+        return this.user;
+
+    }
+
+    /**
+     * Indica si el usuario está autenticado.
+     */
+    isAuthenticated() {
+
+        return this.user !== null;
+
+    }
+
+    /**
+     * Indica si AuthSession ya fue inicializado.
+     */
+    isInitialized() {
+
+        return this.initialized;
+
+    }
+
+    /**
+     * Limpia la sesión local.
+     */
+    clear() {
+
+        this.session = null;
+        this.user = null;
 
     }
 
 }
 
-export default new AuthService();
+export default new AuthSession();
