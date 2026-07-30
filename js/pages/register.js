@@ -58,3 +58,37 @@ function setLoading(isLoading) {
         : "Crear cuenta";
 
 }
+
+/**
+ * Mostrar / ocultar contraseña
+ */
+togglePassword.addEventListener("click", () => {
+
+    const isPassword = passwordInput.type === "password";
+
+    passwordInput.type = isPassword
+        ? "text"
+        : "password";
+
+    togglePasswordIcon.className = isPassword
+        ? "fa-regular fa-eye-slash"
+        : "fa-regular fa-eye";
+
+});
+
+/**
+ * Mostrar / ocultar confirmar contraseña
+ */
+toggleConfirmPassword.addEventListener("click", () => {
+
+    const isPassword = confirmPasswordInput.type === "password";
+
+    confirmPasswordInput.type = isPassword
+        ? "text"
+        : "password";
+
+    toggleConfirmPasswordIcon.className = isPassword
+        ? "fa-regular fa-eye-slash"
+        : "fa-regular fa-eye";
+
+});
