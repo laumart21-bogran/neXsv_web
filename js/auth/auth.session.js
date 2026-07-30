@@ -89,12 +89,13 @@ class AuthSession {
     /**
      * Limpia la sesión local.
      */
-    clear() {
+  clear() {
 
-        this.session = null;
-        this.user = null;
+    this.session = null;
+    this.user = null;
+    this.initialized = false;
 
-    }
+}
 
 }
 
