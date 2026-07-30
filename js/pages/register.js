@@ -92,3 +92,87 @@ toggleConfirmPassword.addEventListener("click", () => {
         : "fa-regular fa-eye";
 
 });
+
+/**
+ * Registro de usuario
+ */
+form.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    clearMessage();
+
+    const nombre = nombreInput.value.trim();
+    const apellido = apellidoInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    // Validaciones básicas
+
+    if (!nombre || !apellido || !email || !password || !confirmPassword) {
+
+        showMessage("Completa todos los campos.");
+        return;
+
+    }
+
+    if (password !== confirmPassword) {
+
+        showMessage("Las contraseñas no coinciden.");
+        return;
+
+    }
+
+    if (password.length < 8) {
+
+        showMessage("La contraseña debe tener al menos 8 caracteres.");
+        return;
+
+    }
+
+    try {
+
+        setLoading(true);
+
+        // Registro en Supabase
+        const authResult = await AuthService.signUp({
+            email,
+            password
+        });
+
+        // Crear perfil
+        await ProfileService.createProfile({
+
+            authUserId: authResult.user.id,
+            nombre,
+            apellido
+
+        });
+
+        showMessage(
+            "Cuenta creada correctamente. Revisa tu correo para confirmar tu cuenta.",
+            "success"
+        );
+
+        form.reset();
+
+        setTimeout(() => {
+
+            window.location.href = APP_CONFIG.routes.login;
+
+        }, 2500);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(error.message || "No fue posible crear la cuenta.");
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+});
