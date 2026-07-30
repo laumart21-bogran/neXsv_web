@@ -16,10 +16,8 @@ class AuthService {
     async signIn(email, password) {
 
         return await supabase.auth.signInWithPassword({
-
             email,
             password
-
         });
 
     }
@@ -61,7 +59,7 @@ class AuthService {
     }
 
     /**
-     * Obtener sesión
+     * Obtener sesión actual
      */
     async getSession() {
 
@@ -70,11 +68,27 @@ class AuthService {
     }
 
     /**
-     * Obtener usuario
+     * Obtener usuario autenticado
      */
     async getUser() {
 
         return await supabase.auth.getUser();
+
+    }
+
+    /**
+     * Escuchar cambios de autenticación
+     */
+    onAuthStateChange(callback) {
+
+        return supabase.auth.onAuthStateChange((event, session) => {
+
+            callback({
+                event,
+                session
+            });
+
+        });
 
     }
 
