@@ -202,39 +202,31 @@ async function registerUser(formData) {
 }
 
 
-        // Crear perfil
-        await ProfileService.createProfile({
+/**
+ * ==========================================================
+ * Crear perfil del usuario
+ * ==========================================================
+ */
+async function createUserProfile(user, formData) {
 
-            authUserId: authResult.user.id,
-            nombre,
-            apellido
+    const result = await ProfileService.createProfile({
 
-        });
+        authUserId: user.id,
+        nombre: formData.nombre,
+        apellido: formData.apellido
 
-        showMessage(
-            "Cuenta creada correctamente. Revisa tu correo para confirmar tu cuenta.",
-            "success"
-        );
+    });
 
-        form.reset();
+    if (result.error) {
 
-        setTimeout(() => {
-
-            window.location.href = APP_CONFIG.routes.login;
-
-        }, 2500);
-
-    } catch (error) {
-
-        console.error(error);
-
-        showMessage(error.message || "No fue posible crear la cuenta.");
-
-    } finally {
-
-        setLoading(false);
+        throw result.error;
 
     }
+
+    return result.data;
+
+}
+
 
 /**
  * ==========================================================
