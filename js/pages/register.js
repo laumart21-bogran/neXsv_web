@@ -294,4 +294,3 @@ async function handleRegister(event) {
 
 form.addEventListener("submit", handleRegister);
 
-});
