@@ -60,6 +60,78 @@ function setLoading(isLoading) {
 }
 
 /**
+ * ==========================================================
+ * Validar formulario
+ * ==========================================================
+ */
+function validateForm() {
+
+    const nombre = nombreInput.value.trim();
+    const apellido = apellidoInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+
+    if (!nombre) {
+
+        showMessage("Ingresa tu nombre.");
+        nombreInput.focus();
+        return null;
+
+    }
+
+    if (!apellido) {
+
+        showMessage("Ingresa tu apellido.");
+        apellidoInput.focus();
+        return null;
+
+    }
+
+    if (!email) {
+
+        showMessage("Ingresa tu correo electrónico.");
+        emailInput.focus();
+        return null;
+
+    }
+
+    if (!password) {
+
+        showMessage("Ingresa una contraseña.");
+        passwordInput.focus();
+        return null;
+
+    }
+
+    if (password.length < 8) {
+
+        showMessage("La contraseña debe tener al menos 8 caracteres.");
+        passwordInput.focus();
+        return null;
+
+    }
+
+    if (password !== confirmPassword) {
+
+        showMessage("Las contraseñas no coinciden.");
+        confirmPasswordInput.focus();
+        return null;
+
+    }
+
+    return {
+
+        nombre,
+        apellido,
+        email,
+        password
+
+    };
+
+}
+
+/**
  * Mostrar / ocultar contraseña
  */
 togglePassword.addEventListener("click", () => {
