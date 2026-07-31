@@ -165,53 +165,42 @@ toggleConfirmPassword.addEventListener("click", () => {
 
 });
 
+
 /**
- * Registro de usuario
+ * ==========================================================
+ * Registrar usuario en Supabase Auth
+ * ==========================================================
  */
-form.addEventListener("submit", async (event) => {
+async function registerUser(formData) {
 
-    event.preventDefault();
+    const {
 
-    clearMessage();
+        nombre,
+        apellido,
+        email,
+        password
 
-    const nombre = nombreInput.value.trim();
-    const apellido = apellidoInput.value.trim();
-    const email = emailInput.value.trim().toLowerCase();
-    const password = passwordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
+    } = formData;
 
-    // Validaciones básicas
+    const result = await AuthService.signUp({
 
-    if (!nombre || !apellido || !email || !password || !confirmPassword) {
+        firstName: nombre,
+        lastName: apellido,
+        email,
+        password
 
-        showMessage("Completa todos los campos.");
-        return;
+    });
 
-    }
+    if (result.error) {
 
-    if (password !== confirmPassword) {
-
-        showMessage("Las contraseñas no coinciden.");
-        return;
+        throw result.error;
 
     }
 
-    if (password.length < 8) {
+    return result.data.user;
 
-        showMessage("La contraseña debe tener al menos 8 caracteres.");
-        return;
+}
 
-    }
-
-    try {
-
-        setLoading(true);
-
-        // Registro en Supabase
-        const authResult = await AuthService.signUp({
-            email,
-            password
-        });
 
         // Crear perfil
         await ProfileService.createProfile({
@@ -246,5 +235,71 @@ form.addEventListener("submit", async (event) => {
         setLoading(false);
 
     }
+
+/**
+ * ==========================================================
+ * Manejar registro
+ * ==========================================================
+ */
+async function handleRegister(event) {
+
+    event.preventDefault();
+
+    clearMessage();
+
+    const formData = validateForm();
+
+    if (!formData) {
+
+        return;
+
+    }
+
+    try {
+
+        setLoading(true);
+
+        const user = await registerUser(formData);
+
+        await createUserProfile(user, formData);
+
+        showMessage(
+            "Cuenta creada correctamente.",
+            "success"
+        );
+
+        form.reset();
+
+        setTimeout(() => {
+
+            window.location.href = APP_CONFIG.routes.login;
+
+        }, 2000);
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+
+            error.message || "No fue posible crear la cuenta."
+
+        );
+
+    } finally {
+
+        setLoading(false);
+
+    }
+
+}
+
+/**
+ * ==========================================================
+ * Inicialización
+ * ==========================================================
+ */
+
+form.addEventListener("submit", handleRegister);
 
 });
