@@ -10,18 +10,30 @@ import { supabase } from "../core/supabase-client.js";
 
 class ProfileService {
 
-    /**
-     * Crear perfil
-     */
-    async createProfile(profileData) {
+   /**
+ * Crear perfil
+ */
+async createProfile({
 
-        return await supabase
-            .from("profiles")
-            .insert(profileData)
-            .select()
-            .single();
+    authUserId,
+    nombre,
+    apellido
 
-    }
+}) {
+
+    return await supabase
+        .from("profiles")
+        .insert({
+
+            auth_user_id: authUserId,
+            nombre,
+            apellido
+
+        })
+        .select()
+        .single();
+
+}
 
     /**
      * Obtener perfil
