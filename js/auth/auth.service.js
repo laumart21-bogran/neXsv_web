@@ -36,11 +36,8 @@ class AuthService {
             options: {
 
                 data: {
-
                     first_name: firstName,
-
                     last_name: lastName
-
                 }
 
             }
@@ -49,17 +46,32 @@ class AuthService {
 
     }
 
-/**
- * Recuperar contraseña
- */
-async resetPassword(email) {
+    /**
+     * Recuperar contraseña
+     */
+    async resetPassword(email) {
 
-    return await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo:
-    "https://laumart21-bogran.github.io/neXsv_web/acceso/nueva-password.html"
-    });
+        return await supabase.auth.resetPasswordForEmail(email, {
 
-}
+            redirectTo:
+                "https://laumart21-bogran.github.io/neXsv_web/acceso/nueva-password.html"
+
+        });
+
+    }
+
+    /**
+     * Actualizar contraseña
+     */
+    async updatePassword(password) {
+
+        return await supabase.auth.updateUser({
+
+            password
+
+        });
+
+    }
 
     /**
      * Obtener sesión actual
@@ -104,39 +116,6 @@ async resetPassword(email) {
 
     }
 
-/**
- * Escuchar cambios de autenticación
- */
-onAuthStateChange(callback) {
-
-    return supabase.auth.onAuthStateChange((event, session) => {
-
-        callback({
-            event,
-            session
-        });
-
-    });
-
 }
 
-/**
- * Actualizar contraseña
- */
-async updatePassword(password) {
-
-    return await supabase.auth.updateUser({
-        password
-    });
-
-}
-
-/**
- * Cerrar sesión
- */
-async signOut() {
-
-    return await supabase.auth.signOut();
-
-}
-
+export default new AuthService();
