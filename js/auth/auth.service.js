@@ -56,7 +56,7 @@ async resetPassword(email) {
 
     return await supabase.auth.resetPasswordForEmail(email, {
         redirectTo:
-            window.location.origin + "/acceso/nueva-password.html"
+    "https://laumart21-bogran.github.io/neXsv_web/acceso/nueva-password.html"
     });
 
 }
