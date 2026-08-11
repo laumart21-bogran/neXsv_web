@@ -49,14 +49,20 @@ class AuthService {
 
     }
 
-    /**
-     * Recuperar contraseña
-     */
-    async resetPassword(email) {
+/**
+ * Recuperar contraseña
+ */
+async resetPassword(email) {
 
-        return await supabase.auth.resetPasswordForEmail(email);
+    return await supabase.auth.resetPasswordForEmail(email, {
 
-    }
+        redirectTo:
+            window.location.origin +
+            "/acceso/nueva-password.html"
+
+    });
+
+}
 
     /**
      * Obtener sesión actual
