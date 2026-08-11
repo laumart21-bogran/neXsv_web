@@ -57,6 +57,8 @@ console.log("reset-password.js cargado correctamente");
 
 async function handleReset(event) {
 
+    console.log("Entró a handleReset");
+
     event.preventDefault();
 
     const formData = validateForm();
