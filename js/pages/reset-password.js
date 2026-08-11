@@ -1,3 +1,5 @@
+import AuthService from "../services/auth.service.js";
+
 const form = document.getElementById("resetPasswordForm");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -80,12 +82,42 @@ async function handleReset(event) {
         return;
     }
 
-    console.log("Contraseña válida:", formData.password);
+    try {
+
+    setLoading(true);
+
+    const { error } = await AuthService.updatePassword(
+        formData.password
+    );
+
+    if (error) {
+        throw error;
+    }
 
     showMessage(
-        "Validación correcta. El siguiente paso será actualizar la contraseña en Supabase.",
+        "Contraseña actualizada correctamente. Serás redirigido al inicio de sesión.",
         "success"
     );
+
+    setTimeout(() => {
+
+        window.location.href = "login-usuario.html";
+
+    }, 2000);
+
+} catch (error) {
+
+    console.error(error);
+
+    showMessage(
+        error.message || "No fue posible actualizar la contraseña."
+    );
+
+} finally {
+
+    setLoading(false);
+
+}
 
 }
 
