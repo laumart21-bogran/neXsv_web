@@ -104,6 +104,42 @@ async resetPassword(email) {
 
     }
 
+/**
+ * Escuchar cambios de autenticación
+ */
+onAuthStateChange(callback) {
+
+    return supabase.auth.onAuthStateChange((event, session) => {
+
+        callback({
+            event,
+            session
+        });
+
+    });
+
+}
+
+/**
+ * Actualizar contraseña
+ */
+async updatePassword(password) {
+
+    return await supabase.auth.updateUser({
+        password
+    });
+
+}
+
+/**
+ * Cerrar sesión
+ */
+async signOut() {
+
+    return await supabase.auth.signOut();
+
+}
+
 }
 
 export default new AuthService();
