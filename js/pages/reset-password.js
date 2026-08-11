@@ -54,3 +54,24 @@ function validateForm() {
 }
 
 console.log("reset-password.js cargado correctamente");
+
+async function handleReset(event) {
+
+    event.preventDefault();
+
+    const formData = validateForm();
+
+    if (!formData) {
+        return;
+    }
+
+    console.log("Contraseña válida:", formData.password);
+
+    showMessage(
+        "Validación correcta. El siguiente paso será actualizar la contraseña en Supabase.",
+        "success"
+    );
+
+    form.addEventListener("submit", handleReset);
+
+}
