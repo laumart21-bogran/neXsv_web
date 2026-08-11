@@ -72,6 +72,6 @@ async function handleReset(event) {
         "success"
     );
 
-    form.addEventListener("submit", handleReset);
+  }
 
-}
+  form.addEventListener("submit", handleReset);
