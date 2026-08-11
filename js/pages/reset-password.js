@@ -22,3 +22,35 @@ function setLoading(isLoading) {
 }
 
 console.log("reset-password.js cargado correctamente");
+
+function setLoading(isLoading) {
+    ...
+}
+
+function validateForm() {
+
+    clearMessage();
+
+    const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    if (!password || !confirmPassword) {
+        showMessage("Completa todos los campos.");
+        return null;
+    }
+
+    if (password.length < 8) {
+        showMessage("La contraseña debe tener al menos 8 caracteres.");
+        return null;
+    }
+
+    if (password !== confirmPassword) {
+        showMessage("Las contraseñas no coinciden.");
+        return null;
+    }
+
+    return { password };
+
+}
+
+console.log("reset-password.js cargado correctamente");
