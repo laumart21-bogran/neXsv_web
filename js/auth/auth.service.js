@@ -140,6 +140,3 @@ async signOut() {
 
 }
 
-}
-
-export default new AuthService();
