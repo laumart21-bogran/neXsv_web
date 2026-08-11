@@ -46,6 +46,8 @@ function setLoading(isLoading) {
         ? "Enviando..."
         : "Recuperar contraseña";
 
+}
+
   /**
  * ==========================================================
  * Validar formulario
@@ -67,8 +69,6 @@ function validateForm() {
     return {
         email
     };
-
-}
 
 }
 
