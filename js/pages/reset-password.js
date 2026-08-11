@@ -4,16 +4,25 @@ const confirmPasswordInput = document.getElementById("confirmPassword");
 const message = document.getElementById("resetMessage");
 const button = document.getElementById("resetButton");
 
+/**
+ * Mostrar mensajes
+ */
 function showMessage(text, type = "error") {
     message.textContent = text;
     message.className = type;
 }
 
+/**
+ * Limpiar mensajes
+ */
 function clearMessage() {
     message.textContent = "";
     message.className = "";
 }
 
+/**
+ * Estado del botón
+ */
 function setLoading(isLoading) {
     button.disabled = isLoading;
     button.textContent = isLoading
@@ -21,12 +30,9 @@ function setLoading(isLoading) {
         : "Actualizar contraseña";
 }
 
-console.log("reset-password.js cargado correctamente");
-
-function setLoading(isLoading) {
-    ...
-}
-
+/**
+ * Validación del formulario
+ */
 function validateForm() {
 
     clearMessage();
@@ -35,29 +41,36 @@ function validateForm() {
     const confirmPassword = confirmPasswordInput.value.trim();
 
     if (!password || !confirmPassword) {
+
         showMessage("Completa todos los campos.");
         return null;
+
     }
 
     if (password.length < 8) {
+
         showMessage("La contraseña debe tener al menos 8 caracteres.");
         return null;
+
     }
 
     if (password !== confirmPassword) {
+
         showMessage("Las contraseñas no coinciden.");
         return null;
+
     }
 
-    return { password };
+    return {
+        password
+    };
 
 }
 
-console.log("reset-password.js cargado correctamente");
-
+/**
+ * Envío del formulario
+ */
 async function handleReset(event) {
-
-    console.log("Entró a handleReset");
 
     event.preventDefault();
 
@@ -74,6 +87,8 @@ async function handleReset(event) {
         "success"
     );
 
-  }
+}
 
-  form.addEventListener("submit", handleReset);
+form.addEventListener("submit", handleReset);
+
+console.log("reset-password.js cargado correctamente");
