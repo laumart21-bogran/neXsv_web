@@ -1,4 +1,4 @@
-import AuthService from "../services/auth.service.js";
+import AuthService from "../auth/auth.service.js";
 
 const form = document.getElementById("resetPasswordForm");
 const passwordInput = document.getElementById("password");
