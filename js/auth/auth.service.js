@@ -54,7 +54,7 @@ class AuthService {
         return await supabase.auth.resetPasswordForEmail(email, {
 
             redirectTo:
-                "https://laumart21-bogran.github.io/neXsv_web/acceso/nueva-password.html"
+                "https://www.nexsv.com/acceso/nueva-password.html"
 
         });
 
