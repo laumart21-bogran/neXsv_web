@@ -62,10 +62,6 @@ async createProfile({
 
     }
 
-}
-
-export default new ProfileService();
-
 /**
  * ==========================================================
  * Subir fotografía de perfil
@@ -96,3 +92,8 @@ async uploadProfilePhoto(authUserId, file) {
     return data.publicUrl;
 
 }
+
+}
+
+export default new ProfileService();
+
