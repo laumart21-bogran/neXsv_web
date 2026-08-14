@@ -77,6 +77,41 @@ document
 
         event.preventDefault();
 
-        console.log("Guardar perfil");
+        console.log("Guardando perfil...");
+
+        const nombreCompleto =
+            document.getElementById("nombre").value.trim();
+
+        const partes = nombreCompleto.split(" ");
+
+        const nombre = partes.shift() ?? "";
+
+        const apellido = partes.join(" ");
+
+        const telefono =
+            document.getElementById("telefono").value.trim();
+
+        const ciudad =
+            document.getElementById("ciudad").value.trim();
+
+        const colegio =
+            document.getElementById("colegio").value.trim();
+
+        const {
+            data: { user }
+        } = await supabase.auth.getUser();
+
+        const resultado =
+            await profileService.updateProfile(user.id, {
+
+                nombre,
+                apellido,
+                telefono,
+                ciudad,
+                colegio_interes: colegio
+
+            });
+
+        console.log(resultado);
 
     });
