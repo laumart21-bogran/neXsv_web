@@ -1,5 +1,5 @@
 import { supabase } from "./core/supabase-client.js";
-import ProfileService from "./services/profile.service.js";
+import profileService from "./services/profile.service.js";
 
 console.log("Profile.js cargado correctamente");
 
@@ -9,26 +9,33 @@ document.addEventListener("DOMContentLoaded", async () => {
         data: { user }
     } = await supabase.auth.getUser();
 
+    if (!user) {
+        console.log("No hay usuario autenticado");
+        return;
+    }
+
     console.log("Usuario:", user);
 
-  let { data: perfil, error } =
-    await profileService.getProfile(user.id);
+    let { data: perfil, error } =
+        await profileService.getProfile(user.id);
 
-if (error) {
+    if (error) {
 
-    console.log("No existe perfil. Creándolo...");
+        console.log("No existe perfil. Creándolo...");
 
-    const nuevo =
-        await profileService.createProfile({
+        const nuevo =
+            await profileService.createProfile({
 
-            authUserId: user.id,
-            nombre: "",
-            apellido: ""
+                authUserId: user.id,
+                nombre: "",
+                apellido: ""
 
-        });
+            });
 
-    perfil = nuevo.data;
+        perfil = nuevo.data;
 
-}
+    }
 
-console.log("Perfil final:", perfil);
+    console.log("Perfil final:", perfil);
+
+});
