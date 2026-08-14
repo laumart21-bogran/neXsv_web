@@ -101,16 +101,16 @@ document
             data: { user }
         } = await supabase.auth.getUser();
 
-        const resultado =
-            await profileService.updateProfile(user.id, {
+       const resultado =
+    await profileService.updateProfile(user.id, {
 
-                nombre,
-                apellido,
-                telefono,
-                ciudad,
-                colegio_interes: colegio
+        nombre,
+        apellido,
+        telefono,
+        ciudad,
+        colegio: colegio
 
-            });
+    });
 
         console.log(resultado);
 
