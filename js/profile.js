@@ -3,26 +3,11 @@ import profileService from "./services/profile.service.js";
 
 console.log("Profile.js cargado correctamente");
 
-// ==========================================
-// Cargar datos en el formulario
-// ==========================================
-
-document.getElementById("nombre").value =
-    `${perfil.nombre ?? ""} ${perfil.apellido ?? ""}`.trim();
-
-document.getElementById("correo").value =
-    user.email ?? "";
-
-document.getElementById("telefono").value =
-    perfil.telefono ?? "";
-
-document.getElementById("ciudad").value =
-    perfil.ciudad ?? "";
-
-document.getElementById("colegio").value =
-    perfil.colegio_interes ?? "";
-
 document.addEventListener("DOMContentLoaded", async () => {
+
+    // ==============================
+    // Obtener usuario autenticado
+    // ==============================
 
     const {
         data: { user }
@@ -35,8 +20,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Usuario:", user);
 
+    // ==============================
+    // Buscar perfil
+    // ==============================
+
     let { data: perfil, error } =
         await profileService.getProfile(user.id);
+
+    // ==============================
+    // Si no existe, crearlo
+    // ==============================
 
     if (error) {
 
@@ -56,5 +49,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     console.log("Perfil final:", perfil);
+
+    // ==============================
+    // Llenar formulario
+    // ==============================
+
+    document.getElementById("nombre").value =
+        `${perfil.nombre ?? ""} ${perfil.apellido ?? ""}`.trim();
+
+    document.getElementById("correo").value =
+        user.email ?? "";
+
+    document.getElementById("telefono").value =
+        perfil.telefono ?? "";
+
+    document.getElementById("ciudad").value =
+        perfil.ciudad ?? "";
+
+    document.getElementById("colegio").value =
+        perfil.colegio_interes ?? "";
 
 });
