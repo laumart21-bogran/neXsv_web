@@ -70,3 +70,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         perfil.colegio_interes ?? "";
 
 });
+
+document
+    .getElementById("profileForm")
+    .addEventListener("submit", async (event) => {
+
+        event.preventDefault();
+
+        console.log("Guardar perfil");
+
+    });
