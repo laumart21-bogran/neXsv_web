@@ -11,9 +11,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Usuario:", user);
 
-    const { data, error } = await ProfileService.getProfile(user.id);
+  let { data: perfil, error } =
+    await profileService.getProfile(user.id);
 
-    console.log("Perfil:", data);
-    console.log("Error:", error);
+if (error) {
 
-});
+    console.log("No existe perfil. Creándolo...");
+
+    const nuevo =
+        await profileService.createProfile({
+
+            authUserId: user.id,
+            nombre: "",
+            apellido: ""
+
+        });
+
+    perfil = nuevo.data;
+
+}
+
+console.log("Perfil final:", perfil);
