@@ -3,6 +3,25 @@ import profileService from "./services/profile.service.js";
 
 console.log("Profile.js cargado correctamente");
 
+// ==========================================
+// Cargar datos en el formulario
+// ==========================================
+
+document.getElementById("nombre").value =
+    `${perfil.nombre ?? ""} ${perfil.apellido ?? ""}`.trim();
+
+document.getElementById("correo").value =
+    user.email ?? "";
+
+document.getElementById("telefono").value =
+    perfil.telefono ?? "";
+
+document.getElementById("ciudad").value =
+    perfil.ciudad ?? "";
+
+document.getElementById("colegio").value =
+    perfil.colegio_interes ?? "";
+
 document.addEventListener("DOMContentLoaded", async () => {
 
     const {
