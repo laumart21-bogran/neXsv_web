@@ -115,3 +115,11 @@ document
         console.log(resultado);
 
     });
+
+const changePhotoBtn = document.getElementById("changePhotoBtn");
+
+const profileImage = document.getElementById("profileImage");
+
+changePhotoBtn.addEventListener("click", () => {
+    profileImage.click();
+});
