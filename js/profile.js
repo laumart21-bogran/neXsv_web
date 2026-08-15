@@ -1,6 +1,8 @@
 import { supabase } from "./core/supabase-client.js";
 import profileService from "./services/profile.service.js";
 
+let currentUser = null;
+
 console.log("Profile.js cargado correctamente");
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -12,6 +14,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const {
         data: { user }
     } = await supabase.auth.getUser();
+
+    currentUser = user;
 
     if (!user) {
         console.log("No hay usuario autenticado");
@@ -101,6 +105,8 @@ document
             data: { user }
         } = await supabase.auth.getUser();
 
+        currentUser = user;
+        
        const resultado =
     await profileService.updateProfile(user.id, {
 
@@ -134,10 +140,10 @@ profileImage.addEventListener("change", async () => {
 
     const resultado =
         await profileService.uploadProfilePhoto(
-            user.id,
-            file
-        );
-
+    currentUser.id,
+    file
+);
+    
     console.log("Fotografía subida:", resultado);
 
 });
