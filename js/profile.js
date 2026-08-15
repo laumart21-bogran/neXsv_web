@@ -130,7 +130,15 @@ profileImage.addEventListener("change", async () => {
 
     if (!file) return;
 
-    console.log("Archivo seleccionado:", file);
+    console.log("Subiendo fotografía...");
+
+    const resultado =
+        await profileService.uploadProfilePhoto(
+            user.id,
+            file
+        );
+
+    console.log("Fotografía subida:", resultado);
 
 });
 
