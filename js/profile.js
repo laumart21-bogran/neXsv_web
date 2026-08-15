@@ -123,3 +123,14 @@ const profileImage = document.getElementById("profileImage");
 changePhotoBtn.addEventListener("click", () => {
     profileImage.click();
 });
+
+profileImage.addEventListener("change", async () => {
+
+    const file = profileImage.files[0];
+
+    if (!file) return;
+
+    console.log("Archivo seleccionado:", file);
+
+});
+
