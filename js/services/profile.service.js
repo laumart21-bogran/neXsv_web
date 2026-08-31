@@ -71,7 +71,7 @@ async uploadProfilePhoto(authUserId, file) {
 
     const extension = file.name.split(".").pop();
 
-    const fileName = `${authUserId}.${extension}`;
+    const fileName = `${authUserId}/${authUserId}.${extension}`;
 
     const { error: uploadError } = await supabase.storage
         .from("profiles")
