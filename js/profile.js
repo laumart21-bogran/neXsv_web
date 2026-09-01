@@ -85,7 +85,7 @@ if (perfil.foto) {
         perfil.ciudad ?? "";
 
     document.getElementById("colegio").value =
-        perfil.colegio_interes ?? "";
+        perfil.colegio ?? "";
 
 });
 
