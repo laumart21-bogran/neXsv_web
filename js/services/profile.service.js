@@ -85,9 +85,9 @@ async uploadProfilePhoto(authUserId, file) {
         .from("profiles")
         .getPublicUrl(fileName);
 
-    await this.updateProfile(authUserId, {
-        fotografia_url: data.publicUrl
-    });
+   await this.updateProfile(authUserId, {
+    foto: data.publicUrl
+});
 
     return data.publicUrl;
 
