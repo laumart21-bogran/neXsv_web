@@ -54,6 +54,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Perfil final:", perfil);
 
+    const profilePreview =
+    document.getElementById("profilePreview");
+
+const profileInitials =
+    document.getElementById("profileInitials");
+
+if (perfil.foto) {
+
+    profilePreview.src = perfil.foto;
+    profilePreview.style.display = "block";
+
+    profileInitials.style.display = "none";
+}
+
     // ==============================
     // Llenar formulario
     // ==============================
@@ -126,6 +140,10 @@ const changePhotoBtn = document.getElementById("changePhotoBtn");
 
 const profileImage = document.getElementById("profileImage");
 
+const profilePreview = document.getElementById("profilePreview");
+
+const profileInitials = document.getElementById("profileInitials");
+
 changePhotoBtn.addEventListener("click", () => {
     profileImage.click();
 });
@@ -138,13 +156,29 @@ profileImage.addEventListener("change", async () => {
 
     console.log("Subiendo fotografía...");
 
-    const resultado =
-        await profileService.uploadProfilePhoto(
-    currentUser.id,
-    file
-);
-    
-    console.log("Fotografía subida:", resultado);
+    try {
+
+        const resultado =
+            await profileService.uploadProfilePhoto(
+                currentUser.id,
+                file
+            );
+
+        console.log("Fotografía subida:", resultado);
+
+        // Mostrar fotografía inmediatamente
+        profilePreview.src = resultado;
+        profilePreview.style.display = "block";
+
+        // Ocultar iniciales
+        profileInitials.style.display = "none";
+
+    } catch (error) {
+
+        console.error("Error al subir fotografía:", error);
+
+        alert("No se pudo subir la fotografía.");
+
+    }
 
 });
-
