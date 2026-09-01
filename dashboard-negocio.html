@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard del negocio | neXsv</title>
+
+    <!-- Estilos compartidos -->
+    <link rel="stylesheet"
+          href="css/dashboard.css">
+
+    <!-- Estilos específicos -->
+    <link rel="stylesheet"
+          href="css/member-dashboard.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+
+<body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <header class="dashboard-header">
+
+        <div class="header-logo">
+
+            <a href="index.html">
+
+                <img src="logo.png"
+                     alt="neXsv">
+
+            </a>
+
+        </div>
+
+
+        <div class="header-user">
+
+            <div class="header-user-info">
+
+                <strong id="businessOwnerName">
+                    Miembro
+                </strong>
+
+                <span>
+                    Negocio
+                </span>
+
+            </div>
+
+
+            <div class="header-avatar"
+                 id="headerAvatar">
+
+                <span id="headerAvatarInitials">
+                    NE
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================
+         CONTENEDOR
+    ========================== -->
+
+    <main class="dashboard-container">
+
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="dashboard-sidebar">
+
+
+            <div class="business-card">
+
+                <div class="business-avatar"
+                     id="businessAvatar">
+
+                    <span id="businessAvatarInitials">
+                        NE
+                    </span>
+
+                </div>
+
+
+                <h2 id="businessName">
+                    Mi negocio
+                </h2>
+
+
+                <p id="businessCategory">
+                    Negocio registrado
+                </p>
+
+
+                <span class="business-status"
+                      id="businessStatus">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Pendiente de revisión
+
+                </span>
+
+            </div>
+
+
+
+            <!-- MENÚ -->
+
+            <nav class="dashboard-menu">
+
+                <a href="dashboard-negocio.html"
+                   class="active">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Inicio
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fa-solid fa-store"></i>
+
+                    Mi negocio
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fa-solid fa-image"></i>
+
+                    Fotos
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fa-solid fa-bullhorn"></i>
+
+                    Publicaciones
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Estadísticas
+
+                </a>
+
+
+                <a href="#">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    Configuración
+
+                </a>
+
+            </nav>
+
+
+            <button id="logoutButton"
+                    class="logout-button">
+
+                <i class="fa-solid fa-right-from-bracket"></i>
+
+                Cerrar sesión
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- =========================
+             CONTENIDO PRINCIPAL
+        ========================== -->
+
+        <section class="dashboard-content">
+
+
+            <!-- BIENVENIDA -->
+
+            <section class="dashboard-hero">
+
+                <span class="dashboard-label">
+                    Panel de negocio
+                </span>
+
+                <h1 id="welcomeTitle">
+                    Bienvenido a neXsv
+                </h1>
+
+                <p>
+                    Administra la presencia de tu negocio
+                    dentro de la red neXsv.
+                </p>
+
+            </section>
+
+
+
+            <!-- =========================
+                 ESTADO DEL NEGOCIO
+            ========================== -->
+
+            <section class="dashboard-section">
+
+                <h2>
+                    Estado de tu negocio
+                </h2>
+
+
+                <div class="status-card">
+
+
+                    <div class="status-icon">
+
+                        <i class="fa-solid fa-store"></i>
+
+                    </div>
+
+
+                    <div class="status-info">
+
+                        <h3 id="statusTitle">
+                            Tu negocio está en revisión
+                        </h3>
+
+                        <p id="statusDescription">
+
+                            Estamos verificando la información
+                            de tu negocio antes de publicarla
+                            en la red.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================
+                 ACCIONES
+            ========================== -->
+
+            <section class="dashboard-section">
+
+                <h2>
+                    Gestiona tu negocio
+                </h2>
+
+
+                <div class="action-grid">
+
+
+                    <a href="#"
+                       class="action-card">
+
+                        <i class="fa-solid fa-store"></i>
+
+                        <h3>
+                            Información del negocio
+                        </h3>
+
+                        <p>
+                            Actualiza los datos principales
+                            de tu negocio.
+                        </p>
+
+                    </a>
+
+
+
+                    <a href="#"
+                       class="action-card">
+
+                        <i class="fa-solid fa-image"></i>
+
+                        <h3>
+                            Fotos
+                        </h3>
+
+                        <p>
+                            Agrega y administra las fotografías
+                            de tu negocio.
+                        </p>
+
+                    </a>
+
+
+
+                    <a href="#"
+                       class="action-card">
+
+                        <i class="fa-solid fa-bullhorn"></i>
+
+                        <h3>
+                            Publicaciones
+                        </h3>
+
+                        <p>
+                            Comparte promociones y novedades
+                            con la comunidad.
+                        </p>
+
+                    </a>
+
+
+
+                    <a href="#"
+                       class="action-card">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <h3>
+                            Estadísticas
+                        </h3>
+
+                        <p>
+                            Conoce cómo interactúan los usuarios
+                            con tu negocio.
+                        </p>
+
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- Arquitectura neXsv -->
+
+    <script type="module"
+            src="js/app.js"></script>
+
+    <script type="module"
+            src="js/pages/dashboard-negocio.js"></script>
+
+
+</body>
+
+</html> 
