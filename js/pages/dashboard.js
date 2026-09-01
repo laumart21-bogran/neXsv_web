@@ -1,13 +1,22 @@
+/**
+ * ==========================================================
+ * neXsv Platform v2
+ * Dashboard Controller
+ * ==========================================================
+ */
+
 import AuthSession from "../auth/auth.session.js";
 import ProfileService from "../services/profile.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    // Asegurar que la sesión esté inicializada
     if (!AuthSession.isInitialized()) {
         await AuthSession.initialize();
     }
 
+    // Verificar autenticación
     if (!AuthSession.isAuthenticated()) {
         window.location.href = APP_CONFIG.routes.login;
         return;
@@ -15,6 +24,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const user = AuthSession.getCurrentUser();
 
+    // Obtener perfil real desde Supabase
     const { data: perfil, error } =
         await ProfileService.getProfile(user.id);
 
@@ -26,6 +36,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
+
+/**
+ * ==========================================================
+ * Render principal
+ * ==========================================================
+ */
 
 function renderDashboard(user, perfil) {
 
@@ -68,6 +84,12 @@ function renderDashboard(user, perfil) {
 }
 
 
+/**
+ * ==========================================================
+ * Avatar
+ * ==========================================================
+ */
+
 function renderAvatar(photo, nombre) {
 
     const topAvatarImage =
@@ -95,11 +117,13 @@ function renderAvatar(photo, nombre) {
             sidebarAvatarImage.style.display = "block";
         }
 
-        if (topAvatarInitials)
+        if (topAvatarInitials) {
             topAvatarInitials.style.display = "none";
+        }
 
-        if (sidebarAvatarInitials)
+        if (sidebarAvatarInitials) {
             sidebarAvatarInitials.style.display = "none";
+        }
 
         return;
     }
@@ -119,6 +143,12 @@ function renderAvatar(photo, nombre) {
 
 }
 
+
+/**
+ * ==========================================================
+ * Helpers
+ * ==========================================================
+ */
 
 function setText(id, value) {
 
