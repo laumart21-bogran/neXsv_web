@@ -1,20 +1,24 @@
 /* ==========================================================
    neXsv · Incorporar negocio
    Formulario de incorporación — MVP
+   Identidad visual neXsv
 ========================================================== */
 
 :root {
-    --inc-primary: #3B82F6;
-    --inc-primary-dark: #2563EB;
-    --inc-secondary: #6366F1;
-    --inc-success: #22C55E;
+    --inc-navy: #20265C;
+    --inc-blue: #4164B7;
+    --inc-blue-dark: #334F9F;
+    --inc-teal: #5DB6C5;
+    --inc-green: #83C978;
+    --inc-gold: #F1CA55;
+    --inc-gold-dark: #DDB63D;
     --inc-background: #F5F7FB;
     --inc-surface: #FFFFFF;
-    --inc-text: #1E293B;
-    --inc-text-light: #64748B;
-    --inc-border: #E2E8F0;
-    --inc-danger: #EF4444;
-    --inc-shadow: 0 10px 30px rgba(15, 23, 42, .07);
+    --inc-text: #26324A;
+    --inc-text-light: #68758C;
+    --inc-border: #E0E6F0;
+    --inc-danger: #D94B5B;
+    --inc-shadow: 0 10px 30px rgba(32, 38, 92, .07);
     --inc-radius: 20px;
 }
 
@@ -44,42 +48,49 @@ textarea {
 .inc-page {
     width: min(100%, 980px);
     margin: 0 auto;
-    padding: 32px 20px 56px;
+    padding: 30px 20px 56px;
 }
+
+/* ==========================================================
+   ENCABEZADO
+========================================================== */
 
 .inc-header {
     text-align: center;
-    margin-bottom: 28px;
+    margin-bottom: 26px;
 }
 
 .inc-logo {
-    display: inline-block;
-    margin-bottom: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 8px;
 }
 
 .inc-logo img {
     display: block;
-    width: 150px;
+    width: 180px;
+    max-width: 70vw;
     height: auto;
 }
 
 .inc-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: #EEF4FF;
-    color: var(--inc-primary-dark);
+    display: block;
+    padding: 0;
+    margin: 0 auto 12px;
+    color: var(--inc-blue);
     font-size: .82rem;
     font-weight: 700;
-    margin-bottom: 10px;
+    letter-spacing: .01em;
+    text-align: center;
 }
 
 .inc-header h1 {
     margin: 0 0 10px;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--inc-navy);
+    font-size: clamp(1.85rem, 4vw, 2.55rem);
     line-height: 1.15;
-    letter-spacing: -.02em;
+    letter-spacing: -.025em;
 }
 
 .inc-header p {
@@ -88,6 +99,10 @@ textarea {
     color: var(--inc-text-light);
     line-height: 1.6;
 }
+
+/* ==========================================================
+   PROGRESO
+========================================================== */
 
 .inc-progress {
     display: grid;
@@ -99,15 +114,15 @@ textarea {
 .inc-progress-item {
     padding: 10px 8px;
     border-radius: 12px;
-    background: #E9EEF7;
-    color: var(--inc-text-light);
+    background: #E9EDF5;
+    color: #7B879B;
     text-align: center;
     font-size: .78rem;
     font-weight: 700;
 }
 
 .inc-progress-item.is-active {
-    background: var(--inc-primary);
+    background: linear-gradient(90deg, var(--inc-blue), var(--inc-teal));
     color: #fff;
 }
 
@@ -115,6 +130,10 @@ textarea {
     display: grid;
     gap: 18px;
 }
+
+/* ==========================================================
+   SECCIONES
+========================================================== */
 
 .inc-section {
     background: var(--inc-surface);
@@ -138,13 +157,14 @@ textarea {
     display: grid;
     place-items: center;
     border-radius: 12px;
-    background: #EEF4FF;
-    color: var(--inc-primary-dark);
+    background: #EEF3FF;
+    color: var(--inc-blue);
     font-weight: 800;
 }
 
 .inc-section-header h2 {
     margin: 0 0 5px;
+    color: var(--inc-navy);
     font-size: 1.2rem;
 }
 
@@ -173,6 +193,7 @@ textarea {
 
 .inc-field label,
 .inc-group-title {
+    color: var(--inc-navy);
     font-size: .92rem;
     font-weight: 700;
 }
@@ -188,6 +209,10 @@ textarea {
     line-height: 1.45;
 }
 
+/* ==========================================================
+   CAMPOS
+========================================================== */
+
 .inc-field input[type="text"],
 .inc-field input[type="email"],
 .inc-field input[type="tel"],
@@ -196,7 +221,7 @@ textarea {
 .inc-field select,
 .inc-field textarea {
     width: 100%;
-    border: 1px solid var(--inc-border);
+    border: 1px solid #D8E0EC;
     border-radius: 12px;
     background: #fff;
     color: var(--inc-text);
@@ -213,9 +238,13 @@ textarea {
 .inc-field input:focus,
 .inc-field select:focus,
 .inc-field textarea:focus {
-    border-color: var(--inc-primary);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+    border-color: var(--inc-teal);
+    box-shadow: 0 0 0 3px rgba(93, 182, 197, .14);
 }
+
+/* ==========================================================
+   OPCIONES
+========================================================== */
 
 .inc-options {
     display: grid;
@@ -243,10 +272,11 @@ textarea {
     gap: 10px;
     min-height: 48px;
     padding: 11px 13px;
-    border: 1px solid var(--inc-border);
+    border: 1px solid #D8E0EC;
     border-radius: 12px;
     background: #fff;
     cursor: pointer;
+    color: var(--inc-text);
     font-weight: 500;
     transition: .2s ease;
 }
@@ -256,7 +286,7 @@ textarea {
     flex: 0 0 18px;
     width: 18px;
     height: 18px;
-    border: 2px solid #CBD5E1;
+    border: 2px solid #C8D1DE;
     border-radius: 50%;
     background: #fff;
 }
@@ -266,13 +296,13 @@ textarea {
 }
 
 .inc-option input:checked + label {
-    border-color: var(--inc-primary);
-    background: #F5F8FF;
+    border-color: var(--inc-teal);
+    background: #F3FBFC;
 }
 
 .inc-option input:checked + label::before {
-    border-color: var(--inc-primary);
-    background: var(--inc-primary);
+    border-color: var(--inc-blue);
+    background: var(--inc-blue);
     box-shadow: inset 0 0 0 4px #fff;
 }
 
@@ -280,11 +310,15 @@ textarea {
     margin-top: 10px;
 }
 
+/* ==========================================================
+   CONFIRMACIÓN
+========================================================== */
+
 .inc-note {
     margin: 18px 0 0;
     padding: 12px 14px;
     border-radius: 12px;
-    background: #F8FAFC;
+    background: #F3F6FC;
     color: var(--inc-text-light);
     font-size: .82rem;
     line-height: 1.5;
@@ -302,7 +336,7 @@ textarea {
 
 .inc-consent input {
     margin-top: 3px;
-    accent-color: var(--inc-primary);
+    accent-color: var(--inc-blue);
 }
 
 .inc-consent label {
@@ -311,28 +345,33 @@ textarea {
     font-weight: 500;
 }
 
+/* ==========================================================
+   BOTÓN PRINCIPAL — AMARILLO INSTITUCIONAL
+========================================================== */
+
 .inc-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 12px;
-    margin-top: 8px;
+    margin-top: 18px;
 }
 
 .inc-submit {
     border: 0;
     border-radius: 14px;
-    padding: 14px 24px;
-    background: linear-gradient(135deg, var(--inc-primary), var(--inc-secondary));
-    color: #fff;
-    font-weight: 700;
+    padding: 15px 30px;
+    background: var(--inc-gold);
+    color: var(--inc-navy);
+    font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(59, 130, 246, .2);
-    transition: transform .2s ease, box-shadow .2s ease;
+    box-shadow: 0 8px 20px rgba(221, 182, 61, .22);
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
 .inc-submit:hover {
     transform: translateY(-1px);
-    box-shadow: 0 12px 25px rgba(59, 130, 246, .25);
+    background: var(--inc-gold-dark);
+    box-shadow: 0 12px 25px rgba(221, 182, 61, .28);
 }
 
 .inc-footer-note {
@@ -351,16 +390,24 @@ textarea {
 }
 
 #formMessage[data-type="success"] {
-    color: #15803D;
+    color: #3E8241;
 }
 
 #formMessage[data-type="error"] {
-    color: #B91C1C;
+    color: #B53A4A;
 }
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
 
 @media (max-width: 700px) {
     .inc-page {
         padding: 22px 14px 40px;
+    }
+
+    .inc-logo img {
+        width: 160px;
     }
 
     .inc-section {
