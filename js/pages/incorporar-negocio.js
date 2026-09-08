@@ -1,8 +1,7 @@
 import AuthSession from "../auth/auth.session.js";
+import ProfileService from "../services/profile.service.js";
 import BusinessService from "../services/business.service.js";
-import BusinessRequestService from "../services/business-request.service.js";
 import { APP_CONFIG } from "../core/config.js";
-
 
 // =====================================================
 // INICIALIZAR PÁGINA
@@ -12,259 +11,152 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("Página de incorporación cargada");
 
-    // Inicializar sesión
     if (!AuthSession.isInitialized()) {
         await AuthSession.initialize();
     }
 
-
-    // Verificar autenticación
     if (!AuthSession.isAuthenticated()) {
-
         window.location.href = APP_CONFIG.routes.login;
-
         return;
     }
 
-
-    // Usuario autenticado
     const user = AuthSession.getCurrentUser();
-
     console.log("Usuario autenticado:", user);
 
-
-    // Escuchar formulario
     const form = document.getElementById("businessForm");
 
     if (!form) {
-
         console.error("No se encontró el formulario.");
-
         return;
     }
-
 
     form.addEventListener("submit", async (event) => {
-
         event.preventDefault();
-
-        await incorporarNegocio(user, form);
-
+        await guardarDatosIniciales(user, form);
     });
-
 });
 
-
 // =====================================================
-// INCORPORAR NEGOCIO
+// GUARDAR PERFIL + NEGOCIO
+// Esta etapa NO crea todavía la solicitud ni colegios/objetivos.
 // =====================================================
 
-async function incorporarNegocio(user, form) {
+async function guardarDatosIniciales(user, form) {
 
-    const messageElement =
-        document.getElementById("formMessage");
+    const messageElement = document.getElementById("formMessage");
+    const submitButton = form.querySelector("button[type='submit']");
 
-    const submitButton =
-        form.querySelector("button[type='submit']");
-
-
-    // Estado visual
     if (submitButton) {
-
         submitButton.disabled = true;
-
-        submitButton.textContent =
-            "Enviando solicitud...";
-
+        submitButton.textContent = "Guardando información...";
     }
-
 
     if (messageElement) {
-
-        messageElement.textContent =
-            "";
-
+        messageElement.textContent = "";
+        messageElement.dataset.type = "";
     }
 
+    try {
 
-    // =================================================
-    // OBTENER DATOS DEL FORMULARIO
-    // =================================================
+        const formData = new FormData(form);
 
-    const formData =
-        new FormData(form);
+        // =================================================
+        // 1. DATOS PERSONALES → profiles
+        // =================================================
 
+        const esPadre = formData.get("es_padre_colegio_privado");
+        const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
+        const aceptaPrivacidad = formData.get("acepta_privacidad") === "true";
 
-    const businessData = {
+        if (!aceptaPrivacidad) {
+            throw new Error("Debes aceptar la política de privacidad para continuar.");
+        }
 
-        owner_id: user.id,
+        const profileData = {
+            es_padre_colegio_privado: esPadre === "true",
+            recibir_oportunidades: recibirOportunidades,
+            acepta_privacidad: true,
+            privacidad_aceptada_at: new Date().toISOString()
+        };
 
-        nombre:
-            formData.get("nombre")?.trim(),
+        const { data: profile, error: profileError } =
+            await ProfileService.updateProfile(user.id, profileData);
 
-        categoria:
-            formData.get("categoria")?.trim(),
+        if (profileError) {
+            console.error("Error al actualizar perfil:", profileError);
+            throw new Error("No fue posible guardar tus datos personales.");
+        }
 
-        descripcion:
-            formData.get("descripcion")?.trim(),
+        console.log("Perfil actualizado:", profile);
 
-        telefono:
-            formData.get("telefono")?.trim(),
+        // =================================================
+        // 2. DATOS DEL NEGOCIO → businesses
+        // =================================================
 
-        email:
-            formData.get("email")?.trim(),
+        const businessData = {
+            owner_id: user.id,
+            nombre: formData.get("nombre")?.trim(),
+            categoria: formData.get("categoria")?.trim(),
+            descripcion: formData.get("descripcion")?.trim(),
+            tipo_oferta: formData.get("tipo_oferta")?.trim(),
+            etapa_negocio: formData.get("etapa_negocio")?.trim(),
+            whatsapp: formData.get("whatsapp")?.trim(),
+            email: formData.get("email")?.trim(),
+            sitio_web: formData.get("sitio_web")?.trim() || null,
+            ciudad: formData.get("ciudad")?.trim(),
+            zona: formData.get("zona")?.trim(),
+            google_maps_url: formData.get("google_maps_url")?.trim(),
+            instagram: formData.get("instagram")?.trim() || null,
+            facebook: formData.get("facebook")?.trim() || null,
+            tiktok: formData.get("tiktok")?.trim() || null,
+            otra_red_social: formData.get("otra_red_social")?.trim() || null,
+            estado: "pendiente",
+            fecha_aprobacion: null
+        };
 
-        sitio_web:
-            formData.get("sitio_web")?.trim() || null,
+        console.log("Datos del negocio:", businessData);
 
-        direccion:
-            formData.get("direccion")?.trim(),
+        const { data: business, error: businessError } =
+            await BusinessService.createBusiness(businessData);
 
-        ciudad:
-            formData.get("ciudad")?.trim(),
+        if (businessError) {
+            console.error("Error al crear negocio:", businessError);
+            throw new Error("No fue posible registrar el negocio.");
+        }
 
-        estado:
-            "pendiente",
+        console.log("Negocio creado:", business);
 
-        fecha_aprobacion:
-            null
-
-    };
-
-
-    console.log(
-        "Datos del negocio:",
-        businessData
-    );
-
-
-    // =================================================
-    // CREAR NEGOCIO
-    // =================================================
-
-    const {
-        data: business,
-        error: businessError
-    } =
-        await BusinessService.createBusiness(
-            businessData
-        );
-
-
-    if (businessError) {
-
-        console.error(
-            "Error al crear negocio:",
-            businessError
-        );
+        // =================================================
+        // ÉXITO DE ESTA ETAPA
+        // =================================================
 
         mostrarMensaje(
-            "No fue posible registrar el negocio. Intenta nuevamente.",
+            "¡Perfecto! Tus datos personales y los datos de tu negocio se guardaron correctamente. En el siguiente paso conectaremos colegios, objetivos y la solicitud de incorporación.",
+            "success"
+        );
+
+        form.reset();
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Información guardada";
+        }
+
+    } catch (error) {
+
+        console.error("Error en incorporación:", error);
+
+        mostrarMensaje(
+            error.message || "Ocurrió un error al guardar la información.",
             "error"
         );
 
-        restaurarBoton(submitButton);
-
-        return;
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Enviar solicitud de incorporación";
+        }
     }
-
-
-    console.log(
-        "Negocio creado:",
-        business
-    );
-
-
-    // =================================================
-    // CREAR SOLICITUD
-    // =================================================
-
-    const requestData = {
-
-        business_id:
-            business.id,
-
-        user_id:
-            user.id,
-
-        estado:
-            "PENDIENTE",
-
-        observaciones:
-            null,
-
-        reviewed_at:
-            null,
-
-        reviewed_by:
-            null
-
-    };
-
-
-    console.log(
-        "Solicitud:",
-        requestData
-    );
-
-
-    const {
-        data: request,
-        error: requestError
-    } =
-        await BusinessRequestService.createRequest(
-            requestData
-        );
-
-
-    if (requestError) {
-
-        console.error(
-            "Error al crear solicitud:",
-            requestError
-        );
-
-        mostrarMensaje(
-            "El negocio fue registrado, pero no pudimos crear la solicitud. No envíes nuevamente el formulario; revisaremos este caso.",
-            "error"
-        );
-
-        restaurarBoton(submitButton);
-
-        return;
-    }
-
-
-    console.log(
-        "Solicitud creada:",
-        request
-    );
-
-
-    // =================================================
-    // ÉXITO
-    // =================================================
-
-    mostrarMensaje(
-        "¡Solicitud enviada correctamente! Tu negocio quedó pendiente de revisión.",
-        "success"
-    );
-
-
-    form.reset();
-
-
-    if (submitButton) {
-
-        submitButton.disabled = true;
-
-        submitButton.textContent =
-            "Solicitud enviada";
-
-    }
-
 }
-
 
 // =====================================================
 // MENSAJE
@@ -272,39 +164,12 @@ async function incorporarNegocio(user, form) {
 
 function mostrarMensaje(mensaje, tipo) {
 
-    const element =
-        document.getElementById("formMessage");
-
+    const element = document.getElementById("formMessage");
 
     if (!element) {
         return;
     }
 
-
-    element.textContent =
-        mensaje;
-
-
-    element.dataset.type =
-        tipo;
-
-}
-
-
-// =====================================================
-// RESTAURAR BOTÓN
-// =====================================================
-
-function restaurarBoton(button) {
-
-    if (!button) {
-        return;
-    }
-
-
-    button.disabled = false;
-
-    button.textContent =
-        "Enviar solicitud";
-
+    element.textContent = mensaje;
+    element.dataset.type = tipo;
 }
