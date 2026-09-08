@@ -1,0 +1,387 @@
+/* ==========================================================
+   neXsv · Incorporar negocio
+   Formulario de incorporación — MVP
+========================================================== */
+
+:root {
+    --inc-primary: #3B82F6;
+    --inc-primary-dark: #2563EB;
+    --inc-secondary: #6366F1;
+    --inc-success: #22C55E;
+    --inc-background: #F5F7FB;
+    --inc-surface: #FFFFFF;
+    --inc-text: #1E293B;
+    --inc-text-light: #64748B;
+    --inc-border: #E2E8F0;
+    --inc-danger: #EF4444;
+    --inc-shadow: 0 10px 30px rgba(15, 23, 42, .07);
+    --inc-radius: 20px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--inc-background);
+    color: var(--inc-text);
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+.inc-page {
+    width: min(100%, 980px);
+    margin: 0 auto;
+    padding: 32px 20px 56px;
+}
+
+.inc-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.inc-logo {
+    display: inline-block;
+    margin-bottom: 14px;
+}
+
+.inc-logo img {
+    display: block;
+    width: 150px;
+    height: auto;
+}
+
+.inc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #EEF4FF;
+    color: var(--inc-primary-dark);
+    font-size: .82rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.inc-header h1 {
+    margin: 0 0 10px;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -.02em;
+}
+
+.inc-header p {
+    max-width: 650px;
+    margin: 0 auto;
+    color: var(--inc-text-light);
+    line-height: 1.6;
+}
+
+.inc-progress {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 0 auto 20px;
+}
+
+.inc-progress-item {
+    padding: 10px 8px;
+    border-radius: 12px;
+    background: #E9EEF7;
+    color: var(--inc-text-light);
+    text-align: center;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.inc-progress-item.is-active {
+    background: var(--inc-primary);
+    color: #fff;
+}
+
+.inc-form {
+    display: grid;
+    gap: 18px;
+}
+
+.inc-section {
+    background: var(--inc-surface);
+    border: 1px solid var(--inc-border);
+    border-radius: var(--inc-radius);
+    box-shadow: var(--inc-shadow);
+    padding: 28px;
+}
+
+.inc-section-header {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.inc-section-number {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    background: #EEF4FF;
+    color: var(--inc-primary-dark);
+    font-weight: 800;
+}
+
+.inc-section-header h2 {
+    margin: 0 0 5px;
+    font-size: 1.2rem;
+}
+
+.inc-section-header p {
+    margin: 0;
+    color: var(--inc-text-light);
+    font-size: .92rem;
+    line-height: 1.5;
+}
+
+.inc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.inc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.inc-field.full {
+    grid-column: 1 / -1;
+}
+
+.inc-field label,
+.inc-group-title {
+    font-size: .92rem;
+    font-weight: 700;
+}
+
+.inc-required {
+    color: var(--inc-danger);
+}
+
+.inc-help {
+    margin: 0;
+    color: var(--inc-text-light);
+    font-size: .8rem;
+    line-height: 1.45;
+}
+
+.inc-field input[type="text"],
+.inc-field input[type="email"],
+.inc-field input[type="tel"],
+.inc-field input[type="url"],
+.inc-field input[type="file"],
+.inc-field select,
+.inc-field textarea {
+    width: 100%;
+    border: 1px solid var(--inc-border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--inc-text);
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.inc-field textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.inc-field input:focus,
+.inc-field select:focus,
+.inc-field textarea:focus {
+    border-color: var(--inc-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+}
+
+.inc-options {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.inc-options.grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.inc-option {
+    position: relative;
+}
+
+.inc-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.inc-option label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 11px 13px;
+    border: 1px solid var(--inc-border);
+    border-radius: 12px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 500;
+    transition: .2s ease;
+}
+
+.inc-option label::before {
+    content: "";
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #CBD5E1;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.inc-option input[type="checkbox"] + label::before {
+    border-radius: 5px;
+}
+
+.inc-option input:checked + label {
+    border-color: var(--inc-primary);
+    background: #F5F8FF;
+}
+
+.inc-option input:checked + label::before {
+    border-color: var(--inc-primary);
+    background: var(--inc-primary);
+    box-shadow: inset 0 0 0 4px #fff;
+}
+
+.inc-other-input {
+    margin-top: 10px;
+}
+
+.inc-note {
+    margin: 18px 0 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #F8FAFC;
+    color: var(--inc-text-light);
+    font-size: .82rem;
+    line-height: 1.5;
+}
+
+.inc-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--inc-border);
+    border-radius: 12px;
+    background: #FAFCFF;
+}
+
+.inc-consent input {
+    margin-top: 3px;
+    accent-color: var(--inc-primary);
+}
+
+.inc-consent label {
+    font-size: .88rem;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.inc-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.inc-submit {
+    border: 0;
+    border-radius: 14px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, var(--inc-primary), var(--inc-secondary));
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, .2);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.inc-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 25px rgba(59, 130, 246, .25);
+}
+
+.inc-footer-note {
+    margin-top: 18px;
+    text-align: center;
+    color: var(--inc-text-light);
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+#formMessage {
+    margin-top: 16px;
+    padding: 0;
+    text-align: center;
+    font-size: .9rem;
+}
+
+#formMessage[data-type="success"] {
+    color: #15803D;
+}
+
+#formMessage[data-type="error"] {
+    color: #B91C1C;
+}
+
+@media (max-width: 700px) {
+    .inc-page {
+        padding: 22px 14px 40px;
+    }
+
+    .inc-section {
+        padding: 22px 18px;
+    }
+
+    .inc-grid,
+    .inc-options.grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .inc-progress-item {
+        font-size: .7rem;
+        padding: 9px 4px;
+    }
+
+    .inc-actions {
+        justify-content: stretch;
+    }
+
+    .inc-submit {
+        width: 100%;
+    }
+}
