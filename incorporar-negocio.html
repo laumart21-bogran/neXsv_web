@@ -2,156 +2,307 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Incorporar mi negocio | neXsv</title>
 
-    <link rel="stylesheet" href="css/styles.css">
-
+    <link rel="stylesheet" href="css/incorporar-negocio.css">
 </head>
-
 
 <body>
 
-    <main>
+    <main class="inc-page">
 
-        <section>
+        <header class="inc-header">
+            <a href="index.html" class="inc-logo" aria-label="Ir a inicio neXsv">
+                <img src="logo.png" alt="neXsv">
+            </a>
 
-            <h1>Incorporar mi negocio</h1>
+            <div class="inc-eyebrow">Red privada de oportunidades</div>
+
+            <h1>Incorpora tu negocio a neXsv</h1>
 
             <p>
-                Forma parte de la red privada de oportunidades neXsv.
+                Queremos conocer tu negocio, entender qué buscas y ayudarte a formar parte
+                de una comunidad basada en confianza y oportunidades.
             </p>
+        </header>
 
+        <nav class="inc-progress" aria-label="Secciones del formulario">
+            <div class="inc-progress-item is-active">1 · Tú</div>
+            <div class="inc-progress-item">2 · Tu negocio</div>
+            <div class="inc-progress-item">3 · Contacto</div>
+            <div class="inc-progress-item">4 · neXsv</div>
+        </nav>
 
-            <form id="businessForm">
+        <form id="businessForm" class="inc-form">
 
-                <div>
-                    <label for="nombre">
-                        Nombre del negocio
-                    </label>
-
-                    <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        required
-                    >
+            <section class="inc-section">
+                <div class="inc-section-header">
+                    <div class="inc-section-number">1</div>
+                    <div>
+                        <h2>Queremos conocerte</h2>
+                        <p>Estos datos nos ayudan a entender la comunidad a la que pertenece tu negocio.</p>
+                    </div>
                 </div>
 
+                <div class="inc-field">
+                    <span class="inc-group-title">
+                        ¿Eres padre o madre de un colegio privado?
+                        <span class="inc-required">*</span>
+                    </span>
 
-                <div>
-                    <label for="categoria">
-                        Categoría
-                    </label>
+                    <div class="inc-options grid-2">
+                        <div class="inc-option">
+                            <input type="radio" id="padre-si" name="es_padre_colegio_privado" value="true" required>
+                            <label for="padre-si">Sí</label>
+                        </div>
 
-                    <input
-                        type="text"
-                        id="categoria"
-                        name="categoria"
-                        required
-                    >
+                        <div class="inc-option">
+                            <input type="radio" id="padre-no" name="es_padre_colegio_privado" value="false">
+                            <label for="padre-no">No</label>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="inc-field" style="margin-top: 22px;">
+                    <span class="inc-group-title">¿A qué colegio perteneces?</span>
+                    <p class="inc-help">Puedes seleccionar uno o varios.</p>
 
-                <div>
-                    <label for="descripcion">
-                        Descripción
-                    </label>
+                    <div class="inc-options grid-2">
+                        <div class="inc-option">
+                            <input type="checkbox" id="school-floresta" name="school_ids" value="">
+                            <label for="school-floresta">Colegio La Floresta</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="school-lamatepec" name="school_ids" value="">
+                            <label for="school-lamatepec">Colegio Lamatepec</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="school-campo-verde" name="school_ids" value="">
+                            <label for="school-campo-verde">Kinder Campo Verde</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="school-horizontes" name="school_ids" value="">
+                            <label for="school-horizontes">Kinder Horizontes</label>
+                        </div>
+                    </div>
 
-                    <textarea
-                        id="descripcion"
-                        name="descripcion"
-                        rows="4"
-                        required
-                    ></textarea>
+                    <div class="inc-field inc-other-input">
+                        <label for="otro_colegio">Otro colegio</label>
+                        <input type="text" id="otro_colegio" name="otro_colegio" placeholder="Escribe el nombre del colegio">
+                    </div>
                 </div>
 
+                <div class="inc-field" style="margin-top: 22px;">
+                    <span class="inc-group-title">¿Te gustaría recibir promociones y oportunidades de negocio?</span>
 
-                <div>
-                    <label for="telefono">
-                        Teléfono / WhatsApp
-                    </label>
+                    <div class="inc-options grid-2">
+                        <div class="inc-option">
+                            <input type="radio" id="oportunidades-si" name="recibir_oportunidades" value="true">
+                            <label for="oportunidades-si">Sí, me interesa</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="radio" id="oportunidades-no" name="recibir_oportunidades" value="false">
+                            <label for="oportunidades-no">No por ahora</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-                    <input
-                        type="tel"
-                        id="telefono"
-                        name="telefono"
-                        required
-                    >
+            <section class="inc-section">
+                <div class="inc-section-header">
+                    <div class="inc-section-number">2</div>
+                    <div>
+                        <h2>Cuéntanos sobre tu negocio</h2>
+                        <p>Esta información será la base de tu presencia dentro de neXsv.</p>
+                    </div>
                 </div>
 
+                <div class="inc-grid">
+                    <div class="inc-field full">
+                        <label for="nombre">Nombre del negocio <span class="inc-required">*</span></label>
+                        <input type="text" id="nombre" name="nombre" required autocomplete="organization">
+                    </div>
 
-                <div>
-                    <label for="email">
-                        Correo del negocio
-                    </label>
+                    <div class="inc-field">
+                        <label for="categoria">Categoría <span class="inc-required">*</span></label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Selecciona una categoría</option>
+                            <option value="Hogar">🏠 Hogar</option>
+                            <option value="Hijos">👨‍👩‍👧 Hijos</option>
+                            <option value="Salud">💗 Salud</option>
+                            <option value="Profesionales">⚖️ Profesionales</option>
+                            <option value="Automotriz">🚗 Automotriz</option>
+                            <option value="Educación">🎓 Educación</option>
+                            <option value="Restaurantes">🍽️ Restaurantes</option>
+                            <option value="Tecnología">💻 Tecnología</option>
+                            <option value="Compras">🛍️ Compras</option>
+                            <option value="Viajes">✈️ Viajes</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
 
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                    >
+                    <div class="inc-field">
+                        <label for="etapa_negocio">Etapa del negocio <span class="inc-required">*</span></label>
+                        <select id="etapa_negocio" name="etapa_negocio" required>
+                            <option value="">Selecciona una etapa</option>
+                            <option value="Idea">Idea</option>
+                            <option value="Emprendimiento inicial">Emprendimiento inicial</option>
+                            <option value="Negocio en crecimiento">Negocio en crecimiento</option>
+                            <option value="Negocio establecido">Negocio establecido</option>
+                        </select>
+                    </div>
+
+                    <div class="inc-field full">
+                        <label for="tipo_oferta">¿Qué vendes o qué servicio ofreces? <span class="inc-required">*</span></label>
+                        <input type="text" id="tipo_oferta" name="tipo_oferta" required placeholder="Ej. Repostería personalizada para eventos">
+                    </div>
+
+                    <div class="inc-field full">
+                        <label for="descripcion">Describe tu negocio en 1–2 líneas <span class="inc-required">*</span></label>
+                        <textarea id="descripcion" name="descripcion" rows="3" maxlength="300" required placeholder="Cuéntale a las familias qué hace especial a tu negocio."></textarea>
+                        <p class="inc-help">Esta descripción podrá formar parte de la presentación pública de tu negocio.</p>
+                    </div>
+
+                    <div class="inc-field">
+                        <label for="ciudad">Ciudad <span class="inc-required">*</span></label>
+                        <input type="text" id="ciudad" name="ciudad" required>
+                    </div>
+
+                    <div class="inc-field">
+                        <label for="zona">Zona <span class="inc-required">*</span></label>
+                        <input type="text" id="zona" name="zona" required placeholder="Ej. Santa Elena, Escalón">
+                    </div>
+                </div>
+            </section>
+
+            <section class="inc-section">
+                <div class="inc-section-header">
+                    <div class="inc-section-number">3</div>
+                    <div>
+                        <h2>Contacto y presencia</h2>
+                        <p>Ayuda a las familias a encontrarte y conocer mejor tu negocio.</p>
+                    </div>
                 </div>
 
+                <div class="inc-grid">
+                    <div class="inc-field">
+                        <label for="whatsapp">WhatsApp del negocio <span class="inc-required">*</span></label>
+                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Ej. 7000-0000" autocomplete="tel">
+                    </div>
 
-                <div>
-                    <label for="sitio_web">
-                        Sitio web
-                    </label>
+                    <div class="inc-field">
+                        <label for="email">Correo de contacto <span class="inc-required">*</span></label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                    </div>
 
-                    <input
-                        type="url"
-                        id="sitio_web"
-                        name="sitio_web"
-                    >
+                    <div class="inc-field full">
+                        <label for="google_maps_url">Link de ubicación en Google Maps <span class="inc-required">*</span></label>
+                        <input type="url" id="google_maps_url" name="google_maps_url" required placeholder="Pega aquí el enlace de Google Maps">
+                        <p class="inc-help">Abre tu ubicación en Google Maps, selecciona Compartir y pega aquí el enlace.</p>
+                    </div>
+
+                    <div class="inc-field">
+                        <label for="instagram">Instagram</label>
+                        <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/tu-negocio">
+                    </div>
+                    <div class="inc-field">
+                        <label for="facebook">Facebook</label>
+                        <input type="url" id="facebook" name="facebook" placeholder="https://facebook.com/tu-negocio">
+                    </div>
+                    <div class="inc-field">
+                        <label for="tiktok">TikTok</label>
+                        <input type="url" id="tiktok" name="tiktok" placeholder="https://tiktok.com/@tu-negocio">
+                    </div>
+                    <div class="inc-field">
+                        <label for="otra_red_social">Otra red social</label>
+                        <input type="url" id="otra_red_social" name="otra_red_social" placeholder="Pega el enlace">
+                    </div>
+
+                    <div class="inc-field full">
+                        <label for="sitio_web">Sitio web</label>
+                        <input type="url" id="sitio_web" name="sitio_web" placeholder="https://tusitio.com">
+                    </div>
+
+                    <div class="inc-field full">
+                        <label for="logo">Logo del negocio</label>
+                        <input type="file" id="logo" name="logo" accept="image/png,image/jpeg,image/webp">
+                        <p class="inc-help">Formato recomendado: JPG, PNG o WebP.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="inc-section">
+                <div class="inc-section-header">
+                    <div class="inc-section-number">4</div>
+                    <div>
+                        <h2>Tu negocio en neXsv</h2>
+                        <p>Queremos entender qué oportunidades serían más valiosas para ti.</p>
+                    </div>
                 </div>
 
+                <div class="inc-field">
+                    <span class="inc-group-title">¿Qué te gustaría lograr con neXsv?</span>
+                    <p class="inc-help">Selecciona hasta 3 opciones.</p>
 
-                <div>
-                    <label for="direccion">
-                        Dirección
-                    </label>
+                    <div class="inc-options grid-2">
+                        <div class="inc-option">
+                            <input type="checkbox" id="goal-clientes" name="goal_ids" value="">
+                            <label for="goal-clientes">Conseguir más clientes</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="goal-emprendedores" name="goal_ids" value="">
+                            <label for="goal-emprendedores">Conectar con otros emprendedores</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="goal-dar-conocer" name="goal_ids" value="">
+                            <label for="goal-dar-conocer">Dar a conocer mi negocio</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="goal-comprar" name="goal_ids" value="">
+                            <label for="goal-comprar">Comprar productos/servicios</label>
+                        </div>
+                        <div class="inc-option">
+                            <input type="checkbox" id="goal-otros" name="goal_ids" value="">
+                            <label for="goal-otros">Otros</label>
+                        </div>
+                    </div>
 
-                    <input
-                        type="text"
-                        id="direccion"
-                        name="direccion"
-                        required
-                    >
+                    <div class="inc-field inc-other-input">
+                        <label for="otro_objetivo">Si seleccionaste “Otros”, ¿cuál?</label>
+                        <input type="text" id="otro_objetivo" name="otro_objetivo" placeholder="Cuéntanos qué buscas">
+                    </div>
                 </div>
 
-
-                <div>
-                    <label for="ciudad">
-                        Ciudad
-                    </label>
-
-                    <input
-                        type="text"
-                        id="ciudad"
-                        name="ciudad"
-                        required
-                    >
+                <div class="inc-note">
+                    Tu información será utilizada para formar parte de la red neXsv y para generar
+                    conexiones y oportunidades relevantes dentro de la comunidad.
                 </div>
 
+                <div class="inc-consent" style="margin-top: 18px;">
+                    <input type="checkbox" id="acepta_privacidad" name="acepta_privacidad" value="true" required>
+                    <label for="acepta_privacidad">
+                        Confirmo que la información proporcionada es correcta y acepto que sea utilizada
+                        de acuerdo con la política de privacidad de neXsv. <span class="inc-required">*</span>
+                    </label>
+                </div>
 
-                <button type="submit">
-                    Enviar solicitud
-                </button>
+                <div class="inc-actions">
+                    <button type="submit" class="inc-submit">Enviar solicitud de incorporación</button>
+                </div>
 
-            </form>
+                <p class="inc-footer-note">
+                    Tu solicitud será revisada por neXsv antes de que el negocio sea publicado.
+                </p>
 
+                <div id="formMessage" role="status" aria-live="polite"></div>
+            </section>
 
-            <div id="formMessage"></div>
-
-        </section>
+        </form>
 
     </main>
-
 
     <script type="module" src="js/pages/incorporar-negocio.js"></script>
 
