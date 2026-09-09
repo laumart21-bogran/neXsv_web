@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     configurarUbicacion();
     configurarWhatsapp();
-    configurarColegios();
     await cargarColegios();
     await cargarObjetivos();
     configurarLimiteObjetivos();
