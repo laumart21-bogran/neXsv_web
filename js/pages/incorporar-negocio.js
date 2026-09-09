@@ -3,6 +3,7 @@ import ProfileService from "../services/profile.service.js";
 import ProfileSchoolService from "../services/profile-school.service.js";
 import BusinessService from "../services/business.service.js";
 import BusinessGoalService from "../services/business-goal.service.js";
+import BusinessRequestService from "../services/business-request.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
 // =====================================================
@@ -151,7 +152,7 @@ function configurarLimiteObjetivos() {
 }
 
 // =====================================================
-// GUARDAR PERFIL + COLEGIOS + NEGOCIO + OBJETIVOS
+// GUARDAR PERFIL + COLEGIOS + NEGOCIO + OBJETIVOS + SOLICITUD
 // =====================================================
 
 async function guardarDatosIniciales(user, form) {
@@ -281,11 +282,36 @@ async function guardarDatosIniciales(user, form) {
         console.log("Objetivos guardados:", savedGoals);
 
         // =================================================
+        // 5. SOLICITUD DE INCORPORACIÓN → business_requests
+        // =================================================
+
+        const requestData = {
+            business_id: business.id,
+            user_id: user.id,
+            estado: "PENDIENTE",
+            observaciones: null,
+            reviewed_at: null,
+            reviewed_by: null
+        };
+
+        console.log("Solicitud de incorporación:", requestData);
+
+        const { data: request, error: requestError } =
+            await BusinessRequestService.createRequest(requestData);
+
+        if (requestError) {
+            console.error("Error al crear solicitud:", requestError);
+            throw new Error("El negocio se creó, pero no fue posible registrar la solicitud de incorporación.");
+        }
+
+        console.log("Solicitud creada:", request);
+
+        // =================================================
         // ÉXITO DE ESTA ETAPA
         // =================================================
 
         mostrarMensaje(
-            "¡Perfecto! Tus datos personales, colegios, negocio y objetivos se guardaron correctamente.",
+            "¡Perfecto! Tus datos, negocio, objetivos y solicitud de incorporación se guardaron correctamente.",
             "success"
         );
 
