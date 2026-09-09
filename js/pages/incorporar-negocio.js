@@ -2,6 +2,7 @@ import AuthSession from "../auth/auth.session.js";
 import ProfileService from "../services/profile.service.js";
 import ProfileSchoolService from "../services/profile-school.service.js";
 import BusinessService from "../services/business.service.js";
+import BusinessGoalService from "../services/business-goal.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
 // =====================================================
@@ -32,6 +33,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     await cargarColegios();
+    await cargarObjetivos();
+    configurarLimiteObjetivos();
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -83,8 +86,72 @@ async function cargarColegios() {
 }
 
 // =====================================================
-// GUARDAR PERFIL + COLEGIOS + NEGOCIO
-// Esta etapa todavía NO crea objetivos ni solicitud.
+// CARGAR OBJETIVOS DESDE SUPABASE
+// =====================================================
+
+async function cargarObjetivos() {
+
+    const container = document.querySelector("input[name='goal_ids']")?.closest(".inc-options");
+
+    if (!container) {
+        console.error("No se encontró el contenedor de objetivos.");
+        return;
+    }
+
+    const { data: goals, error } = await BusinessGoalService.getGoals();
+
+    if (error) {
+        console.error("Error al cargar objetivos:", error);
+        return;
+    }
+
+    container.innerHTML = "";
+
+    goals.forEach((goal) => {
+
+        const option = document.createElement("div");
+        option.className = "inc-option";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = `goal-${goal.id}`;
+        input.name = "goal_ids";
+        input.value = goal.id;
+
+        const label = document.createElement("label");
+        label.htmlFor = input.id;
+        label.textContent = goal.nombre;
+
+        option.appendChild(input);
+        option.appendChild(label);
+        container.appendChild(option);
+    });
+}
+
+// =====================================================
+// LÍMITE DE OBJETIVOS
+// Máximo 3 opciones.
+// =====================================================
+
+function configurarLimiteObjetivos() {
+
+    document.addEventListener("change", (event) => {
+
+        if (!event.target.matches("input[name='goal_ids']")) {
+            return;
+        }
+
+        const selected = document.querySelectorAll("input[name='goal_ids']:checked");
+
+        if (selected.length > 3) {
+            event.target.checked = false;
+            mostrarMensaje("Puedes seleccionar un máximo de 3 objetivos.", "error");
+        }
+    });
+}
+
+// =====================================================
+// GUARDAR PERFIL + COLEGIOS + NEGOCIO + OBJETIVOS
 // =====================================================
 
 async function guardarDatosIniciales(user, form) {
@@ -119,9 +186,14 @@ async function guardarDatosIniciales(user, form) {
         }
 
         const selectedSchoolIds = formData.getAll("school_ids").filter(Boolean);
+        const selectedGoalIds = formData.getAll("goal_ids").filter(Boolean);
 
         if (esPadre === "true" && selectedSchoolIds.length === 0) {
             throw new Error("Si indicas que eres padre o madre de un colegio privado, debes seleccionar al menos un colegio.");
+        }
+
+        if (selectedGoalIds.length > 3) {
+            throw new Error("Puedes seleccionar un máximo de 3 objetivos.");
         }
 
         const profileData = {
@@ -195,11 +267,25 @@ async function guardarDatosIniciales(user, form) {
         console.log("Negocio creado:", business);
 
         // =================================================
+        // 4. OBJETIVOS → business_goals
+        // =================================================
+
+        const { data: savedGoals, error: goalsError } =
+            await BusinessGoalService.addGoals(business.id, selectedGoalIds);
+
+        if (goalsError) {
+            console.error("Error al guardar objetivos:", goalsError);
+            throw new Error("El negocio se creó, pero no fue posible guardar los objetivos seleccionados.");
+        }
+
+        console.log("Objetivos guardados:", savedGoals);
+
+        // =================================================
         // ÉXITO DE ESTA ETAPA
         // =================================================
 
         mostrarMensaje(
-            "¡Perfecto! Tus datos personales, colegios y datos de tu negocio se guardaron correctamente. En el siguiente paso conectaremos objetivos y la solicitud de incorporación.",
+            "¡Perfecto! Tus datos personales, colegios, negocio y objetivos se guardaron correctamente.",
             "success"
         );
 
