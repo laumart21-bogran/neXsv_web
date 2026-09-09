@@ -173,25 +173,15 @@
                         <p class="inc-help">Esta descripción podrá formar parte de la presentación pública de tu negocio.</p>
                     </div>
 
-                  <div class="inc-field">
-    <label for="departamento">Departamento <span class="inc-required">*</span></label>
-    <input
-        type="text"
-        id="departamento"
-        name="departamento"
-        required
-        placeholder="Ej. La Libertad">
-</div>
+                    <div class="inc-field">
+                        <label for="departamento">Departamento <span class="inc-required">*</span></label>
+                        <input type="text" id="departamento" name="departamento" required placeholder="Ej. La Libertad">
+                    </div>
 
-<div class="inc-field">
-    <label for="municipio">Municipio <span class="inc-required">*</span></label>
-    <input
-        type="text"
-        id="municipio"
-        name="municipio"
-        required
-        placeholder="Ej. Santa Tecla">
-</div>
+                    <div class="inc-field">
+                        <label for="municipio">Municipio <span class="inc-required">*</span></label>
+                        <input type="text" id="municipio" name="municipio" required placeholder="Ej. Santa Tecla">
+                    </div>
                 </div>
             </section>
 
@@ -207,7 +197,8 @@
                 <div class="inc-grid">
                     <div class="inc-field">
                         <label for="whatsapp">WhatsApp del negocio <span class="inc-required">*</span></label>
-                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Ej. 7000-0000" autocomplete="tel">
+                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Ej. 7000-0000" autocomplete="tel" inputmode="numeric" maxlength="9">
+                        <p class="inc-help">Escribe únicamente los 8 dígitos de tu número, con o sin guion. Ej. 7000-0000.</p>
                     </div>
 
                     <div class="inc-field">
