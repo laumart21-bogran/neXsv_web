@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     configurarUbicacion();
+    configurarWhatsapp();
     await cargarColegios();
     await cargarObjetivos();
     configurarLimiteObjetivos();
@@ -96,6 +97,39 @@ function configurarUbicacion() {
             municipioSelect.appendChild(option);
         });
     });
+}
+
+// =====================================================
+// WHATSAPP: NÚMERO → ENLACE wa.me
+// =====================================================
+
+function configurarWhatsapp() {
+    const whatsappInput = document.getElementById("whatsapp");
+
+    if (!whatsappInput) {
+        console.error("No se encontró el campo de WhatsApp.");
+        return;
+    }
+
+    whatsappInput.addEventListener("input", () => {
+        const digits = whatsappInput.value.replace(/\D/g, "").slice(0, 8);
+
+        if (digits.length === 8) {
+            whatsappInput.setCustomValidity("");
+        } else {
+            whatsappInput.setCustomValidity("Ingresa un número de WhatsApp válido de 8 dígitos.");
+        }
+    });
+}
+
+function normalizarWhatsapp(numero) {
+    const digits = String(numero || "").replace(/\D/g, "");
+
+    if (!/^\d{8}$/.test(digits)) {
+        throw new Error("Ingresa un número de WhatsApp válido de 8 dígitos.");
+    }
+
+    return `https://wa.me/503${digits}`;
 }
 
 // =====================================================
@@ -240,6 +274,8 @@ async function guardarDatosIniciales(user, form) {
             throw new Error("Puedes seleccionar un máximo de 3 objetivos.");
         }
 
+        const whatsapp = normalizarWhatsapp(formData.get("whatsapp"));
+
         const profileData = {
             es_padre_colegio_privado: esPadre === "true",
             recibir_oportunidades: recibirOportunidades,
@@ -276,7 +312,7 @@ async function guardarDatosIniciales(user, form) {
             descripcion: formData.get("descripcion")?.trim(),
             tipo_oferta: formData.get("tipo_oferta")?.trim(),
             etapa_negocio: formData.get("etapa_negocio")?.trim(),
-            whatsapp: formData.get("whatsapp")?.trim(),
+            whatsapp,
             email: formData.get("email")?.trim(),
             sitio_web: formData.get("sitio_web")?.trim() || null,
             departamento: formData.get("departamento")?.trim(),
