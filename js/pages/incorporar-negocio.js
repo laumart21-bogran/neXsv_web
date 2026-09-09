@@ -4,14 +4,10 @@ import ProfileSchoolService from "../services/profile-school.service.js";
 import BusinessService from "../services/business.service.js";
 import BusinessGoalService from "../services/business-goal.service.js";
 import BusinessRequestService from "../services/business-request.service.js";
+import { DEPARTAMENTOS_EL_SALVADOR, UBICACIONES_EL_SALVADOR } from "../data/el-salvador-ubicaciones.js";
 import { APP_CONFIG } from "../core/config.js";
 
-// =====================================================
-// INICIALIZAR PÁGINA
-// =====================================================
-
 document.addEventListener("DOMContentLoaded", async () => {
-
     console.log("Página de incorporación cargada");
 
     if (!AuthSession.isInitialized()) {
@@ -33,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    configurarUbicacion();
     await cargarColegios();
     await cargarObjetivos();
     configurarLimiteObjetivos();
@@ -44,11 +41,68 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // =====================================================
+// UBICACIÓN: DEPARTAMENTO → MUNICIPIO
+// =====================================================
+
+function configurarUbicacion() {
+    const departamentoInput = document.getElementById("departamento");
+    const municipioInput = document.getElementById("municipio");
+
+    if (!departamentoInput || !municipioInput) {
+        console.error("No se encontraron los campos de departamento y municipio.");
+        return;
+    }
+
+    const departamentoSelect = document.createElement("select");
+    departamentoSelect.id = "departamento";
+    departamentoSelect.name = "departamento";
+    departamentoSelect.required = true;
+
+    departamentoSelect.innerHTML = `
+        <option value="">Selecciona un departamento</option>
+        ${DEPARTAMENTOS_EL_SALVADOR.map(
+            (departamento) => `<option value="${departamento}">${departamento}</option>`
+        ).join("")}
+    `;
+
+    const municipioSelect = document.createElement("select");
+    municipioSelect.id = "municipio";
+    municipioSelect.name = "municipio";
+    municipioSelect.required = true;
+    municipioSelect.disabled = true;
+    municipioSelect.innerHTML = `<option value="">Primero selecciona un departamento</option>`;
+
+    departamentoInput.replaceWith(departamentoSelect);
+    municipioInput.replaceWith(municipioSelect);
+
+    departamentoSelect.addEventListener("change", () => {
+        const departamento = departamentoSelect.value;
+        const municipios = UBICACIONES_EL_SALVADOR[departamento] || [];
+
+        municipioSelect.innerHTML = "";
+        municipioSelect.disabled = municipios.length === 0;
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = municipios.length
+            ? "Selecciona un municipio"
+            : "Selecciona un departamento";
+        municipioSelect.appendChild(defaultOption);
+
+        municipios.forEach((municipio) => {
+            const option = document.createElement("option");
+            option.value = municipio;
+            option.textContent = municipio;
+            municipioSelect.appendChild(option);
+        });
+    });
+}
+
+// =====================================================
 // CARGAR COLEGIOS DESDE SUPABASE
 // =====================================================
 
 async function cargarColegios() {
-
     const container = document.querySelector("input[name='school_ids']")?.closest(".inc-options");
 
     if (!container) {
@@ -66,7 +120,6 @@ async function cargarColegios() {
     container.innerHTML = "";
 
     schools.forEach((school) => {
-
         const option = document.createElement("div");
         option.className = "inc-option";
 
@@ -91,7 +144,6 @@ async function cargarColegios() {
 // =====================================================
 
 async function cargarObjetivos() {
-
     const container = document.querySelector("input[name='goal_ids']")?.closest(".inc-options");
 
     if (!container) {
@@ -109,7 +161,6 @@ async function cargarObjetivos() {
     container.innerHTML = "";
 
     goals.forEach((goal) => {
-
         const option = document.createElement("div");
         option.className = "inc-option";
 
@@ -135,9 +186,7 @@ async function cargarObjetivos() {
 // =====================================================
 
 function configurarLimiteObjetivos() {
-
     document.addEventListener("change", (event) => {
-
         if (!event.target.matches("input[name='goal_ids']")) {
             return;
         }
@@ -156,7 +205,6 @@ function configurarLimiteObjetivos() {
 // =====================================================
 
 async function guardarDatosIniciales(user, form) {
-
     const messageElement = document.getElementById("formMessage");
     const submitButton = form.querySelector("button[type='submit']");
 
@@ -171,12 +219,7 @@ async function guardarDatosIniciales(user, form) {
     }
 
     try {
-
         const formData = new FormData(form);
-
-        // =================================================
-        // 1. DATOS PERSONALES → profiles
-        // =================================================
 
         const esPadre = formData.get("es_padre_colegio_privado");
         const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
@@ -214,10 +257,6 @@ async function guardarDatosIniciales(user, form) {
 
         console.log("Perfil actualizado:", profile);
 
-        // =================================================
-        // 2. COLEGIOS → profile_schools
-        // =================================================
-
         const profileId = profile.id;
 
         const { data: savedSchools, error: schoolsError } =
@@ -229,10 +268,6 @@ async function guardarDatosIniciales(user, form) {
         }
 
         console.log("Colegios guardados:", savedSchools);
-
-        // =================================================
-        // 3. DATOS DEL NEGOCIO → businesses
-        // =================================================
 
         const businessData = {
             owner_id: user.id,
@@ -267,10 +302,6 @@ async function guardarDatosIniciales(user, form) {
 
         console.log("Negocio creado:", business);
 
-        // =================================================
-        // 4. OBJETIVOS → business_goals
-        // =================================================
-
         const { data: savedGoals, error: goalsError } =
             await BusinessGoalService.addGoals(business.id, selectedGoalIds);
 
@@ -280,10 +311,6 @@ async function guardarDatosIniciales(user, form) {
         }
 
         console.log("Objetivos guardados:", savedGoals);
-
-        // =================================================
-        // 5. SOLICITUD DE INCORPORACIÓN → business_requests
-        // =================================================
 
         const requestData = {
             business_id: business.id,
@@ -306,10 +333,6 @@ async function guardarDatosIniciales(user, form) {
 
         console.log("Solicitud creada:", request);
 
-        // =================================================
-        // ÉXITO DE ESTA ETAPA
-        // =================================================
-
         mostrarMensaje(
             "¡Perfecto! Tus datos, negocio, objetivos y solicitud de incorporación se guardaron correctamente.",
             "success"
@@ -323,7 +346,6 @@ async function guardarDatosIniciales(user, form) {
         }
 
     } catch (error) {
-
         console.error("Error en incorporación:", error);
 
         mostrarMensaje(
@@ -343,7 +365,6 @@ async function guardarDatosIniciales(user, form) {
 // =====================================================
 
 function mostrarMensaje(mensaje, tipo) {
-
     const element = document.getElementById("formMessage");
 
     if (!element) {
