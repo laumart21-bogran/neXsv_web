@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await cargarColegios();
     await cargarObjetivos();
     configurarLimiteObjetivos();
+    configurarOtroObjetivo();
 
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -140,6 +141,7 @@ function configurarColegios() {
     const schoolSection = document.getElementById("school-section");
     const padreSi = document.getElementById("padre-si");
     const padreNo = document.getElementById("padre-no");
+    const otroColegioInput = document.getElementById("otro_colegio");
 
     if (!schoolSection || !padreSi || !padreNo) {
         console.error("No se encontraron los elementos de la sección de colegios.");
@@ -160,6 +162,10 @@ function configurarColegios() {
             schoolSection.querySelectorAll("input[type='checkbox']").forEach((input) => {
                 input.checked = false;
             });
+
+            if (otroColegioInput) {
+                otroColegioInput.value = "";
+            }
         }
     };
 
@@ -274,6 +280,39 @@ function configurarLimiteObjetivos() {
 }
 
 // =====================================================
+// OBJETIVO "OTROS"
+// =====================================================
+
+function configurarOtroObjetivo() {
+    const otherGoalSection = document.getElementById("other-goal-section");
+    const otherGoalInput = document.getElementById("otro_objetivo");
+
+    if (!otherGoalSection || !otherGoalInput) {
+        return;
+    }
+
+    const actualizarEstado = () => {
+        const otherGoalSelected = document.querySelector("input[name='goal_ids'][id='goal-otros']")?.checked === true;
+
+        otherGoalSection.hidden = !otherGoalSelected;
+        otherGoalInput.disabled = !otherGoalSelected;
+        otherGoalInput.required = otherGoalSelected;
+
+        if (!otherGoalSelected) {
+            otherGoalInput.value = "";
+        }
+    };
+
+    document.addEventListener("change", (event) => {
+        if (event.target.matches("input[name='goal_ids']")) {
+            actualizarEstado();
+        }
+    });
+
+    actualizarEstado();
+}
+
+// =====================================================
 // GUARDAR PERFIL + COLEGIOS + NEGOCIO + OBJETIVOS + SOLICITUD
 // =====================================================
 
@@ -297,13 +336,10 @@ async function guardarDatosIniciales(user, form) {
         const esPadre = formData.get("es_padre_colegio_privado");
         const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
         const aceptaPrivacidad = formData.get("acepta_privacidad") === "true";
+        const otroColegio = esPadre === "true"
+            ? formData.get("otro_colegio")?.trim() || null
+            : null;
 
-        if (!aceptaPrivacidad) {
-            throw new Error("Debes aceptar la política de privacidad para continuar.");
-        }
-
-        // Leemos directamente los checkboxes visibles/activos de colegios.
-        // Esto evita depender de cómo FormData trate los controles dinámicos.
         const selectedSchoolIds = esPadre === "true"
             ? Array.from(
                 document.querySelectorAll("#school-section input[name='school_ids']:checked:not(:disabled)")
@@ -311,22 +347,36 @@ async function guardarDatosIniciales(user, form) {
             : [];
 
         const selectedGoalIds = formData.getAll("goal_ids").filter(Boolean);
+        const otroObjetivo = document.getElementById("otro_objetivo")?.value.trim() || null;
+        const otherGoalSelected = document.querySelector("input[name='goal_ids'][id='goal-otros']")?.checked === true;
 
         console.log("Estado padre/madre:", esPadre);
         console.log("Colegios seleccionados:", selectedSchoolIds);
+        console.log("Otro colegio:", otroColegio);
+        console.log("Objetivos seleccionados:", selectedGoalIds);
+        console.log("Otro objetivo:", otroObjetivo);
 
-        if (esPadre === "true" && selectedSchoolIds.length === 0) {
-            throw new Error("Si indicas que eres padre o madre de un colegio privado, debes seleccionar al menos un colegio.");
+        if (!aceptaPrivacidad) {
+            throw new Error("Debes aceptar la política de privacidad para continuar.");
+        }
+
+        if (esPadre === "true" && selectedSchoolIds.length === 0 && !otroColegio) {
+            throw new Error("Selecciona al menos un colegio o indica el nombre de tu colegio si no aparece en la lista.");
         }
 
         if (selectedGoalIds.length > 3) {
             throw new Error("Puedes seleccionar un máximo de 3 objetivos.");
         }
 
+        if (otherGoalSelected && !otroObjetivo) {
+            throw new Error("Indica qué buscas cuando seleccionas el objetivo “Otros”.");
+        }
+
         const whatsapp = normalizarWhatsapp(formData.get("whatsapp"));
 
         const profileData = {
             es_padre_colegio_privado: esPadre === "true",
+            otro_colegio: otroColegio,
             recibir_oportunidades: recibirOportunidades,
             acepta_privacidad: true,
             privacidad_aceptada_at: new Date().toISOString()
@@ -377,6 +427,7 @@ async function guardarDatosIniciales(user, form) {
             facebook: formData.get("facebook")?.trim() || null,
             tiktok: formData.get("tiktok")?.trim() || null,
             otra_red_social: formData.get("otra_red_social")?.trim() || null,
+            otro_objetivo: otherGoalSelected ? otroObjetivo : null,
             estado: "pendiente",
             fecha_aprobacion: null
         };
