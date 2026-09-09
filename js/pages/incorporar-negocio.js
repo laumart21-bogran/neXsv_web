@@ -302,8 +302,18 @@ async function guardarDatosIniciales(user, form) {
             throw new Error("Debes aceptar la política de privacidad para continuar.");
         }
 
-        const selectedSchoolIds = formData.getAll("school_ids").filter(Boolean);
+        // Leemos directamente los checkboxes visibles/activos de colegios.
+        // Esto evita depender de cómo FormData trate los controles dinámicos.
+        const selectedSchoolIds = esPadre === "true"
+            ? Array.from(
+                document.querySelectorAll("#school-section input[name='school_ids']:checked:not(:disabled)")
+            ).map((input) => input.value).filter(Boolean)
+            : [];
+
         const selectedGoalIds = formData.getAll("goal_ids").filter(Boolean);
+
+        console.log("Estado padre/madre:", esPadre);
+        console.log("Colegios seleccionados:", selectedSchoolIds);
 
         if (esPadre === "true" && selectedSchoolIds.length === 0) {
             throw new Error("Si indicas que eres padre o madre de un colegio privado, debes seleccionar al menos un colegio.");
