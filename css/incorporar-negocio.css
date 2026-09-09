@@ -22,14 +22,8 @@
     --inc-radius: 20px;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 body {
     margin: 0;
     min-height: 100vh;
@@ -37,480 +31,73 @@ body {
     color: var(--inc-text);
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-
-button,
-input,
-select,
-textarea {
-    font: inherit;
-}
-
-.inc-page {
-    width: min(100%, 980px);
-    margin: 0 auto;
-    padding: 26px 20px 56px;
-}
-
-/* ==========================================================
-   ENCABEZADO
-========================================================== */
-
+button, input, select, textarea { font: inherit; }
+.inc-page { width: min(100%, 980px); margin: 0 auto; padding: 26px 20px 56px; }
 .inc-header {
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    margin-bottom: 26px;
-    padding: 10px 24px 22px;
-    border-radius: 24px;
+    position: relative; overflow: hidden; text-align: center; margin-bottom: 26px;
+    padding: 10px 24px 22px; border-radius: 24px;
     background: linear-gradient(135deg, rgba(255,255,255,.98) 0%, rgba(248,252,253,.98) 58%, rgba(240,250,250,.98) 100%);
-    border: 1px solid rgba(224,230,240,.9);
-    box-shadow: 0 12px 34px rgba(32, 38, 92, .06);
+    border: 1px solid rgba(224,230,240,.9); box-shadow: 0 12px 34px rgba(32, 38, 92, .06);
 }
-
-.inc-header::before {
-    content: "";
-    position: absolute;
-    width: 210px;
-    height: 210px;
-    top: -150px;
-    left: -80px;
-    border-radius: 50%;
-    background: rgba(93, 182, 197, .14);
-}
-
-.inc-header::after {
-    content: "";
-    position: absolute;
-    width: 190px;
-    height: 190px;
-    top: -135px;
-    right: -70px;
-    border-radius: 50%;
-    background: rgba(241, 202, 85, .18);
-}
-
-.inc-header-accent {
-    position: relative;
-    z-index: 1;
-    width: 72px;
-    height: 4px;
-    margin: 0 auto 9px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--inc-blue), var(--inc-teal), var(--inc-gold));
-}
-
-.inc-logo {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 3px;
-}
-
-.inc-logo img {
-    display: block;
-    width: 180px;
-    max-width: 70vw;
-    height: auto;
-}
-
-.inc-eyebrow {
-    position: relative;
-    z-index: 1;
-    display: block;
-    padding: 0;
-    margin: 0 auto 11px;
-    color: var(--inc-blue);
-    font-size: .82rem;
-    font-weight: 700;
-    letter-spacing: .01em;
-    text-align: center;
-}
-
-.inc-header h1 {
-    position: relative;
-    z-index: 1;
-    margin: 0 0 9px;
-    color: var(--inc-navy);
-    font-size: clamp(1.85rem, 4vw, 2.55rem);
-    line-height: 1.15;
-    letter-spacing: -.025em;
-}
-
-.inc-header > p {
-    position: relative;
-    z-index: 1;
-    max-width: 650px;
-    margin: 0 auto;
-    color: var(--inc-text-light);
-    line-height: 1.55;
-}
-
-.inc-trust-banner {
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 17px;
-    padding: 9px 16px;
-    border-radius: 999px;
-    background: var(--inc-gold);
-    color: var(--inc-navy);
-    font-size: .82rem;
-    box-shadow: 0 7px 18px rgba(221, 182, 61, .18);
-}
-
-.inc-trust-icon {
-    font-size: .95rem;
-    line-height: 1;
-}
-
-/* ==========================================================
-   PROGRESO
-========================================================== */
-
-.inc-progress {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin: 0 auto 20px;
-}
-
-.inc-progress-item {
-    padding: 10px 8px;
-    border-radius: 12px;
-    background: #E9EDF5;
-    color: #7B879B;
-    text-align: center;
-    font-size: .78rem;
-    font-weight: 700;
-}
-
-.inc-progress-item.is-active {
-    background: linear-gradient(90deg, var(--inc-blue), var(--inc-teal));
-    color: #fff;
-}
-
-.inc-form {
-    display: grid;
-    gap: 18px;
-}
-
-/* ==========================================================
-   SECCIONES
-========================================================== */
-
-.inc-section {
-    background: var(--inc-surface);
-    border: 1px solid var(--inc-border);
-    border-radius: var(--inc-radius);
-    box-shadow: var(--inc-shadow);
-    padding: 28px;
-}
-
-.inc-section-header {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    margin-bottom: 24px;
-}
-
-.inc-section-number {
-    flex: 0 0 38px;
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: #EEF3FF;
-    color: var(--inc-blue);
-    font-weight: 800;
-}
-
-.inc-section-header h2 {
-    margin: 0 0 5px;
-    color: var(--inc-navy);
-    font-size: 1.2rem;
-}
-
-.inc-section-header p {
-    margin: 0;
-    color: var(--inc-text-light);
-    font-size: .92rem;
-    line-height: 1.5;
-}
-
-.inc-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-}
-
-.inc-field {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.inc-field-spaced {
-    margin-top: 22px;
-}
-
-.inc-field.full {
-    grid-column: 1 / -1;
-}
-
-.inc-field label,
-.inc-group-title {
-    color: var(--inc-navy);
-    font-size: .92rem;
-    font-weight: 700;
-}
-
-.inc-required {
-    color: var(--inc-danger);
-}
-
-.inc-help {
-    margin: 0;
-    color: var(--inc-text-light);
-    font-size: .8rem;
-    line-height: 1.45;
-}
-
-/* ==========================================================
-   CAMPOS
-========================================================== */
-
-.inc-field input[type="text"],
-.inc-field input[type="email"],
-.inc-field input[type="tel"],
-.inc-field input[type="url"],
-.inc-field input[type="file"],
-.inc-field select,
-.inc-field textarea {
-    width: 100%;
-    border: 1px solid #D8E0EC;
-    border-radius: 12px;
-    background: #fff;
-    color: var(--inc-text);
-    padding: 12px 14px;
-    outline: none;
-    transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-.inc-field textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-.inc-field input:focus,
-.inc-field select:focus,
-.inc-field textarea:focus {
-    border-color: var(--inc-teal);
-    box-shadow: 0 0 0 3px rgba(93, 182, 197, .14);
-}
-
-/* ==========================================================
-   OPCIONES
-========================================================== */
-
-.inc-options {
-    display: grid;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.inc-options.grid-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.inc-option {
-    position: relative;
-}
-
-.inc-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.inc-option label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 48px;
-    padding: 11px 13px;
-    border: 1px solid #D8E0EC;
-    border-radius: 12px;
-    background: #fff;
-    cursor: pointer;
-    color: var(--inc-text);
-    font-weight: 500;
-    transition: .2s ease;
-}
-
-.inc-option label::before {
-    content: "";
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #C8D1DE;
-    border-radius: 50%;
-    background: #fff;
-}
-
-.inc-option input[type="checkbox"] + label::before {
-    border-radius: 5px;
-}
-
-.inc-option input:checked + label {
-    border-color: var(--inc-teal);
-    background: #F3FBFC;
-}
-
-.inc-option input:checked + label::before {
-    border-color: var(--inc-blue);
-    background: var(--inc-blue);
-    box-shadow: inset 0 0 0 4px #fff;
-}
-
-.inc-other-input {
-    margin-top: 10px;
-}
-
-/* ==========================================================
-   CONFIRMACIÓN
-========================================================== */
-
-.inc-note {
-    margin: 18px 0 0;
-    padding: 12px 14px;
-    border-radius: 12px;
-    background: #F3F6FC;
-    color: var(--inc-text-light);
-    font-size: .82rem;
-    line-height: 1.5;
-}
-
-.inc-consent {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-top: 18px;
-    padding: 14px;
-    border: 1px solid var(--inc-border);
-    border-radius: 12px;
-    background: #FAFCFF;
-}
-
-.inc-consent input {
-    margin-top: 3px;
-    accent-color: var(--inc-blue);
-}
-
-.inc-consent label {
-    font-size: .88rem;
-    line-height: 1.5;
-    font-weight: 500;
-}
-
-/* ==========================================================
-   BOTÓN PRINCIPAL — AMARILLO INSTITUCIONAL
-========================================================== */
-
-.inc-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 18px;
-}
-
-.inc-submit {
-    border: 0;
-    border-radius: 14px;
-    padding: 15px 30px;
-    background: var(--inc-gold);
-    color: var(--inc-navy);
-    font-weight: 800;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(221, 182, 61, .22);
-    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
-
-.inc-submit:hover {
-    transform: translateY(-1px);
-    background: var(--inc-gold-dark);
-    box-shadow: 0 12px 25px rgba(221, 182, 61, .28);
-}
-
-.inc-footer-note {
-    margin-top: 18px;
-    text-align: center;
-    color: var(--inc-text-light);
-    font-size: .8rem;
-    line-height: 1.5;
-}
-
-#formMessage {
-    margin-top: 16px;
-    padding: 0;
-    text-align: center;
-    font-size: .9rem;
-}
-
-#formMessage[data-type="success"] {
-    color: #3E8241;
-}
-
-#formMessage[data-type="error"] {
-    color: #B53A4A;
-}
-
-/* ==========================================================
-   RESPONSIVE
-========================================================== */
-
+.inc-header::before { content: ""; position: absolute; width: 210px; height: 210px; top: -150px; left: -80px; border-radius: 50%; background: rgba(93, 182, 197, .14); }
+.inc-header::after { content: ""; position: absolute; width: 190px; height: 190px; top: -135px; right: -70px; border-radius: 50%; background: rgba(241, 202, 85, .18); }
+.inc-header-accent { position: relative; z-index: 1; width: 72px; height: 4px; margin: 0 auto 9px; border-radius: 999px; background: linear-gradient(90deg, var(--inc-blue), var(--inc-teal), var(--inc-gold)); }
+.inc-logo { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; margin: 0 auto 3px; }
+.inc-logo img { display: block; width: 180px; max-width: 70vw; height: auto; }
+.inc-eyebrow { position: relative; z-index: 1; display: block; padding: 0; margin: 0 auto 11px; color: var(--inc-blue); font-size: .82rem; font-weight: 700; letter-spacing: .01em; text-align: center; }
+.inc-header h1 { position: relative; z-index: 1; margin: 0 0 9px; color: var(--inc-navy); font-size: clamp(1.85rem, 4vw, 2.55rem); line-height: 1.15; letter-spacing: -.025em; }
+.inc-header > p { position: relative; z-index: 1; max-width: 650px; margin: 0 auto; color: var(--inc-text-light); line-height: 1.55; }
+.inc-trust-banner { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin-top: 17px; padding: 9px 16px; border-radius: 999px; background: var(--inc-gold); color: var(--inc-navy); font-size: .82rem; box-shadow: 0 7px 18px rgba(221, 182, 61, .18); }
+.inc-trust-icon { font-size: .95rem; line-height: 1; }
+.inc-progress { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 auto 20px; }
+.inc-progress-item { padding: 10px 8px; border-radius: 12px; background: #E9EDF5; color: #7B879B; text-align: center; font-size: .78rem; font-weight: 700; }
+.inc-progress-item.is-active { background: linear-gradient(90deg, var(--inc-blue), var(--inc-teal)); color: #fff; }
+.inc-form { display: grid; gap: 18px; }
+.inc-section { background: var(--inc-surface); border: 1px solid var(--inc-border); border-radius: var(--inc-radius); box-shadow: var(--inc-shadow); padding: 28px; }
+.inc-section-header { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 24px; }
+.inc-section-number { flex: 0 0 38px; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; background: #EEF3FF; color: var(--inc-blue); font-weight: 800; }
+.inc-section-header h2 { margin: 0 0 5px; color: var(--inc-navy); font-size: 1.2rem; }
+.inc-section-header p { margin: 0; color: var(--inc-text-light); font-size: .92rem; line-height: 1.5; }
+.inc-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.inc-field { display: flex; flex-direction: column; gap: 7px; }
+.inc-field[hidden] { display: none !important; }
+.inc-field-spaced { margin-top: 22px; }
+.inc-field.full { grid-column: 1 / -1; }
+.inc-field label, .inc-group-title { color: var(--inc-navy); font-size: .92rem; font-weight: 700; }
+.inc-required { color: var(--inc-danger); }
+.inc-help { margin: 0; color: var(--inc-text-light); font-size: .8rem; line-height: 1.45; }
+.inc-field input[type="text"], .inc-field input[type="email"], .inc-field input[type="tel"], .inc-field input[type="url"], .inc-field input[type="file"], .inc-field select, .inc-field textarea { width: 100%; border: 1px solid #D8E0EC; border-radius: 12px; background: #fff; color: var(--inc-text); padding: 12px 14px; outline: none; transition: border-color .2s ease, box-shadow .2s ease; }
+.inc-field textarea { min-height: 110px; resize: vertical; }
+.inc-field input:focus, .inc-field select:focus, .inc-field textarea:focus { border-color: var(--inc-teal); box-shadow: 0 0 0 3px rgba(93, 182, 197, .14); }
+.inc-options { display: grid; gap: 10px; margin-top: 10px; }
+.inc-options.grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.inc-option { position: relative; }
+.inc-option input { position: absolute; opacity: 0; pointer-events: none; }
+.inc-option label { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 11px 13px; border: 1px solid #D8E0EC; border-radius: 12px; background: #fff; cursor: pointer; color: var(--inc-text); font-weight: 500; transition: .2s ease; }
+.inc-option label::before { content: ""; flex: 0 0 18px; width: 18px; height: 18px; border: 2px solid #C8D1DE; border-radius: 50%; background: #fff; }
+.inc-option input[type="checkbox"] + label::before { border-radius: 5px; }
+.inc-option input:checked + label { border-color: var(--inc-teal); background: #F3FBFC; }
+.inc-option input:checked + label::before { border-color: var(--inc-blue); background: var(--inc-blue); box-shadow: inset 0 0 0 4px #fff; }
+.inc-other-input { margin-top: 10px; }
+.inc-note { margin: 18px 0 0; padding: 12px 14px; border-radius: 12px; background: #F3F6FC; color: var(--inc-text-light); font-size: .82rem; line-height: 1.5; }
+.inc-consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 18px; padding: 14px; border: 1px solid var(--inc-border); border-radius: 12px; background: #FAFCFF; }
+.inc-consent input { margin-top: 3px; accent-color: var(--inc-blue); }
+.inc-consent label { font-size: .88rem; line-height: 1.5; font-weight: 500; }
+.inc-actions { display: flex; justify-content: center; gap: 12px; margin-top: 18px; }
+.inc-submit { border: 0; border-radius: 14px; padding: 15px 30px; background: var(--inc-gold); color: var(--inc-navy); font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(221, 182, 61, .22); transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+.inc-submit:hover { transform: translateY(-1px); background: var(--inc-gold-dark); box-shadow: 0 12px 25px rgba(221, 182, 61, .28); }
+.inc-footer-note { margin-top: 18px; text-align: center; color: var(--inc-text-light); font-size: .8rem; line-height: 1.5; }
+#formMessage { margin-top: 16px; padding: 0; text-align: center; font-size: .9rem; }
+#formMessage[data-type="success"] { color: #3E8241; }
+#formMessage[data-type="error"] { color: #B53A4A; }
 @media (max-width: 700px) {
-    .inc-page {
-        padding: 18px 12px 40px;
-    }
-
-    .inc-header {
-        padding: 8px 16px 20px;
-        border-radius: 20px;
-    }
-
-    .inc-logo img {
-        width: 160px;
-    }
-
-    .inc-trust-banner {
-        font-size: .76rem;
-        padding: 8px 12px;
-    }
-
-    .inc-section {
-        padding: 22px 18px;
-    }
-
-    .inc-grid,
-    .inc-options.grid-2 {
-        grid-template-columns: 1fr;
-    }
-
-    .inc-progress-item {
-        font-size: .7rem;
-        padding: 9px 4px;
-    }
-
-    .inc-actions {
-        justify-content: stretch;
-    }
-
-    .inc-submit {
-        width: 100%;
-    }
+    .inc-page { padding: 18px 12px 40px; }
+    .inc-header { padding: 8px 16px 20px; border-radius: 20px; }
+    .inc-logo img { width: 160px; }
+    .inc-trust-banner { font-size: .76rem; padding: 8px 12px; }
+    .inc-section { padding: 22px 18px; }
+    .inc-grid, .inc-options.grid-2 { grid-template-columns: 1fr; }
+    .inc-progress-item { font-size: .7rem; padding: 9px 4px; }
+    .inc-actions { justify-content: stretch; }
+    .inc-submit { width: 100%; }
 }
