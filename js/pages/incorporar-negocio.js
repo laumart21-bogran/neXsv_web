@@ -1,5 +1,6 @@
 import AuthSession from "../auth/auth.session.js";
 import ProfileService from "../services/profile.service.js";
+import ProfileSchoolService from "../services/profile-school.service.js";
 import BusinessService from "../services/business.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
@@ -30,6 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    await cargarColegios();
+
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
         await guardarDatosIniciales(user, form);
@@ -37,8 +40,51 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 // =====================================================
-// GUARDAR PERFIL + NEGOCIO
-// Esta etapa NO crea todavía la solicitud ni colegios/objetivos.
+// CARGAR COLEGIOS DESDE SUPABASE
+// =====================================================
+
+async function cargarColegios() {
+
+    const container = document.querySelector("input[name='school_ids']")?.closest(".inc-options");
+
+    if (!container) {
+        console.error("No se encontró el contenedor de colegios.");
+        return;
+    }
+
+    const { data: schools, error } = await ProfileSchoolService.getSchools();
+
+    if (error) {
+        console.error("Error al cargar colegios:", error);
+        return;
+    }
+
+    container.innerHTML = "";
+
+    schools.forEach((school) => {
+
+        const option = document.createElement("div");
+        option.className = "inc-option";
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = `school-${school.id}`;
+        input.name = "school_ids";
+        input.value = school.id;
+
+        const label = document.createElement("label");
+        label.htmlFor = input.id;
+        label.textContent = school.nombre;
+
+        option.appendChild(input);
+        option.appendChild(label);
+        container.appendChild(option);
+    });
+}
+
+// =====================================================
+// GUARDAR PERFIL + COLEGIOS + NEGOCIO
+// Esta etapa todavía NO crea objetivos ni solicitud.
 // =====================================================
 
 async function guardarDatosIniciales(user, form) {
@@ -72,6 +118,12 @@ async function guardarDatosIniciales(user, form) {
             throw new Error("Debes aceptar la política de privacidad para continuar.");
         }
 
+        const selectedSchoolIds = formData.getAll("school_ids").filter(Boolean);
+
+        if (esPadre === "true" && selectedSchoolIds.length === 0) {
+            throw new Error("Si indicas que eres padre o madre de un colegio privado, debes seleccionar al menos un colegio.");
+        }
+
         const profileData = {
             es_padre_colegio_privado: esPadre === "true",
             recibir_oportunidades: recibirOportunidades,
@@ -90,7 +142,23 @@ async function guardarDatosIniciales(user, form) {
         console.log("Perfil actualizado:", profile);
 
         // =================================================
-        // 2. DATOS DEL NEGOCIO → businesses
+        // 2. COLEGIOS → profile_schools
+        // =================================================
+
+        const profileId = profile.id;
+
+        const { data: savedSchools, error: schoolsError } =
+            await ProfileSchoolService.addSchools(profileId, selectedSchoolIds);
+
+        if (schoolsError) {
+            console.error("Error al guardar colegios:", schoolsError);
+            throw new Error("Tus datos personales se guardaron, pero no fue posible guardar los colegios seleccionados.");
+        }
+
+        console.log("Colegios guardados:", savedSchools);
+
+        // =================================================
+        // 3. DATOS DEL NEGOCIO → businesses
         // =================================================
 
         const businessData = {
@@ -131,7 +199,7 @@ async function guardarDatosIniciales(user, form) {
         // =================================================
 
         mostrarMensaje(
-            "¡Perfecto! Tus datos personales y los datos de tu negocio se guardaron correctamente. En el siguiente paso conectaremos colegios, objetivos y la solicitud de incorporación.",
+            "¡Perfecto! Tus datos personales, colegios y datos de tu negocio se guardaron correctamente. En el siguiente paso conectaremos objetivos y la solicitud de incorporación.",
             "success"
         );
 
