@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     configurarUbicacion();
     configurarWhatsapp();
+    configurarColegios();
     await cargarColegios();
     await cargarObjetivos();
     configurarLimiteObjetivos();
@@ -133,6 +134,43 @@ function normalizarWhatsapp(numero) {
 }
 
 // =====================================================
+// COLEGIO: MOSTRAR SOLO SI ES PADRE/MADRE DE COLEGIO PRIVADO
+// =====================================================
+
+function configurarColegios() {
+    const schoolSection = document.getElementById("school-section");
+    const padreSi = document.getElementById("padre-si");
+    const padreNo = document.getElementById("padre-no");
+
+    if (!schoolSection || !padreSi || !padreNo) {
+        console.error("No se encontraron los elementos de la sección de colegios.");
+        return;
+    }
+
+    const actualizarEstado = () => {
+        const mostrarColegios = padreSi.checked;
+        const schoolInputs = schoolSection.querySelectorAll("input");
+
+        schoolSection.hidden = !mostrarColegios;
+
+        schoolInputs.forEach((input) => {
+            input.disabled = !mostrarColegios;
+        });
+
+        if (!mostrarColegios) {
+            schoolSection.querySelectorAll("input[type='checkbox']").forEach((input) => {
+                input.checked = false;
+            });
+        }
+    };
+
+    padreSi.addEventListener("change", actualizarEstado);
+    padreNo.addEventListener("change", actualizarEstado);
+
+    actualizarEstado();
+}
+
+// =====================================================
 // CARGAR COLEGIOS DESDE SUPABASE
 // =====================================================
 
@@ -171,6 +209,8 @@ async function cargarColegios() {
         option.appendChild(label);
         container.appendChild(option);
     });
+
+    configurarColegios();
 }
 
 // =====================================================
@@ -295,12 +335,18 @@ async function guardarDatosIniciales(user, form) {
 
         const profileId = profile.id;
 
-        const { data: savedSchools, error: schoolsError } =
-            await ProfileSchoolService.addSchools(profileId, selectedSchoolIds);
+        let savedSchools = [];
 
-        if (schoolsError) {
-            console.error("Error al guardar colegios:", schoolsError);
-            throw new Error("Tus datos personales se guardaron, pero no fue posible guardar los colegios seleccionados.");
+        if (esPadre === "true") {
+            const { data, error } =
+                await ProfileSchoolService.addSchools(profileId, selectedSchoolIds);
+
+            if (error) {
+                console.error("Error al guardar colegios:", error);
+                throw new Error("Tus datos personales se guardaron, pero no fue posible guardar los colegios seleccionados.");
+            }
+
+            savedSchools = data || [];
         }
 
         console.log("Colegios guardados:", savedSchools);
