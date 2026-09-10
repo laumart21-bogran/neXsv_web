@@ -66,6 +66,15 @@ function renderRequests(requests) {
             </tr>
         `;
     }).join("");
+
+    body.querySelectorAll(".view-btn").forEach(button => {
+        button.addEventListener("click", () => {
+            const requestId = button.dataset.requestId;
+            if (requestId) {
+                window.location.href = `admin-revisar.html?id=${encodeURIComponent(requestId)}`;
+            }
+        });
+    });
 }
 
 async function loadRequests() {
