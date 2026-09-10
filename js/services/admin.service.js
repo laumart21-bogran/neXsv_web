@@ -1,5 +1,27 @@
 import { supabase } from "../core/supabase-client.js";
 
+const BUSINESS_FIELDS = `
+    id,
+    nombre,
+    categoria,
+    descripcion,
+    tipo_oferta,
+    etapa_negocio,
+    departamento,
+    municipio,
+    whatsapp,
+    email,
+    sitio_web,
+    google_maps_url,
+    instagram,
+    facebook,
+    tiktok,
+    otra_red_social,
+    otro_objetivo,
+    logo,
+    estado
+`;
+
 class AdminService {
     async isAdmin(userId) {
         const { data, error } = await supabase
@@ -23,31 +45,30 @@ class AdminService {
                 reviewed_at,
                 business_id,
                 user_id,
-                businesses (
-                    id,
-                    nombre,
-                    categoria,
-                    descripcion,
-                    tipo_oferta,
-                    etapa_negocio,
-                    departamento,
-                    municipio,
-                    whatsapp,
-                    email,
-                    sitio_web,
-                    google_maps_url,
-                    instagram,
-                    facebook,
-                    tiktok,
-                    otra_red_social,
-                    otro_objetivo,
-                    logo,
-                    estado
-                )
+                businesses (${BUSINESS_FIELDS})
             `)
             .order("created_at", { ascending: false });
 
         return { data: data || [], error };
+    }
+
+    async getIncorporationRequestById(requestId) {
+        const { data, error } = await supabase
+            .from("business_requests")
+            .select(`
+                id,
+                estado,
+                observaciones,
+                created_at,
+                reviewed_at,
+                business_id,
+                user_id,
+                businesses (${BUSINESS_FIELDS})
+            `)
+            .eq("id", requestId)
+            .maybeSingle();
+
+        return { data, error };
     }
 }
 
