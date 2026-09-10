@@ -13,6 +13,7 @@ const btnSendCorrection = document.getElementById("btnSendCorrection");
 
 let currentRequestId = null;
 let currentAdminId = null;
+let currentStatus = null;
 
 function showMessage(text) {
     message.textContent = text;
@@ -41,8 +42,13 @@ function statusLabel(status) {
 }
 
 function setActionState(status) {
-    const editable = status !== "APROBADA";
-    actions.hidden = !editable;
+    currentStatus = status;
+
+    // Las acciones administrativas solo están disponibles
+    // cuando la solicitud está pendiente de revisión.
+    const canReview = status === "PENDIENTE";
+
+    actions.hidden = !canReview;
     correctionPanel.hidden = true;
 }
 
@@ -113,6 +119,8 @@ async function loadRequest() {
 }
 
 btnCorrection?.addEventListener("click", () => {
+    if (currentStatus !== "PENDIENTE") return;
+
     correctionPanel.hidden = false;
     correctionObservation.focus();
 });
@@ -123,6 +131,8 @@ btnCancelCorrection?.addEventListener("click", () => {
 });
 
 btnSendCorrection?.addEventListener("click", async () => {
+    if (currentStatus !== "PENDIENTE") return;
+
     const observation = correctionObservation.value.trim();
 
     if (!observation) {
@@ -153,6 +163,8 @@ btnSendCorrection?.addEventListener("click", async () => {
 });
 
 btnApproveReview?.addEventListener("click", async () => {
+    if (currentStatus !== "PENDIENTE") return;
+
     const confirmed = window.confirm(
         "¿Confirmas que la solicitud está completa y puede pasar a la siguiente etapa?"
     );
