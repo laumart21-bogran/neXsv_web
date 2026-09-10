@@ -3,6 +3,16 @@ import AdminService from "../services/admin.service.js";
 
 const content = document.getElementById("requestContent");
 const message = document.getElementById("adminMessage");
+const actions = document.getElementById("reviewActions");
+const correctionPanel = document.getElementById("correctionPanel");
+const correctionObservation = document.getElementById("correctionObservation");
+const btnCorrection = document.getElementById("btnCorrection");
+const btnApproveReview = document.getElementById("btnApproveReview");
+const btnCancelCorrection = document.getElementById("btnCancelCorrection");
+const btnSendCorrection = document.getElementById("btnSendCorrection");
+
+let currentRequestId = null;
+let currentAdminId = null;
 
 function showMessage(text) {
     message.textContent = text;
@@ -10,7 +20,8 @@ function showMessage(text) {
 }
 
 function setText(id, value) {
-    document.getElementById(id).textContent = value || "—";
+    const element = document.getElementById(id);
+    if (element) element.textContent = value || "—";
 }
 
 function formatDate(value) {
@@ -29,6 +40,19 @@ function statusLabel(status) {
     return "Pendiente";
 }
 
+function setActionState(status) {
+    const editable = status !== "APROBADA";
+    actions.hidden = !editable;
+    correctionPanel.hidden = true;
+}
+
+function updateStatusUI(status) {
+    const element = document.getElementById("requestStatus");
+    element.textContent = statusLabel(status);
+    element.className = `status ${statusClass(status)}`;
+    setActionState(status);
+}
+
 async function loadRequest() {
     const requestId = new URLSearchParams(window.location.search).get("id");
 
@@ -37,9 +61,9 @@ async function loadRequest() {
         return;
     }
 
-    if (!AuthSession.isInitialized()) {
-        await AuthSession.initialize();
-    }
+    currentRequestId = requestId;
+
+    if (!AuthSession.isInitialized()) await AuthSession.initialize();
 
     if (!AuthSession.isAuthenticated()) {
         window.location.href = "/acceso/login-usuario.html";
@@ -47,6 +71,8 @@ async function loadRequest() {
     }
 
     const user = AuthSession.getCurrentUser();
+    currentAdminId = user.id;
+
     const { isAdmin, error: adminError } = await AdminService.isAdmin(user.id);
 
     if (adminError || !isAdmin) {
@@ -82,11 +108,75 @@ async function loadRequest() {
     setText("createdAt", formatDate(request.created_at));
     setText("observations", request.observaciones);
 
-    const status = document.getElementById("requestStatus");
-    status.textContent = statusLabel(request.estado);
-    status.className = `status ${statusClass(request.estado)}`;
-
+    updateStatusUI(request.estado);
     content.hidden = false;
 }
+
+btnCorrection?.addEventListener("click", () => {
+    correctionPanel.hidden = false;
+    correctionObservation.focus();
+});
+
+btnCancelCorrection?.addEventListener("click", () => {
+    correctionPanel.hidden = true;
+    correctionObservation.value = "";
+});
+
+btnSendCorrection?.addEventListener("click", async () => {
+    const observation = correctionObservation.value.trim();
+
+    if (!observation) {
+        showMessage("Escribe qué debe corregir el negocio antes de enviar la solicitud.");
+        correctionObservation.focus();
+        return;
+    }
+
+    btnSendCorrection.disabled = true;
+    const { data, error } = await AdminService.updateRequestStatus(
+        currentRequestId,
+        "CORRECCION",
+        observation,
+        currentAdminId
+    );
+    btnSendCorrection.disabled = false;
+
+    if (error) {
+        console.error("Error al solicitar corrección:", error);
+        showMessage("No fue posible solicitar la corrección. Verifica los permisos administrativos.");
+        return;
+    }
+
+    updateStatusUI(data.estado);
+    setText("observations", data.observaciones);
+    correctionObservation.value = "";
+    showMessage("La solicitud quedó en corrección y la observación fue guardada.");
+});
+
+btnApproveReview?.addEventListener("click", async () => {
+    const confirmed = window.confirm(
+        "¿Confirmas que la solicitud está completa y puede pasar a la siguiente etapa?"
+    );
+
+    if (!confirmed) return;
+
+    btnApproveReview.disabled = true;
+    const { data, error } = await AdminService.updateRequestStatus(
+        currentRequestId,
+        "APROBADA",
+        null,
+        currentAdminId
+    );
+    btnApproveReview.disabled = false;
+
+    if (error) {
+        console.error("Error al aprobar revisión:", error);
+        showMessage("No fue posible aprobar la revisión. Verifica los permisos administrativos.");
+        return;
+    }
+
+    updateStatusUI(data.estado);
+    setText("observations", data.observaciones);
+    showMessage("Revisión aprobada. La solicitud puede continuar a la siguiente etapa del proceso.");
+});
 
 document.addEventListener("DOMContentLoaded", loadRequest);
