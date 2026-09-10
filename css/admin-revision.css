@@ -1,0 +1,78 @@
+.back-link {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: #1657B8;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.revision-intro {
+    margin-bottom: 28px;
+}
+
+.revision-intro h1 {
+    margin: 12px 0 6px;
+}
+
+.revision-intro p {
+    margin: 0;
+}
+
+.revision-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.revision-card {
+    background: #fff;
+    border: 1px solid #e3e8f0;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(29, 42, 58, 0.06);
+}
+
+.revision-card h2 {
+    margin: 0 0 22px;
+    color: #1D2A3A;
+    font-size: 1.25rem;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.detail-grid > div {
+    min-width: 0;
+}
+
+.detail-grid span {
+    display: block;
+    margin-bottom: 6px;
+    color: #6b7b90;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.detail-grid strong {
+    display: block;
+    color: #1D2A3A;
+    font-weight: 500;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .revision-card {
+        padding: 22px;
+    }
+}
