@@ -14,18 +14,12 @@
 </head>
 <body>
     <header class="admin-topbar">
-        <a href="index.html" class="admin-brand">
-            <img src="logo.png" alt="neXsv">
-        </a>
-        <div>
-            <span class="admin-label">ADMINISTRACIÓN</span>
-            <strong>Revisión de solicitud</strong>
-        </div>
+        <a href="index.html" class="admin-brand"><img src="logo.png" alt="neXsv"></a>
+        <div><span class="admin-label">ADMINISTRACIÓN</span><strong>Revisión de solicitud</strong></div>
     </header>
 
     <main class="admin-container">
         <a href="admin-solicitudes.html" class="back-link">← Volver a solicitudes</a>
-
         <section id="adminMessage" class="admin-message" hidden></section>
 
         <section id="requestContent" hidden>
@@ -64,12 +58,50 @@
                 </article>
 
                 <article class="revision-card">
+                    <h2>Información de la comunidad</h2>
+                    <div class="detail-grid">
+                        <div><span>Colegio(s)</span><strong id="schools">—</strong></div>
+                        <div><span>Otro colegio</span><strong id="otherSchool">—</strong></div>
+                        <div><span>Objetivos</span><strong id="goals">—</strong></div>
+                        <div><span>Otro objetivo</span><strong id="otherGoal">—</strong></div>
+                        <div><span>Recibir oportunidades</span><strong id="receiveOpportunities">—</strong></div>
+                    </div>
+                </article>
+
+                <article class="revision-card">
+                    <h2>Logotipo</h2>
+                    <div class="logo-review">
+                        <div id="logoEmpty" class="logo-empty">Sin logotipo</div>
+                        <img id="businessLogo" class="business-logo" src="" alt="Logotipo del negocio" hidden>
+                    </div>
+                </article>
+
+                <article class="revision-card">
                     <h2>Solicitud</h2>
                     <div class="detail-grid">
                         <div><span>Fecha de solicitud</span><strong id="createdAt">—</strong></div>
-                        <div><span>Observaciones</span><strong id="observations">—</strong></div>
+                        <div><span>Última observación</span><strong id="observations">—</strong></div>
                     </div>
                 </article>
+            </section>
+
+            <section class="revision-actions" id="reviewActions">
+                <h2>Decisión de revisión</h2>
+                <p>Si la información necesita cambios, solicita una corrección. Si está completa, aprueba la revisión para habilitar la siguiente etapa del proceso.</p>
+                <div class="action-buttons">
+                    <button type="button" id="btnCorrection" class="admin-btn warning">Solicitar corrección</button>
+                    <button type="button" id="btnApproveReview" class="admin-btn success">Aprobar revisión</button>
+                </div>
+            </section>
+
+            <section class="correction-panel" id="correctionPanel" hidden>
+                <h2>Solicitar corrección</h2>
+                <label for="correctionObservation">¿Qué debe corregir el negocio?</label>
+                <textarea id="correctionObservation" rows="5" maxlength="1000" placeholder="Ejemplo: Por favor, carga nuevamente el logotipo y corrige el enlace de Google Maps."></textarea>
+                <div class="correction-actions">
+                    <button type="button" id="btnCancelCorrection" class="admin-btn secondary">Cancelar</button>
+                    <button type="button" id="btnSendCorrection" class="admin-btn warning">Enviar solicitud de corrección</button>
+                </div>
             </section>
         </section>
     </main>
