@@ -70,6 +70,24 @@ class AdminService {
 
         return { data, error };
     }
+
+    async updateRequestStatus(requestId, status, observation, reviewerId) {
+        const payload = {
+            estado: status,
+            observaciones: observation || null,
+            reviewed_at: new Date().toISOString(),
+            reviewed_by: reviewerId
+        };
+
+        const { data, error } = await supabase
+            .from("business_requests")
+            .update(payload)
+            .eq("id", requestId)
+            .select("id, estado, observaciones, reviewed_at, reviewed_by")
+            .single();
+
+        return { data, error };
+    }
 }
 
 export default new AdminService();
