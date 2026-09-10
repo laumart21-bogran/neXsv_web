@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de incorporación | neXsv</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/admin-solicitudes.css">
+</head>
+<body>
+    <header class="admin-topbar">
+        <a href="index.html" class="admin-brand">
+            <img src="logo.png" alt="neXsv">
+        </a>
+        <div>
+            <span class="admin-label">ADMINISTRACIÓN</span>
+            <strong>Solicitudes de incorporación</strong>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <section class="admin-intro">
+            <div>
+                <span class="admin-eyebrow">SPRINT 2</span>
+                <h1>Revisión de solicitudes</h1>
+                <p>Revisa la información enviada por los negocios antes de habilitar el siguiente paso del proceso.</p>
+            </div>
+            <button id="btnRefresh" class="admin-btn secondary">Actualizar</button>
+        </section>
+
+        <section class="admin-stats">
+            <article><span>Pendientes</span><strong id="statPending">0</strong></article>
+            <article><span>En corrección</span><strong id="statCorrection">0</strong></article>
+            <article><span>Aprobadas</span><strong id="statApproved">0</strong></article>
+        </section>
+
+        <section id="adminMessage" class="admin-message" hidden></section>
+
+        <section class="admin-table-card">
+            <div class="table-header">
+                <h2>Solicitudes</h2>
+                <span id="requestCount">0 solicitudes</span>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Negocio</th>
+                            <th>Ubicación</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsBody">
+                        <tr><td colspan="5" class="empty-state">Cargando solicitudes...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/pages/admin-solicitudes.js"></script>
+</body>
+</html>
