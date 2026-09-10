@@ -96,10 +96,15 @@
                         </div>
                     </div>
 
-                    <div class="inc-field inc-other-input">
-                        <label for="otro_colegio">Otro colegio</label>
+                    <div class="inc-option inc-other-option">
+                        <input type="checkbox" id="school-otro" name="school_other_selected" value="true">
+                        <label for="school-otro">Otro colegio</label>
+                    </div>
+
+                    <div class="inc-field inc-other-input" id="other-school-section" hidden>
+                        <label for="otro_colegio">¿Cuál es el nombre de tu colegio?</label>
                         <input type="text" id="otro_colegio" name="otro_colegio" placeholder="Escribe el nombre del colegio">
-                        <p class="inc-help">Si tu colegio no aparece en la lista, escríbelo aquí.</p>
+                        <p class="inc-help">Escríbelo si tu colegio no aparece en la lista.</p>
                     </div>
                 </div>
 
