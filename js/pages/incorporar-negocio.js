@@ -141,6 +141,8 @@ function configurarColegios() {
     const schoolSection = document.getElementById("school-section");
     const padreSi = document.getElementById("padre-si");
     const padreNo = document.getElementById("padre-no");
+    const otroColegioCheckbox = document.getElementById("school-otro");
+    const otroColegioSection = document.getElementById("other-school-section");
     const otroColegioInput = document.getElementById("otro_colegio");
 
     if (!schoolSection || !padreSi || !padreNo) {
@@ -151,12 +153,19 @@ function configurarColegios() {
     const actualizarEstado = () => {
         const mostrarColegios = padreSi.checked;
         const schoolInputs = schoolSection.querySelectorAll("input");
+        const otroSeleccionado = mostrarColegios && otroColegioCheckbox?.checked === true;
 
         schoolSection.hidden = !mostrarColegios;
 
         schoolInputs.forEach((input) => {
             input.disabled = !mostrarColegios;
         });
+
+        if (otroColegioSection && otroColegioInput) {
+            otroColegioSection.hidden = !otroSeleccionado;
+            otroColegioInput.disabled = !otroSeleccionado;
+            otroColegioInput.required = otroSeleccionado;
+        }
 
         if (!mostrarColegios) {
             schoolSection.querySelectorAll("input[type='checkbox']").forEach((input) => {
@@ -167,10 +176,15 @@ function configurarColegios() {
                 otroColegioInput.value = "";
             }
         }
+
+        if (!otroSeleccionado && mostrarColegios && otroColegioInput) {
+            otroColegioInput.value = "";
+        }
     };
 
     padreSi.addEventListener("change", actualizarEstado);
     padreNo.addEventListener("change", actualizarEstado);
+    otroColegioCheckbox?.addEventListener("change", actualizarEstado);
 
     actualizarEstado();
 }
@@ -336,7 +350,9 @@ async function guardarDatosIniciales(user, form) {
         const esPadre = formData.get("es_padre_colegio_privado");
         const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
         const aceptaPrivacidad = formData.get("acepta_privacidad") === "true";
-        const otroColegio = esPadre === "true"
+        const otroColegioCheckbox = document.getElementById("school-otro");
+        const otroColegioSeleccionado = esPadre === "true" && otroColegioCheckbox?.checked === true;
+        const otroColegio = otroColegioSeleccionado
             ? formData.get("otro_colegio")?.trim() || null
             : null;
 
@@ -352,6 +368,7 @@ async function guardarDatosIniciales(user, form) {
 
         console.log("Estado padre/madre:", esPadre);
         console.log("Colegios seleccionados:", selectedSchoolIds);
+        console.log("Otro colegio seleccionado:", otroColegioSeleccionado);
         console.log("Otro colegio:", otroColegio);
         console.log("Objetivos seleccionados:", selectedGoalIds);
         console.log("Otro objetivo:", otroObjetivo);
@@ -360,8 +377,12 @@ async function guardarDatosIniciales(user, form) {
             throw new Error("Debes aceptar la política de privacidad para continuar.");
         }
 
-        if (esPadre === "true" && selectedSchoolIds.length === 0 && !otroColegio) {
-            throw new Error("Selecciona al menos un colegio o indica el nombre de tu colegio si no aparece en la lista.");
+        if (esPadre === "true" && selectedSchoolIds.length === 0 && !otroColegioSeleccionado) {
+            throw new Error("Selecciona al menos un colegio o marca “Otro colegio” si no aparece en la lista.");
+        }
+
+        if (otroColegioSeleccionado && !otroColegio) {
+            throw new Error("Escribe el nombre de tu colegio después de seleccionar “Otro colegio”.");
         }
 
         if (selectedGoalIds.length > 3) {
