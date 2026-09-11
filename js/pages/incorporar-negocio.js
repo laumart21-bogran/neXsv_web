@@ -17,12 +17,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     const user = AuthSession.getCurrentUser();
-    console.log("Usuario autenticado:", user);
     const form = document.getElementById("businessForm");
-    if (!form) {
-        console.error("No se encontró el formulario.");
-        return;
-    }
+    if (!form) return;
 
     configurarUbicacion();
     configurarWhatsapp();
@@ -31,11 +27,145 @@ document.addEventListener("DOMContentLoaded", async () => {
     configurarLimiteObjetivos();
     configurarOtroObjetivo();
 
+    const correctionRequest = await obtenerSolicitudEnCorreccion(user.id);
+
+    if (correctionRequest) {
+        await cargarDatosParaCorreccion(user, correctionRequest);
+        prepararModoCorreccion(form);
+    }
+
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        await guardarDatosIniciales(user, form);
+
+        if (correctionRequest) {
+            await guardarCorreccion(user, form, correctionRequest);
+        } else {
+            await guardarDatosIniciales(user, form);
+        }
     });
 });
+
+async function obtenerSolicitudEnCorreccion(userId) {
+    const { data, error } = await BusinessRequestService.getRequestsByUser(userId);
+
+    if (error) {
+        console.error("Error al consultar solicitudes:", error);
+        return null;
+    }
+
+    return (data || []).find((request) => request.estado === "CORRECCION") || null;
+}
+
+function prepararModoCorreccion(form) {
+    const submitButton = form.querySelector("button[type='submit']");
+    if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = "Reenviar solicitud corregida";
+    }
+
+    const messageElement = document.getElementById("formMessage");
+    if (messageElement) {
+        messageElement.textContent = "Estás corrigiendo una solicitud. Revisa la información indicada por neXsv y vuelve a enviarla cuando esté lista.";
+        messageElement.dataset.type = "info";
+    }
+}
+
+async function cargarDatosParaCorreccion(user, request) {
+    const { data: profile, error: profileError } = await ProfileService.getProfile(user.id);
+    if (profileError) {
+        console.error("Error al cargar perfil para corrección:", profileError);
+        mostrarMensaje("No fue posible cargar tus datos personales.", "error");
+        return;
+    }
+
+    const { data: business, error: businessError } = await BusinessService.getBusinessById(request.business_id);
+    if (businessError) {
+        console.error("Error al cargar negocio para corrección:", businessError);
+        mostrarMensaje("No fue posible cargar los datos del negocio.", "error");
+        return;
+    }
+
+    const { data: selectedSchools, error: schoolsError } = await ProfileSchoolService.getSchoolsByProfile(profile.id);
+    if (schoolsError) {
+        console.error("Error al cargar colegios para corrección:", schoolsError);
+    }
+
+    const { data: selectedGoals, error: goalsError } = await BusinessGoalService.getGoalsByBusiness(business.id);
+    if (goalsError) {
+        console.error("Error al cargar objetivos para corrección:", goalsError);
+    }
+
+    const setValue = (id, value) => {
+        const element = document.getElementById(id);
+        if (element && value !== null && value !== undefined) element.value = value;
+    };
+
+    setValue("nombre", business.nombre);
+    setValue("categoria", business.categoria);
+    setValue("etapa_negocio", business.etapa_negocio);
+    setValue("tipo_oferta", business.tipo_oferta);
+    setValue("descripcion", business.descripcion);
+    setValue("whatsapp", business.whatsapp?.replace(/^https:\/\/wa\.me\/503/, ""));
+    setValue("email", business.email);
+    setValue("sitio_web", business.sitio_web);
+    setValue("google_maps_url", business.google_maps_url);
+    setValue("instagram", business.instagram);
+    setValue("facebook", business.facebook);
+    setValue("tiktok", business.tiktok);
+    setValue("otra_red_social", business.otra_red_social);
+    setValue("otro_objetivo", business.otro_objetivo);
+
+    const padreSi = document.getElementById("padre-si");
+    const padreNo = document.getElementById("padre-no");
+    if (profile.es_padre_colegio_privado) {
+        padreSi.checked = true;
+    } else {
+        padreNo.checked = true;
+    }
+    padreSi?.dispatchEvent(new Event("change", { bubbles: true }));
+
+    const oportunidadesSi = document.getElementById("oportunidades-si");
+    const oportunidadesNo = document.getElementById("oportunidades-no");
+    if (profile.recibir_oportunidades) {
+        oportunidadesSi.checked = true;
+    } else {
+        oportunidadesNo.checked = true;
+    }
+
+    const privacidad = document.getElementById("acepta_privacidad");
+    if (privacidad) privacidad.checked = true;
+
+    const departamento = document.getElementById("departamento");
+    const municipio = document.getElementById("municipio");
+    if (departamento && business.departamento) {
+        departamento.value = business.departamento;
+        departamento.dispatchEvent(new Event("change", { bubbles: true }));
+        if (municipio && business.municipio) municipio.value = business.municipio;
+    }
+
+    const schoolIds = new Set((selectedSchools || []).map((row) => row.school_id));
+    document.querySelectorAll("#school-section input[name='school_ids']").forEach((input) => {
+        input.checked = schoolIds.has(input.value);
+    });
+
+    const otroColegioInput = document.getElementById("otro_colegio");
+    const otroColegioCheckbox = document.getElementById("school-otro");
+    if (profile.otro_colegio) {
+        if (otroColegioCheckbox) otroColegioCheckbox.checked = true;
+        if (otroColegioInput) otroColegioInput.value = profile.otro_colegio;
+        otroColegioCheckbox?.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+
+    const goalIds = new Set((selectedGoals || []).map((row) => row.goal_id));
+    document.querySelectorAll("input[name='goal_ids']").forEach((input) => {
+        input.checked = goalIds.has(input.value);
+    });
+
+    const otherGoal = document.getElementById("goal-otros");
+    otherGoal?.dispatchEvent(new Event("change", { bubbles: true }));
+
+    console.log("Datos cargados para corrección:", { request, business, profile });
+}
 
 function configurarUbicacion() {
     const departamentoInput = document.getElementById("departamento");
@@ -172,8 +302,6 @@ async function cargarObjetivos() {
         option.className = "inc-option";
         const input = document.createElement("input");
         input.type = "checkbox";
-
-        // "Otros" necesita un identificador estable porque el detalle depende de esta opción.
         input.id = goal.nombre === "Otros" ? "goal-otros" : `goal-${goal.id}`;
         input.name = "goal_ids";
         input.value = goal.id;
@@ -219,131 +347,29 @@ function configurarOtroObjetivo() {
 async function guardarDatosIniciales(user, form) {
     const messageElement = document.getElementById("formMessage");
     const submitButton = form.querySelector("button[type='submit']");
-    if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = "Guardando información...";
-    }
-    if (messageElement) {
-        messageElement.textContent = "";
-        messageElement.dataset.type = "";
-    }
+    setGuardando(submitButton, messageElement);
 
     try {
         const formData = new FormData(form);
-        const esPadre = formData.get("es_padre_colegio_privado");
-        const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
-        const aceptaPrivacidad = formData.get("acepta_privacidad") === "true";
-        const otroColegioCheckbox = document.getElementById("school-otro");
-        const otroColegioSeleccionado = esPadre === "true" && otroColegioCheckbox?.checked === true;
-        const otroColegio = otroColegioSeleccionado ? formData.get("otro_colegio")?.trim() || null : null;
-        const selectedSchoolIds = esPadre === "true"
-            ? Array.from(document.querySelectorAll("#school-section input[name='school_ids']:checked:not(:disabled)"))
-                .map((input) => input.value).filter(Boolean)
-            : [];
-        const selectedGoalIds = formData.getAll("goal_ids").filter(Boolean);
-        const otroObjetivo = document.getElementById("otro_objetivo")?.value.trim() || null;
-        const otherGoalSelected = document.querySelector("input[name='goal_ids'][id='goal-otros']")?.checked === true;
+        const datos = await validarFormulario(formData);
+        await actualizarPerfilYRelaciones(user, datos);
 
-        console.log("Estado padre/madre:", esPadre);
-        console.log("Colegios seleccionados:", selectedSchoolIds);
-        console.log("Otro colegio seleccionado:", otroColegioSeleccionado);
-        console.log("Otro colegio:", otroColegio);
-        console.log("Objetivos seleccionados:", selectedGoalIds);
-        console.log("Otro objetivo:", otroObjetivo);
-
-        if (!aceptaPrivacidad) throw new Error("Debes aceptar la política de privacidad para continuar.");
-        if (esPadre === "true" && selectedSchoolIds.length === 0 && !otroColegioSeleccionado) {
-            throw new Error("Selecciona al menos un colegio o marca “Otro colegio” si no aparece en la lista.");
-        }
-        if (otroColegioSeleccionado && !otroColegio) {
-            throw new Error("Escribe el nombre de tu colegio después de seleccionar “Otro colegio”.");
-        }
-        if (selectedGoalIds.length > 3) throw new Error("Puedes seleccionar un máximo de 3 objetivos.");
-        if (otherGoalSelected && !otroObjetivo) {
-            throw new Error("Indica qué buscas cuando seleccionas el objetivo “Otros”.");
-        }
-
-        const whatsapp = normalizarWhatsapp(formData.get("whatsapp"));
-        const profileData = {
-            es_padre_colegio_privado: esPadre === "true",
-            otro_colegio: otroColegio,
-            recibir_oportunidades: recibirOportunidades,
-            acepta_privacidad: true,
-            privacidad_aceptada_at: new Date().toISOString()
-        };
-
-        const { data: profile, error: profileError } = await ProfileService.updateProfile(user.id, profileData);
-        if (profileError) {
-            console.error("Error al actualizar perfil:", profileError);
-            throw new Error("No fue posible guardar tus datos personales.");
-        }
-        console.log("Perfil actualizado:", profile);
-
-        const profileId = profile.id;
-        let savedSchools = [];
-        if (esPadre === "true") {
-            const { data, error } = await ProfileSchoolService.addSchools(profileId, selectedSchoolIds);
-            if (error) {
-                console.error("Error al guardar colegios:", error);
-                throw new Error("Tus datos personales se guardaron, pero no fue posible guardar los colegios seleccionados.");
-            }
-            savedSchools = data || [];
-        }
-        console.log("Colegios guardados:", savedSchools);
-
-        const businessData = {
-            owner_id: user.id,
-            nombre: formData.get("nombre")?.trim(),
-            categoria: formData.get("categoria")?.trim(),
-            descripcion: formData.get("descripcion")?.trim(),
-            tipo_oferta: formData.get("tipo_oferta")?.trim(),
-            etapa_negocio: formData.get("etapa_negocio")?.trim(),
-            whatsapp,
-            email: formData.get("email")?.trim(),
-            sitio_web: formData.get("sitio_web")?.trim() || null,
-            departamento: formData.get("departamento")?.trim(),
-            municipio: formData.get("municipio")?.trim(),
-            google_maps_url: formData.get("google_maps_url")?.trim(),
-            instagram: formData.get("instagram")?.trim() || null,
-            facebook: formData.get("facebook")?.trim() || null,
-            tiktok: formData.get("tiktok")?.trim() || null,
-            otra_red_social: formData.get("otra_red_social")?.trim() || null,
-            otro_objetivo: otherGoalSelected ? otroObjetivo : null,
-            estado: "pendiente",
-            fecha_aprobacion: null
-        };
-
-        console.log("Datos del negocio:", businessData);
+        const businessData = construirBusinessData(user, formData, datos.whatsapp);
         const { data: business, error: businessError } = await BusinessService.createBusiness(businessData);
-        if (businessError) {
-            console.error("Error al crear negocio:", businessError);
-            throw new Error("No fue posible registrar el negocio.");
-        }
-        console.log("Negocio creado:", business);
+        if (businessError) throw new Error("No fue posible registrar el negocio.");
 
-        const { data: savedGoals, error: goalsError } = await BusinessGoalService.addGoals(business.id, selectedGoalIds);
-        if (goalsError) {
-            console.error("Error al guardar objetivos:", goalsError);
-            throw new Error("El negocio se creó, pero no fue posible guardar los objetivos seleccionados.");
-        }
-        console.log("Objetivos guardados:", savedGoals);
+        const { error: goalsError } = await BusinessGoalService.addGoals(business.id, datos.selectedGoalIds);
+        if (goalsError) throw new Error("El negocio se creó, pero no fue posible guardar los objetivos seleccionados.");
 
-        const requestData = {
+        const { error: requestError } = await BusinessRequestService.createRequest({
             business_id: business.id,
             user_id: user.id,
             estado: "PENDIENTE",
             observaciones: null,
             reviewed_at: null,
             reviewed_by: null
-        };
-        console.log("Solicitud de incorporación:", requestData);
-
-        const { data: request, error: requestError } = await BusinessRequestService.createRequest(requestData);
-        if (requestError) {
-            console.error("Error al crear solicitud:", requestError);
-            throw new Error("El negocio se creó, pero no fue posible registrar la solicitud de incorporación.");
-        }
-        console.log("Solicitud creada:", request);
+        });
+        if (requestError) throw new Error("El negocio se creó, pero no fue posible registrar la solicitud de incorporación.");
 
         mostrarMensaje("¡Perfecto! Tus datos, negocio, objetivos y solicitud de incorporación se guardaron correctamente.", "success");
         form.reset();
@@ -358,6 +384,158 @@ async function guardarDatosIniciales(user, form) {
             submitButton.disabled = false;
             submitButton.textContent = "Enviar solicitud de incorporación";
         }
+    }
+}
+
+async function guardarCorreccion(user, form, request) {
+    const messageElement = document.getElementById("formMessage");
+    const submitButton = form.querySelector("button[type='submit']");
+    setGuardando(submitButton, messageElement, "Guardando corrección...");
+
+    try {
+        const formData = new FormData(form);
+        const datos = await validarFormulario(formData);
+        await actualizarPerfilYRelaciones(user, datos);
+
+        const businessData = construirBusinessData(user, formData, datos.whatsapp);
+        const { error: businessError } = await BusinessService.updateBusiness(request.business_id, businessData);
+        if (businessError) {
+            console.error("Error al actualizar negocio:", businessError);
+            throw new Error("No fue posible actualizar el negocio.");
+        }
+
+        const { error: goalsError } = await BusinessGoalService.replaceGoals(request.business_id, datos.selectedGoalIds);
+        if (goalsError) {
+            console.error("Error al actualizar objetivos:", goalsError);
+            throw new Error("El negocio se actualizó, pero no fue posible actualizar los objetivos.");
+        }
+
+        const { data: updatedRequest, error: requestError } = await BusinessRequestService.resubmitCorrection(request.id);
+        if (requestError) {
+            console.error("Error al reenviar solicitud:", requestError);
+            throw new Error("Los datos se actualizaron, pero no fue posible reenviar la solicitud.");
+        }
+
+        console.log("Solicitud corregida y reenviada:", updatedRequest);
+        mostrarMensaje("¡Listo! La solicitud fue corregida y reenviada a neXsv para una nueva revisión.", "success");
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Solicitud reenviada";
+        }
+    } catch (error) {
+        console.error("Error en corrección:", error);
+        mostrarMensaje(error.message || "Ocurrió un error al guardar la corrección.", "error");
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = "Reenviar solicitud corregida";
+        }
+    }
+}
+
+async function validarFormulario(formData) {
+    const esPadre = formData.get("es_padre_colegio_privado");
+    const recibirOportunidades = formData.get("recibir_oportunidades") === "true";
+    const aceptaPrivacidad = formData.get("acepta_privacidad") === "true";
+    const otroColegioCheckbox = document.getElementById("school-otro");
+    const otroColegioSeleccionado = esPadre === "true" && otroColegioCheckbox?.checked === true;
+    const otroColegio = otroColegioSeleccionado ? formData.get("otro_colegio")?.trim() || null : null;
+    const selectedSchoolIds = esPadre === "true"
+        ? Array.from(document.querySelectorAll("#school-section input[name='school_ids']:checked:not(:disabled)"))
+            .map((input) => input.value).filter(Boolean)
+        : [];
+    const selectedGoalIds = formData.getAll("goal_ids").filter(Boolean);
+    const otroObjetivo = document.getElementById("otro_objetivo")?.value.trim() || null;
+    const otherGoalSelected = document.querySelector("input[name='goal_ids'][id='goal-otros']")?.checked === true;
+
+    if (!aceptaPrivacidad) throw new Error("Debes aceptar la política de privacidad para continuar.");
+    if (esPadre === "true" && selectedSchoolIds.length === 0 && !otroColegioSeleccionado) {
+        throw new Error("Selecciona al menos un colegio o marca “Otro colegio” si no aparece en la lista.");
+    }
+    if (otroColegioSeleccionado && !otroColegio) {
+        throw new Error("Escribe el nombre de tu colegio después de seleccionar “Otro colegio”.");
+    }
+    if (selectedGoalIds.length > 3) throw new Error("Puedes seleccionar un máximo de 3 objetivos.");
+    if (otherGoalSelected && !otroObjetivo) {
+        throw new Error("Indica qué buscas cuando seleccionas el objetivo “Otros”.");
+    }
+
+    return {
+        esPadre,
+        recibirOportunidades,
+        selectedSchoolIds,
+        otroColegio,
+        selectedGoalIds,
+        otroObjetivo,
+        otherGoalSelected,
+        whatsapp: normalizarWhatsapp(formData.get("whatsapp")),
+        aceptaPrivacidad
+    };
+}
+
+async function actualizarPerfilYRelaciones(user, datos) {
+    const { data: profile, error: profileError } = await ProfileService.updateProfile(user.id, {
+        es_padre_colegio_privado: datos.esPadre === "true",
+        otro_colegio: datos.otroColegio,
+        recibir_oportunidades: datos.recibirOportunidades,
+        acepta_privacidad: true,
+        privacidad_aceptada_at: new Date().toISOString()
+    });
+
+    if (profileError) {
+        console.error("Error al actualizar perfil:", profileError);
+        throw new Error("No fue posible guardar tus datos personales.");
+    }
+
+    if (datos.esPadre === "true") {
+        const { error } = await ProfileSchoolService.replaceSchools(profile.id, datos.selectedSchoolIds);
+        if (error) {
+            console.error("Error al actualizar colegios:", error);
+            throw new Error("No fue posible actualizar los colegios seleccionados.");
+        }
+    } else {
+        const { error } = await ProfileSchoolService.replaceSchools(profile.id, []);
+        if (error) {
+            console.error("Error al limpiar colegios:", error);
+            throw new Error("No fue posible actualizar la información de colegios.");
+        }
+    }
+}
+
+function construirBusinessData(user, formData, whatsapp) {
+    return {
+        owner_id: user.id,
+        nombre: formData.get("nombre")?.trim(),
+        categoria: formData.get("categoria")?.trim(),
+        descripcion: formData.get("descripcion")?.trim(),
+        tipo_oferta: formData.get("tipo_oferta")?.trim(),
+        etapa_negocio: formData.get("etapa_negocio")?.trim(),
+        whatsapp,
+        email: formData.get("email")?.trim(),
+        sitio_web: formData.get("sitio_web")?.trim() || null,
+        departamento: formData.get("departamento")?.trim(),
+        municipio: formData.get("municipio")?.trim(),
+        google_maps_url: formData.get("google_maps_url")?.trim(),
+        instagram: formData.get("instagram")?.trim() || null,
+        facebook: formData.get("facebook")?.trim() || null,
+        tiktok: formData.get("tiktok")?.trim() || null,
+        otra_red_social: formData.get("otra_red_social")?.trim() || null,
+        otro_objetivo: document.getElementById("goal-otros")?.checked
+            ? document.getElementById("otro_objetivo")?.value.trim() || null
+            : null,
+        estado: "pendiente",
+        fecha_aprobacion: null
+    };
+}
+
+function setGuardando(submitButton, messageElement, text = "Guardando información...") {
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = text;
+    }
+    if (messageElement) {
+        messageElement.textContent = "";
+        messageElement.dataset.type = "";
     }
 }
 
