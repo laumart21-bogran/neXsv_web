@@ -24,7 +24,6 @@ class BusinessService {
 
     // =====================================================
     // OBTENER TODOS LOS NEGOCIOS DEL PROPIETARIO
-    // Nuevo método para la arquitectura de múltiples negocios
     // =====================================================
 
     async getBusinessesByOwner(ownerId) {
@@ -43,6 +42,25 @@ class BusinessService {
 
 
     // =====================================================
+    // OBTENER UN NEGOCIO POR ID
+    // =====================================================
+
+    async getBusinessById(businessId) {
+
+        const { data, error } = await supabase
+            .from("businesses")
+            .select("*")
+            .eq("id", businessId)
+            .single();
+
+        return {
+            data,
+            error
+        };
+    }
+
+
+    // =====================================================
     // CREAR NEGOCIO
     // =====================================================
 
@@ -51,6 +69,26 @@ class BusinessService {
         const { data, error } = await supabase
             .from("businesses")
             .insert([businessData])
+            .select()
+            .single();
+
+        return {
+            data,
+            error
+        };
+    }
+
+
+    // =====================================================
+    // ACTUALIZAR NEGOCIO
+    // =====================================================
+
+    async updateBusiness(businessId, businessData) {
+
+        const { data, error } = await supabase
+            .from("businesses")
+            .update(businessData)
+            .eq("id", businessId)
             .select()
             .single();
 
