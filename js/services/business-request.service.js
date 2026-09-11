@@ -39,6 +39,30 @@ class BusinessRequestService {
         };
     }
 
+
+    // =====================================================
+    // ACTUALIZAR UNA SOLICITUD DESDE EL FLUJO DE CORRECCIÓN
+    // =====================================================
+
+    async resubmitCorrection(requestId) {
+
+        const { data, error } = await supabase
+            .from("business_requests")
+            .update({
+                estado: "PENDIENTE",
+                reviewed_at: null,
+                reviewed_by: null
+            })
+            .eq("id", requestId)
+            .select()
+            .single();
+
+        return {
+            data,
+            error
+        };
+    }
+
 }
 
 
