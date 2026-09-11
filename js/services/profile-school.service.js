@@ -22,6 +22,15 @@ class ProfileSchoolService {
         return { data, error };
     }
 
+    async getSchoolsByProfile(profileId) {
+        const { data, error } = await supabase
+            .from("profile_schools")
+            .select("school_id")
+            .eq("profile_id", profileId);
+
+        return { data: data || [], error };
+    }
+
     async addSchools(profileId, schoolIds) {
         if (!schoolIds.length) {
             return { data: [], error: null };
@@ -41,6 +50,17 @@ class ProfileSchoolService {
             .select();
 
         return { data: data || [], error };
+    }
+
+    async replaceSchools(profileId, schoolIds) {
+        const { error: deleteError } = await supabase
+            .from("profile_schools")
+            .delete()
+            .eq("profile_id", profileId);
+
+        if (deleteError) return { data: [], error: deleteError };
+
+        return this.addSchools(profileId, schoolIds);
     }
 }
 
