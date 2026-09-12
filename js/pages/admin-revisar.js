@@ -248,10 +248,10 @@ btnApproveReview?.addEventListener("click", async () => {
     showMessage("Revisión aprobada. La solicitud puede continuar a la siguiente etapa del proceso.");
 
     // Si existe un pago asociado a esta solicitud, mostrarlo inmediatamente.
-    const { data: businessData, error: businessError } = await AdminService.getBusinessById(currentBusinessId);
-    if (!businessError && businessData) {
-        await loadPayment(currentBusinessId, currentRequestId, businessData);
-    }
+    await loadPayment(currentBusinessId, currentRequestId, {
+        id: currentBusinessId,
+        estado: "PENDIENTE"
+    });
 });
 
 btnVerifyAndActivate?.addEventListener("click", async () => {
