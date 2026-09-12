@@ -83,6 +83,29 @@
                         <div><span>Última observación</span><strong id="observations">—</strong></div>
                     </div>
                 </article>
+
+                <article class="revision-card payment-card" id="paymentSection" hidden>
+                    <h2>Pago de incorporación</h2>
+                    <div class="detail-grid">
+                        <div><span>Estado del pago</span><strong id="paymentStatus">—</strong></div>
+                        <div><span>Monto</span><strong id="paymentAmount">—</strong></div>
+                        <div><span>Método</span><strong id="paymentMethod">—</strong></div>
+                        <div><span>Referencia</span><strong id="paymentReference">—</strong></div>
+                        <div><span>Fecha de pago</span><strong id="paymentPaidAt">—</strong></div>
+                        <div><span>Proveedor</span><strong id="paymentProvider">—</strong></div>
+                    </div>
+                    <div class="payment-action" id="paymentAction" hidden>
+                        <p>El pago está registrado y pendiente de verificación.</p>
+                        <button type="button" id="btnVerifyAndActivate" class="admin-btn success">Verificar pago y activar negocio</button>
+                    </div>
+                    <div class="payment-active" id="paymentActive" hidden>
+                        <p class="payment-success">✓ Pago verificado y negocio activo.</p>
+                        <div class="detail-grid">
+                            <div><span>Activado</span><strong id="activationDate">—</strong></div>
+                            <div><span>Vigencia hasta</span><strong id="expirationDate">—</strong></div>
+                        </div>
+                    </div>
+                </article>
             </section>
 
             <section class="revision-actions" id="reviewActions">
