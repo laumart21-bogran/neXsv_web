@@ -10,69 +10,37 @@ import { supabase } from "../core/supabase-client.js";
  */
 class PaymentService {
 
-    // =====================================================
-    // CREAR PAGO
-    // =====================================================
-
     async createPayment(paymentData) {
-
         const { data, error } = await supabase
             .from("payments")
             .insert([paymentData])
             .select()
             .single();
 
-        return {
-            data,
-            error
-        };
+        return { data, error };
     }
 
-
-    // =====================================================
-    // OBTENER PAGOS DE UN NEGOCIO
-    // =====================================================
-
     async getPaymentsByBusiness(businessId) {
-
         const { data, error } = await supabase
             .from("payments")
             .select("*")
             .eq("business_id", businessId)
             .order("created_at", { ascending: false });
 
-        return {
-            data: data || [],
-            error
-        };
+        return { data: data || [], error };
     }
 
-
-    // =====================================================
-    // OBTENER UN PAGO POR ID
-    // =====================================================
-
     async getPaymentById(paymentId) {
-
         const { data, error } = await supabase
             .from("payments")
             .select("*")
             .eq("id", paymentId)
             .single();
 
-        return {
-            data,
-            error
-        };
+        return { data, error };
     }
 
-
-    // =====================================================
-    // OBTENER PAGOS PENDIENTES DE UN NEGOCIO
-    // =====================================================
-
     async getPendingPaymentsByBusiness(businessId) {
-
         const { data, error } = await supabase
             .from("payments")
             .select("*")
@@ -80,19 +48,10 @@ class PaymentService {
             .eq("status", "PENDIENTE")
             .order("created_at", { ascending: false });
 
-        return {
-            data: data || [],
-            error
-        };
+        return { data: data || [], error };
     }
 
-
-    // =====================================================
-    // ACTUALIZAR PAGO
-    // =====================================================
-
     async updatePayment(paymentId, paymentData) {
-
         const { data, error } = await supabase
             .from("payments")
             .update(paymentData)
@@ -100,12 +59,8 @@ class PaymentService {
             .select()
             .single();
 
-        return {
-            data,
-            error
-        };
+        return { data, error };
     }
-
 
     // =====================================================
     // REGISTRAR PAGO MANUAL
@@ -118,9 +73,8 @@ class PaymentService {
         method,
         reference = null,
         notes = null,
-        paidAt = null
+        paidOn = null
     }) {
-
         return this.createPayment({
             business_id: businessId,
             request_id: requestId,
@@ -131,17 +85,16 @@ class PaymentService {
             status: "PENDIENTE",
             reference,
             notes,
-            paid_at: paidAt
+            paid_on: paidOn,
+            paid_at: paidOn ? `${paidOn}T18:00:00.000Z` : null
         });
     }
 
-
     // =====================================================
-    // VERIFICAR PAGO
+    // VERIFICAR PAGO (compatibilidad)
     // =====================================================
 
     async verifyPayment(paymentId, verifiedBy) {
-
         return this.updatePayment(paymentId, {
             status: "VERIFICADO",
             verified_at: new Date().toISOString(),
@@ -149,30 +102,18 @@ class PaymentService {
         });
     }
 
-
     // =====================================================
     // VERIFICAR PAGO Y ACTIVAR NEGOCIO
     // =====================================================
-    // Operación transaccional en Supabase.
-    // Valida permisos, pago pendiente y solicitud aprobada.
-    // Luego verifica el pago y activa el negocio con vigencia de un año.
 
     async verifyPaymentAndActivateBusiness(paymentId) {
-
         const { data, error } = await supabase.rpc(
             "verify_payment_and_activate_business",
-            {
-                p_payment_id: paymentId
-            }
+            { p_payment_id: paymentId }
         );
 
-        return {
-            data,
-            error
-        };
+        return { data, error };
     }
-
 }
-
 
 export default new PaymentService();
