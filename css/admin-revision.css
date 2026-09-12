@@ -221,6 +221,15 @@
     margin-top: 22px;
 }
 
+/* Asegurar que los estados controlados por JavaScript respeten [hidden]. */
+#paymentSection[hidden],
+#manualPaymentFormWrapper[hidden],
+#paymentDetails[hidden],
+#paymentAction[hidden],
+#paymentActive[hidden] {
+    display: none !important;
+}
+
 @media (max-width: 700px) {
     .detail-grid { grid-template-columns: 1fr; }
     .revision-card,
