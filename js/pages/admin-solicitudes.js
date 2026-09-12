@@ -24,18 +24,34 @@ function escapeHtml(value = "") {
         .replaceAll("'", "&#039;");
 }
 
+function formatDate(value) {
+    if (!value) return "—";
+    return new Date(value).toLocaleDateString("es-SV");
+}
+
+function renderPublication(business) {
+    if (business.estado === "ACTIVO") {
+        const activated = formatDate(business.fecha_activacion);
+        return `<span class="status published">Publicado</span><small class="status-detail">Desde ${activated}</small>`;
+    }
+
+    return `<span class="status pending">No publicado</span>`;
+}
+
 function renderRequests(requests) {
     const pending = requests.filter(r => r.estado === "PENDIENTE").length;
     const correction = requests.filter(r => r.estado === "CORRECCION").length;
     const approved = requests.filter(r => r.estado === "APROBADA").length;
+    const published = requests.filter(r => r.businesses?.estado === "ACTIVO").length;
 
     document.getElementById("statPending").textContent = pending;
     document.getElementById("statCorrection").textContent = correction;
     document.getElementById("statApproved").textContent = approved;
+    document.getElementById("statPublished").textContent = published;
     document.getElementById("requestCount").textContent = `${requests.length} solicitud${requests.length === 1 ? "" : "es"}`;
 
     if (!requests.length) {
-        body.innerHTML = `<tr><td colspan="5" class="empty-state">No hay solicitudes registradas.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" class="empty-state">No hay solicitudes registradas.</td></tr>`;
         return;
     }
 
@@ -46,8 +62,9 @@ function renderRequests(requests) {
             : request.estado === "CORRECCION"
                 ? "correction"
                 : "pending";
-        const date = request.created_at
-            ? new Date(request.created_at).toLocaleDateString("es-SV")
+        const requestDate = formatDate(request.created_at);
+        const expirationDate = business.fecha_vencimiento
+            ? formatDate(business.fecha_vencimiento)
             : "—";
 
         return `
@@ -61,7 +78,9 @@ function renderRequests(requests) {
                     <small>${escapeHtml(business.municipio || "Sin municipio")}</small>
                 </td>
                 <td><span class="status ${statusClass}">${escapeHtml(statusLabel[request.estado] || request.estado || "Sin estado")}</span></td>
-                <td>${date}</td>
+                <td>${renderPublication(business)}</td>
+                <td>${escapeHtml(expirationDate)}</td>
+                <td>${escapeHtml(requestDate)}</td>
                 <td><button class="view-btn" data-request-id="${escapeHtml(request.id)}">Revisar</button></td>
             </tr>
         `;
@@ -78,7 +97,7 @@ function renderRequests(requests) {
 }
 
 async function loadRequests() {
-    body.innerHTML = `<tr><td colspan="5" class="empty-state">Cargando solicitudes...</td></tr>`;
+    body.innerHTML = `<tr><td colspan="7" class="empty-state">Cargando solicitudes...</td></tr>`;
     message.hidden = true;
 
     const { data, error } = await AdminService.getIncorporationRequests();
@@ -86,7 +105,7 @@ async function loadRequests() {
     if (error) {
         console.error("Error al cargar solicitudes:", error);
         showMessage("No fue posible cargar las solicitudes. Verifica que tu usuario tenga permisos administrativos.");
-        body.innerHTML = `<tr><td colspan="5" class="empty-state">No se pudieron cargar las solicitudes.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" class="empty-state">No se pudieron cargar las solicitudes.</td></tr>`;
         return;
     }
 
@@ -108,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (error || !isAdmin) {
         showMessage("Acceso restringido: esta sección está disponible únicamente para administradores de neXsv.");
-        body.innerHTML = `<tr><td colspan="5" class="empty-state">No tienes permisos para consultar solicitudes.</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" class="empty-state">No tienes permisos para consultar solicitudes.</td></tr>`;
         return;
     }
 
