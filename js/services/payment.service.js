@@ -153,10 +153,9 @@ class PaymentService {
     // =====================================================
     // VERIFICAR PAGO Y ACTIVAR NEGOCIO
     // =====================================================
-    // Esta operación se ejecuta mediante una función transaccional
-    // de Supabase. La función valida que el usuario sea administrador,
-    // que el pago esté pendiente y que la solicitud esté aprobada.
-    // Después marca el pago como VERIFICADO y el negocio como ACTIVO.
+    // Operación transaccional en Supabase.
+    // Valida permisos, pago pendiente y solicitud aprobada.
+    // Luego verifica el pago y activa el negocio con vigencia de un año.
 
     async verifyPaymentAndActivateBusiness(paymentId) {
 
