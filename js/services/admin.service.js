@@ -19,7 +19,9 @@ const BUSINESS_FIELDS = `
     otra_red_social,
     otro_objetivo,
     logo,
-    estado
+    estado,
+    fecha_activacion,
+    fecha_vencimiento
 `;
 
 class AdminService {
