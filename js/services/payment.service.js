@@ -139,9 +139,6 @@ class PaymentService {
     // =====================================================
     // VERIFICAR PAGO
     // =====================================================
-    // La activación del negocio se implementará en una capa
-    // transaccional posterior. No se modifica businesses aquí
-    // para evitar estados inconsistentes entre pago y activación.
 
     async verifyPayment(paymentId, verifiedBy) {
 
@@ -150,6 +147,30 @@ class PaymentService {
             verified_at: new Date().toISOString(),
             verified_by: verifiedBy
         });
+    }
+
+
+    // =====================================================
+    // VERIFICAR PAGO Y ACTIVAR NEGOCIO
+    // =====================================================
+    // Esta operación se ejecuta mediante una función transaccional
+    // de Supabase. La función valida que el usuario sea administrador,
+    // que el pago esté pendiente y que la solicitud esté aprobada.
+    // Después marca el pago como VERIFICADO y el negocio como ACTIVO.
+
+    async verifyPaymentAndActivateBusiness(paymentId) {
+
+        const { data, error } = await supabase.rpc(
+            "verify_payment_and_activate_business",
+            {
+                p_payment_id: paymentId
+            }
+        );
+
+        return {
+            data,
+            error
+        };
     }
 
 }
