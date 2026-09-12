@@ -98,7 +98,8 @@
 .revision-actions p { color: #66758a; margin: 0; }
 
 .action-buttons,
-.correction-actions {
+.correction-actions,
+.payment-action {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -144,6 +145,28 @@
 .correction-panel textarea:focus {
     outline: 2px solid rgba(22, 87, 184, .15);
     border-color: #1657B8;
+}
+
+.payment-card {
+    border-top: 4px solid #F5B041;
+}
+
+.payment-card .payment-action p {
+    flex: 1 1 100%;
+    margin: 0;
+    color: #66758a;
+}
+
+.payment-active {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid #e3e8f0;
+}
+
+.payment-success {
+    margin: 0 0 18px;
+    color: #16835b;
+    font-weight: 700;
 }
 
 @media (max-width: 700px) {
