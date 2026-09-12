@@ -86,23 +86,61 @@
 
                 <article class="revision-card payment-card" id="paymentSection" hidden>
                     <h2>Pago de incorporación</h2>
-                    <div class="detail-grid">
-                        <div><span>Estado del pago</span><strong id="paymentStatus">—</strong></div>
-                        <div><span>Monto</span><strong id="paymentAmount">—</strong></div>
-                        <div><span>Método</span><strong id="paymentMethod">—</strong></div>
-                        <div><span>Referencia</span><strong id="paymentReference">—</strong></div>
-                        <div><span>Fecha de pago</span><strong id="paymentPaidAt">—</strong></div>
-                        <div><span>Proveedor</span><strong id="paymentProvider">—</strong></div>
+
+                    <div id="manualPaymentFormWrapper" class="manual-payment-wrapper" hidden>
+                        <p class="payment-intro">La solicitud fue aprobada. Registra el pago que recibiste antes de verificarlo y activar el negocio.</p>
+                        <form id="manualPaymentForm" class="manual-payment-form">
+                            <div class="detail-grid">
+                                <div>
+                                    <label for="paymentMethodInput">Método de pago *</label>
+                                    <select id="paymentMethodInput" required>
+                                        <option value="TRANSFERENCIA">Transferencia</option>
+                                        <option value="EFECTIVO">Efectivo</option>
+                                        <option value="OTRO">Otro</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="paymentAmountInput">Monto *</label>
+                                    <input id="paymentAmountInput" type="number" min="0.01" step="0.01" value="50.00" required>
+                                </div>
+                                <div>
+                                    <label for="paymentReferenceInput">Referencia</label>
+                                    <input id="paymentReferenceInput" type="text" maxlength="150" placeholder="Ej. número de transferencia">
+                                </div>
+                                <div>
+                                    <label for="paymentDateInput">Fecha del pago *</label>
+                                    <input id="paymentDateInput" type="date" required>
+                                </div>
+                                <div class="payment-field-full">
+                                    <label for="paymentNotesInput">Observaciones</label>
+                                    <textarea id="paymentNotesInput" rows="3" maxlength="500" placeholder="Ej. Pago recibido por transferencia y comprobado en la cuenta bancaria."></textarea>
+                                </div>
+                            </div>
+                            <div class="payment-form-actions">
+                                <button type="submit" id="btnRegisterPayment" class="admin-btn success">Registrar pago</button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="payment-action" id="paymentAction" hidden>
-                        <p>El pago está registrado y pendiente de verificación.</p>
-                        <button type="button" id="btnVerifyAndActivate" class="admin-btn success">Verificar pago y activar negocio</button>
-                    </div>
-                    <div class="payment-active" id="paymentActive" hidden>
-                        <p class="payment-success">✓ Pago verificado y negocio activo.</p>
+
+                    <div id="paymentDetails" hidden>
                         <div class="detail-grid">
-                            <div><span>Activado</span><strong id="activationDate">—</strong></div>
-                            <div><span>Vigencia hasta</span><strong id="expirationDate">—</strong></div>
+                            <div><span>Estado del pago</span><strong id="paymentStatus">—</strong></div>
+                            <div><span>Monto</span><strong id="paymentAmount">—</strong></div>
+                            <div><span>Método</span><strong id="paymentMethod">—</strong></div>
+                            <div><span>Referencia</span><strong id="paymentReference">—</strong></div>
+                            <div><span>Fecha de pago</span><strong id="paymentPaidAt">—</strong></div>
+                            <div><span>Proveedor</span><strong id="paymentProvider">—</strong></div>
+                        </div>
+                        <div class="payment-action" id="paymentAction" hidden>
+                            <p>El pago está registrado y pendiente de verificación.</p>
+                            <button type="button" id="btnVerifyAndActivate" class="admin-btn success">Verificar pago y activar negocio</button>
+                        </div>
+                        <div class="payment-active" id="paymentActive" hidden>
+                            <p class="payment-success">✓ Pago verificado y negocio activo.</p>
+                            <div class="detail-grid">
+                                <div><span>Activado</span><strong id="activationDate">—</strong></div>
+                                <div><span>Vigencia hasta</span><strong id="expirationDate">—</strong></div>
+                            </div>
                         </div>
                     </div>
                 </article>
