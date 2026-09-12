@@ -169,9 +169,62 @@
     font-weight: 700;
 }
 
+.manual-payment-wrapper {
+    margin-top: 4px;
+}
+
+.payment-intro {
+    margin: 0 0 22px;
+    color: #66758a;
+    line-height: 1.6;
+}
+
+.manual-payment-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #1D2A3A;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.manual-payment-form input,
+.manual-payment-form select,
+.manual-payment-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #d5dce7;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #fff;
+    color: #1D2A3A;
+    font: inherit;
+}
+
+.manual-payment-form textarea {
+    resize: vertical;
+}
+
+.manual-payment-form input:focus,
+.manual-payment-form select:focus,
+.manual-payment-form textarea:focus {
+    outline: 2px solid rgba(22, 87, 184, .15);
+    border-color: #1657B8;
+}
+
+.payment-field-full {
+    grid-column: 1 / -1;
+}
+
+.payment-form-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 22px;
+}
+
 @media (max-width: 700px) {
     .detail-grid { grid-template-columns: 1fr; }
     .revision-card,
     .revision-actions,
     .correction-panel { padding: 22px; }
+    .payment-field-full { grid-column: auto; }
 }
