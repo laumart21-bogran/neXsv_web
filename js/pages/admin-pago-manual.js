@@ -31,6 +31,15 @@ function formatDate(value) {
     return value ? new Date(value).toLocaleString("es-SV") : "—";
 }
 
+function formatPaymentDate(payment) {
+    if (payment?.paid_on) {
+        const [year, month, day] = payment.paid_on.split("-");
+        return `${day}/${month}/${year}`;
+    }
+
+    return formatDate(payment?.paid_at);
+}
+
 function setLocalPaymentDate() {
     const input = document.getElementById("paymentDateInput");
     if (!input || input.value) return;
@@ -53,7 +62,7 @@ function showRegisteredPayment(payment, business = {}) {
     setText("paymentAmount", payment.amount != null ? `$${Number(payment.amount).toFixed(2)} ${payment.currency || "USD"}` : "—");
     setText("paymentMethod", payment.method);
     setText("paymentReference", payment.reference);
-    setText("paymentPaidAt", formatDate(payment.paid_at));
+    setText("paymentPaidAt", formatPaymentDate(payment));
     setText("paymentProvider", payment.provider);
 
     if (payment.status === "VERIFICADO" || business.estado === "ACTIVO") {
@@ -136,7 +145,7 @@ manualPaymentForm?.addEventListener("submit", async (event) => {
         method,
         reference,
         notes,
-        paidAt: `${paymentDate}T12:00:00`
+        paidOn: paymentDate
     });
 
     btnRegisterPayment.disabled = false;
