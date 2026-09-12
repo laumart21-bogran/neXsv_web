@@ -1,5 +1,6 @@
 import AuthSession from "../auth/auth.session.js";
 import AdminService from "../services/admin.service.js";
+import PaymentService from "../services/payment.service.js";
 
 const content = document.getElementById("requestContent");
 const message = document.getElementById("adminMessage");
@@ -10,10 +11,16 @@ const btnCorrection = document.getElementById("btnCorrection");
 const btnApproveReview = document.getElementById("btnApproveReview");
 const btnCancelCorrection = document.getElementById("btnCancelCorrection");
 const btnSendCorrection = document.getElementById("btnSendCorrection");
+const paymentSection = document.getElementById("paymentSection");
+const paymentAction = document.getElementById("paymentAction");
+const paymentActive = document.getElementById("paymentActive");
+const btnVerifyAndActivate = document.getElementById("btnVerifyAndActivate");
 
 let currentRequestId = null;
 let currentAdminId = null;
 let currentStatus = null;
+let currentBusinessId = null;
+let currentPaymentId = null;
 
 function showMessage(text) {
     message.textContent = text;
@@ -59,6 +66,53 @@ function updateStatusUI(status) {
     setActionState(status);
 }
 
+function resetPaymentUI() {
+    paymentSection.hidden = true;
+    paymentAction.hidden = true;
+    paymentActive.hidden = true;
+    currentPaymentId = null;
+}
+
+function showPayment(payment, business) {
+    paymentSection.hidden = false;
+    setText("paymentStatus", payment.status);
+    setText("paymentAmount", payment.amount != null ? `$${Number(payment.amount).toFixed(2)} ${payment.currency || "USD"}` : "—");
+    setText("paymentMethod", payment.method);
+    setText("paymentReference", payment.reference);
+    setText("paymentPaidAt", formatDate(payment.paid_at));
+    setText("paymentProvider", payment.provider);
+
+    currentPaymentId = payment.id;
+
+    const isActive = business.estado === "ACTIVO" || payment.status === "VERIFICADO";
+    paymentAction.hidden = !(!isActive && payment.status === "PENDIENTE");
+    paymentActive.hidden = !isActive;
+
+    if (isActive) {
+        setText("activationDate", business.fecha_activacion ? formatDate(business.fecha_activacion) : "—");
+        setText("expirationDate", business.fecha_vencimiento ? formatDate(business.fecha_vencimiento) : "—");
+    }
+}
+
+async function loadPayment(businessId, requestId, business) {
+    resetPaymentUI();
+
+    if (!businessId || !requestId) return;
+
+    const { data: payments, error } = await PaymentService.getPaymentsByBusiness(businessId);
+
+    if (error) {
+        console.error("Error al cargar pagos:", error);
+        return;
+    }
+
+    const payment = (payments || []).find(item => item.request_id === requestId);
+
+    if (payment) {
+        showPayment(payment, business);
+    }
+}
+
 async function loadRequest() {
     const requestId = new URLSearchParams(window.location.search).get("id");
 
@@ -95,6 +149,7 @@ async function loadRequest() {
     }
 
     const business = request.businesses || {};
+    currentBusinessId = business.id || request.business_id;
 
     setText("businessName", business.nombre);
     setText("businessCategory", business.categoria);
@@ -116,6 +171,8 @@ async function loadRequest() {
 
     updateStatusUI(request.estado);
     content.hidden = false;
+
+    await loadPayment(currentBusinessId, currentRequestId, business);
 }
 
 btnCorrection?.addEventListener("click", () => {
@@ -189,6 +246,43 @@ btnApproveReview?.addEventListener("click", async () => {
     updateStatusUI(data.estado);
     setText("observations", data.observaciones);
     showMessage("Revisión aprobada. La solicitud puede continuar a la siguiente etapa del proceso.");
+
+    // Si existe un pago asociado a esta solicitud, mostrarlo inmediatamente.
+    const { data: businessData, error: businessError } = await AdminService.getBusinessById(currentBusinessId);
+    if (!businessError && businessData) {
+        await loadPayment(currentBusinessId, currentRequestId, businessData);
+    }
+});
+
+btnVerifyAndActivate?.addEventListener("click", async () => {
+    if (!currentPaymentId) return;
+
+    const confirmed = window.confirm(
+        "¿Confirmas que el pago fue recibido y verificado? Esta acción activará el negocio por un año."
+    );
+
+    if (!confirmed) return;
+
+    btnVerifyAndActivate.disabled = true;
+
+    const { data, error } = await PaymentService.verifyPaymentAndActivateBusiness(currentPaymentId);
+
+    btnVerifyAndActivate.disabled = false;
+
+    if (error) {
+        console.error("Error al verificar pago y activar negocio:", error);
+        showMessage(error.message || "No fue posible verificar el pago y activar el negocio.");
+        return;
+    }
+
+    const result = Array.isArray(data) ? data[0] : data;
+
+    paymentAction.hidden = true;
+    paymentActive.hidden = false;
+    setText("paymentStatus", "VERIFICADO");
+    setText("activationDate", result?.fecha_activacion ? formatDate(result.fecha_activacion) : new Date().toLocaleString("es-SV"));
+    setText("expirationDate", result?.fecha_vencimiento ? formatDate(result.fecha_vencimiento) : "—");
+    showMessage("Pago verificado y negocio activado correctamente.");
 });
 
 document.addEventListener("DOMContentLoaded", loadRequest);
