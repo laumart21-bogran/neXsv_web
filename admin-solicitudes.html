@@ -35,6 +35,7 @@
             <article><span>Pendientes</span><strong id="statPending">0</strong></article>
             <article><span>En corrección</span><strong id="statCorrection">0</strong></article>
             <article><span>Aprobadas</span><strong id="statApproved">0</strong></article>
+            <article><span>Publicados</span><strong id="statPublished">0</strong></article>
         </section>
 
         <section id="adminMessage" class="admin-message" hidden></section>
@@ -50,13 +51,15 @@
                         <tr>
                             <th>Negocio</th>
                             <th>Ubicación</th>
-                            <th>Estado</th>
-                            <th>Fecha</th>
+                            <th>Solicitud</th>
+                            <th>Publicación</th>
+                            <th>Vigencia hasta</th>
+                            <th>Fecha solicitud</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody id="requestsBody">
-                        <tr><td colspan="5" class="empty-state">Cargando solicitudes...</td></tr>
+                        <tr><td colspan="7" class="empty-state">Cargando solicitudes...</td></tr>
                     </tbody>
                 </table>
             </div>
