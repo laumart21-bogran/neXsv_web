@@ -47,6 +47,28 @@ class CommunityService {
         return { data: { ...data, images: images || [] }, error: null };
     }
 
+    async getComments(publicationId, limit = 50) {
+        const { data, error } = await supabase.from("community_publication_comments")
+            .select("id, publication_id, author_id, body, status, created_at, updated_at")
+            .eq("publication_id", publicationId)
+            .eq("status", "PUBLICADO")
+            .order("created_at", { ascending: true })
+            .limit(limit);
+        return { data: data || [], error };
+    }
+
+    async addComment(publicationId, body) {
+        const cleanBody = String(body || "").trim();
+        if (!cleanBody) return { data: null, error: new Error("Escribe un comentario.") };
+        if (cleanBody.length > 1000) return { data: null, error: new Error("El comentario no puede superar 1000 caracteres.") };
+        const { data: userResult } = await supabase.auth.getUser();
+        const userId = userResult?.user?.id;
+        if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
+        return await supabase.from("community_publication_comments")
+            .insert({ publication_id: publicationId, author_id: userId, body: cleanBody, status: "PUBLICADO" })
+            .select().single();
+    }
+
     async createPublication({ type, title = null, body }) {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
