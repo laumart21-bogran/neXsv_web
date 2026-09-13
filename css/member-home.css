@@ -4,7 +4,6 @@
    ========================================================== */
 
 .member-home .dashboard-content{gap:22px;}
-
 .member-home .dashboard-header{position:relative;overflow:hidden;margin-bottom:0;padding:30px 34px 26px;}
 .member-home .dashboard-header::after{content:"";position:absolute;right:-50px;top:-70px;width:190px;height:190px;border-radius:50%;background:rgba(255,213,74,.14);pointer-events:none;}
 .member-home .welcome-tag{margin-bottom:12px;}
@@ -33,6 +32,8 @@
 .member-home .section-title{margin-bottom:18px;}
 .member-home .section-title h2,.member-home .community-section h2,.member-home .activity-section h2{margin:0 0 4px;color:#233A72;font-size:1.12rem;}
 .member-home .section-title p,.member-home .community-section>p,.member-home .activity-section>p{margin:0;color:#64748B;font-size:.84rem;}
+.member-home .secondary-link{color:#3D5BA9;font-weight:700;text-decoration:none;font-size:.82rem;}
+.member-home .primary-btn{margin-top:0;}
 
 .member-home .business-access{padding:24px 28px;}
 .member-home .business-access-card{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:18px 20px;border:1px solid #ECECEC;border-radius:16px;background:#FFF;}
@@ -57,8 +58,18 @@
 .member-home .activity-item span{display:block;margin-top:3px;color:#64748B;font-size:.76rem;}
 .member-home .activity-time{margin-left:auto;color:#94A3B8;font-size:.72rem;white-space:nowrap;}
 
-.member-home .secondary-link{color:#3D5BA9;font-weight:700;text-decoration:none;font-size:.82rem;}
-.member-home .primary-btn{margin-top:0;}
+/* Navegación compacta */
+.member-home .dashboard-menu .menu-more-toggle{
+    width:100%;display:flex;align-items:center;gap:14px;padding:15px 18px;margin:0;
+    border:0;background:transparent;color:#475569;border-radius:14px;font:inherit;font-size:1rem;
+    cursor:pointer;text-align:left;
+}
+.member-home .dashboard-menu .menu-more-toggle:hover{background:#F5F7FB;}
+.member-home .dashboard-menu .menu-more-toggle i{width:16px;font-size:.72rem;transition:transform .2s ease;}
+.member-home .dashboard-menu .menu-more-toggle[aria-expanded="true"]{color:#233A72;font-weight:700;}
+.member-home .dashboard-menu .menu-more{margin-top:2px;padding-left:0;}
+.member-home .dashboard-menu .menu-more[hidden]{display:none!important;}
+.member-home .dashboard-menu .menu-more a{margin-bottom:4px;padding:12px 18px 12px 18px;font-size:.92rem;}
 
 @media(max-width:900px){.member-home .stats-grid{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:700px){
