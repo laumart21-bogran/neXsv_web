@@ -84,9 +84,10 @@ async function loadBusinesses() {
     setupScroller("businessSlider", "businessPrev", "businessNext");
 }
 
-function publicationCard(publication, compact = false) {
+function publicationCard(publication, compact = false, showMetrics = false) {
     const image = publication.images?.[0]?.public_url;
-    return `<article class="dashboard-publication-card ${compact ? "compact" : ""}">${image ? `<img src="${escapeHtml(image)}" alt="Imagen de publicación" loading="lazy">` : `<div class="dashboard-publication-placeholder"><i class="fa-regular fa-image"></i></div>`}<div class="dashboard-publication-copy"><span class="dashboard-publication-type">${escapeHtml(TYPE_LABELS[publication.type] || publication.type)}</span>${publication.title ? `<strong>${escapeHtml(publication.title)}</strong>` : ""}<p>${escapeHtml(publication.body)}</p><small>${escapeHtml(formatDate(publication.created_at))}</small></div></article>`;
+    const metrics = showMetrics ? `<div class="dashboard-publication-metrics"><span><i class="fa-regular fa-eye"></i> <b data-metric="views">—</b> vistas</span><a href="comunidad.html?publicacion=${encodeURIComponent(publication.id)}#comentarios"><i class="fa-regular fa-comments"></i> <b data-metric="comments">—</b> comentarios</a><a href="mensajes.html?publication=${encodeURIComponent(publication.id)}"><i class="fa-regular fa-paper-plane"></i> <b data-metric="conversations">—</b> conversaciones</a></div>` : "";
+    return `<article class="dashboard-publication-card ${compact ? "compact" : ""}" data-publication-id="${escapeHtml(publication.id)}">${image ? `<img src="${escapeHtml(image)}" alt="Imagen de publicación" loading="lazy">` : `<div class="dashboard-publication-placeholder"><i class="fa-regular fa-image"></i></div>`}<div class="dashboard-publication-copy"><span class="dashboard-publication-type">${escapeHtml(TYPE_LABELS[publication.type] || publication.type)}</span>${publication.title ? `<strong>${escapeHtml(publication.title)}</strong>` : ""}<p>${escapeHtml(publication.body)}</p><small>${escapeHtml(formatDate(publication.created_at))}</small>${metrics}</div></article>`;
 }
 
 async function loadDashboardCommunity() {
@@ -101,7 +102,7 @@ async function loadDashboardCommunity() {
     const mine = mineResult.data || [];
     setText("myPublicationCount", mine.length);
     const mineContainer = document.getElementById("myPublications");
-    if (mineContainer) mineContainer.innerHTML = mine.length ? mine.map(p => publicationCard(p)).join("") : `<div class="feed-placeholder">Aún no has publicado nada. Comparte algo con tu comunidad.</div>`;
+    if (mineContainer) mineContainer.innerHTML = mine.length ? mine.map(p => publicationCard(p, false, true)).join("") : `<div class="feed-placeholder">Aún no has publicado nada. Comparte algo con tu comunidad.</div>`;
     if (mine.length) setupScroller("myPublications", "myPubPrev", "myPubNext");
 }
 
@@ -151,7 +152,7 @@ async function initialize() {
     const nombre = perfil?.nombre || currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || "Miembro";
     const apellido = perfil?.apellido || "";
     const nombreCompleto = `${nombre} ${apellido}`.trim();
-    setText("topUserName", nombreCompleto); setText("topUserRole", "Miembro"); setText("memberName", nombreCompleto); setText("memberEmail", currentUser.email || ""); setText("welcomeTitle", `¡Hola, ${nombre.split(" ")[0]}!`);
+    setText("topUserName", nombreCompleto); setText("topUserRole", "Miembro"); setText("memberName", nombreCompleto); setText("welcomeTitle", `¡Hola, ${nombre.split(" ")[0]}!`);
     const verified = Boolean(currentUser.email_confirmed_at);
     const verifiedBadge = document.getElementById("memberVerifiedBadge");
     if (verifiedBadge) verifiedBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${verified ? "Miembro verificado" : "Miembro neXsv"}`;
