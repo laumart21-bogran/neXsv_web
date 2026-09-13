@@ -20,84 +20,13 @@
         <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Mi espacio</a>
     </div>
 </header>
-
 <main class="community-page">
-    <section class="community-intro">
-        <div>
-            <span class="community-kicker">Comunidad neXsv</span>
-            <h1>Lo que pasa en nuestra comunidad</h1>
-            <p>Vende, intercambia, regala, busca, recomienda u ofrece algo útil a otras personas de neXsv.</p>
-        </div>
-        <button id="newPublicationBtn" class="community-primary-btn" type="button"><i class="fa-solid fa-plus"></i> Crear publicación</button>
-    </section>
-
-    <section class="publication-composer" id="publicationComposer" hidden>
-        <div class="composer-header"><div><strong>Comparte con la comunidad</strong><span>Tu publicación será visible para miembros autenticados.</span></div><button id="closeComposer" type="button" class="icon-btn" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div>
-        <form id="publicationForm">
-            <div class="type-options" id="typeOptions">
-                <label class="type-option active"><input type="radio" name="type" value="VENTA" checked><span>Vendo</span></label>
-                <label class="type-option"><input type="radio" name="type" value="INTERCAMBIO"><span>Intercambio</span></label>
-                <label class="type-option"><input type="radio" name="type" value="BUSCO"><span>Busco</span></label>
-                <label class="type-option"><input type="radio" name="type" value="REGALO"><span>Regalo</span></label>
-                <label class="type-option"><input type="radio" name="type" value="RECOMENDACION"><span>Recomiendo</span></label>
-                <label class="type-option"><input type="radio" name="type" value="OFERTA"><span>Ofrezco</span></label>
-                <label class="type-option"><input type="radio" name="type" value="EVENTO"><span>Evento</span></label>
-            </div>
-            <input id="publicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)">
-            <textarea id="publicationBody" rows="4" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea>
-            <div class="photo-upload-row">
-                <input id="publicationImages" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
-                <button id="addPhotosBtn" class="photo-upload-btn" type="button"><i class="fa-regular fa-image"></i> Agregar fotos <span>Máx. 3</span></button>
-                <span id="photoCount" class="photo-count">Ninguna foto seleccionada</span>
-            </div>
-            <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
-            <div class="composer-footer"><span id="publicationMessage" class="form-message"></span><button class="community-primary-btn" type="submit">Publicar</button></div>
-        </form>
-    </section>
-
-    <section class="community-filters" aria-label="Filtrar comunidad">
-        <button class="filter-btn active" type="button" data-filter="TODAS">Todo</button>
-        <button class="filter-btn" type="button" data-filter="VENTA">Vendo</button>
-        <button class="filter-btn" type="button" data-filter="INTERCAMBIO">Intercambio</button>
-        <button class="filter-btn" type="button" data-filter="REGALO">Regalo</button>
-        <button class="filter-btn" type="button" data-filter="BUSCO">Busco</button>
-        <button class="filter-btn" type="button" data-filter="RECOMENDACION">Recomiendo</button>
-        <button class="filter-btn" type="button" data-filter="OFERTA">Ofrezco</button>
-        <button class="filter-btn" type="button" data-filter="EVENTO">Eventos</button>
-    </section>
-
+    <section class="community-intro"><div><span class="community-kicker">Comunidad neXsv</span><h1>Lo que pasa en nuestra comunidad</h1><p>Vende, intercambia, regala, busca, recomienda u ofrece algo útil a otras personas de neXsv.</p></div><button id="newPublicationBtn" class="community-primary-btn" type="button"><i class="fa-solid fa-plus"></i> Crear publicación</button></section>
+    <section class="publication-composer" id="publicationComposer" hidden><div class="composer-header"><div><strong>Comparte con la comunidad</strong><span>Tu publicación será visible para miembros autenticados.</span></div><button id="closeComposer" type="button" class="icon-btn" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div><form id="publicationForm"><div class="type-options" id="typeOptions"><label class="type-option active"><input type="radio" name="type" value="VENTA" checked><span>Vendo</span></label><label class="type-option"><input type="radio" name="type" value="INTERCAMBIO"><span>Intercambio</span></label><label class="type-option"><input type="radio" name="type" value="BUSCO"><span>Busco</span></label><label class="type-option"><input type="radio" name="type" value="REGALO"><span>Regalo</span></label><label class="type-option"><input type="radio" name="type" value="RECOMENDACION"><span>Recomiendo</span></label><label class="type-option"><input type="radio" name="type" value="OFERTA"><span>Ofrezco</span></label><label class="type-option"><input type="radio" name="type" value="EVENTO"><span>Evento</span></label></div><input id="publicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)"><textarea id="publicationBody" rows="4" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea><div class="photo-upload-row"><input id="publicationImages" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden><button id="addPhotosBtn" class="photo-upload-btn" type="button"><i class="fa-regular fa-image"></i> Agregar fotos <span>Máx. 3</span></button><span id="photoCount" class="photo-count">Ninguna foto seleccionada</span></div><div id="photoPreview" class="photo-preview" aria-live="polite"></div><div class="composer-footer"><span id="publicationMessage" class="form-message"></span><button class="community-primary-btn" type="submit">Publicar</button></div></form></section>
+    <section class="community-filters" aria-label="Filtrar comunidad"><button class="filter-btn active" type="button" data-filter="TODAS">Todo</button><button class="filter-btn" type="button" data-filter="VENTA">Vendo</button><button class="filter-btn" type="button" data-filter="INTERCAMBIO">Intercambio</button><button class="filter-btn" type="button" data-filter="REGALO">Regalo</button><button class="filter-btn" type="button" data-filter="BUSCO">Busco</button><button class="filter-btn" type="button" data-filter="RECOMENDACION">Recomiendo</button><button class="filter-btn" type="button" data-filter="OFERTA">Ofrezco</button><button class="filter-btn" type="button" data-filter="EVENTO">Eventos</button></section>
     <section id="publicationList" class="publication-list" aria-live="polite"></section>
 </main>
-
-<div class="publication-modal" id="editPublicationModal" hidden>
-    <div class="publication-modal-backdrop" data-close-edit></div>
-    <section class="publication-modal-card" role="dialog" aria-modal="true" aria-labelledby="editPublicationTitle">
-        <div class="publication-modal-header">
-            <div><span class="community-kicker">Comunidad neXsv</span><h2 id="editPublicationTitle">Editar publicación</h2></div>
-            <button type="button" class="icon-btn" data-close-edit aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <form id="editPublicationForm">
-            <div class="type-options" id="editTypeOptions">
-                <label class="type-option"><input type="radio" name="editType" value="VENTA"><span>Vendo</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="INTERCAMBIO"><span>Intercambio</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="BUSCO"><span>Busco</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="REGALO"><span>Regalo</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="RECOMENDACION"><span>Recomiendo</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="OFERTA"><span>Ofrezco</span></label>
-                <label class="type-option"><input type="radio" name="editType" value="EVENTO"><span>Evento</span></label>
-            </div>
-            <input id="editPublicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)">
-            <textarea id="editPublicationBody" rows="6" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea>
-            <p class="edit-photo-note"><i class="fa-regular fa-image"></i> Las fotos actuales se conservarán.</p>
-            <span id="editPublicationMessage" class="form-message"></span>
-            <div class="publication-modal-actions">
-                <button type="button" class="community-secondary-btn" data-close-edit>Cancelar</button>
-                <button type="submit" class="community-primary-btn">Guardar cambios</button>
-            </div>
-        </form>
-    </section>
-</div>
-
-<script type="module" src="js/pages/comunidad.js"></script>
+<div class="publication-modal" id="editPublicationModal" hidden><div class="publication-modal-backdrop" data-close-edit></div><section class="publication-modal-card" role="dialog" aria-modal="true" aria-labelledby="editPublicationTitle"><div class="publication-modal-header"><div><span class="community-kicker">Comunidad neXsv</span><h2 id="editPublicationTitle">Editar publicación</h2></div><button type="button" class="icon-btn" data-close-edit aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div><form id="editPublicationForm"><div class="type-options" id="editTypeOptions"><label class="type-option"><input type="radio" name="editType" value="VENTA"><span>Vendo</span></label><label class="type-option"><input type="radio" name="editType" value="INTERCAMBIO"><span>Intercambio</span></label><label class="type-option"><input type="radio" name="editType" value="BUSCO"><span>Busco</span></label><label class="type-option"><input type="radio" name="editType" value="REGALO"><span>Regalo</span></label><label class="type-option"><input type="radio" name="editType" value="RECOMENDACION"><span>Recomiendo</span></label><label class="type-option"><input type="radio" name="editType" value="OFERTA"><span>Ofrezco</span></label><label class="type-option"><input type="radio" name="editType" value="EVENTO"><span>Evento</span></label></div><input id="editPublicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)"><textarea id="editPublicationBody" rows="6" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea><p class="edit-photo-note"><i class="fa-regular fa-image"></i> Las fotos actuales se conservarán.</p><span id="editPublicationMessage" class="form-message"></span><div class="publication-modal-actions"><button type="button" class="community-secondary-btn" data-close-edit>Cancelar</button><button type="submit" class="community-primary-btn">Guardar cambios</button></div></form></section></div>
+<script type="module" src="js/pages/comunidad.js"></script><script type="module" src="js/pages/publication-link.js"></script>
 </body>
 </html>
