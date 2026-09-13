@@ -1,6 +1,7 @@
 import AuthSession from "../auth/auth.session.js";
 import CommunityService from "../services/community.service.js";
 import MessagingService from "../services/messaging.service.js";
+import { supabase } from "../core/supabase-client.js";
 
 const publicationList = document.getElementById("publicationList");
 const composer = document.getElementById("publicationComposer");
@@ -43,7 +44,7 @@ function formatDate(value) {
 }
 
 async function getAuthorProfile(userId) {
-    const { data, error } = await window.supabaseClient
+    const { data, error } = await supabase
         .from("profiles")
         .select("nombre, apellido, foto")
         .eq("auth_user_id", userId)
@@ -206,7 +207,6 @@ publicationForm.addEventListener("submit", async event => {
     }
 
     publicationForm.reset();
-    document.querySelector(".type-option[value='VENTA']");
     document.querySelectorAll(".type-option").forEach(option => option.classList.toggle("active", option.querySelector("input")?.checked));
     closePublicationComposer();
     await loadPublications();
@@ -220,9 +220,6 @@ async function initialize() {
             window.location.href = "login.html";
             return;
         }
-
-        const { supabase } = await import("../core/supabase-client.js");
-        window.supabaseClient = supabase;
         await loadPublications();
     } catch (error) {
         console.error("Error inicializando comunidad:", error);
