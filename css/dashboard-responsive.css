@@ -1,0 +1,27 @@
+/* neXsv — correcciones de ancho y responsive para espacios privados */
+html,body{max-width:100%;overflow-x:hidden}
+.dashboard,.business-dashboard{width:calc(100% - 32px);max-width:1200px;min-width:0;margin-left:auto;margin-right:auto}
+.dashboard{grid-template-columns:240px minmax(0,1fr);gap:22px;padding:0;margin-top:28px}
+.dashboard-content,.business-content{min-width:0;width:100%;max-width:100%}
+.dashboard-content>*,.business-content>*{min-width:0;max-width:100%}
+.member-home .card,.member-home .dashboard-header,.member-home .profile-progress,.member-home .stats-grid{min-width:0;max-width:100%}
+.member-home .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.business-dashboard{grid-template-columns:230px minmax(0,1fr);gap:22px;padding:0;margin-top:28px}
+.business-dashboard .business-sidebar{min-width:0}.business-dashboard .business-menu{min-width:0}.business-dashboard .business-content{min-width:0}
+.business-dashboard .business-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.business-dashboard .business-section,.business-dashboard .business-welcome{min-width:0;max-width:100%}
+.business-dashboard .business-item-card,.business-dashboard .business-community-card{min-width:0;max-width:100%;overflow:hidden}
+.business-dashboard .business-item-info{min-width:0}
+.business-dashboard .business-item-heading{min-width:0}
+@media(max-width:1000px){
+  .dashboard,.business-dashboard{width:calc(100% - 32px);grid-template-columns:1fr;padding:0;margin-top:22px}
+  .dashboard-sidebar,.business-sidebar{position:relative;top:auto;min-width:0}
+  .member-home .stats-grid,.business-dashboard .business-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .dashboard,.business-dashboard{width:calc(100% - 24px);margin-top:16px}
+  .member-home .stats-grid,.business-dashboard .business-summary-grid{grid-template-columns:1fr}
+  .business-topbar,.dashboard-topbar{padding-left:16px;padding-right:16px}
+  .business-dashboard .business-menu{overflow-x:auto;max-width:100%}
+  .business-dashboard .business-menu a{flex:0 0 auto}
+}
