@@ -17,30 +17,31 @@ const messageInput = document.getElementById("messageInput");
 const topAvatar = document.getElementById("topAvatar");
 
 let currentUser = null;
+let currentProfile = { name: "Miembro neXsv", photo: null };
 let conversations = [];
 let activeConversationId = null;
 let activeChannel = null;
 
 function escapeHtml(value) {
-    return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
-}
-
-function initials(name = "Miembro") {
-    const parts = String(name).trim().split(/\s+/).filter(Boolean);
-    return parts.length ? parts.slice(0, 2).map(part => part[0].toUpperCase()).join("") : "M";
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 }
 
 function avatarMarkup(profile, className = "messages-avatar") {
-    const name = profile?.name || "Miembro neXsv";
     const photo = profile?.photo;
-    return `<div class="${className}">${photo ? `<img src="${escapeHtml(photo)}" alt="Foto de perfil" loading="lazy">` : ""}<span>${escapeHtml(initials(name))}</span></div>`;
+    return `<div class="${className}">${photo ? `<img src="${escapeHtml(photo)}" alt="Foto de perfil" loading="lazy">` : '<i class="fa-regular fa-user" aria-hidden="true"></i>'}</div>`;
 }
 
 function setAvatar(element, profile) {
     if (!element) return;
-    const name = profile?.name || "Miembro neXsv";
     const photo = profile?.photo;
-    element.innerHTML = `${photo ? `<img src="${escapeHtml(photo)}" alt="Foto de perfil" loading="lazy">` : ""}<span>${escapeHtml(initials(name))}</span>`;
+    element.innerHTML = photo
+        ? `<img src="${escapeHtml(photo)}" alt="Foto de perfil" loading="lazy">`
+        : '<i class="fa-regular fa-user" aria-hidden="true"></i>';
 }
 
 function formatDate(value) {
@@ -61,20 +62,27 @@ function formatConversationTime(value) {
 }
 
 async function getOtherParticipant(conversationId) {
-    const { data, error } = await supabase.from("conversation_participants").select("user_id").eq("conversation_id", conversationId).neq("user_id", currentUser.id).limit(1);
+    const { data, error } = await supabase.from("conversation_participants")
+        .select("user_id").eq("conversation_id", conversationId).neq("user_id", currentUser.id).limit(1);
     if (error || !data?.length) return null;
     return data[0].user_id;
 }
 
 async function getProfile(userId) {
     if (!userId) return { name: "Miembro neXsv", photo: null };
-    const { data, error } = await supabase.from("profiles").select("nombre, apellido, foto").eq("auth_user_id", userId).maybeSingle();
+    const { data, error } = await supabase.from("profiles")
+        .select("nombre, apellido, foto").eq("auth_user_id", userId).maybeSingle();
     if (error || !data) return { name: "Miembro neXsv", photo: null };
-    return { name: [data.nombre, data.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: data.foto || null };
+    return {
+        name: [data.nombre, data.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv",
+        photo: data.foto || null
+    };
 }
 
 async function getLastMessage(conversationId) {
-    const { data, error } = await supabase.from("messages").select("body, created_at, sender_id").eq("conversation_id", conversationId).order("created_at", { ascending: false }).limit(1);
+    const { data, error } = await supabase.from("messages")
+        .select("body, created_at, sender_id").eq("conversation_id", conversationId)
+        .order("created_at", { ascending: false }).limit(1);
     if (error || !data?.length) return null;
     return data[0];
 }
@@ -126,7 +134,7 @@ function renderMessages(messages = []) {
     const other = conversations.find(item => item.conversation.id === activeConversationId)?.profile || { name: "Miembro neXsv", photo: null };
     messageList.innerHTML = messages.map(message => {
         const mine = message.sender_id === currentUser.id;
-        const sender = mine ? { name: "Tú", photo: null } : other;
+        const sender = mine ? currentProfile : other;
         return `<div class="message-row ${mine ? "mine" : "received"}"><div class="message-group"><span class="message-sender">${escapeHtml(sender.name)}</span><div class="message-bubble">${escapeHtml(message.body)}<div class="message-time">${escapeHtml(formatDate(message.created_at))}</div></div></div></div>`;
     }).join("");
     messageList.scrollTop = messageList.scrollHeight;
@@ -185,7 +193,7 @@ messageForm.addEventListener("submit", async event => {
         return;
     }
     messageInput.value = "";
-    messageInput.style.height = "48px";
+    messageInput.style.height = "52px";
     await loadMessages(activeConversationId);
     await loadConversations();
     const refreshed = conversations.find(entry => entry.conversation.id === activeConversationId);
@@ -217,7 +225,7 @@ async function initialize() {
         await AuthSession.initialize();
         currentUser = AuthSession.getCurrentUser();
         if (!currentUser) { window.location.href = "login.html"; return; }
-        const currentProfile = await getProfile(currentUser.id);
+        currentProfile = await getProfile(currentUser.id);
         setAvatar(topAvatar, currentProfile);
         await loadConversations();
         const requestedConversation = new URLSearchParams(window.location.search).get("conversation");
