@@ -1,0 +1,3 @@
+const params=new URLSearchParams(window.location.search);const publicationId=params.get("publicacion");
+if(publicationId){const targetId=decodeURIComponent(publicationId);const find=()=>{const card=document.querySelector(`[data-publication-id="${CSS.escape(targetId)}"]`);if(!card)return false;card.scrollIntoView({behavior:"smooth",block:"center"});card.classList.add("publication-focus");setTimeout(()=>card.classList.remove("publication-focus"),2600);return true;};const root=document.getElementById("publicationList");if(root){if(!find()){const observer=new MutationObserver(()=>{if(find())observer.disconnect();});observer.observe(root,{childList:true,subtree:true});setTimeout(()=>observer.disconnect(),10000);}}
+}
