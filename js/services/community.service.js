@@ -7,53 +7,27 @@ const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 class CommunityService {
     async getPublications({ type = "TODAS", limit = 30 } = {}) {
-        let query = supabase.from("community_publications")
-            .select("id, author_id, type, title, body, status, created_at, updated_at")
-            .eq("status", "PUBLICADA")
-            .order("created_at", { ascending: false }).limit(limit);
+        let query = supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(limit);
         if (type && type !== "TODAS") query = query.eq("type", type);
-
         const { data, error } = await query;
         if (error) return { data: [], error };
         if (!data?.length) return { data: [], error: null };
-
-        const { data: images, error: imagesError } = await supabase.from("community_publication_images")
-            .select("id, publication_id, storage_path, public_url, sort_order")
-            .in("publication_id", data.map(item => item.id)).order("sort_order", { ascending: true });
-
-        if (imagesError) {
-            console.warn("No se pudieron cargar las imágenes de Comunidad:", imagesError);
-            return { data: data.map(item => ({ ...item, images: [] })), error: null };
-        }
-
+        const { data: images, error: imagesError } = await supabase.from("community_publication_images").select("id, publication_id, storage_path, public_url, sort_order").in("publication_id", data.map(item => item.id)).order("sort_order", { ascending: true });
+        if (imagesError) return { data: data.map(item => ({ ...item, images: [] })), error: null };
         const imagesByPublication = new Map();
-        (images || []).forEach(image => {
-            if (!imagesByPublication.has(image.publication_id)) imagesByPublication.set(image.publication_id, []);
-            imagesByPublication.get(image.publication_id).push(image);
-        });
-
+        (images || []).forEach(image => { if (!imagesByPublication.has(image.publication_id)) imagesByPublication.set(image.publication_id, []); imagesByPublication.get(image.publication_id).push(image); });
         return { data: data.map(item => ({ ...item, images: imagesByPublication.get(item.id) || [] })), error: null };
     }
 
     async getPublicationById(publicationId) {
-        const { data, error } = await supabase.from("community_publications")
-            .select("id, author_id, type, title, body, status, created_at, updated_at")
-            .eq("id", publicationId).single();
+        const { data, error } = await supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("id", publicationId).single();
         if (error || !data) return { data, error };
-
-        const { data: images } = await supabase.from("community_publication_images")
-            .select("id, publication_id, storage_path, public_url, sort_order")
-            .eq("publication_id", publicationId).order("sort_order", { ascending: true });
+        const { data: images } = await supabase.from("community_publication_images").select("id, publication_id, storage_path, public_url, sort_order").eq("publication_id", publicationId).order("sort_order", { ascending: true });
         return { data: { ...data, images: images || [] }, error: null };
     }
 
     async getComments(publicationId, limit = 50) {
-        const { data, error } = await supabase.from("community_publication_comments")
-            .select("id, publication_id, author_id, body, status, created_at, updated_at")
-            .eq("publication_id", publicationId)
-            .eq("status", "PUBLICADO")
-            .order("created_at", { ascending: true })
-            .limit(limit);
+        const { data, error } = await supabase.from("community_publication_comments").select("id, publication_id, author_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
         return { data: data || [], error };
     }
 
@@ -64,43 +38,36 @@ class CommunityService {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
-        return await supabase.from("community_publication_comments")
-            .insert({ publication_id: publicationId, author_id: userId, body: cleanBody, status: "PUBLICADO" })
-            .select().single();
+        return await supabase.from("community_publication_comments").insert({ publication_id: publicationId, author_id: userId, body: cleanBody, status: "PUBLICADO" }).select().single();
+    }
+
+    async getPublicAuthorProfile(userId) {
+        const { data, error } = await supabase.rpc("get_public_profile", { p_user_id: userId });
+        if (error || !data?.length) return { data: null, error };
+        const profile = data[0];
+        return { data: { name: [profile.nombre, profile.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: profile.foto || null }, error: null };
     }
 
     async createPublication({ type, title = null, body }) {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
-
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
-
-        return await supabase.from("community_publications")
-            .insert({ author_id: userId, type, title: title ? String(title).trim() : null, body: cleanBody, status: "PUBLICADA" })
-            .select().single();
+        return await supabase.from("community_publications").insert({ author_id: userId, type, title: title ? String(title).trim() : null, body: cleanBody, status: "PUBLICADA" }).select().single();
     }
 
     async updatePublication(publicationId, { type, title = null, body }) {
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
         if (!type) return { data: null, error: new Error("Selecciona un tipo de publicación.") };
-
-        return await supabase.from("community_publications")
-            .update({ type, title: title ? String(title).trim() : null, body: cleanBody, updated_at: new Date().toISOString() })
-            .eq("id", publicationId)
-            .eq("author_id", (await supabase.auth.getUser()).data.user?.id)
-            .select().single();
+        return await supabase.from("community_publications").update({ type, title: title ? String(title).trim() : null, body: cleanBody, updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", (await supabase.auth.getUser()).data.user?.id).select().single();
     }
 
     validateImages(files = []) {
         const selected = Array.from(files || []);
         if (selected.length > MAX_IMAGES) return { valid: false, error: `Puedes agregar máximo ${MAX_IMAGES} fotos por publicación.` };
-        for (const file of selected) {
-            if (!ALLOWED_TYPES.includes(file.type)) return { valid: false, error: "Solo se permiten imágenes JPG, PNG o WebP." };
-            if (file.size > MAX_IMAGE_SIZE) return { valid: false, error: "Cada foto debe pesar máximo 5 MB." };
-        }
+        for (const file of selected) { if (!ALLOWED_TYPES.includes(file.type)) return { valid: false, error: "Solo se permiten imágenes JPG, PNG o WebP." }; if (file.size > MAX_IMAGE_SIZE) return { valid: false, error: "Cada foto debe pesar máximo 5 MB." }; }
         return { valid: true, files: selected };
     }
 
@@ -108,55 +75,26 @@ class CommunityService {
         const validation = this.validateImages(files);
         if (!validation.valid) return { data: [], error: new Error(validation.error) };
         if (!validation.files.length) return { data: [], error: null };
-
-        const { data: userResult } = await supabase.auth.getUser();
-        const userId = userResult?.user?.id;
+        const { data: userResult } = await supabase.auth.getUser(); const userId = userResult?.user?.id;
         if (!userId) return { data: [], error: new Error("Usuario no autenticado.") };
-
-        const uploadedPaths = [];
-        const insertedRows = [];
-
+        const uploadedPaths = []; const insertedRows = [];
         try {
             for (let index = 0; index < validation.files.length; index++) {
-                const file = validation.files[index];
-                const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-                const storagePath = `${userId}/${publicationId}/${crypto.randomUUID()}.${extension}`;
-
-                const { error: uploadError } = await supabase.storage.from(COMMUNITY_BUCKET)
-                    .upload(storagePath, file, { contentType: file.type, upsert: false });
-                if (uploadError) throw uploadError;
-                uploadedPaths.push(storagePath);
-
-                const { data: imageRow, error: rowError } = await supabase.from("community_publication_images")
-                    .insert({ publication_id: publicationId, storage_path: storagePath, public_url: supabase.storage.from(COMMUNITY_BUCKET).getPublicUrl(storagePath).data.publicUrl, sort_order: index + 1 })
-                    .select().single();
-                if (rowError) throw rowError;
-                insertedRows.push(imageRow);
+                const file = validation.files[index]; const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg"; const storagePath = `${userId}/${publicationId}/${crypto.randomUUID()}.${extension}`;
+                const { error: uploadError } = await supabase.storage.from(COMMUNITY_BUCKET).upload(storagePath, file, { contentType: file.type, upsert: false }); if (uploadError) throw uploadError; uploadedPaths.push(storagePath);
+                const { data: imageRow, error: rowError } = await supabase.from("community_publication_images").insert({ publication_id: publicationId, storage_path: storagePath, public_url: supabase.storage.from(COMMUNITY_BUCKET).getPublicUrl(storagePath).data.publicUrl, sort_order: index + 1 }).select().single(); if (rowError) throw rowError; insertedRows.push(imageRow);
             }
             return { data: insertedRows, error: null };
-        } catch (error) {
-            if (insertedRows.length) await supabase.from("community_publication_images").delete().eq("publication_id", publicationId);
-            if (uploadedPaths.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(uploadedPaths);
-            return { data: [], error };
-        }
+        } catch (error) { if (insertedRows.length) await supabase.from("community_publication_images").delete().eq("publication_id", publicationId); if (uploadedPaths.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(uploadedPaths); return { data: [], error }; }
     }
 
     async deletePublication(publicationId) {
-        const { data: userResult } = await supabase.auth.getUser();
-        const userId = userResult?.user?.id;
-        const { data: images } = await supabase.from("community_publication_images").select("storage_path").eq("publication_id", publicationId);
-        if (images?.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
-
-        return await supabase.from("community_publications")
-            .update({ status: "ELIMINADA", updated_at: new Date().toISOString() })
-            .eq("id", publicationId).eq("author_id", userId).select().single();
+        const { data: userResult } = await supabase.auth.getUser(); const userId = userResult?.user?.id;
+        const { data: images } = await supabase.from("community_publication_images").select("storage_path").eq("publication_id", publicationId); if (images?.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
+        return await supabase.from("community_publications").update({ status: "ELIMINADA", updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", userId).select().single();
     }
 
-    async setConversationOrigin(conversationId, publicationId) {
-        return await supabase.from("conversations")
-            .update({ origin_publication_id: publicationId, updated_at: new Date().toISOString() })
-            .eq("id", conversationId).select().single();
-    }
+    async setConversationOrigin(conversationId, publicationId) { return await supabase.from("conversations").update({ origin_publication_id: publicationId, updated_at: new Date().toISOString() }).eq("id", conversationId).select().single(); }
 }
 
 export default new CommunityService();
