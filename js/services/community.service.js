@@ -60,6 +60,18 @@ class CommunityService {
             .select().single();
     }
 
+    async updatePublication(publicationId, { type, title = null, body }) {
+        const cleanBody = String(body || "").trim();
+        if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
+        if (!type) return { data: null, error: new Error("Selecciona un tipo de publicación.") };
+
+        return await supabase.from("community_publications")
+            .update({ type, title: title ? String(title).trim() : null, body: cleanBody, updated_at: new Date().toISOString() })
+            .eq("id", publicationId)
+            .eq("author_id", (await supabase.auth.getUser()).data.user?.id)
+            .select().single();
+    }
+
     validateImages(files = []) {
         const selected = Array.from(files || []);
         if (selected.length > MAX_IMAGES) return { valid: false, error: `Puedes agregar máximo ${MAX_IMAGES} fotos por publicación.` };
