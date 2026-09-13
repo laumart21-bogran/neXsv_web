@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad | neXsv</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/comunidad.css">
+</head>
+<body>
+<header class="community-topbar">
+    <a href="dashboard.html" class="community-logo"><img src="logo.png" alt="neXsv"></a>
+    <div class="community-top-actions">
+        <a href="mensajes.html" class="messages-link"><i class="fa-regular fa-comments"></i> Mensajes</a>
+        <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Mi espacio</a>
+    </div>
+</header>
+
+<main class="community-page">
+    <section class="community-intro">
+        <div>
+            <span class="community-kicker">Comunidad neXsv</span>
+            <h1>Lo que pasa en nuestra comunidad</h1>
+            <p>Vende, intercambia, regala, busca, recomienda u ofrece algo útil a otras personas de neXsv.</p>
+        </div>
+        <button id="newPublicationBtn" class="community-primary-btn" type="button"><i class="fa-solid fa-plus"></i> Crear publicación</button>
+    </section>
+
+    <section class="publication-composer" id="publicationComposer" hidden>
+        <div class="composer-header"><div><strong>Comparte con la comunidad</strong><span>Tu publicación será visible para miembros autenticados.</span></div><button id="closeComposer" type="button" class="icon-btn" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div>
+        <form id="publicationForm">
+            <div class="type-options" id="typeOptions">
+                <label class="type-option active"><input type="radio" name="type" value="VENTA" checked><span>Vendo</span></label>
+                <label class="type-option"><input type="radio" name="type" value="INTERCAMBIO"><span>Intercambio</span></label>
+                <label class="type-option"><input type="radio" name="type" value="BUSCO"><span>Busco</span></label>
+                <label class="type-option"><input type="radio" name="type" value="REGALO"><span>Regalo</span></label>
+                <label class="type-option"><input type="radio" name="type" value="RECOMENDACION"><span>Recomiendo</span></label>
+                <label class="type-option"><input type="radio" name="type" value="OFERTA"><span>Ofrezco</span></label>
+                <label class="type-option"><input type="radio" name="type" value="EVENTO"><span>Evento</span></label>
+            </div>
+            <input id="publicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)">
+            <textarea id="publicationBody" rows="4" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea>
+            <div class="composer-footer"><span id="publicationMessage" class="form-message"></span><button class="community-primary-btn" type="submit">Publicar</button></div>
+        </form>
+    </section>
+
+    <section class="community-filters" aria-label="Filtrar comunidad">
+        <button class="filter-btn active" type="button" data-filter="TODAS">Todo</button>
+        <button class="filter-btn" type="button" data-filter="VENTA">Vendo</button>
+        <button class="filter-btn" type="button" data-filter="INTERCAMBIO">Intercambio</button>
+        <button class="filter-btn" type="button" data-filter="REGALO">Regalo</button>
+        <button class="filter-btn" type="button" data-filter="BUSCO">Busco</button>
+        <button class="filter-btn" type="button" data-filter="RECOMENDACION">Recomiendo</button>
+        <button class="filter-btn" type="button" data-filter="OFERTA">Ofrezco</button>
+        <button class="filter-btn" type="button" data-filter="EVENTO">Eventos</button>
+    </section>
+
+    <section id="publicationList" class="publication-list" aria-live="polite"></section>
+</main>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/pages/comunidad.js"></script>
+</body>
+</html>
