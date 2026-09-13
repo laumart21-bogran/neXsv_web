@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes | neXsv</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/mensajes.css">
+</head>
+<body>
+<header class="messages-topbar">
+    <a href="dashboard.html" class="messages-logo"><img src="logo.png" alt="neXsv"></a>
+    <div class="messages-topbar-actions">
+        <a href="dashboard.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Mi espacio</a>
+        <div class="messages-avatar" id="topAvatar">M</div>
+    </div>
+</header>
+
+<main class="messages-page">
+    <section class="messages-shell" aria-label="Mensajes de neXsv">
+        <aside class="conversation-panel">
+            <div class="conversation-header">
+                <div>
+                    <span class="section-kicker">Comunidad neXsv</span>
+                    <h1>Mensajes</h1>
+                </div>
+                <span class="conversation-count" id="conversationCount">0</span>
+            </div>
+            <div class="conversation-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input id="conversationSearch" type="search" placeholder="Buscar conversación" autocomplete="off">
+            </div>
+            <div id="conversationList" class="conversation-list">
+                <div class="messages-empty-list">
+                    <i class="fa-regular fa-comments"></i>
+                    <strong>Aún no tienes conversaciones</strong>
+                    <span>Cuando alguien contacte contigo desde la comunidad, aparecerá aquí.</span>
+                </div>
+            </div>
+        </aside>
+
+        <section class="chat-panel" id="chatPanel">
+            <div class="chat-empty" id="chatEmpty">
+                <div class="chat-empty-icon"><i class="fa-regular fa-comments"></i></div>
+                <h2>Tus conversaciones</h2>
+                <p>Selecciona una conversación para ver los mensajes y responder.</p>
+            </div>
+
+            <div class="chat-content" id="chatContent" hidden>
+                <header class="chat-header">
+                    <div class="chat-person-avatar" id="chatAvatar">M</div>
+                    <div class="chat-person-info">
+                        <strong id="chatName">Miembro neXsv</strong>
+                        <span id="chatContext">Conversación directa</span>
+                    </div>
+                </header>
+                <div class="message-list" id="messageList" aria-live="polite"></div>
+                <form class="message-composer" id="messageForm">
+                    <label class="sr-only" for="messageInput">Escribe un mensaje</label>
+                    <textarea id="messageInput" rows="1" maxlength="2000" placeholder="Escribe un mensaje..." required></textarea>
+                    <button type="submit" class="send-btn" aria-label="Enviar mensaje"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+                <p class="composer-note">Comunícate con respeto y protege tu información personal.</p>
+            </div>
+        </section>
+    </section>
+</main>
+
+<script type="module" src="js/app.js"></script>
+<script type="module" src="js/pages/mensajes.js"></script>
+</body>
+</html>
