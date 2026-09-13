@@ -1,213 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Dashboard | neXsv</title>
-
+    <title>Mi espacio | neXsv</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
-
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/member-dashboard.css">
+    <link rel="stylesheet" href="css/member-home.css">
 </head>
-
 <body>
-
 <header class="dashboard-topbar">
-    <a href="index.html" class="dashboard-logo">
-        <img src="logo.png" alt="neXsv">
-    </a>
-
+    <a href="index.html" class="dashboard-logo"><img src="logo.png" alt="neXsv"></a>
     <div class="dashboard-user">
-        <button class="notification-btn" type="button" aria-label="Notificaciones">
-            <i class="fa-regular fa-bell"></i>
-        </button>
-
-        <div class="user-info">
-            <span class="user-name" id="topUserName">Miembro</span>
-            <small id="topUserRole">Miembro</small>
-        </div>
-
-        <div class="user-avatar" id="topAvatar">
-            <img id="topAvatarImage" src="" alt="Usuario" style="display:none;">
-            <span id="topAvatarInitials">LM</span>
-        </div>
+        <button class="notification-btn" type="button" aria-label="Notificaciones"><i class="fa-regular fa-bell"></i></button>
+        <div class="user-info"><span class="user-name" id="topUserName">Miembro</span><small id="topUserRole">Miembro</small></div>
+        <div class="user-avatar" id="topAvatar"><img id="topAvatarImage" src="" alt="Usuario" style="display:none;"><span id="topAvatarInitials">LM</span></div>
     </div>
 </header>
-
-<main class="dashboard">
-
-    <!-- ================= SIDEBAR ================= -->
+<main class="dashboard member-home">
     <aside class="dashboard-sidebar">
-
         <div class="profile-card">
-            <div class="profile-avatar" id="sidebarAvatar">
-                <img id="sidebarAvatarImage" src="" alt="Usuario" style="display:none;">
-                <span id="sidebarAvatarInitials">LM</span>
-            </div>
-
-            <h2 id="memberName">Miembro</h2>
-            <p class="member-email" id="memberEmail"></p>
-
-            <p class="member-since" id="memberSince"></p>
-
-            <span class="member-badge">
-                <i class="fa-solid fa-circle-check"></i>
-                Miembro neXsv
-            </span>
+            <div class="profile-avatar" id="sidebarAvatar"><img id="sidebarAvatarImage" src="" alt="Usuario" style="display:none;"><span id="sidebarAvatarInitials">LM</span></div>
+            <h2 id="memberName">Miembro</h2><p class="member-email" id="memberEmail"></p><p class="member-since" id="memberSince"></p>
+            <span class="member-badge"><i class="fa-solid fa-circle-check"></i> Miembro neXsv</span>
         </div>
-
         <nav class="dashboard-menu" aria-label="Mi espacio">
-            <a class="active" href="dashboard.html">
-                <i class="fa-solid fa-house"></i>
-                Inicio
-            </a>
-
-            <a href="perfil.html">
-                <i class="fa-regular fa-user"></i>
-                Mi Perfil
-            </a>
-
-            <a href="#oportunidades">
-                <i class="fa-solid fa-handshake"></i>
-                Oportunidades
-            </a>
-
-            <a href="#guardados">
-                <i class="fa-regular fa-bookmark"></i>
-                Guardados
-            </a>
-
-            <a href="#actividad">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                Actividad
-            </a>
-
-            <a href="dashboard-negocio.html">
-                <i class="fa-solid fa-store"></i>
-                Mis negocios
-            </a>
-
-            <a href="#configuracion">
-                <i class="fa-solid fa-gear"></i>
-                Configuración
-            </a>
+            <a class="active" href="dashboard.html"><i class="fa-solid fa-house"></i>Inicio</a>
+            <a href="perfil.html"><i class="fa-regular fa-user"></i>Mi perfil</a>
+            <a href="#comunidad"><i class="fa-solid fa-handshake"></i>Oportunidades</a>
+            <button class="menu-more-toggle" type="button" aria-expanded="false" aria-controls="memberMoreMenu"><i class="fa-solid fa-chevron-down"></i><span>Ver más</span></button>
+            <div class="menu-more" id="memberMoreMenu" hidden>
+                <a href="#guardados"><i class="fa-regular fa-bookmark"></i>Guardados</a>
+                <a href="#actividad"><i class="fa-solid fa-clock-rotate-left"></i>Actividad</a>
+                <a href="dashboard-negocio.html"><i class="fa-solid fa-store"></i>Mis negocios</a>
+                <a href="#configuracion"><i class="fa-solid fa-gear"></i>Configuración</a>
+            </div>
         </nav>
-
-        <div class="sidebar-footer">
-            <img src="logo.png" alt="neXsv">
-            <p>Conectando familias y negocios a través de la confianza.</p>
-        </div>
+        <div class="sidebar-footer"><img src="logo.png" alt="neXsv"><p>Conectando familias y negocios a través de la confianza.</p></div>
     </aside>
-
-    <!-- ================= CONTENIDO ================= -->
     <section class="dashboard-content">
-
         <section class="dashboard-header">
-            <div>
-                <span class="welcome-tag">Mi espacio</span>
-                <h1 id="welcomeTitle">¡Bienvenida!</h1>
-                <p>
-                    Este es tu espacio personal dentro de neXsv. Desde aquí podrás administrar tu perfil,
-                    participar en la comunidad y acceder a tus negocios.
-                </p>
-            </div>
+            <div><span class="welcome-tag">Mi espacio</span><h1 id="welcomeTitle">¡Bienvenida!</h1><p>Este es tu espacio personal dentro de neXsv. Desde aquí puedes administrar tu perfil, participar en la comunidad y acceder a tus negocios.</p></div>
         </section>
-
-        <!-- PERFIL PERSONAL -->
         <section class="card profile-progress">
-            <div class="progress-header">
-                <div>
-                    <h2>👋 Tu perfil personal</h2>
-                    <p>Completa y mantén actualizada tu información para aprovechar mejor las funciones de neXsv.</p>
-                </div>
-            </div>
-
-            <div class="profile-info">
-                <p>
-                    Fotografía, teléfono, ciudad, colegios y preferencias de participación en la comunidad.
-                </p>
-            </div>
-
-            <a href="perfil.html" class="primary-btn" id="btnCompleteProfile">
-                Ver mi perfil
-            </a>
+            <div class="progress-header"><div><h2>Tu perfil está 80% completo</h2><p>Completa algunos datos más para aprovechar mejor neXsv.</p></div><a href="perfil.html" class="progress-link">Completa tu perfil <i class="fa-solid fa-arrow-right"></i></a></div>
+            <div class="progress-row"><div class="progress-bar"><div class="progress-fill"></div></div><span class="progress-value">80%</span></div>
         </section>
-
-        <!-- ACTIVIDAD PERSONAL -->
-        <section class="stats-grid">
-            <article class="card stat-card" id="guardados">
-                <h3>Guardados</h3>
-                <strong id="savedCount">0</strong>
-            </article>
-
-            <article class="card stat-card" id="oportunidades">
-                <h3>Oportunidades</h3>
-                <strong id="opportunityCount">0</strong>
-            </article>
-
-            <article class="card stat-card" id="actividad">
-                <h3>Actividad</h3>
-                <strong id="activityCount">0</strong>
-            </article>
+        <section class="stats-grid" aria-label="Resumen de actividad">
+            <article class="card stat-card"><div class="stat-icon"><i class="fa-solid fa-bell"></i></div><strong id="activityCount">0</strong><h3>Nuevas actividades</h3></article>
+            <article class="card stat-card"><div class="stat-icon"><i class="fa-solid fa-bullhorn"></i></div><strong id="opportunityCount">0</strong><h3>Oportunidades para ti</h3></article>
+            <article class="card stat-card"><div class="stat-icon"><i class="fa-regular fa-bookmark"></i></div><strong id="savedCount">0</strong><h3>Guardados</h3></article>
         </section>
-
-        <!-- MIS NEGOCIOS -->
-        <section class="card" id="mis-negocios">
-            <div class="section-title">
-                <div>
-                    <h2>Mis negocios</h2>
-                    <p>Administra aquí la presencia de los negocios que te pertenecen.</p>
-                </div>
-                <a href="dashboard-negocio.html">Administrar</a>
-            </div>
-
-            <div class="favorite-business-grid">
-                <article class="favorite-business-card">
-                    <div class="favorite-business-header">
-                        <span class="business-category">Área de negocio</span>
-                    </div>
-                    <h3>Gestiona tus negocios</h3>
-                    <p>
-                        El estado, pagos, publicación, vigencia y demás información comercial se administran
-                        dentro del espacio propio del negocio.
-                    </p>
-                    <a href="dashboard-negocio.html" class="primary-btn">Ir a Mis negocios</a>
-                </article>
-            </div>
+        <section class="card business-access" id="mis-negocios">
+            <div class="section-title"><div><h2>Mis negocios</h2><p>Accede rápidamente a los negocios que te pertenecen.</p></div><a href="dashboard-negocio.html" class="secondary-link">Ver todos <i class="fa-solid fa-arrow-right"></i></a></div>
+            <div class="business-access-card"><div class="business-access-copy"><div class="business-access-icon"><i class="fa-solid fa-store"></i></div><div><h3>Gestiona la presencia de tus negocios</h3><p>Estado, información, publicaciones y demás herramientas se administran desde su propio espacio.</p></div></div><a href="dashboard-negocio.html" class="primary-btn">Ir a mis negocios <i class="fa-solid fa-arrow-right"></i></a></div>
         </section>
-
-        <!-- ACTIVIDAD -->
-        <section class="card">
-            <h2>Actividad reciente</h2>
-            <p>Próximamente aquí aparecerán tus publicaciones, recomendaciones, reseñas y otras acciones dentro de neXsv.</p>
+        <section class="card community-section" id="comunidad">
+            <div class="section-title"><div><h2>Comparte con la comunidad</h2><p>¿Qué quieres compartir hoy?</p></div><a href="#comunidad" class="secondary-link">Ver todo <i class="fa-solid fa-arrow-right"></i></a></div>
+            <div class="community-types"><button class="community-type active" type="button">Vendo</button><button class="community-type" type="button">Intercambio</button><button class="community-type" type="button">Busco</button><button class="community-type" type="button">Regalo</button><button class="community-type" type="button">Recomiendo</button></div>
+            <div class="community-composer"><div class="composer-placeholder"><i class="fa-regular fa-image"></i>&nbsp; Cuéntanos algo...</div><button class="primary-btn community-publish" type="button">Publicar</button></div>
         </section>
-
-        <!-- OPORTUNIDADES -->
-        <section class="card">
-            <h2>Oportunidades para la comunidad</h2>
-            <p>
-                Aquí podrás participar en oportunidades, intercambios, recomendaciones, servicios,
-                artículos, eventos y otras publicaciones de la comunidad.
-            </p>
+        <section class="card activity-section" id="actividad">
+            <div class="section-title"><div><h2>Actividad reciente</h2><p>Mira lo último que ha pasado en tu comunidad.</p></div><a href="#actividad" class="secondary-link">Ver toda mi actividad <i class="fa-solid fa-arrow-right"></i></a></div>
+            <div class="activity-list"><div class="activity-item"><div class="activity-icon"><i class="fa-solid fa-bell"></i></div><div><strong>Tu actividad aparecerá aquí</strong><span>Publicaciones, recomendaciones, guardados y otras acciones.</span></div><span class="activity-time">Próximamente</span></div></div>
         </section>
-
-        <!-- CONFIGURACIÓN -->
-        <section class="card" id="configuracion">
-            <h2>Configuración</h2>
-            <p>Las preferencias de tu cuenta y notificaciones estarán disponibles aquí.</p>
-        </section>
-
+        <section class="card" id="configuracion"><h2>Configuración</h2><p>Las preferencias de tu cuenta y notificaciones estarán disponibles aquí.</p></section>
     </section>
 </main>
-
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/pages/dashboard.js"></script>
-
 </body>
 </html>
