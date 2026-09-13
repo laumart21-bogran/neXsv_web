@@ -6,7 +6,7 @@
     <title>Comunidad | neXsv</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="css/design-system.css">
     <link rel="stylesheet" href="css/layout.css">
@@ -45,6 +45,12 @@
             </div>
             <input id="publicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)">
             <textarea id="publicationBody" rows="4" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea>
+            <div class="photo-upload-row">
+                <input id="publicationImages" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                <button id="addPhotosBtn" class="photo-upload-btn" type="button"><i class="fa-regular fa-image"></i> Agregar fotos <span>Máx. 3</span></button>
+                <span id="photoCount" class="photo-count">Ninguna foto seleccionada</span>
+            </div>
+            <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
             <div class="composer-footer"><span id="publicationMessage" class="form-message"></span><button class="community-primary-btn" type="submit">Publicar</button></div>
         </form>
     </section>
