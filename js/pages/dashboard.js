@@ -34,18 +34,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 function initializeMoreMenu() {
     const toggle = document.querySelector(".menu-more-toggle");
     const menu = document.getElementById("memberMoreMenu");
+    const label = toggle?.querySelector("span");
 
     if (!toggle || !menu) return;
 
     toggle.addEventListener("click", () => {
         const expanded = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", String(!expanded));
-        menu.hidden = expanded;
+        const nextExpanded = !expanded;
+
+        toggle.setAttribute("aria-expanded", String(nextExpanded));
+        menu.hidden = !nextExpanded;
+
+        if (label) {
+            label.textContent = nextExpanded ? "Ver menos" : "Ver más";
+        }
 
         const icon = toggle.querySelector("i");
         if (icon) {
-            icon.classList.toggle("fa-chevron-down", expanded);
-            icon.classList.toggle("fa-chevron-up", !expanded);
+            icon.classList.toggle("fa-chevron-down", !nextExpanded);
+            icon.classList.toggle("fa-chevron-up", nextExpanded);
         }
     });
 }
