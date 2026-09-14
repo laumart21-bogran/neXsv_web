@@ -187,18 +187,18 @@ body {
 .chat-person-info span { color: var(--nx-muted); font-size: 12px; }
 
 /* ==========================================================
-   MENSAJES — UNA SOLA REGLA DE DIMENSIONAMIENTO
-   La fila ocupa el ancho disponible, pero el grupo y la burbuja
-   se ajustan al contenido. El ancho máximo solo entra en textos largos.
+   MENSAJES — ESTRUCTURA ESTÁNDAR DE BURBUJAS
+   El grupo limita el ancho. La burbuja conserva el ancho natural
+   del contenido y nunca ocupa todo el espacio disponible.
    ========================================================== */
 .message-list {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 28px 34px;
+    padding: 25px 34px;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 15px;
 }
 
 .message-row {
@@ -211,13 +211,11 @@ body {
 .message-row.mine { justify-content: flex-end; }
 
 .message-group {
-    flex: 0 1 auto;
-    width: max-content;
-    max-width: min(100%, 380px);
-    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    max-width: 68%;
+    min-width: 0;
 }
 
 .message-row.mine .message-group { align-items: flex-end; }
@@ -233,11 +231,10 @@ body {
 .message-row.mine .message-sender { color: var(--nx-muted); }
 
 .message-bubble {
-    flex: 0 0 auto;
-    display: block;
-    width: max-content;
+    display: inline-block;
+    width: auto;
     max-width: 100%;
-    padding: 10px 14px;
+    padding: 11px 15px;
     border-radius: 15px 15px 15px 5px;
     background: var(--nx-yellow-soft);
     border: 1px solid rgba(245,176,65,.42);
@@ -262,7 +259,7 @@ body {
 
 .message-time {
     display: block;
-    margin-top: 5px;
+    margin-top: 6px;
     font-size: 10px;
     line-height: 1.2;
     opacity: .62;
@@ -270,7 +267,7 @@ body {
     color: inherit;
 }
 
-.message-system-empty { margin: auto; color: var(--nx-muted); font-size: 13px; }
+.message-system-empty { margin: auto; text-align: center; color: var(--nx-muted); font-size: 13px; }
 
 .message-composer {
     padding: 14px 24px 9px;
@@ -312,7 +309,7 @@ body {
     .messages-topbar { padding: 0 22px; }
     .back-link { font-size: 0; }
     .back-link i { font-size: 16px; }
-    .message-group { max-width: min(100%, 340px); }
+    .message-group { max-width: 68%; }
 }
 
 @media (max-width: 650px) {
@@ -323,7 +320,7 @@ body {
     .chat-header::before { content: "\f060"; font-family: "Font Awesome 6 Free"; font-weight: 900; color: var(--nx-blue); margin-right: 2px; cursor: pointer; }
     .conversation-header { padding-top: 20px; }
     .message-list { padding: 20px 16px; gap: 15px; }
-    .message-group { max-width: min(100%, 300px); }
+    .message-group { max-width: 86%; }
     .message-bubble { padding: 9px 13px; font-size: 14px; }
     .message-composer { padding: 10px 12px 7px; }
     .composer-note { padding: 0 12px 10px; }
