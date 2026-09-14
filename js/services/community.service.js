@@ -42,10 +42,16 @@ class CommunityService {
     }
 
     async getPublicAuthorProfile(userId) {
+        const fallback = { name: "Miembro neXsv", photo: null };
+        if (!userId) return fallback;
         const { data, error } = await supabase.rpc("get_public_profile", { p_user_id: userId });
-        if (error || !data?.length) return { data: null, error };
-        const profile = data[0];
-        return { data: { name: [profile.nombre, profile.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: profile.foto || null }, error: null };
+        if (error) {
+            console.warn("No se pudo obtener el perfil público del autor:", error);
+            return fallback;
+        }
+        const profile = Array.isArray(data) ? data[0] : data;
+        if (!profile) return fallback;
+        return { name: [profile.nombre, profile.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: profile.foto || null };
     }
 
     async createPublication({ type, title = null, body }) {
