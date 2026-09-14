@@ -6,10 +6,11 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 class CommunityService {
-    async getPublications({ type = "TODAS", limit = 30, authorId = null } = {}) {
+    async getPublications({ type = "TODAS", limit = 30, authorId = null, excludeAuthorId = null } = {}) {
         let query = supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(limit);
         if (type && type !== "TODAS") query = query.eq("type", type);
         if (authorId) query = query.eq("author_id", authorId);
+        if (excludeAuthorId) query = query.neq("author_id", excludeAuthorId);
         const { data, error } = await query;
         if (error) return { data: [], error };
         if (!data?.length) return { data: [], error: null };
