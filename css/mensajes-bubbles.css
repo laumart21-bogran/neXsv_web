@@ -1,21 +1,23 @@
 /* neXsv — Burbujas de mensajes: compactas y ajustadas al contenido */
 
 .message-list .message-group {
-    width: max-content !important;
-    max-width: min(65%, 480px) !important;
+    flex: 0 1 auto !important;
+    width: fit-content !important;
+    max-width: 420px !important;
     min-width: 0 !important;
 }
 
 .message-list .message-bubble {
-    display: inline-block !important;
-    width: max-content !important;
-    max-width: 100% !important;
-    padding: 8px 12px !important;
-    border-radius: 13px 13px 13px 4px !important;
-    font-size: 13.5px !important;
-    line-height: 1.4 !important;
+    display: block !important;
+    width: fit-content !important;
+    max-width: 420px !important;
+    padding: 7px 11px !important;
+    border-radius: 12px 12px 12px 4px !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
+    box-sizing: border-box !important;
 }
 
 .message-list .message-row.mine .message-group {
@@ -23,7 +25,7 @@
 }
 
 .message-list .message-row.mine .message-bubble {
-    border-radius: 13px 13px 4px 13px !important;
+    border-radius: 12px 12px 4px 12px !important;
     background: var(--nx-green-soft) !important;
     border-color: rgba(24,169,120,.30) !important;
 }
@@ -38,8 +40,8 @@
 }
 
 .message-list .message-sender {
-    margin: 0 8px 3px !important;
-    font-size: 11px !important;
+    margin: 0 7px 3px !important;
+    font-size: 10.5px !important;
 }
 
 .message-list .message-time {
@@ -48,18 +50,20 @@
 }
 
 @media (max-width: 900px) {
-    .message-list .message-group {
+    .message-list .message-group,
+    .message-list .message-bubble {
         max-width: 72% !important;
     }
 }
 
 @media (max-width: 650px) {
-    .message-list .message-group {
+    .message-list .message-group,
+    .message-list .message-bubble {
         max-width: 82% !important;
     }
 
     .message-list .message-bubble {
-        padding: 8px 11px !important;
-        font-size: 13.5px !important;
+        padding: 7px 10px !important;
+        font-size: 13px !important;
     }
 }
