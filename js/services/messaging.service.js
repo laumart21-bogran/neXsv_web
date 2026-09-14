@@ -7,14 +7,23 @@ class MessagingService {
     }
 
     async getOtherParticipant(conversationId, currentUserId) {
-        const { data, error } = await supabase.from("conversation_participants").select("user_id").eq("conversation_id", conversationId).neq("user_id", currentUserId).limit(1);
-        if (error) return { data: [], error };
-        if (data?.length) return { data, error: null };
+        // La RPC SECURITY DEFINER permite identificar al otro participante
+        // sin exponer directamente las filas protegidas por RLS.
+        const { data, error } = await supabase.rpc("get_other_conversation_participant", {
+            p_conversation_id: conversationId
+        });
+        if (!error && data?.length) return { data, error: null };
 
-        // La política RLS actual permite a cada usuario ver solamente su propia
-        // fila de conversation_participants. Como los mensajes sí son visibles
-        // para los participantes, usamos un remitente distinto al usuario actual
-        // como respaldo para identificar al otro participante sin relajar RLS.
+        // Respaldo para conversaciones antiguas o mientras se aplica la RPC.
+        const { data: participantRows, error: participantError } = await supabase
+            .from("conversation_participants")
+            .select("user_id")
+            .eq("conversation_id", conversationId)
+            .neq("user_id", currentUserId)
+            .limit(1);
+        if (!participantError && participantRows?.length) return { data: participantRows, error: null };
+
+        // Último respaldo: buscar un remitente distinto al usuario actual.
         const { data: messages, error: messagesError } = await supabase
             .from("messages")
             .select("sender_id")
