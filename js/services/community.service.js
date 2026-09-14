@@ -6,11 +6,12 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 class CommunityService {
-    async getPublications({ type = "TODAS", limit = 30, authorId = null, excludeAuthorId = null } = {}) {
-        let query = supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(limit);
+    async getPublications({ type = "TODAS", limit = 30, authorId = null, excludeAuthorId = null, businessId = null } = {}) {
+        let query = supabase.from("community_publications").select("id, author_id, business_id, type, title, body, status, created_at, updated_at").eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(limit);
         if (type && type !== "TODAS") query = query.eq("type", type);
         if (authorId) query = query.eq("author_id", authorId);
         if (excludeAuthorId) query = query.neq("author_id", excludeAuthorId);
+        if (businessId) query = query.eq("business_id", businessId);
         const { data, error } = await query;
         if (error) return { data: [], error };
         if (!data?.length) return { data: [], error: null };
@@ -22,7 +23,7 @@ class CommunityService {
     }
 
     async getPublicationById(publicationId) {
-        const { data, error } = await supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("id", publicationId).single();
+        const { data, error } = await supabase.from("community_publications").select("id, author_id, business_id, type, title, body, status, created_at, updated_at").eq("id", publicationId).single();
         if (error || !data) return { data, error };
         const { data: images } = await supabase.from("community_publication_images").select("id, publication_id, storage_path, public_url, sort_order").eq("publication_id", publicationId).order("sort_order", { ascending: true });
         return { data: { ...data, images: images || [] }, error: null };
@@ -63,20 +64,20 @@ class CommunityService {
         return { name: [profile.nombre, profile.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: profile.foto || null };
     }
 
-    async createPublication({ type, title = null, body }) {
+    async createPublication({ type, title = null, body, businessId = null }) {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
-        return await supabase.from("community_publications").insert({ author_id: userId, type, title: title ? String(title).trim() : null, body: cleanBody, status: "PUBLICADA" }).select().single();
+        return await supabase.from("community_publications").insert({ author_id: userId, business_id: businessId || null, type, title: title ? String(title).trim() : null, body: cleanBody, status: "PUBLICADA" }).select().single();
     }
 
-    async updatePublication(publicationId, { type, title = null, body }) {
+    async updatePublication(publicationId, { type, title = null, body, businessId = null }) {
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
         if (!type) return { data: null, error: new Error("Selecciona un tipo de publicación.") };
-        return await supabase.from("community_publications").update({ type, title: title ? String(title).trim() : null, body: cleanBody, updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", (await supabase.auth.getUser()).data.user?.id).select().single();
+        return await supabase.from("community_publications").update({ type, title: title ? String(title).trim() : null, business_id: businessId || null, updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", (await supabase.auth.getUser()).data.user?.id).select().single();
     }
 
     validateImages(files = []) {
