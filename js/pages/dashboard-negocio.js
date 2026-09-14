@@ -4,6 +4,8 @@ import CommunityService from "../services/community.service.js";
 import { supabase } from "../core/supabase-client.js";
 import { APP_CONFIG } from "../core/config.js";
 
+let currentBusiness = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
     if (!AuthSession.isAuthenticated()) { window.location.href = APP_CONFIG.routes.login; return; }
@@ -13,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (error) { console.error("Error al cargar negocios:", error); renderError(); return; }
     renderSummary(businesses);
     renderBusinesses(businesses);
-    await loadBusinessPublications(user.id);
+    initializeBusinessSelector(businesses);
     await loadCommunityPublications(user.id);
 });
 
@@ -23,16 +25,50 @@ function renderOwner(user) {
     setText("businessOwnerName", fullName);
     setText("welcomeTitle", `¡Hola, ${firstName}!`);
 }
+
 function renderSummary(businesses) {
     setText("businessTotal", businesses.length);
     setText("businessReviewsSummary", "—");
 }
 
-async function loadBusinessPublications(ownerId) {
+function initializeBusinessSelector(businesses) {
+    const row = document.getElementById("businessSelectorRow");
+    const selector = document.getElementById("businessSelector");
+    if (!row || !selector || !businesses.length) return;
+
+    row.hidden = false;
+    selector.innerHTML = businesses.map(business => `<option value="${escapeAttr(business.id)}">${escapeHtml(business.nombre || "Mi negocio")}</option>`).join("");
+
+    const storedId = sessionStorage.getItem("nexsv_selected_business_id");
+    const selected = businesses.find(business => business.id === storedId) || businesses[0];
+    selector.value = selected.id;
+    currentBusiness = selected;
+    sessionStorage.setItem("nexsv_selected_business_id", selected.id);
+    loadSelectedBusiness(selected);
+
+    selector.addEventListener("change", async () => {
+        const business = businesses.find(item => item.id === selector.value);
+        if (!business) return;
+        currentBusiness = business;
+        sessionStorage.setItem("nexsv_selected_business_id", business.id);
+        await loadSelectedBusiness(business);
+    });
+}
+
+async function loadSelectedBusiness(business) {
+    const empty = document.getElementById("businessPublicationsEmpty");
+    const selector = document.getElementById("businessSelector");
+    if (selector) selector.setAttribute("aria-label", `Seleccionar negocio. Actual: ${business.nombre || "Mi negocio"}`);
+    if (empty) empty.classList.remove("visible");
+    await loadBusinessPublications(business.id);
+}
+
+async function loadBusinessPublications(businessId) {
     const slider = document.getElementById("businessPublications");
     const empty = document.getElementById("businessPublicationsEmpty");
     if (!slider) return;
-    const result = await CommunityService.getPublications({ type: "TODAS", limit: 30, authorId: ownerId });
+    slider.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-spinner fa-spin"></i><strong>Cargando publicaciones</strong><span>Estamos actualizando los resultados de este negocio.</span></div>`;
+    const result = await CommunityService.getPublications({ type: "TODAS", limit: 30, businessId });
     if (result.error) { slider.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-triangle-exclamation"></i><strong>No pudimos cargar tus publicaciones</strong><span>Intenta nuevamente en unos momentos.</span></div>`; return; }
     const publications = result.data || [];
     if (!publications.length) { slider.innerHTML = ""; empty?.classList.add("visible"); resetPublicationTotals(); return; }
@@ -133,6 +169,7 @@ function bindPublicationActions() {
         } catch (error) { if (error?.name !== "AbortError") console.warn("No se pudo compartir la publicación:", error); }
     }));
 }
+
 function resetPublicationTotals() { setText("businessViews", 0); setText("businessViewsSummary", 0); setText("businessComments", 0); setText("businessConversations", 0); setText("businessConversationsSummary", 0); setText("businessConversationsOpportunity", 0); setText("businessMessages", 0); setText("businessInterests", "—"); setText("businessInterestsResult", "—"); }
 function setMetric(card, metric, value) { card.querySelector(`[data-publication-metric="${metric}"]`)?.replaceChildren(document.createTextNode(String(Number(value || 0)))); }
 
@@ -164,7 +201,7 @@ function businessCard(business) {
     return `<article class="business-item-card"><div class="business-item-main"><div class="business-item-logo">${business.logo ? `<img src="${escapeAttr(business.logo)}" alt="${escapeAttr(business.nombre || "Negocio")}">` : `<i class="fa-solid fa-store"></i>`}</div><div class="business-item-info"><div class="business-item-heading"><div><h3>${escapeHtml(business.nombre || "Mi negocio")}</h3><span>${escapeHtml(business.categoria || "Negocio")}</span></div><span class="business-status ${statusClass}"><i class="fa-solid fa-circle"></i>${statusLabel}</span></div><p><i class="fa-solid fa-location-dot"></i> ${escapeHtml(location)}</p>${isActive ? `<small class="business-validity"><i class="fa-regular fa-calendar"></i> Vigencia hasta ${expiration}</small>` : ""}</div></div><div class="business-item-actions"><a href="#" class="business-outline-btn">Editar información</a>${isActive ? `<a href="#publicaciones" class="business-primary-small">Ver publicaciones <i class="fa-solid fa-arrow-right"></i></a>` : `<span class="business-process-note">La publicación estará disponible al completar el proceso.</span>`}</div></article>`;
 }
 function renderError() { setText("businessTotal", "—"); setText("businessViewsSummary", "—"); setText("businessConversationsSummary", "—"); const container = document.getElementById("businessList"); if (container) container.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-triangle-exclamation"></i><strong>No pudimos cargar tus negocios</strong><span>Intenta nuevamente en unos momentos.</span></div>`; }
-function typeLabel(type) { const labels = { VENTA: "Venta", SERVICIO: "Servicio", SOLICITUD: "Solicitud", RECOMENDACION: "Recomendación" }; return labels[normalize(type).toUpperCase()] || "Publicación"; }
+function typeLabel(type) { const labels = { VENTA: "Venta", INTERCAMBIO: "Intercambio", BUSCO: "Busco", REGALO: "Regalo", RECOMENDACION: "Recomendación", OFERTA: "Oferta", EVENTO: "Evento" }; return labels[normalize(type).toUpperCase()] || "Publicación"; }
 function normalize(value) { return String(value || "").trim().toLowerCase(); }
 function formatDate(value) { const date = new Date(value); if (Number.isNaN(date.getTime())) return "Fecha pendiente"; return new Intl.DateTimeFormat("es-SV", { day: "2-digit", month: "short", year: "numeric" }).format(date); }
 function escapeHtml(value) { return String(value).replace(/[&<>\'\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char])); }
