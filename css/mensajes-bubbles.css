@@ -1,22 +1,22 @@
-/* neXsv — Burbujas de mensajes: tamaño compacto y consistente */
+/* neXsv — Burbujas de mensajes: compactas, naturales y proporcionales al texto */
 
 .message-list .message-group {
     width: fit-content !important;
-    max-width: min(64%, 560px) !important;
+    max-width: min(85%, 560px) !important;
     min-width: 0 !important;
 }
 
 .message-list .message-bubble {
     width: fit-content !important;
     max-width: 100% !important;
-    padding: 11px 15px !important;
-    border-radius: 15px 15px 15px 5px !important;
+    padding: 9px 13px !important;
+    border-radius: 14px 14px 14px 4px !important;
     font-size: 14px !important;
-    line-height: 1.45 !important;
+    line-height: 1.4 !important;
 }
 
 .message-list .message-row.mine .message-bubble {
-    border-radius: 15px 15px 5px 15px !important;
+    border-radius: 14px 14px 4px 14px !important;
     background: var(--nx-green-soft) !important;
     border-color: rgba(24,169,120,.30) !important;
 }
@@ -27,28 +27,28 @@
 }
 
 .message-list .message-sender {
-    margin-bottom: 4px !important;
+    margin-bottom: 3px !important;
     font-size: 11px !important;
 }
 
 .message-list .message-time {
-    margin-top: 5px !important;
-    font-size: 9.5px !important;
+    margin-top: 4px !important;
+    font-size: 9px !important;
 }
 
 @media (max-width: 900px) {
     .message-list .message-group {
-        max-width: 72% !important;
+        max-width: 82% !important;
     }
 }
 
 @media (max-width: 650px) {
     .message-list .message-group {
-        max-width: 86% !important;
+        max-width: 88% !important;
     }
 
     .message-list .message-bubble {
-        padding: 10px 13px !important;
+        padding: 9px 12px !important;
         font-size: 14px !important;
     }
 }
