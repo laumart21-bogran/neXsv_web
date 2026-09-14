@@ -7,14 +7,11 @@ class MessagingService {
     }
 
     async getOtherParticipant(conversationId, currentUserId) {
-        // La RPC SECURITY DEFINER permite identificar al otro participante
-        // sin exponer directamente las filas protegidas por RLS.
         const { data, error } = await supabase.rpc("get_other_conversation_participant", {
             p_conversation_id: conversationId
         });
         if (!error && data?.length) return { data, error: null };
 
-        // Respaldo para conversaciones antiguas o mientras se aplica la RPC.
         const { data: participantRows, error: participantError } = await supabase
             .from("conversation_participants")
             .select("user_id")
@@ -23,7 +20,26 @@ class MessagingService {
             .limit(1);
         if (!participantError && participantRows?.length) return { data: participantRows, error: null };
 
-        // Último respaldo: buscar un remitente distinto al usuario actual.
+        // En conversaciones iniciadas desde una publicación, el autor de la publicación
+        // es el interlocutor aunque todavía no haya enviado ningún mensaje.
+        const { data: conversation } = await supabase
+            .from("conversations")
+            .select("origin_publication_id")
+            .eq("id", conversationId)
+            .maybeSingle();
+
+        if (conversation?.origin_publication_id) {
+            const { data: publication } = await supabase
+                .from("community_publications")
+                .select("author_id")
+                .eq("id", conversation.origin_publication_id)
+                .maybeSingle();
+            if (publication?.author_id && String(publication.author_id) !== String(currentUserId)) {
+                return { data: [{ user_id: publication.author_id }], error: null };
+            }
+        }
+
+        // Último respaldo para conversaciones antiguas que ya contienen mensajes del otro usuario.
         const { data: messages, error: messagesError } = await supabase
             .from("messages")
             .select("sender_id")
