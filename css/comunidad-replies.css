@@ -1,0 +1,132 @@
+/* neXsv — Respuestas de comentarios */
+.comment-item {
+    position: relative;
+}
+
+.comment-content {
+    min-width: 0;
+}
+
+.comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 7px;
+}
+
+.comment-reply-btn {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--nx-blue);
+    font: inherit;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.comment-reply-btn:hover {
+    text-decoration: underline;
+}
+
+.comment-reply-form {
+    display: none;
+    align-items: flex-end;
+    gap: 8px;
+    margin-top: 9px;
+}
+
+.comment-reply-form.open {
+    display: flex;
+}
+
+.comment-reply-form textarea {
+    flex: 1;
+    min-height: 38px;
+    resize: none;
+    border: 1px solid #DDE4EF;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font: inherit;
+    font-size: 10px;
+    line-height: 1.45;
+    outline: none;
+    background: #fff;
+}
+
+.comment-reply-form textarea:focus {
+    border-color: #AAB7D4;
+    box-shadow: 0 0 0 3px rgba(35,58,114,.05);
+}
+
+.comment-reply-send {
+    height: 38px;
+    padding: 0 11px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--nx-green);
+    color: #fff;
+    font: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.comment-reply-send:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.comment-replies {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 9px 0 0 44px;
+}
+
+.comment-replies .comment-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.comment-replies .comment-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 9px;
+}
+
+.comment-replies .comment-content {
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: #F7F9FC;
+}
+
+.comment-replies .comment-content p {
+    font-size: 10px;
+}
+
+.comment-replies .comment-actions {
+    margin-top: 4px;
+}
+
+.comment-reply-label {
+    color: var(--nx-muted);
+    font-size: 8px;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .comment-replies {
+        margin-left: 20px;
+    }
+
+    .comment-reply-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .comment-reply-send {
+        width: 100%;
+    }
+}
