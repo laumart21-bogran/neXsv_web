@@ -3,58 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis negocios | neXsv</title>
+    <title>Espacio de negocios | neXsv</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/member-dashboard.css">
-    <link rel="stylesheet" href="css/dashboard-negocio.css?v=20260914-2">
+    <link rel="stylesheet" href="css/dashboard-negocio.css?v=20260914-3">
     <link rel="stylesheet" href="css/dashboard-responsive.css">
 </head>
 <body>
 <header class="business-topbar">
     <a href="index.html" class="dashboard-logo"><img src="logo.png" alt="neXsv"></a>
-    <div class="business-user"><div class="business-user-info"><strong id="businessOwnerName">Miembro</strong><span>Mis negocios</span></div><div class="business-header-avatar" id="headerAvatar"><span id="headerAvatarInitials">NE</span></div></div>
+    <div class="business-user"><div class="business-user-info"><strong id="businessOwnerName">Miembro</strong><span>Espacio de negocios</span></div><div class="business-header-avatar" id="headerAvatar"><span id="headerAvatarInitials">NE</span></div></div>
 </header>
 <main class="business-dashboard">
     <aside class="business-sidebar">
-        <div class="business-sidebar-card"><div class="business-sidebar-icon"><i class="fa-solid fa-store"></i></div><h2>Mis negocios</h2><p>Administra desde aquí la presencia de tus negocios en neXsv.</p></div>
-        <nav class="business-menu" aria-label="Gestión de negocios"><a href="dashboard-negocio.html" class="active"><i class="fa-solid fa-house"></i>Inicio</a><a href="#mis-negocios"><i class="fa-solid fa-store"></i>Mis negocios</a><a href="#publicaciones"><i class="fa-solid fa-bullhorn"></i>Publicaciones</a><a href="#publicaciones"><i class="fa-solid fa-image"></i>Fotos</a><a href="#resultados"><i class="fa-solid fa-chart-line"></i>Resultados</a></nav>
+        <div class="business-sidebar-card"><div class="business-sidebar-icon"><i class="fa-solid fa-store"></i></div><h2>Espacio de negocios</h2><p>Administra desde aquí la presencia de tus negocios en neXsv.</p></div>
+        <nav class="business-menu" aria-label="Gestión de negocios">
+            <a href="dashboard-negocio.html" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
+            <a href="#mis-negocios"><i class="fa-solid fa-store"></i>Mis negocios</a>
+            <a href="#publicaciones"><i class="fa-solid fa-bullhorn"></i>Publicaciones</a>
+            <a href="#fotos"><i class="fa-regular fa-image"></i>Fotos</a>
+            <a href="mensajes.html"><i class="fa-regular fa-comments"></i>Conversaciones</a>
+            <a href="#resultados"><i class="fa-solid fa-chart-line"></i>Resultados</a>
+        </nav>
         <a href="dashboard.html" class="back-member-link"><i class="fa-solid fa-arrow-left"></i> Volver a Mi espacio</a><button id="logoutButton" class="logout-button"><i class="fa-solid fa-right-from-bracket"></i>Cerrar sesión</button>
     </aside>
-    <section class="business-content">
-        <section class="business-welcome"><span class="business-label">Espacio de negocios</span><h1 id="welcomeTitle">¡Hola!</h1><p>Tu negocio en neXsv se construye a partir de algo muy sencillo: <strong>visibilidad, interés, conversación y conexión.</strong></p></section>
 
-        <section class="business-summary-grid" aria-label="Resumen de negocios"><article class="business-summary-card"><span id="businessTotal">0</span><small>Negocios</small></article><article class="business-summary-card"><span id="businessActive">0</span><small>Publicados</small></article><article class="business-summary-card"><span id="businessPending">0</span><small>En proceso</small></article></section>
+    <section class="business-content">
+        <section class="business-welcome">
+            <span class="business-label">Tu espacio de negocios</span>
+            <h1 id="welcomeTitle">¡Hola!</h1>
+            <p>Desde aquí puedes ver cómo están funcionando tus publicaciones, detectar oportunidades en la comunidad y gestionar la presencia de tus negocios en neXsv.</p>
+        </section>
+
+        <section class="business-summary-grid" aria-label="Impacto de tu actividad">
+            <article class="business-summary-card"><span class="summary-icon"><i class="fa-solid fa-store"></i></span><strong id="businessTotal">0</strong><small>Negocios</small></article>
+            <article class="business-summary-card"><span class="summary-icon"><i class="fa-regular fa-eye"></i></span><strong id="businessViewsSummary">0</strong><small>Vistas</small></article>
+            <article class="business-summary-card"><span class="summary-icon"><i class="fa-regular fa-comments"></i></span><strong id="businessConversationsSummary">0</strong><small>Conversaciones</small></article>
+            <article class="business-summary-card"><span class="summary-icon"><i class="fa-regular fa-star"></i></span><strong id="businessReviewsSummary">—</strong><small>Reseñas</small><em>Próximamente</em></article>
+        </section>
 
         <section class="business-section" id="publicaciones">
             <div class="business-section-title">
-                <div><span class="section-kicker">Comunidad</span><h2>Mis publicaciones</h2><p>Todo lo que publicas vive en la misma comunidad neXsv. Desliza para revisar cada publicación.</p></div>
+                <div><span class="section-kicker">Tu actividad</span><h2>Mis publicaciones</h2><p>Todo lo que publicas vive en la misma comunidad neXsv. Desliza para revisar cada publicación.</p></div>
                 <a href="comunidad.html" class="business-outline-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver comunidad</a>
             </div>
             <div id="businessPublications" class="business-publication-slider" aria-live="polite"></div>
             <div id="businessPublicationsEmpty" class="business-empty-state business-publications-empty"><i class="fa-solid fa-bullhorn"></i><strong>Aún no tienes publicaciones</strong><span>Cuando publiques en la comunidad, aparecerán aquí.</span><a href="comunidad.html" class="business-primary-small">Ir a Comunidad</a></div>
         </section>
 
+        <section class="business-section" id="oportunidades">
+            <div class="business-section-title"><div><span class="section-kicker">Oportunidades</span><h2>Intereses y conversaciones</h2><p>Lo que ocurre después de que alguien encuentra tu negocio o una publicación relevante.</p></div></div>
+            <div class="business-opportunity-grid">
+                <article class="business-opportunity-card"><span class="opportunity-icon interest"><i class="fa-solid fa-check"></i></span><div><strong>Me interesa</strong><p id="businessInterestsText">Esta acción será incorporada como una señal propia de neXsv.</p></div><span class="opportunity-value" id="businessInterests">—</span></article>
+                <article class="business-opportunity-card"><span class="opportunity-icon conversation"><i class="fa-regular fa-comments"></i></span><div><strong>Conversaciones</strong><p>Personas que dieron el siguiente paso y comenzaron a hablar contigo.</p></div><span class="opportunity-value" id="businessConversationsOpportunity">0</span><a href="mensajes.html" class="business-inline-link">Ver conversaciones <i class="fa-solid fa-arrow-right"></i></a></article>
+            </div>
+        </section>
+
+        <section class="business-section" id="comunidad">
+            <div class="business-section-title"><div><span class="section-kicker">La comunidad</span><h2>Lo que está pasando en neXsv</h2><p>Descubre solicitudes, recomendaciones y oportunidades que pueden ser relevantes para tus negocios.</p></div><a href="comunidad.html" class="business-outline-btn">Explorar comunidad <i class="fa-solid fa-arrow-right"></i></a></div>
+            <div id="communityPublications" class="business-publication-slider" aria-live="polite"></div>
+            <div id="communityPublicationsEmpty" class="business-empty-state business-publications-empty"><i class="fa-solid fa-users"></i><strong>Aún no hay publicaciones para mostrar</strong><span>Cuando haya contenido relevante de la comunidad, aparecerá aquí.</span></div>
+        </section>
+
         <section class="business-section" id="resultados">
             <div class="business-section-title"><div><span class="section-kicker">Resultados</span><h2>¿Qué está pasando con tus publicaciones?</h2><p>Estas métricas muestran el recorrido desde que alguien encuentra tu contenido hasta que inicia una conversación.</p></div></div>
             <div class="business-funnel-grid">
                 <article class="business-funnel-card"><span class="funnel-icon funnel-views"><i class="fa-regular fa-eye"></i></span><strong id="businessViews">0</strong><small>Vistas</small></article>
-                <article class="business-funnel-card"><span class="funnel-icon funnel-interest"><i class="fa-solid fa-check"></i></span><strong id="businessInterests">—</strong><small>Me interesa</small><em>Próximo bloque</em></article>
+                <article class="business-funnel-card"><span class="funnel-icon funnel-interest"><i class="fa-solid fa-check"></i></span><strong id="businessInterestsResult">—</strong><small>Me interesa</small><em>Próximo bloque</em></article>
                 <article class="business-funnel-card"><span class="funnel-icon funnel-conversation"><i class="fa-regular fa-comment"></i></span><strong id="businessConversations">0</strong><small>Conversaciones</small></article>
                 <article class="business-funnel-card"><span class="funnel-icon funnel-message"><i class="fa-regular fa-envelope"></i></span><strong id="businessMessages">0</strong><small>Mensajes</small></article>
                 <article class="business-funnel-card"><span class="funnel-icon funnel-comments"><i class="fa-regular fa-comments"></i></span><strong id="businessComments">0</strong><small>Comentarios</small></article>
+                <article class="business-funnel-card"><span class="funnel-icon funnel-reviews"><i class="fa-regular fa-star"></i></span><strong id="businessReviews">—</strong><small>Reseñas</small><em>Se conectará a las tarjetas de negocio</em></article>
             </div>
-            <p id="businessMetricsNote" class="business-metrics-note">Las métricas disponibles hoy son vistas, comentarios y conversaciones. Me interesa, Guardar, Recomendar y Conectar se incorporarán como acciones propias de neXsv en los siguientes bloques.</p>
+            <p id="businessMetricsNote" class="business-metrics-note">Las métricas disponibles hoy son vistas, comentarios y conversaciones. Las reseñas quedarán conectadas a la reputación de las tarjetas de negocio cuando incorporemos ese módulo.</p>
         </section>
 
-        <section class="business-section" id="mis-negocios"><div class="business-section-title"><div><span class="section-kicker">Gestión</span><h2>Mis negocios</h2><p>Cada negocio mantiene su propio estado, publicación y vigencia.</p></div><a href="incorporar-negocio.html" class="business-primary-btn"><i class="fa-solid fa-plus"></i> Incorporar negocio</a></div><div id="businessList" class="business-list"></div></section>
+        <section class="business-section" id="mis-negocios">
+            <div class="business-section-title"><div><span class="section-kicker">Gestión</span><h2>Mis negocios</h2><p>Cada negocio mantiene su propio estado, publicación y vigencia.</p></div><a href="incorporar-negocio.html" class="business-primary-btn"><i class="fa-solid fa-plus"></i> Incorporar negocio</a></div>
+            <div id="businessList" class="business-list"></div>
+            <button id="businessListToggle" class="business-list-toggle" type="button" hidden></button>
+        </section>
+
+        <section class="business-section" id="fotos">
+            <div class="business-section-title"><div><span class="section-kicker">Contenido visual</span><h2>Fotos</h2><p>La gestión de fotos de tus negocios se integrará aquí para mantener toda su presencia en un solo lugar.</p></div></div>
+            <div class="business-compact-placeholder"><i class="fa-regular fa-image"></i><strong>Galerías de negocio</strong><span>Próximamente, conectadas con las fotos de cada tarjeta de negocio.</span></div>
+        </section>
 
         <section class="business-section" id="aprende"><div class="business-section-title"><div><span class="section-kicker">Próximo paso</span><h2>Aprende a hacer crecer tu negocio</h2><p>Contenido práctico para convertir visibilidad en mejores decisiones.</p></div></div><div class="business-learning-strip"><article><span>📚</span><strong>Cómo conseguir más visibilidad</strong><small>Próximamente</small></article><article><span>💬</span><strong>Cómo convertir interés en conversación</strong><small>Próximamente</small></article><article><span>📈</span><strong>Cómo leer tus resultados</strong><small>Próximamente</small></article></div></section>
     </section>
 </main>
-<script type="module" src="js/app.js"></script><script type="module" src="js/pages/dashboard-negocio.js?v=20260914-2"></script>
+<script type="module" src="js/app.js"></script><script type="module" src="js/pages/dashboard-negocio.js?v=20260914-3"></script>
 </body>
 </html>
