@@ -7,6 +7,7 @@ import { APP_CONFIG } from "../core/config.js";
 
 let currentUser = null;
 let dashboardChannel = null;
+let memberBusinesses = [];
 
 const TYPE_LABELS = { VENTA: "Vendo", INTERCAMBIO: "Intercambio", BUSCO: "Busco", REGALO: "Regalo", RECOMENDACION: "Recomiendo", OFERTA: "Ofrezco", EVENTO: "Evento" };
 
@@ -79,9 +80,19 @@ async function loadBusinesses() {
     if (!slider) return;
     const { data, error } = await BusinessService.getBusinessesByOwner(currentUser.id);
     if (error) { slider.innerHTML = `<div class="feed-placeholder">No pudimos cargar tus negocios.</div>`; return; }
-    if (!data?.length) { slider.innerHTML = `<div class="business-slide empty"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><strong>Aún no tienes negocios registrados</strong><small>Cuando incorpores uno, aparecerá aquí.</small></div><a href="incorporar-negocio.html" class="business-slide-link">Incorporar <i class="fa-solid fa-arrow-right"></i></a></div>`; return; }
-    slider.innerHTML = data.map(businessCard).join("");
+    memberBusinesses = data || [];
+    initializeBusinessPublishSelector(memberBusinesses);
+    if (!memberBusinesses.length) { slider.innerHTML = `<div class="business-slide empty"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><strong>Aún no tienes negocios registrados</strong><small>Cuando incorpores uno, aparecerá aquí.</small></div><a href="incorporar-negocio.html" class="business-slide-link">Incorporar <i class="fa-solid fa-arrow-right"></i></a></div>`; return; }
+    slider.innerHTML = memberBusinesses.map(businessCard).join("");
     setupScroller("businessSlider", "businessPrev", "businessNext");
+}
+
+function initializeBusinessPublishSelector(businesses) {
+    const selector = document.getElementById("dashboardPublicationBusiness");
+    if (!selector) return;
+    const currentValue = selector.value;
+    selector.innerHTML = `<option value="">Publicación personal</option>${businesses.map(business => `<option value="${escapeHtml(business.id)}">${escapeHtml(business.nombre || "Mi negocio")}</option>`).join("")}`;
+    if (currentValue && businesses.some(business => business.id === currentValue)) selector.value = currentValue;
 }
 
 function publicationCard(publication, compact = false, showMetrics = false) {
@@ -98,7 +109,7 @@ async function loadDashboardCommunity() {
     setText("recentCount", recent);
     const highlights = document.getElementById("communityHighlights");
     if (highlights) highlights.innerHTML = publications.length ? publications.map(p => publicationCard(p, true)).join("") : `<div class="feed-placeholder">Todavía no hay publicaciones nuevas. Sé de las primeras personas en compartir algo.</div>`;
-    const mineResult = await supabase.from("community_publications").select("id,author_id,type,title,body,created_at,updated_at").eq("author_id", currentUser.id).eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(3);
+    const mineResult = await supabase.from("community_publications").select("id,author_id,business_id,type,title,body,created_at,updated_at").eq("author_id", currentUser.id).eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(3);
     const mine = mineResult.data || [];
     setText("myPublicationCount", mine.length);
     const mineContainer = document.getElementById("myPublications");
@@ -125,12 +136,13 @@ function initializeInlineComposer() {
     document.getElementById("dashboardPublishBtn")?.addEventListener("click", async () => {
         const bodyInput = document.getElementById("dashboardPublicationBody");
         const titleInput = document.getElementById("dashboardPublicationTitle");
+        const businessSelector = document.getElementById("dashboardPublicationBusiness");
         const message = document.getElementById("dashboardPublicationMessage");
         const button = document.getElementById("dashboardPublishBtn");
         const body = bodyInput?.value.trim() || "";
         if (!body) { if (message) message.textContent = "Escribe algo antes de publicar."; return; }
         button.disabled = true; button.textContent = "Publicando...";
-        const { error } = await CommunityService.createPublication({ type: selectedType, title: titleInput?.value.trim() || "", body });
+        const { error } = await CommunityService.createPublication({ type: selectedType, title: titleInput?.value.trim() || "", body, businessId: businessSelector?.value || null });
         button.disabled = false; button.textContent = "Publicar";
         if (error) { if (message) message.textContent = error.message || "No fue posible publicar."; return; }
         bodyInput.value = ""; titleInput.value = ""; if (message) message.textContent = "¡Publicado!";
