@@ -45,6 +45,7 @@ function renderPublications(publications) {
     publicationList.innerHTML = publications.map(p => {
         const isMine = p.author_id === currentUser.id;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
+        const commentCount = Number(p.commentCount || 0);
         return `<article class="publication-card" data-publication-id="${escapeHtml(p.id)}">
             <div class="publication-author">${avatarHtml(p.author)}<div class="author-info"><strong>${escapeHtml(p.author.name)}</strong><span>${escapeHtml(formatDate(p.created_at))}${p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span></div><span class="publication-type">${escapeHtml(TYPE_LABELS[p.type] || p.type)}</span></div>
             ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
@@ -52,10 +53,10 @@ function renderPublications(publications) {
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
                 ${isMine ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar publicación</button>` : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-comment-dots"></i> Me interesa</button>`}
-                <button class="comment-toggle-btn" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comments"></i> Comentar</button>
+                <button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comments"></i> ${commentCount ? `Comentarios (${commentCount})` : "Comentar"}</button>
             </div>
             <div class="publication-comments" id="comments-${escapeHtml(p.id)}" hidden>
-                <div class="comments-header"><div><strong>Comentarios</strong><span>Pregunta, comenta o comparte tu experiencia con respeto.</span></div></div>
+                <div class="comments-header"><div><strong>Comentarios</strong><span>Pregunta, comenta o comparte tu experiencia con tu comunidad.</span></div></div>
                 <div class="comments-list" data-comments-list="${escapeHtml(p.id)}"><div class="comments-loading">Cargando comentarios...</div></div>
                 <form class="comment-form" data-comment-form="${escapeHtml(p.id)}"><textarea maxlength="1000" rows="2" placeholder="Escribe un comentario..." required></textarea><button type="submit" class="comment-send-btn"><i class="fa-solid fa-paper-plane"></i><span>Comentar</span></button></form>
             </div>
@@ -68,7 +69,16 @@ function renderPublications(publications) {
     if (deepLinkedPublicationId) focusDeepLinkedPublication();
 }
 
-async function loadPublications() { publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`; const { data, error } = await CommunityService.getPublications({ type: currentFilter }); if (error) return renderError(error); renderPublications(await enrichPublications(data)); }
+async function loadPublications() {
+    publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`;
+    const { data, error } = await CommunityService.getPublications({ type: currentFilter });
+    if (error) return renderError(error);
+    const publications = await enrichPublications(data);
+    const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
+    if (commentCountError) console.warn("No se pudieron cargar los conteos de comentarios:", commentCountError);
+    publications.forEach(p => { p.commentCount = Number(commentCounts?.[p.id] || 0); });
+    renderPublications(publications);
+}
 
 async function startConversation(button) {
     const publicationId = button.dataset.interest; const authorId = button.dataset.author;
@@ -78,9 +88,10 @@ async function startConversation(button) {
     catch (error) { console.error("Error iniciando conversación:", error); const card = button.closest(".publication-card"); let feedback = card?.querySelector(".interest-feedback"); if (!feedback && card) { feedback = document.createElement("div"); feedback.className = "interest-feedback error"; card.querySelector(".publication-actions")?.prepend(feedback); } if (feedback) feedback.textContent = "No pudimos abrir la conversación. Inténtalo nuevamente."; button.disabled = false; button.innerHTML = original; }
 }
 
-async function loadCommentsInto(publicationId) { const container = document.getElementById(`comments-${publicationId}`); const list = container?.querySelector("[data-comments-list]"); if (!list) return; const { data, error } = await CommunityService.getComments(publicationId); if (error) { list.innerHTML = `<div class="comments-empty">No pudimos cargar los comentarios.</div>`; return; } if (!data.length) list.innerHTML = `<div class="comments-empty">Aún no hay comentarios. Sé la primera persona en participar.</div>`; else { const enriched = await Promise.all(data.map(async comment => ({ ...comment, author: await getAuthorProfile(comment.author_id) }))); list.innerHTML = enriched.map(comment => `<div class="comment-item">${avatarHtml(comment.author, "comment-avatar")}<div class="comment-content"><div class="comment-author-row"><strong>${escapeHtml(comment.author.name)}</strong><span>${escapeHtml(formatDate(comment.created_at))}</span></div><p>${escapeHtml(comment.body)}</p></div></div>`).join(""); } container.dataset.loaded = "1"; }
+async function loadCommentsInto(publicationId) { const container = document.getElementById(`comments-${publicationId}`); const list = container?.querySelector("[data-comments-list]"); if (!list) return; const { data, error } = await CommunityService.getComments(publicationId); if (error) { console.error("Error cargando comentarios de la publicación:", error); list.innerHTML = `<div class="comments-empty">No pudimos cargar los comentarios. Revisa la conexión con Supabase.</div>`; return; } if (!data.length) list.innerHTML = `<div class="comments-empty">Aún no hay comentarios. Sé la primera persona en participar.</div>`; else { const enriched = await Promise.all(data.map(async comment => ({ ...comment, author: await getAuthorProfile(comment.author_id) }))); list.innerHTML = enriched.map(comment => `<div class="comment-item">${avatarHtml(comment.author, "comment-avatar")}<div class="comment-content"><div class="comment-author-row"><strong>${escapeHtml(comment.author.name)}</strong><span>${escapeHtml(formatDate(comment.created_at))}</span></div><p>${escapeHtml(comment.body)}</p></div></div>`).join(""); } container.dataset.loaded = "1"; }
 async function toggleComments(button) { const publicationId = button.dataset.comments; const container = document.getElementById(`comments-${publicationId}`); if (!container) return; const opening = container.hidden; container.hidden = !opening; button.classList.toggle("active", opening); if (opening && container.dataset.loaded !== "1") await loadCommentsInto(publicationId); }
-async function submitComment(event) { event.preventDefault(); const form = event.currentTarget; const publicationId = form.dataset.commentForm; const textarea = form.querySelector("textarea"); const button = form.querySelector("button"); const body = textarea.value.trim(); if (!body) return; button.disabled = true; button.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...`; const { error } = await CommunityService.addComment(publicationId, body); button.disabled = false; button.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Comentar</span>`; if (error) { alert(error.message || "No fue posible publicar el comentario."); return; } textarea.value = ""; const container = document.getElementById(`comments-${publicationId}`); if (container) { container.dataset.loaded = ""; await loadCommentsInto(publicationId); } }
+async function submitComment(event) { event.preventDefault(); const form = event.currentTarget; const publicationId = form.dataset.commentForm; const textarea = form.querySelector("textarea"); const button = form.querySelector("button"); const body = textarea.value.trim(); if (!body) return; button.disabled = true; button.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...`; const { error } = await CommunityService.addComment(publicationId, body); button.disabled = false; button.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Comentar</span>`; if (error) { alert(error.message || "No fue posible publicar el comentario."); return; } textarea.value = ""; const container = document.getElementById(`comments-${publicationId}`); if (container) { container.dataset.loaded = ""; await loadCommentsInto(publicationId); } const toggleButton = document.querySelector(`[data-comments="${CSS.escape(publicationId)}"]`); if (toggleButton) { const current = toggleButton.textContent.trim(); const currentMatch = current.match(/\((\d+)\)/); const nextCount = currentMatch ? Number(currentMatch[1]) + 1 : 1; toggleButton.innerHTML = `<i class="fa-regular fa-comments"></i> Comentarios (${nextCount})`; toggleButton.classList.add("has-comments"); toggleButton.classList.add("active"); }
+}
 function openComposer() { composer.hidden = false; showMessage(); document.getElementById("publicationBody")?.focus(); composer.scrollIntoView({ behavior: "smooth", block: "center" }); }
 function clearSelectedFiles() { selectedFiles = []; if (imagesInput) imagesInput.value = ""; renderPhotoPreview(); }
 function closePublicationComposer() { composer.hidden = true; showMessage(); clearSelectedFiles(); }
