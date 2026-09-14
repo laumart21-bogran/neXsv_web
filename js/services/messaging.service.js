@@ -8,7 +8,23 @@ class MessagingService {
 
     async getOtherParticipant(conversationId, currentUserId) {
         const { data, error } = await supabase.from("conversation_participants").select("user_id").eq("conversation_id", conversationId).neq("user_id", currentUserId).limit(1);
-        return { data: data || [], error };
+        if (error) return { data: [], error };
+        if (data?.length) return { data, error: null };
+
+        // La política RLS actual permite a cada usuario ver solamente su propia
+        // fila de conversation_participants. Como los mensajes sí son visibles
+        // para los participantes, usamos un remitente distinto al usuario actual
+        // como respaldo para identificar al otro participante sin relajar RLS.
+        const { data: messages, error: messagesError } = await supabase
+            .from("messages")
+            .select("sender_id")
+            .eq("conversation_id", conversationId)
+            .neq("sender_id", currentUserId)
+            .limit(1);
+
+        if (messagesError) return { data: [], error: messagesError };
+        const otherUserId = messages?.[0]?.sender_id || null;
+        return { data: otherUserId ? [{ user_id: otherUserId }] : [], error: null };
     }
 
     async getMyConversations() {
