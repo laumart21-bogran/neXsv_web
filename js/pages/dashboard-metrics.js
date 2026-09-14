@@ -2,6 +2,7 @@ import { supabase } from "../core/supabase-client.js";
 
 let metricsRefreshTimer = null;
 let metricsChannel = null;
+let viewObserver = null;
 
 async function loadMyPublicationMetrics() {
     const { data, error } = await supabase.rpc("get_my_community_publication_metrics");
@@ -20,30 +21,35 @@ async function loadMyPublicationMetrics() {
     return true;
 }
 
-async function recordVisiblePublicationViews() {
+function observeVisiblePublicationViews() {
     const cards = document.querySelectorAll("[data-publication-id]");
-    if (!cards.length) return;
-    const ids = [...cards]
-        .filter(card => card.dataset.viewRecorded !== "1")
-        .filter(card => card.dataset.publicationId)
-        .filter(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().height > 0)
-        .map(card => {
+    if (!cards.length || typeof IntersectionObserver === "undefined") return;
+    if (viewObserver) viewObserver.disconnect();
+    viewObserver = new IntersectionObserver(async entries => {
+        const visible = entries.filter(entry => entry.isIntersecting && entry.intersectionRatio >= 0.55);
+        if (!visible.length) return;
+        for (const entry of visible) {
+            const card = entry.target;
+            if (card.dataset.viewRecorded === "1") continue;
+            const id = card.dataset.publicationId;
+            if (!id) continue;
             card.dataset.viewRecorded = "1";
-            return card.dataset.publicationId;
-        });
-    if (!ids.length) return;
-    await Promise.all(ids.map(async id => {
-        const { error } = await supabase.rpc("record_community_publication_view", { p_publication_id: id });
-        if (error) console.warn("No se pudo registrar la vista de la publicación:", error);
-    }));
-    await loadMyPublicationMetrics();
+            const { error } = await supabase.rpc("record_community_publication_view", { p_publication_id: id });
+            if (error) {
+                card.dataset.viewRecorded = "";
+                console.warn("No se pudo registrar la vista de la publicación:", error);
+            }
+        }
+        await loadMyPublicationMetrics();
+    }, { threshold: [0.55] });
+    cards.forEach(card => viewObserver.observe(card));
 }
 
 async function refreshMetrics() {
     if (metricsRefreshTimer) clearTimeout(metricsRefreshTimer);
     metricsRefreshTimer = setTimeout(async () => {
         await loadMyPublicationMetrics();
-        await recordVisiblePublicationViews();
+        observeVisiblePublicationViews();
     }, 150);
 }
 
@@ -69,6 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("beforeunload", () => {
+    if (viewObserver) viewObserver.disconnect();
     if (metricsChannel) supabase.removeChannel(metricsChannel);
     if (metricsRefreshTimer) clearTimeout(metricsRefreshTimer);
 });
