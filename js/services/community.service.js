@@ -6,9 +6,10 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 class CommunityService {
-    async getPublications({ type = "TODAS", limit = 30 } = {}) {
+    async getPublications({ type = "TODAS", limit = 30, authorId = null } = {}) {
         let query = supabase.from("community_publications").select("id, author_id, type, title, body, status, created_at, updated_at").eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(limit);
         if (type && type !== "TODAS") query = query.eq("type", type);
+        if (authorId) query = query.eq("author_id", authorId);
         const { data, error } = await query;
         if (error) return { data: [], error };
         if (!data?.length) return { data: [], error: null };
@@ -27,13 +28,7 @@ class CommunityService {
     }
 
     async getComments(publicationId, limit = 50) {
-        const { data, error } = await supabase
-            .from("community_publication_comments")
-            .select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at")
-            .eq("publication_id", publicationId)
-            .eq("status", "PUBLICADO")
-            .order("created_at", { ascending: true })
-            .limit(limit);
+        const { data, error } = await supabase.from("community_publication_comments").select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
         return { data: data || [], error };
     }
 
@@ -54,23 +49,14 @@ class CommunityService {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
-        return await supabase.from("community_publication_comments").insert({
-            publication_id: publicationId,
-            author_id: userId,
-            parent_id: parentId || null,
-            body: cleanBody,
-            status: "PUBLICADO"
-        }).select().single();
+        return await supabase.from("community_publication_comments").insert({ publication_id: publicationId, author_id: userId, parent_id: parentId || null, body: cleanBody, status: "PUBLICADO" }).select().single();
     }
 
     async getPublicAuthorProfile(userId) {
         const fallback = { name: "Miembro neXsv", photo: null };
         if (!userId) return fallback;
         const { data, error } = await supabase.rpc("get_public_profile", { p_user_id: userId });
-        if (error) {
-            console.warn("No se pudo obtener el perfil público del autor:", error);
-            return fallback;
-        }
+        if (error) { console.warn("No se pudo obtener el perfil público del autor:", error); return fallback; }
         const profile = Array.isArray(data) ? data[0] : data;
         if (!profile) return fallback;
         return { name: [profile.nombre, profile.apellido].filter(Boolean).join(" ").trim() || "Miembro neXsv", photo: profile.foto || null };
