@@ -32,9 +32,13 @@ async function loadBusinessPublications(ownerId) {
     const slider = document.getElementById("businessPublications");
     const empty = document.getElementById("businessPublicationsEmpty");
     if (!slider) return;
-    const result = await CommunityService.getPublications({ type: "TODAS", limit: 30 });
+
+    // La consulta ya filtra por autor en Supabase para no perder publicaciones
+    // antiguas cuando existen más de 30 publicaciones globales en la comunidad.
+    const result = await CommunityService.getPublications({ type: "TODAS", limit: 30, authorId: ownerId });
     if (result.error) { slider.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-triangle-exclamation"></i><strong>No pudimos cargar tus publicaciones</strong><span>Intenta nuevamente en unos momentos.</span></div>`; return; }
-    const publications = (result.data || []).filter(p => p.author_id === ownerId);
+
+    const publications = result.data || [];
     if (!publications.length) { slider.innerHTML = ""; empty?.classList.add("visible"); resetPublicationTotals(); return; }
     empty?.classList.remove("visible");
     slider.innerHTML = publications.map(publicationCard).join("");
@@ -122,6 +126,6 @@ function renderError() { setText("businessTotal", "—"); setText("businessActiv
 function typeLabel(type) { const labels = { VENTA: "Venta", SERVICIO: "Servicio", SOLICITUD: "Solicitud", RECOMENDACION: "Recomendación" }; return labels[normalize(type).toUpperCase()] || "Publicación"; }
 function normalize(value) { return String(value || "").trim().toLowerCase(); }
 function formatDate(value) { const date = new Date(value); if (Number.isNaN(date.getTime())) return "Fecha pendiente"; return new Intl.DateTimeFormat("es-SV", { day: "2-digit", month: "short", year: "numeric" }).format(date); }
-function escapeHtml(value) { return String(value).replace(/[&<>\'"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char])); }
+function escapeHtml(value) { return String(value).replace(/[&<>\'\"]/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[char])); }
 function escapeAttr(value) { return escapeHtml(value); }
 function setText(id, value) { const element = document.getElementById(id); if (element) element.textContent = value; }
