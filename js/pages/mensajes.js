@@ -180,8 +180,6 @@ async function renderMessages(messages = []) {
     const senderIds = [...new Set(messages.map(message => message.sender_id).filter(Boolean))];
     await Promise.all(senderIds.map(async id => {
         if (String(id) === String(currentUser.id)) {
-            // El remitente autenticado SIEMPRE usa el perfil de la sesión.
-            // Así evitamos que el caché del otro participante afecte nombre/foto.
             profileCache.set(id, currentProfile);
         } else {
             await getProfile(id);
@@ -198,10 +196,8 @@ async function renderMessages(messages = []) {
         return `<div class="message-row ${rowClass}" data-sender="${mine ? "self" : "other"}">
             <div class="message-group">
                 <span class="message-sender">${escapeHtml(sender.name)}</span>
-                <div class="message-bubble">
-                    ${escapeHtml(message.body)}
-                    <div class="message-time">${escapeHtml(formatDate(message.created_at))}</div>
-                </div>
+                <div class="message-bubble">${escapeHtml(message.body)}</div>
+                <div class="message-time">${escapeHtml(formatDate(message.created_at))}</div>
             </div>
         </div>`;
     }).join("");
