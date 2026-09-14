@@ -1,0 +1,42 @@
+/* neXsv | Orden y composición del dashboard de negocios */
+.business-content > .business-welcome{order:0}
+.business-content > .business-summary-grid{order:1}
+.business-content > #resultados{order:2}
+.business-content > #publicar-ahora{order:3}
+.business-content > #publicaciones{order:4}
+.business-content > #oportunidades{order:5}
+.business-content > #comunidad{order:6}
+.business-content > #fotos{order:7}
+.business-content > #mis-negocios{order:8}
+.business-content > #aprende{order:9}
+
+/* Publicar ahora: una zona de decisión, no otro formulario duplicado */
+.business-publish-now{display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(135deg,#F4FBF8,#F5F8FF);border:1px solid #E4EBF3;border-radius:24px;padding:24px 28px}
+.business-publish-now-copy{display:flex;align-items:flex-start;gap:16px;min-width:0}
+.business-publish-now-icon{width:48px;height:48px;flex:0 0 48px;border-radius:14px;background:#EAF8EC;color:#18A978;display:flex;align-items:center;justify-content:center;font-size:19px}
+.business-publish-now-copy strong{display:block;color:#233A72;font-size:1rem;margin-bottom:5px}
+.business-publish-now-copy span{display:block;color:#64748B;font-size:.8rem;line-height:1.5}
+.business-publish-now-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.business-publish-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid #DCE3EF;background:#fff;color:#475569;border-radius:11px;padding:9px 11px;font-size:.72rem;font-weight:700}
+.business-publish-chip i{color:#18A978}
+.business-publish-now .business-primary-small{min-height:40px;padding:10px 15px}
+
+/* Fotos: mejor como módulo compacto de contenido visual, no como otro slider */
+#fotos{padding:20px 24px}
+#fotos .business-section-title{margin-bottom:14px;align-items:center}
+#fotos .business-section-title h2{font-size:1.05rem}
+#fotos .business-section-title p{font-size:.78rem}
+#fotos .business-compact-placeholder{min-height:72px;padding:15px 18px;justify-content:flex-start;text-align:left;gap:10px}
+#fotos .business-compact-placeholder i{width:34px;height:34px;border-radius:10px;background:#EEF8F4;display:flex;align-items:center;justify-content:center;flex:0 0 34px}
+#fotos .business-compact-placeholder strong{font-size:.8rem}
+#fotos .business-compact-placeholder span{width:auto;flex:1;font-size:.72rem}
+
+@media(max-width:700px){
+  .business-publish-now{align-items:flex-start;flex-direction:column;padding:22px}
+  .business-publish-now-actions{width:100%;justify-content:flex-start}
+  .business-publish-now .business-primary-small{width:100%}
+}
+@media(max-width:480px){
+  #fotos .business-compact-placeholder{align-items:flex-start;flex-wrap:wrap}
+  #fotos .business-compact-placeholder span{flex-basis:calc(100% - 44px);margin-left:44px;margin-top:-5px}
+}
