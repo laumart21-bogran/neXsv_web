@@ -31,6 +31,16 @@ class CommunityService {
         return { data: data || [], error };
     }
 
+    async getCommentCounts(publicationIds = []) {
+        const ids = [...new Set((publicationIds || []).filter(Boolean))];
+        if (!ids.length) return { data: {}, error: null };
+        const { data, error } = await supabase.from("community_publication_comments").select("publication_id").in("publication_id", ids).eq("status", "PUBLICADO");
+        if (error) return { data: {}, error };
+        const counts = {};
+        (data || []).forEach(row => { counts[row.publication_id] = (counts[row.publication_id] || 0) + 1; });
+        return { data: counts, error: null };
+    }
+
     async addComment(publicationId, body) {
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("Escribe un comentario.") };
