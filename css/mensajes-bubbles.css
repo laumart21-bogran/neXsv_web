@@ -1,0 +1,54 @@
+/* neXsv — Burbujas de mensajes: tamaño compacto y consistente */
+
+.message-list .message-group {
+    width: fit-content !important;
+    max-width: min(64%, 560px) !important;
+    min-width: 0 !important;
+}
+
+.message-list .message-bubble {
+    width: fit-content !important;
+    max-width: 100% !important;
+    padding: 11px 15px !important;
+    border-radius: 15px 15px 15px 5px !important;
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+}
+
+.message-list .message-row.mine .message-bubble {
+    border-radius: 15px 15px 5px 15px !important;
+    background: var(--nx-green-soft) !important;
+    border-color: rgba(24,169,120,.30) !important;
+}
+
+.message-list .message-row.received .message-bubble {
+    background: var(--nx-yellow-soft) !important;
+    border-color: rgba(245,176,65,.42) !important;
+}
+
+.message-list .message-sender {
+    margin-bottom: 4px !important;
+    font-size: 11px !important;
+}
+
+.message-list .message-time {
+    margin-top: 5px !important;
+    font-size: 9.5px !important;
+}
+
+@media (max-width: 900px) {
+    .message-list .message-group {
+        max-width: 72% !important;
+    }
+}
+
+@media (max-width: 650px) {
+    .message-list .message-group {
+        max-width: 86% !important;
+    }
+
+    .message-list .message-bubble {
+        padding: 10px 13px !important;
+        font-size: 14px !important;
+    }
+}
