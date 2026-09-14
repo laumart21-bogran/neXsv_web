@@ -109,7 +109,7 @@ async function enrichConversations(rows) {
         const lastRead = row.last_read_at ? new Date(row.last_read_at).getTime() : 0;
         const hasUnread = Boolean(
             lastMessage &&
-            lastMessage.sender_id !== currentUser.id &&
+            String(lastMessage.sender_id) !== String(currentUser.id) &&
             new Date(lastMessage.created_at).getTime() > lastRead
         );
 
@@ -179,7 +179,9 @@ async function renderMessages(messages = []) {
 
     const senderIds = [...new Set(messages.map(message => message.sender_id).filter(Boolean))];
     await Promise.all(senderIds.map(async id => {
-        if (id === currentUser.id) {
+        if (String(id) === String(currentUser.id)) {
+            // El remitente autenticado SIEMPRE usa el perfil de la sesión.
+            // Así evitamos que el caché del otro participante afecte nombre/foto.
             profileCache.set(id, currentProfile);
         } else {
             await getProfile(id);
@@ -187,10 +189,13 @@ async function renderMessages(messages = []) {
     }));
 
     messageList.innerHTML = messages.map(message => {
-        const sender = profileCache.get(message.sender_id) || { name: "Miembro neXsv", photo: null };
-        const mine = message.sender_id === currentUser.id;
+        const mine = String(message.sender_id) === String(currentUser.id);
+        const sender = mine
+            ? (currentProfile || { name: "Tú", photo: null })
+            : (profileCache.get(message.sender_id) || { name: "Miembro neXsv", photo: null });
+        const rowClass = mine ? "mine" : "received";
 
-        return `<div class="message-row ${mine ? "mine" : "received"}">
+        return `<div class="message-row ${rowClass}" data-sender="${mine ? "self" : "other"}">
             <div class="message-group">
                 <span class="message-sender">${escapeHtml(sender.name)}</span>
                 <div class="message-bubble">
@@ -239,7 +244,7 @@ async function openConversation(conversationId) {
     renderConversationList();
 
     activeChannel = await messagingService.subscribeToMessages(conversationId, async message => {
-        if (message.sender_id !== currentUser.id) {
+        if (String(message.sender_id) !== String(currentUser.id)) {
             await loadMessages(conversationId);
             await messagingService.markConversationRead(conversationId);
         }
