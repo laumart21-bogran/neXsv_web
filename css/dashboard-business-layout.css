@@ -9,6 +9,23 @@
 .business-content > #fotos{order:7}
 .business-content > #mis-negocios{order:8}
 .business-content > #aprende{order:9}
+.business-summary-grid{grid-template-columns:repeat(4,minmax(0,1fr)) !important;gap:14px}
+.business-summary-card{min-width:0;padding:16px 18px;min-height:94px}
+.business-summary-card em{font-size:.58rem}
+.business-card-action{min-height:40px;padding:9px 15px;font-size:.76rem}
+.business-primary-small{min-height:38px !important;padding:9px 14px !important;font-size:.76rem !important}
+.business-publish-chip{padding:7px 10px;font-size:.68rem}
+.business-publish-now .business-primary-small{min-height:38px !important}
+.business-share-publication{background:#FFF4CF !important;border-color:#F2D98B !important;color:#8A6500 !important}
+.business-share-publication:hover{background:#FFE9A6 !important;border-color:#E8C765 !important}
+
+/* Lenguaje del nuevo panel */
+.business-welcome .business-label{font-size:0}
+.business-welcome .business-label::after{content:"Bienvenido a tu dashboard inteligente";font-size:.78rem}
+.business-sidebar-card h2{font-size:0}
+.business-sidebar-card h2::after{content:"Gestión de tus negocios";font-size:1.2rem}
+.business-user-info span{font-size:0}
+.business-user-info span::after{content:"Dashboard inteligente";font-size:.82rem}
 
 /* Publicar ahora: una zona de decisión, no otro formulario duplicado */
 .business-publish-now{display:flex;align-items:center;justify-content:space-between;gap:24px;background:linear-gradient(135deg,#F4FBF8,#F5F8FF);border:1px solid #E4EBF3;border-radius:24px;padding:24px 28px}
@@ -31,6 +48,7 @@
 #fotos .business-compact-placeholder strong{font-size:.8rem}
 #fotos .business-compact-placeholder span{width:auto;flex:1;font-size:.72rem}
 
+@media(max-width:900px){.business-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}}
 @media(max-width:700px){
   .business-publish-now{align-items:flex-start;flex-direction:column;padding:22px}
   .business-publish-now-actions{width:100%;justify-content:flex-start}
