@@ -122,7 +122,6 @@ async function handleReplySubmit(event) {
     event.preventDefault();
 
     const commentId = form.dataset.replyForm;
-    const commentItem = form.closest(".comment-item");
     const publicationCard = form.closest(".publication-card");
     const publicationId = publicationCard?.dataset.publicationId;
     const textarea = form.querySelector("textarea");
@@ -147,9 +146,7 @@ async function handleReplySubmit(event) {
     button.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Responder`;
     updateCommentCount(publicationId);
 
-    const list = publicationCard.querySelector("[data-comments-list]");
-    await refreshCommentList(list);
-    commentItem?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    await refreshCommentList(publicationCard.querySelector("[data-comments-list]"));
 }
 
 function handleReplyClick(event) {
@@ -169,7 +166,13 @@ function observeCommentLists() {
         mutations.forEach(mutation => {
             if (!mutation.addedNodes.length) return;
             const list = mutation.target.closest?.("[data-comments-list]") || mutation.target.querySelector?.("[data-comments-list]");
-            if (list && list.dataset.replyRendering !== "1") refreshCommentList(list);
+            if (!list || list.dataset.replyRendering === "1") return;
+
+            // comunidad.js pinta comentarios planos. Solo intervenimos cuando
+            // encontramos ese marcado; nuestro árbol ya usa data-comment-id.
+            const hasFlatComments = [...list.querySelectorAll(".comment-item")]
+                .some(item => !item.dataset.commentId);
+            if (hasFlatComments) refreshCommentList(list);
         });
     });
 
