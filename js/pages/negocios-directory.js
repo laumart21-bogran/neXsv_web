@@ -15,15 +15,25 @@ function escapeHtml(value) {
         .replace(/'/g, "&#039;");
 }
 
+function normalizeCategory(value) {
+    return String(value || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+}
+
 function renderBusinesses() {
     const container = document.getElementById("contenedor");
     if (!container) return;
 
     const search = state.search.trim().toLowerCase();
+    const selectedCategory = normalizeCategory(state.category);
+
     const filtered = state.businesses.filter((business) => {
         const matchesCategory =
-            state.category === "Todos" ||
-            String(business.categoria || "").toLowerCase() === state.category.toLowerCase();
+            selectedCategory === "todos" ||
+            normalizeCategory(business.categoria) === selectedCategory;
 
         const haystack = [business.nombre, business.categoria, business.descripcion]
             .join(" ")
@@ -45,7 +55,6 @@ function renderBusinesses() {
     container.innerHTML = filtered.map((business) => {
         const id = escapeHtml(business.id || "");
         const name = escapeHtml(business.nombre || "Negocio");
-        const category = escapeHtml(business.categoria || "Negocio");
         const description = escapeHtml(
             business.descripcion || "Conoce este negocio dentro de la comunidad neXsv."
         );
@@ -95,8 +104,13 @@ function renderBusinesses() {
 
 function setCategory(category, button) {
     state.category = category || "Todos";
-    document.querySelectorAll(".categorias button").forEach((item) => item.classList.remove("activo"));
+
+    document.querySelectorAll(".categorias button").forEach((item) => {
+        item.classList.remove("activo");
+    });
+
     if (button) button.classList.add("activo");
+
     renderBusinesses();
 }
 
@@ -106,14 +120,30 @@ function searchBusinesses() {
     renderBusinesses();
 }
 
+function toggleMoreCategories(button) {
+    const more = document.getElementById("masCategorias");
+    if (!more) return;
+
+    const isOpen = more.classList.toggle("mostrar");
+    if (button) {
+        button.classList.toggle("activo", isOpen);
+    }
+}
+
+// Compatibilidad con cualquier llamada externa existente.
 window.filtrar = setCategory;
 window.buscar = searchBusinesses;
+window.mostrarMas = toggleMoreCategories;
 
 function bindDirectoryControls() {
     document.querySelectorAll(".categorias button").forEach((button) => {
-        const text = button.textContent.trim().replace(/^.*?Todos.*$/i, "Todos").trim();
         if (button.dataset.directoryBound === "true") return;
         button.dataset.directoryBound = "true";
+
+        // Evitamos que los onclick antiguos de negocios.html llamen a otra lógica.
+        button.removeAttribute("onclick");
+
+        const text = button.textContent.trim();
 
         if (/^Todos$/i.test(text)) {
             button.addEventListener("click", (event) => {
@@ -123,15 +153,30 @@ function bindDirectoryControls() {
             return;
         }
 
-        const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim();
-        if (categoryMatch && !/Más categorías/i.test(categoryMatch)) {
-            button.addEventListener("click", () => setCategory(categoryMatch, button));
+        if (/Más categorías/i.test(text)) {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                toggleMoreCategories(button);
+            });
+            return;
+        }
+
+        const categoryMatch = text
+            .replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "")
+            .trim();
+
+        if (categoryMatch) {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                setCategory(categoryMatch, button);
+            });
         }
     });
 
     const input = document.getElementById("buscador");
     if (input && input.dataset.directoryBound !== "true") {
         input.dataset.directoryBound = "true";
+        input.removeAttribute("onkeyup");
         input.addEventListener("input", searchBusinesses);
     }
 }
@@ -149,6 +194,7 @@ function injectDirectoryStyles() {
         .nex-public-business-card .verified-badge{margin-bottom:12px;}
         .nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px;}
         .nex-public-business-actions .btn{border:0;}
+        .nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none;}
         .nex-gated-action{cursor:pointer;}
         .nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px;}
         .directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B;}
@@ -168,6 +214,8 @@ async function initPublicBusinessDirectory() {
     if (!container) return;
 
     injectDirectoryStyles();
+    bindDirectoryControls();
+
     container.innerHTML = `
         <div class="directory-empty" role="status">
             <strong>Cargando negocios publicados…</strong>
@@ -189,7 +237,6 @@ async function initPublicBusinessDirectory() {
     }
 
     state.businesses = Array.isArray(data) ? data : [];
-    bindDirectoryControls();
     renderBusinesses();
 }
 
