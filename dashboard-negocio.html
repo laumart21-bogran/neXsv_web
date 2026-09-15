@@ -93,6 +93,10 @@
         <section class="business-section" id="aprende"><div class="business-section-title"><div><span class="section-kicker">Próximo paso</span><h2>Aprende a hacer crecer tu negocio</h2><p>Contenido práctico para convertir visibilidad en mejores decisiones.</p></div></div><div class="business-learning-strip"><article><span>📚</span><strong>Cómo conseguir más visibilidad</strong><small>Próximamente</small></article><article><span>💬</span><strong>Cómo convertir interés en conversación</strong><small>Próximamente</small></article><article><span>📈</span><strong>Cómo leer tus resultados</strong><small>Próximamente</small></article></div></section>
     </section>
 </main>
+<script>
+    const requestedBusinessId = new URLSearchParams(window.location.search).get("business");
+    if (requestedBusinessId) sessionStorage.setItem("nexsv_selected_business_id", requestedBusinessId);
+</script>
 <script type="module" src="js/app.js"></script><script type="module" src="js/pages/dashboard-negocio.js?v=20260914-5"></script>
 </body>
 </html>
