@@ -25,11 +25,9 @@ function renderBusinesses() {
             state.category === "Todos" ||
             String(business.categoria || "").toLowerCase() === state.category.toLowerCase();
 
-        const haystack = [
-            business.nombre,
-            business.categoria,
-            business.descripcion
-        ].join(" ").toLowerCase();
+        const haystack = [business.nombre, business.categoria, business.descripcion]
+            .join(" ")
+            .toLowerCase();
 
         return matchesCategory && (!search || haystack.includes(search));
     });
@@ -45,13 +43,16 @@ function renderBusinesses() {
     }
 
     container.innerHTML = filtered.map((business) => {
+        const id = escapeHtml(business.id || "");
         const name = escapeHtml(business.nombre || "Negocio");
         const category = escapeHtml(business.categoria || "Negocio");
-        const description = escapeHtml(business.descripcion || "Conoce este negocio dentro de la comunidad neXsv.");
+        const description = escapeHtml(
+            business.descripcion || "Conoce este negocio dentro de la comunidad neXsv."
+        );
         const logo = String(business.logo || "").trim();
 
         return `
-            <article class="card nex-public-business-card">
+            <article class="card nex-public-business-card" data-business-id="${id}">
                 <div class="logo-frame">
                     ${logo
                         ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">`
@@ -59,15 +60,33 @@ function renderBusinesses() {
                     <div class="nex-business-logo-fallback" ${logo ? "hidden" : ""} aria-hidden="true">
                         <i class="fa-solid fa-store"></i>
                     </div>
+                    <span class="featured-badge"><i class="fa-solid fa-star"></i> Publicado</span>
                 </div>
+
                 <div class="card-content">
-                    <span class="badge">${category}</span>
                     <h3>${name}</h3>
-                    <p>${description}</p>
-                    <div class="nex-public-business-note">
-                        <i class="fa-solid fa-circle-check"></i>
-                        Negocio publicado en neXsv
+
+                    <div class="verified-badge">
+                        <i class="fa-solid fa-check"></i> Verificado en neXsv
                     </div>
+
+                    <p>${description}</p>
+
+                    <div class="nex-public-business-actions">
+                        <button type="button" class="btn btn-w nex-gated-action" data-gated-action="whatsapp" data-business-id="${id}">
+                            WhatsApp
+                        </button>
+                        <button type="button" class="btn btn-v nex-gated-action" data-gated-action="detail" data-business-id="${id}">
+                            Ver más
+                        </button>
+                        <button type="button" class="btn btn-share nex-gated-action" data-gated-action="share" data-business-id="${id}">
+                            Compartir
+                        </button>
+                    </div>
+
+                    <button type="button" class="btn-map nex-gated-action" data-gated-action="location" data-business-id="${id}">
+                        <i class="fa-solid fa-location-dot"></i> Cómo llegar
+                    </button>
                 </div>
             </article>
         `;
@@ -75,7 +94,7 @@ function renderBusinesses() {
 }
 
 function setCategory(category, button) {
-    state.category = category;
+    state.category = category || "Todos";
     document.querySelectorAll(".categorias button").forEach((item) => item.classList.remove("activo"));
     if (button) button.classList.add("activo");
     renderBusinesses();
@@ -90,22 +109,56 @@ function searchBusinesses() {
 window.filtrar = setCategory;
 window.buscar = searchBusinesses;
 
+function bindDirectoryControls() {
+    document.querySelectorAll(".categorias button").forEach((button) => {
+        const text = button.textContent.trim().replace(/^.*?Todos.*$/i, "Todos").trim();
+        if (button.dataset.directoryBound === "true") return;
+        button.dataset.directoryBound = "true";
+
+        if (/^Todos$/i.test(text)) {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                setCategory("Todos", button);
+            });
+            return;
+        }
+
+        const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim();
+        if (categoryMatch && !/Más categorías/i.test(categoryMatch)) {
+            button.addEventListener("click", () => setCategory(categoryMatch, button));
+        }
+    });
+
+    const input = document.getElementById("buscador");
+    if (input && input.dataset.directoryBound !== "true") {
+        input.dataset.directoryBound = "true";
+        input.addEventListener("input", searchBusinesses);
+    }
+}
+
 function injectDirectoryStyles() {
     if (document.getElementById("nex-public-business-directory-styles")) return;
 
     const style = document.createElement("style");
     style.id = "nex-public-business-directory-styles";
     style.textContent = `
-        .nex-public-business-card .card-content{position:relative;}
-        .nex-public-business-card .badge{z-index:2;}
-        .nex-public-business-card .card-content h3{margin-top:4px;}
+        .nex-public-business-card .logo-frame{position:relative;}
+        .nex-public-business-card .featured-badge{z-index:2;}
+        .nex-public-business-card .card-content h3{margin-top:0;}
+        .nex-public-business-card .card-content p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+        .nex-public-business-card .verified-badge{margin-bottom:12px;}
+        .nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px;}
+        .nex-public-business-actions .btn{border:0;}
+        .nex-gated-action{cursor:pointer;}
         .nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px;}
-        .nex-public-business-note{display:flex;align-items:center;gap:7px;margin-top:auto;padding-top:18px;color:#18A978;font-size:12px;font-weight:700;}
-        .nex-public-business-note i{font-size:13px;}
         .directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B;}
         .directory-empty strong{color:#233A72;font-size:16px;}
         .directory-empty span{font-size:14px;}
-        @media(max-width:768px){.nex-public-business-card .logo-frame{height:190px;}.nex-public-business-card .card-content h3{font-size:22px;}}
+        @media(max-width:768px){
+            .nex-public-business-card .logo-frame{height:190px;}
+            .nex-public-business-card .card-content h3{font-size:22px;}
+            .nex-public-business-actions{gap:9px;}
+        }
     `;
     document.head.appendChild(style);
 }
@@ -136,6 +189,7 @@ async function initPublicBusinessDirectory() {
     }
 
     state.businesses = Array.isArray(data) ? data : [];
+    bindDirectoryControls();
     renderBusinesses();
 }
 
