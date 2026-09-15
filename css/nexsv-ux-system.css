@@ -1,0 +1,40 @@
+/* neXsv — Sistema visual compartido | Sprint 0 */
+:root{--nx-navy:#233A72;--nx-blue:#3D5BA9;--nx-green:#18A978;--nx-yellow:#F5B041;--nx-bg:#F5F7FB;--nx-text:#334155;--nx-muted:#64748B;--nx-border:#E3E8F0;--nx-surface:#fff;--nx-radius:18px;--nx-shadow:0 8px 24px rgba(35,58,114,.055)}
+body{background:var(--nx-bg);color:var(--nx-text);font-family:Montserrat,Inter,system-ui,sans-serif}
+.dashboard-topbar,.business-topbar{height:74px;background:rgba(255,255,255,.96);border-bottom:1px solid var(--nx-border);box-shadow:0 3px 14px rgba(35,58,114,.045)}
+.dashboard-logo img{height:40px}
+.dashboard-sidebar,.business-sidebar{filter:none}
+.profile-card,.dashboard-menu,.business-sidebar-card,.business-menu{border:1px solid var(--nx-border);box-shadow:var(--nx-shadow)}
+.dashboard-menu a.active{background:#EEF8F4!important;color:var(--nx-navy)!important}
+.dashboard-menu a.active i,.business-menu a.active i{color:var(--nx-green)!important}
+.member-home .card,.member-home .dashboard-header,.business-section,.business-welcome{border:1px solid var(--nx-border);box-shadow:var(--nx-shadow)}
+.member-home .card:hover,.member-home .activity-hub-card:hover,.business-section:hover,.business-summary-card:hover{transform:none;box-shadow:var(--nx-shadow)}
+.member-home .welcome-tag{background:#EEF8F4!important;color:var(--nx-green)!important;border:1px solid #D6EEE4;padding:7px 11px;border-radius:10px;font-size:.7rem;font-weight:800}
+.member-home .dashboard-header::after{display:none}
+.member-home .section-title h2,.member-home .community-section h2,.member-home .activity-hub-section h2,.member-home .discover-community-section h2,.member-home .profile-progress h2{color:var(--nx-navy)!important}
+.member-home .secondary-link,.member-home .progress-link{color:var(--nx-blue)!important}
+.member-home .stat-card .stat-icon{color:var(--nx-blue)!important}
+.member-home .stat-card:nth-child(1) .stat-icon{color:var(--nx-green)!important}
+.member-home .stat-card:nth-child(3) .stat-icon{color:var(--nx-blue)!important}
+.member-home .business-slide-icon{background:#EEF8F4!important;color:var(--nx-green)!important}
+.member-home .business-slide-status{background:#EEF8F4!important;color:var(--nx-green)!important}
+.member-home .community-type:hover,.member-home .community-type.active{border-color:#BFE5D5!important;background:#EEF8F4!important;color:var(--nx-green)!important}
+.member-home .activity-hub-icon.publication,.member-home .activity-hub-icon.review{background:#F1F5FF!important;color:var(--nx-blue)!important}
+.member-home .activity-hub-icon.message{background:#EEF8F4!important;color:var(--nx-green)!important}
+.member-home .activity-hub-icon.saved{background:#F1F5FF!important;color:var(--nx-blue)!important}
+.member-home .dashboard-publication-type{background:#F1F5FF!important;color:var(--nx-blue)!important}
+.member-home .dashboard-inline-composer{background:#FAFBFC;border-color:var(--nx-border)}
+.member-home .community-publish{background:linear-gradient(135deg,#18A978,#3D5BA9)!important}
+.business-summary-card,.business-section,.business-welcome{border-radius:20px}
+.business-summary-card .summary-icon{background:#F1F5FF;color:var(--nx-blue)}
+.business-summary-card:nth-child(2) .summary-icon{background:#EEF8F4;color:var(--nx-green)}
+.business-summary-card:nth-child(3) .summary-icon{background:#F1F5FF;color:var(--nx-blue)}
+.business-summary-card:nth-child(4) .summary-icon{background:#F5F7FB;color:var(--nx-muted)}
+.business-primary-btn,.business-primary-small{background:linear-gradient(135deg,#18A978,#3D5BA9)!important}
+.business-card-action{background:#F1F5FF!important;color:var(--nx-blue)!important;border:1px solid #D9E1F0;box-shadow:none}
+.business-share-publication{background:#FFF7E5!important;border-color:#F2D99A!important;color:#9A6A00!important}
+.business-view-publication{background:#F1F5FF!important;color:var(--nx-blue)!important}
+.business-funnel-card,.business-opportunity-card,.business-learning-strip article{background:#FAFBFD;border-color:var(--nx-border)}
+.funnel-icon.funnel-interest,.opportunity-icon.interest{color:var(--nx-green)!important}
+.business-learning-strip article{box-shadow:none}
+@media(max-width:700px){.dashboard-topbar,.business-topbar{height:68px}.member-home .card,.business-section,.business-welcome{border-radius:16px}}
