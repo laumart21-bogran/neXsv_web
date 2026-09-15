@@ -3,6 +3,23 @@ import { supabase } from "../core/supabase-client.js";
 class BusinessService {
 
     // =====================================================
+    // DIRECTORIO PÚBLICO
+    // Solo devuelve información básica de negocios publicados.
+    // No expone datos de contacto, ubicación ni propietario.
+    // =====================================================
+
+    async getPublicBusinessDirectory() {
+
+        const { data, error } = await supabase
+            .rpc("get_public_business_directory");
+
+        return {
+            data: data || [],
+            error
+        };
+    }
+
+    // =====================================================
     // OBTENER UN NEGOCIO DEL PROPIETARIO
     // Método utilizado actualmente por el dashboard existente
     // =====================================================
