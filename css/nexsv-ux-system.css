@@ -52,9 +52,12 @@ body{background:var(--nx-bg);color:var(--nx-text);font-family:Montserrat,Inter,s
 .business-publish-now .business-publish-chip:first-child i{color:var(--nx-yellow-strong)!important}
 .business-publish-now .business-publish-chip:nth-child(2) i{color:var(--nx-blue)!important}
 .business-publish-now .business-publish-chip:nth-child(3) i{color:#9A6A00!important}
-/* Ajuste del encabezado del dashboard de negocios */
+/* Encabezado del dashboard de negocios: azul de marca + acento amarillo */
 .business-welcome .business-label{font-size:.74rem!important;color:var(--nx-blue)!important;letter-spacing:.09em;position:relative;padding-bottom:11px}
 .business-welcome .business-label::after{content:"";display:block;position:absolute;left:0;bottom:0;width:42px;height:3px;border-radius:3px;background:var(--nx-yellow)}
+/* Kicker de cada sección: azul, con el mismo pequeño acento amarillo del encabezado */
+.business-section .section-kicker{position:relative;padding-bottom:9px;color:var(--nx-blue)!important}
+.business-section .section-kicker::after{content:"";display:block;position:absolute;left:0;bottom:0;width:34px;height:2px;border-radius:2px;background:var(--nx-yellow)}
 .business-welcome h1{color:var(--nx-blue)!important;font-size:2.05rem}
 .business-welcome p{color:#667085!important}
 .business-sidebar-card .business-sidebar-icon{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}
