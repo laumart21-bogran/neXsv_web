@@ -72,7 +72,8 @@ function subscribeDashboardRealtime() {
 function businessCard(business) {
     const status = String(business.estado || "").toUpperCase();
     const label = status === "ACTIVO" ? "Publicado" : status === "PENDIENTE" ? "En proceso" : (business.estado || "En proceso");
-    return `<article class="business-slide"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><span class="business-slide-status">${escapeHtml(label)}</span><strong>${escapeHtml(business.nombre || "Mi negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio")}${business.municipio ? ` · ${escapeHtml(business.municipio)}` : ""}</small></div><a href="dashboard-negocio.html" class="business-slide-link">Administrar <i class="fa-solid fa-arrow-right"></i></a></article>`;
+    const businessUrl = `dashboard-negocio.html?business=${encodeURIComponent(business.id)}`;
+    return `<article class="business-slide"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><span class="business-slide-status">${escapeHtml(label)}</span><strong>${escapeHtml(business.nombre || "Mi negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio")}${business.municipio ? ` · ${escapeHtml(business.municipio)}` : ""}</small></div><a href="${businessUrl}" class="business-slide-link">Administrar <i class="fa-solid fa-arrow-right"></i></a></article>`;
 }
 
 async function loadBusinesses() {
