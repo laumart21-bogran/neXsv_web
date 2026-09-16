@@ -4,7 +4,8 @@ import AuthService from "../auth/auth.service.js";
 const state = {
     businesses: [],
     category: "Todos",
-    search: ""
+    search: "",
+    rendered: false
 };
 
 function escapeHtml(value) {
@@ -39,44 +40,34 @@ async function isAuthenticated() {
     return Boolean(data?.session);
 }
 
-function renderBusinesses() {
-    const container = document.getElementById("contenedor");
-    if (!container) return;
-
+function matchesBusiness(business) {
     const search = state.search.trim().toLowerCase();
     const selectedCategory = normalizeCategory(state.category);
+    const matchesCategory = selectedCategory === "todos"
+        || normalizeCategory(business.categoria) === selectedCategory;
 
-    const filtered = state.businesses.filter((business) => {
-        const matchesCategory = selectedCategory === "todos"
-            || normalizeCategory(business.categoria) === selectedCategory;
+    const haystack = [business.nombre, business.categoria, business.descripcion]
+        .join(" ")
+        .toLowerCase();
 
-        const haystack = [business.nombre, business.categoria, business.descripcion]
-            .join(" ")
-            .toLowerCase();
+    return matchesCategory && (!search || haystack.includes(search));
+}
 
-        return matchesCategory && (!search || haystack.includes(search));
-    });
+function renderBusinessCardsOnce() {
+    const container = document.getElementById("contenedor");
+    if (!container || state.rendered) return;
 
-    if (!filtered.length) {
-        container.innerHTML = `
-            <div class="directory-empty" role="status">
-                <strong>No encontramos negocios con esos criterios.</strong>
-                <span>Prueba con otra búsqueda o categoría.</span>
-            </div>
-        `;
-        return;
-    }
-
-    container.innerHTML = filtered.map((business) => {
+    container.innerHTML = state.businesses.map((business) => {
         const id = escapeHtml(business.id || "");
         const name = escapeHtml(business.nombre || "Negocio");
         const description = escapeHtml(
             business.descripcion || "Conoce este negocio dentro de la comunidad neXsv."
         );
         const logo = String(business.logo || "").trim();
+        const category = escapeHtml(business.categoria || "Negocio");
 
         return `
-            <article class="card nex-public-business-card" data-business-id="${id}">
+            <article class="card nex-public-business-card" data-business-id="${id}" data-category="${escapeHtml(category)}">
                 <div class="logo-frame">
                     ${logo
                         ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">`
@@ -89,11 +80,9 @@ function renderBusinesses() {
 
                 <div class="card-content">
                     <h3>${name}</h3>
-
                     <div class="verified-badge">
                         <i class="fa-solid fa-check"></i> Verificado en neXsv
                     </div>
-
                     <p>${description}</p>
 
                     <div class="nex-public-business-actions">
@@ -110,7 +99,42 @@ function renderBusinesses() {
         `;
     }).join("");
 
+    state.rendered = true;
     bindBusinessActions();
+}
+
+function renderBusinesses() {
+    const container = document.getElementById("contenedor");
+    if (!container) return;
+
+    // Los elementos se crean una sola vez. Cambiar categoría o búsqueda
+    // únicamente oculta/muestra tarjetas existentes, evitando recargar logos.
+    const cards = container.querySelectorAll(".nex-public-business-card");
+    let visible = 0;
+
+    cards.forEach((card, index) => {
+        const business = state.businesses[index];
+        const show = Boolean(business && matchesBusiness(business));
+        card.hidden = !show;
+        if (show) visible += 1;
+    });
+
+    let empty = container.querySelector(".directory-empty-results");
+    if (!visible) {
+        if (!empty) {
+            empty = document.createElement("div");
+            empty.className = "directory-empty directory-empty-results";
+            empty.setAttribute("role", "status");
+            empty.innerHTML = `
+                <strong>No encontramos negocios con esos criterios.</strong>
+                <span>Prueba con otra búsqueda o categoría.</span>
+            `;
+            container.appendChild(empty);
+        }
+        empty.hidden = false;
+    } else if (empty) {
+        empty.hidden = true;
+    }
 }
 
 function setCategory(category, button) {
@@ -118,19 +142,14 @@ function setCategory(category, button) {
     state.category = nextCategory;
 
     if (normalizeCategory(nextCategory) === "todos") {
-        // "Todos" siempre limpia cualquier filtro anterior.
         state.category = "Todos";
         state.search = "";
         const input = document.getElementById("buscador");
         if (input) input.value = "";
     }
 
-    document.querySelectorAll(".categorias button").forEach((item) => {
-        item.classList.remove("activo");
-    });
-
+    document.querySelectorAll(".categorias button").forEach((item) => item.classList.remove("activo"));
     if (button) button.classList.add("activo");
-
     renderBusinesses();
 }
 
@@ -143,7 +162,6 @@ function searchBusinesses() {
 function toggleMoreCategories(button) {
     const more = document.getElementById("masCategorias");
     if (!more) return;
-
     const isOpen = more.classList.toggle("mostrar");
     if (button) button.classList.toggle("activo", isOpen);
 }
@@ -158,12 +176,10 @@ async function handleBusinessAction(action, businessId) {
             text: "Conoce este negocio dentro de neXsv.",
             url
         };
-
         if (navigator.share) {
             try { await navigator.share(shareData); } catch (_) {}
             return;
         }
-
         try {
             await navigator.clipboard.writeText(url);
             alert("Enlace del negocio copiado.");
@@ -192,7 +208,6 @@ function bindBusinessActions() {
     });
 }
 
-// Compatibilidad con cualquier llamada externa existente.
 window.filtrar = setCategory;
 window.buscar = searchBusinesses;
 window.mostrarMas = toggleMoreCategories;
@@ -204,7 +219,6 @@ function bindDirectoryControls() {
         button.removeAttribute("onclick");
 
         const text = button.textContent.trim();
-
         if (/^Todos$/i.test(text)) {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -212,7 +226,6 @@ function bindDirectoryControls() {
             });
             return;
         }
-
         if (/Más categorías/i.test(text)) {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -221,10 +234,7 @@ function bindDirectoryControls() {
             return;
         }
 
-        const categoryMatch = text
-            .replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "")
-            .trim();
-
+        const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim();
         if (categoryMatch) {
             button.addEventListener("click", (event) => {
                 event.preventDefault();
@@ -243,7 +253,6 @@ function bindDirectoryControls() {
 
 function injectDirectoryStyles() {
     if (document.getElementById("nex-public-business-directory-styles")) return;
-
     const style = document.createElement("style");
     style.id = "nex-public-business-directory-styles";
     style.textContent = `
@@ -260,6 +269,8 @@ function injectDirectoryStyles() {
         .directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B;}
         .directory-empty strong{color:#233A72;font-size:16px;}
         .directory-empty span{font-size:14px;}
+        .nex-public-business-card[hidden]{display:none!important;}
+        .directory-empty-results[hidden]{display:none!important;}
         @media(max-width:768px){
             .nex-public-business-card .logo-frame{height:190px;}
             .nex-public-business-card .card-content h3{font-size:22px;}
@@ -284,7 +295,6 @@ async function initPublicBusinessDirectory() {
     `;
 
     const { data, error } = await BusinessService.getPublicBusinessDirectory();
-
     if (error) {
         console.error("Error cargando el directorio público de negocios:", error);
         container.innerHTML = `
@@ -297,6 +307,8 @@ async function initPublicBusinessDirectory() {
     }
 
     state.businesses = Array.isArray(data) ? data : [];
+    state.rendered = false;
+    renderBusinessCardsOnce();
     renderBusinesses();
 }
 
