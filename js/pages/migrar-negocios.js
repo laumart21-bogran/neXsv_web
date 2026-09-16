@@ -3,6 +3,7 @@ import { supabase } from "../core/supabase-client.js";
 
 const LEGACY_URL = "https://script.google.com/macros/s/AKfycbzBJjz-YlrDG6qQQNiPzixOhaKwgtLux29H3T_9gcvvIJeHKaYhT-nsWwwKu7jcdUd/exec";
 const CHUNK_SIZE = 25;
+const JSONP_TIMEOUT = 30000;
 
 const button = document.getElementById("btnMigrar");
 const status = document.getElementById("estado");
@@ -10,6 +11,36 @@ const status = document.getElementById("estado");
 function setStatus(message, type = "") {
     status.textContent = message;
     status.className = type;
+}
+
+function loadLegacyBusinesses() {
+    return new Promise((resolve, reject) => {
+        const callbackName = `nexsvLegacyCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const script = document.createElement("script");
+        const timeout = setTimeout(() => {
+            cleanup();
+            reject(new Error("Tiempo de espera agotado al consultar la fuente histórica."));
+        }, JSONP_TIMEOUT);
+
+        function cleanup() {
+            clearTimeout(timeout);
+            delete window[callbackName];
+            script.remove();
+        }
+
+        window[callbackName] = (payload) => {
+            cleanup();
+            resolve(payload);
+        };
+
+        script.onerror = () => {
+            cleanup();
+            reject(new Error("No se pudo cargar la fuente histórica de negocios."));
+        };
+
+        script.src = `${LEGACY_URL}?callback=${encodeURIComponent(callbackName)}`;
+        document.head.appendChild(script);
+    });
 }
 
 async function migrate() {
@@ -25,24 +56,27 @@ async function migrate() {
 
     setStatus("2/3 Leyendo negocios de la fuente histórica…");
 
-    let response;
+    let payload;
     try {
-        response = await fetch(LEGACY_URL);
+        payload = await loadLegacyBusinesses();
     } catch (error) {
-        console.error(error);
-        setStatus("No se pudo conectar con la fuente histórica de negocios.", "error");
+        console.error("Error leyendo fuente histórica:", error);
+        setStatus(
+            "No se pudo conectar con la fuente histórica de negocios. Revisa que la implementación del Apps Script esté activa.",
+            "error"
+        );
         button.disabled = false;
         return;
     }
 
-    if (!response.ok) {
-        setStatus(`La fuente histórica respondió con HTTP ${response.status}.`, "error");
-        button.disabled = false;
-        return;
-    }
-
-    const payload = await response.json();
     const businesses = Array.isArray(payload?.negocios) ? payload.negocios : [];
+
+    if (payload?.error) {
+        console.error("Error de Apps Script:", payload);
+        setStatus(`La fuente histórica reportó un error: ${payload.error}`, "error");
+        button.disabled = false;
+        return;
+    }
 
     if (!businesses.length) {
         setStatus("La fuente histórica no devolvió negocios. No se modificó Supabase.", "error");
