@@ -8,6 +8,12 @@
 
 import AuthSession from "./auth/auth.session.js";
 
+function initializePlatformLogo() {
+    document.querySelectorAll(".dashboard-logo, .messages-logo, .nex-logo, .logo-link").forEach(logo => {
+        logo.setAttribute("href", "index.html");
+    });
+}
+
 async function bootstrap() {
 
     try {
@@ -17,6 +23,8 @@ async function bootstrap() {
 
         // Escucha cambios de autenticación
         AuthSession.startListener();
+
+        initializePlatformLogo();
 
         console.log("✅ neXsv inicializado correctamente.");
 
