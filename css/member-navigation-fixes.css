@@ -30,7 +30,7 @@
 #colegio:invalid{color:#64748B}
 #colegioOtro[style*="display: none"]{display:none!important}
 
-/* Sistema de iconografía neXsv: Guardar = chincheta, no bookmark genérico. */
-.nexsv-save-icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;color:#C58B00;font-size:.9rem}
+/* Sistema de iconografía neXsv: Guardar = chincheta, con el mismo azul de navegación. */
+.nexsv-save-icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;color:#3155B6!important;font-size:.9rem}
 .nexsv-save-icon .fa-thumbtack{transform:rotate(-18deg)}
 .dashboard-saved-section .nexsv-save-icon{margin-right:8px;vertical-align:-1px}
