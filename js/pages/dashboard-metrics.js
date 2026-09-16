@@ -4,19 +4,40 @@ let metricsRefreshTimer = null;
 let metricsChannel = null;
 let viewObserver = null;
 
+function ensureEngagementMetrics(container) {
+    if (!container || container.querySelector('[data-metric="shares"]')) return;
+    container.insertAdjacentHTML("beforeend", `
+        <span><i class="fa-solid fa-arrow-up-from-bracket"></i> <b data-metric="shares">0</b> compartidos</span>
+        <span><i class="fa-solid fa-thumbtack"></i> <b data-metric="saves">0</b> guardados</span>
+    `);
+}
+
 async function loadMyPublicationMetrics() {
     const { data, error } = await supabase.rpc("get_my_community_publication_metrics");
     if (error) {
         console.warn("No se pudieron cargar las métricas de publicaciones. Verifica que 009_community_metrics.sql esté aplicado en Supabase:", error);
         return false;
     }
+
+    const { data: engagementData, error: engagementError } = await supabase.rpc("get_my_community_publication_engagement_metrics");
+    if (engagementError) {
+        console.warn("No se pudieron cargar las métricas de compartidos y guardados. Verifica que 019_community_engagement.sql esté aplicado en Supabase:", engagementError);
+    }
+
     const byId = new Map((data || []).map(item => [item.publication_id, item]));
+    const engagementById = new Map((engagementData || []).map(item => [item.publication_id, item]));
+
     document.querySelectorAll("[data-publication-id]").forEach(card => {
         const metrics = byId.get(card.dataset.publicationId);
         if (!metrics) return;
+        const engagement = engagementById.get(card.dataset.publicationId) || {};
+        const container = card.querySelector(".dashboard-publication-metrics");
+        ensureEngagementMetrics(container);
         card.querySelector('[data-metric="views"]')?.replaceChildren(document.createTextNode(Number(metrics.views || 0)));
         card.querySelector('[data-metric="comments"]')?.replaceChildren(document.createTextNode(Number(metrics.comments || 0)));
         card.querySelector('[data-metric="conversations"]')?.replaceChildren(document.createTextNode(Number(metrics.conversations || 0)));
+        card.querySelector('[data-metric="shares"]')?.replaceChildren(document.createTextNode(Number(engagement.shares || 0)));
+        card.querySelector('[data-metric="saves"]')?.replaceChildren(document.createTextNode(Number(engagement.saves || 0)));
     });
     return true;
 }
@@ -66,6 +87,9 @@ function subscribeMetricChanges() {
     metricsChannel = supabase.channel("my-community-publication-metrics")
         .on("postgres_changes", { event: "INSERT", schema: "public", table: "community_publication_comments" }, () => refreshMetrics())
         .on("postgres_changes", { event: "INSERT", schema: "public", table: "conversations" }, () => refreshMetrics())
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "community_publication_shares" }, () => refreshMetrics())
+        .on("postgres_changes", { event: "INSERT", schema: "public", table: "community_publication_saves" }, () => refreshMetrics())
+        .on("postgres_changes", { event: "DELETE", schema: "public", table: "community_publication_saves" }, () => refreshMetrics())
         .subscribe();
 }
 
