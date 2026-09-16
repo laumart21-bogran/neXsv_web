@@ -32,8 +32,6 @@ class CommunityService {
     async getComments(publicationId, limit = 50) {
         const withReplies = await supabase.from("community_publication_comments").select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
         if (!withReplies.error) return { data: withReplies.data || [], error: null };
-
-        // Compatibilidad con instalaciones donde aún no se ejecutó la migración de respuestas.
         const withoutReplies = await supabase.from("community_publication_comments").select("id, publication_id, author_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
         if (withoutReplies.error) return { data: [], error: withoutReplies.error };
         return { data: (withoutReplies.data || []).map(comment => ({ ...comment, parent_id: null })), error: null };
@@ -56,7 +54,11 @@ class CommunityService {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
-        return await supabase.from("community_publication_comments").insert({ publication_id: publicationId, author_id: userId, parent_id: parentId || null, body: cleanBody, status: "PUBLICADO" }).select().single();
+        const payload = { publication_id: publicationId, author_id: userId, parent_id: parentId || null, body: cleanBody, status: "PUBLICADO" };
+        const withParent = await supabase.from("community_publication_comments").insert(payload).select().single();
+        if (!withParent.error || parentId) return withParent;
+        // Si parent_id aún no existe en una instalación anterior, permite comentarios normales.
+        return await supabase.from("community_publication_comments").insert({ publication_id: publicationId, author_id: userId, body: cleanBody, status: "PUBLICADO" }).select().single();
     }
 
     async getPublicAuthorProfile(userId) {
