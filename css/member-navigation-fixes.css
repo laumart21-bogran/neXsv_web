@@ -36,3 +36,8 @@
 .nexsv-save-icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;color:#3155B6!important;font-size:.9rem}
 .nexsv-save-icon .fa-thumbtack{transform:rotate(-18deg)}
 .dashboard-saved-section .nexsv-save-icon{margin-right:8px;vertical-align:-1px}
+
+/* Cerrar sesión pertenece al perfil del miembro, no al panel del negocio. */
+.profile-logout-button{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;margin-top:18px;padding:12px 14px;border:1px solid #E2E7F0;border-radius:12px;background:#fff;color:#64748B;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer;transition:.2s}
+.profile-logout-button:hover{border-color:#D5DCEA;background:#F8FAFD;color:#233A72}
+.profile-logout-button:disabled{opacity:.65;cursor:wait}
