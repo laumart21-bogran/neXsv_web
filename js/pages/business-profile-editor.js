@@ -5,38 +5,35 @@ let selectedBusiness = null;
 let ownerId = null;
 
 const fields = [
-    ["businessEditName", "nombre"],
-    ["businessEditCategory", "categoria"],
-    ["businessEditStage", "etapa_negocio"],
-    ["businessEditOffer", "tipo_oferta"],
-    ["businessEditDescription", "descripcion"],
-    ["businessEditDepartment", "departamento"],
-    ["businessEditMunicipality", "municipio"],
-    ["businessEditWhatsapp", "whatsapp"],
-    ["businessEditEmail", "email"],
-    ["businessEditMaps", "google_maps_url"],
-    ["businessEditInstagram", "instagram"],
-    ["businessEditFacebook", "facebook"],
-    ["businessEditTikTok", "tiktok"],
-    ["businessEditOtherSocial", "otra_red_social"],
-    ["businessEditWebsite", "sitio_web"]
+    ["businessEditName", "nombre"], ["businessEditCategory", "categoria"], ["businessEditStage", "etapa_negocio"],
+    ["businessEditOffer", "tipo_oferta"], ["businessEditDescription", "descripcion"], ["businessEditDepartment", "departamento"],
+    ["businessEditMunicipality", "municipio"], ["businessEditWhatsapp", "whatsapp"], ["businessEditEmail", "email"],
+    ["businessEditMaps", "google_maps_url"], ["businessEditInstagram", "instagram"], ["businessEditFacebook", "facebook"],
+    ["businessEditTikTok", "tiktok"], ["businessEditOtherSocial", "otra_red_social"], ["businessEditWebsite", "sitio_web"]
 ];
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
     bindModal();
-    await resolveSelectedBusiness();
+    document.getElementById("businessSidebarEdit")?.addEventListener("click", handleEditClick);
 });
 
-async function resolveSelectedBusiness() {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-    ownerId = user.id;
+async function handleEditClick() {
+    const button = document.getElementById("businessSidebarEdit");
     const businessId = sessionStorage.getItem("nexsv_selected_business_id");
-    if (!businessId) return;
-    const result = await BusinessService.getBusinessById(businessId);
-    if (result.error || !result.data || result.data.owner_id !== user.id) return;
-    selectedBusiness = result.data;
-    document.getElementById("businessSidebarEdit")?.addEventListener("click", () => openEditor(selectedBusiness));
+    if (!businessId) { showTemporaryMessage("Primero selecciona un negocio para editarlo."); return; }
+
+    button?.setAttribute("disabled", "true");
+    try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        ownerId = user.id;
+        const result = await BusinessService.getBusinessById(businessId);
+        if (result.error || !result.data || result.data.owner_id !== user.id) throw new Error("No se pudo cargar el negocio seleccionado.");
+        openEditor(result.data);
+    } catch (error) {
+        console.error("Error al abrir editor de negocio:", error);
+        showTemporaryMessage(error.message || "No se pudo abrir el editor.");
+    } finally { button?.removeAttribute("disabled"); }
 }
 
 function bindModal() {
@@ -46,24 +43,28 @@ function bindModal() {
     const form = document.getElementById("businessProfileForm");
     const logoInput = document.getElementById("businessEditLogo");
     const preview = document.getElementById("businessEditLogoPreview");
+    const fallback = document.getElementById("businessEditLogoFallback");
     const remove = document.getElementById("businessEditLogoRemove");
 
     close?.addEventListener("click", closeEditor);
     cancel?.addEventListener("click", closeEditor);
     modal?.addEventListener("click", event => { if (event.target === modal) closeEditor(); });
-    document.addEventListener("keydown", event => { if (event.key === "Escape" && !modal?.hidden) closeEditor(); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape" && modal && !modal.hidden) closeEditor(); });
     logoInput?.addEventListener("change", () => {
         const file = logoInput.files?.[0];
         if (!file) return;
         if (!validateLogo(file)) { logoInput.value = ""; return; }
         preview.src = URL.createObjectURL(file);
         preview.hidden = false;
+        if (fallback) fallback.hidden = true;
         remove.hidden = false;
+        delete logoInput.dataset.remove;
     });
     remove?.addEventListener("click", () => {
         logoInput.value = "";
         preview.src = "";
         preview.hidden = true;
+        if (fallback) fallback.hidden = false;
         remove.hidden = true;
         logoInput.dataset.remove = "true";
     });
@@ -71,20 +72,21 @@ function bindModal() {
 }
 
 function openEditor(business) {
-    if (!business) return;
     selectedBusiness = business;
-    const modal = document.getElementById("businessProfileModal");
-    setText("businessProfileModalName", business.nombre || "Mi negocio");
+    setText("businessProfileModalName", business.nombre || "Editar negocio");
     fields.forEach(([id, key]) => setInputValue(id, business[key] ?? ""));
 
     const logoInput = document.getElementById("businessEditLogo");
     const preview = document.getElementById("businessEditLogoPreview");
+    const fallback = document.getElementById("businessEditLogoFallback");
     const remove = document.getElementById("businessEditLogoRemove");
     if (logoInput) { logoInput.value = ""; delete logoInput.dataset.remove; }
-    if (business.logo) { preview.src = business.logo; preview.hidden = false; remove.hidden = false; }
-    else { preview.src = ""; preview.hidden = true; remove.hidden = true; }
+    if (business.logo) { preview.src = business.logo; preview.hidden = false; if (fallback) fallback.hidden = true; remove.hidden = false; }
+    else { preview.src = ""; preview.hidden = true; if (fallback) fallback.hidden = false; remove.hidden = true; }
 
     setText("businessProfileMessage", "");
+    const modal = document.getElementById("businessProfileModal");
+    if (!modal) return;
     modal.hidden = false;
     document.body.classList.add("business-modal-open");
     document.getElementById("businessEditName")?.focus();
@@ -99,7 +101,6 @@ function closeEditor() {
 async function saveBusiness(event) {
     event.preventDefault();
     if (!selectedBusiness || !ownerId) return;
-
     const form = event.currentTarget;
     const button = form.querySelector("button[type='submit']");
     const message = document.getElementById("businessProfileMessage");
@@ -109,10 +110,7 @@ async function saveBusiness(event) {
 
     try {
         const data = {};
-        fields.forEach(([id, key]) => {
-            const value = document.getElementById(id)?.value.trim() || null;
-            data[key] = value;
-        });
+        fields.forEach(([id, key]) => { data[key] = document.getElementById(id)?.value.trim() || null; });
         if (!data.nombre) throw new Error("El nombre del negocio es obligatorio.");
         if (!data.categoria) throw new Error("Selecciona una categoría.");
 
@@ -124,20 +122,13 @@ async function saveBusiness(event) {
 
         const result = await BusinessService.updateBusiness(selectedBusiness.id, data);
         if (result.error) throw result.error;
-
         selectedBusiness = result.data;
-        if (message) {
-            message.className = "business-profile-message success";
-            message.textContent = "Cambios guardados. Actualizando tu espacio…";
-        }
         sessionStorage.setItem("nexsv_selected_business_id", selectedBusiness.id);
+        if (message) { message.className = "business-profile-message success"; message.textContent = "Cambios guardados. Actualizando tu espacio…"; }
         setTimeout(() => window.location.reload(), 700);
     } catch (error) {
         console.error("Error al actualizar negocio:", error);
-        if (message) {
-            message.className = "business-profile-message error";
-            message.textContent = error.message || "No fue posible guardar los cambios.";
-        }
+        if (message) { message.className = "business-profile-message error"; message.textContent = error.message || "No fue posible guardar los cambios."; }
         button.disabled = false;
         button.innerHTML = '<i class="fa-solid fa-check"></i> Guardar cambios';
     }
@@ -148,7 +139,7 @@ async function uploadBusinessLogo(file) {
     const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
     const path = `${ownerId}/${selectedBusiness.id}/${crypto.randomUUID()}.${extension}`;
     const { error } = await supabase.storage.from("business-logos").upload(path, file, { contentType: file.type, upsert: false });
-    if (error) throw new Error("No se pudo subir el logo. Verifica que el almacenamiento de logos esté habilitado.");
+    if (error) throw new Error("No se pudo subir el logo. Ejecuta primero 021_business_logos.sql en Supabase.");
     return supabase.storage.from("business-logos").getPublicUrl(path).data.publicUrl;
 }
 
@@ -158,5 +149,6 @@ function validateLogo(file) {
     return valid;
 }
 
+function showTemporaryMessage(text) { const message = document.getElementById("businessProfileMessage"); if (!message) return; message.className = "business-profile-message error"; message.textContent = text; setTimeout(() => { message.textContent = ""; }, 2500); }
 function setInputValue(id, value) { const element = document.getElementById(id); if (element) element.value = value; }
 function setText(id, value) { const element = document.getElementById(id); if (element) element.textContent = value; }
