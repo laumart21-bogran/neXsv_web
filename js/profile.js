@@ -102,9 +102,27 @@ async function loadProfile() {
     bindBusinessVisibility();
 }
 
+function bindLogout() {
+    const button = document.getElementById("profileLogoutButton");
+    if (!button) return;
+    button.addEventListener("click", async () => {
+        button.disabled = true;
+        button.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Cerrando sesión…</span>`;
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Error al cerrar sesión:", error);
+            button.disabled = false;
+            button.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i><span>Cerrar sesión</span>`;
+            return;
+        }
+        window.location.href = "acceso/login-usuario.html";
+    });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     initializePlatformLogo();
     initializeMoreMenu();
+    bindLogout();
     document.getElementById("colegio")?.addEventListener("change", updateOtherSchoolVisibility);
     await loadProfile();
 
@@ -139,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     profileImage?.addEventListener("change", async () => {
         const file = profileImage.files?.[0];
         if (!file) return;
-        if (file.size > 5 * 1024 * 1024) { alert("La fotografía no puede superar 5 MB."); return; }
+        if (file.size > 5 * 1024 * 1024) { alert("La fotografía no puede superar 5 MB."); profileImage.value = ""; return; }
         try {
             const url = await profileService.uploadProfilePhoto(currentUser.id, file);
             currentProfile.foto = url;
@@ -147,5 +165,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             setAvatar(url, nombre);
             updateProgress(currentProfile);
         } catch (error) { console.error("Error al subir fotografía:", error); alert("No se pudo subir la fotografía."); }
+        finally { profileImage.value = ""; }
     });
 });
