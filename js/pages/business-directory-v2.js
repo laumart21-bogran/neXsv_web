@@ -1,7 +1,7 @@
 import BusinessService from "../services/business.service.js";
 import AuthService from "../auth/auth.service.js";
 
-const state = { businesses: [], search: "" };
+const state = { businesses: [], category: "Todos", search: "" };
 
 const escapeHtml = (value) => String(value ?? "")
     .replace(/&/g, "&amp;")
@@ -9,6 +9,12 @@ const escapeHtml = (value) => String(value ?? "")
     .replace(/>/g, "&gt;")
     .replace(/\"/g, "&quot;")
     .replace(/'/g, "&#039;");
+
+const normalize = (value) => String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase();
 
 function businessUrl(id, action = "") {
     const url = `negocio.html?id=${encodeURIComponent(id)}`;
@@ -19,22 +25,23 @@ function loginUrl(id, action) {
     return `acceso/login-usuario.html?return=${encodeURIComponent(businessUrl(id, action))}`;
 }
 
-function matchesSearch(business) {
+function matches(business) {
+    const categoryMatch = normalize(state.category) === "todos" || normalize(business.categoria) === normalize(state.category);
     const term = state.search.trim().toLowerCase();
-    if (!term) return true;
-    return [business.nombre, business.categoria, business.descripcion]
+    const searchMatch = !term || [business.nombre, business.categoria, business.descripcion]
         .join(" ")
         .toLowerCase()
         .includes(term);
+    return categoryMatch && searchMatch;
 }
 
 function render() {
     const container = document.getElementById("contenedor");
     if (!container) return;
 
-    const visible = state.businesses.filter(matchesSearch);
+    const visible = state.businesses.filter(matches);
     if (!visible.length) {
-        container.innerHTML = `<div class="directory-empty"><strong>No encontramos negocios.</strong><span>Prueba con otro término de búsqueda.</span></div>`;
+        container.innerHTML = `<div class="directory-empty"><strong>No encontramos negocios con esos criterios.</strong><span>Prueba con otra búsqueda o categoría.</span></div>`;
         return;
     }
 
@@ -65,6 +72,21 @@ function render() {
             </div>
         </article>`;
     }).join("");
+}
+
+function setCategory(category, button) {
+    state.category = category || "Todos";
+    document.querySelectorAll(".categoria-btn[data-category]").forEach((item) => item.classList.remove("activo"));
+    if (button) button.classList.add("activo");
+    render();
+}
+
+function toggleMoreCategories() {
+    const more = document.getElementById("masCategorias");
+    const button = document.getElementById("btnMasCategorias");
+    if (!more) return;
+    more.classList.toggle("mostrar");
+    if (button) button.classList.toggle("activo", more.classList.contains("mostrar"));
 }
 
 async function authenticated() {
@@ -107,6 +129,12 @@ function bindEvents() {
         render();
     });
 
+    document.querySelectorAll(".categoria-btn[data-category]").forEach((button) => {
+        button.addEventListener("click", () => setCategory(button.dataset.category, button));
+    });
+
+    document.getElementById("btnMasCategorias")?.addEventListener("click", toggleMoreCategories);
+
     const container = document.getElementById("contenedor");
     if (container) container.addEventListener("click", (event) => {
         const button = event.target.closest("[data-action]");
@@ -129,8 +157,8 @@ async function init() {
     }
 
     state.businesses = Array.isArray(data) ? data : [];
-    render();
     bindEvents();
+    render();
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
