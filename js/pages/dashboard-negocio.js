@@ -2,6 +2,7 @@ import AuthSession from "../auth/auth.session.js";
 import BusinessService from "../services/business.service.js";
 import BusinessMediaService from "../services/business-media.service.js";
 import CommunityService from "../services/community.service.js";
+import ProfileService from "../services/profile.service.js";
 import { supabase } from "../core/supabase-client.js";
 import { APP_CONFIG } from "../core/config.js";
 
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderOwner(currentUser);
     bindHorizontalSliders();
     bindSummarySlider();
+    await loadOwnerProfile();
 
     const { data: businesses, error } = await BusinessService.getBusinessesByOwner(currentUser.id);
     if (error) { console.error("Error al cargar negocios:", error); renderError(); return; }
@@ -37,6 +39,17 @@ function renderOwner(user) {
     setDashboardHeaderAvatar(null, fullName);
 }
 
+async function loadOwnerProfile() {
+    if (!currentUser) return;
+    const result = await ProfileService.getProfile(currentUser.id);
+    if (result?.error || !result?.data) return;
+    const profile = result.data;
+    const fullName = `${profile.nombre || ""} ${profile.apellido || ""}`.trim() || currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || "Miembro";
+    setText("businessOwnerName", fullName);
+    setDashboardHeaderAvatar(profile.foto, fullName);
+    setBusinessSidebarPhoto(profile.foto, fullName);
+}
+
 function setDashboardHeaderAvatar(photo, name) {
     const header = document.getElementById("headerAvatar");
     const initials = document.getElementById("headerAvatarInitials");
@@ -52,6 +65,18 @@ function setDashboardHeaderAvatar(photo, name) {
     } else if (initials) {
         initials.textContent = value;
         initials.style.display = "inline";
+    }
+}
+
+function setBusinessSidebarPhoto(photo, name) {
+    const container = document.querySelector(".business-sidebar-icon");
+    if (!container) return;
+    if (photo) {
+        container.innerHTML = `<img src="${escapeAttr(photo)}" alt="Foto de perfil de ${escapeAttr(name)}">`;
+        container.classList.add("has-profile-photo");
+    } else {
+        container.innerHTML = `<i class="fa-solid fa-store"></i>`;
+        container.classList.remove("has-profile-photo");
     }
 }
 
