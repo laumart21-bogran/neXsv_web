@@ -20,6 +20,24 @@ class BusinessService {
     }
 
     // =====================================================
+    // DETALLE PARA MIEMBROS AUTENTICADOS
+    // El RPC controla qué datos comerciales puede recibir un miembro.
+    // =====================================================
+
+    async getAuthenticatedBusinessDetail(businessId) {
+
+        const { data, error } = await supabase
+            .rpc("get_authenticated_business_detail", {
+                p_business_id: businessId
+            });
+
+        return {
+            data,
+            error
+        };
+    }
+
+    // =====================================================
     // OBTENER UN NEGOCIO DEL PROPIETARIO
     // Método utilizado actualmente por el dashboard existente
     // =====================================================
@@ -37,7 +55,6 @@ class BusinessService {
             error
         };
     }
-
 
     // =====================================================
     // OBTENER TODOS LOS NEGOCIOS DEL PROPIETARIO
@@ -57,7 +74,6 @@ class BusinessService {
         };
     }
 
-
     // =====================================================
     // OBTENER UN NEGOCIO POR ID
     // =====================================================
@@ -76,7 +92,6 @@ class BusinessService {
         };
     }
 
-
     // =====================================================
     // CREAR NEGOCIO
     // =====================================================
@@ -94,7 +109,6 @@ class BusinessService {
             error
         };
     }
-
 
     // =====================================================
     // ACTUALIZAR NEGOCIO
@@ -116,6 +130,5 @@ class BusinessService {
     }
 
 }
-
 
 export default new BusinessService();
