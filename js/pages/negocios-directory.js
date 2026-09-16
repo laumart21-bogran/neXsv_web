@@ -1,104 +1,33 @@
 import BusinessService from "../services/business.service.js";
 import AuthService from "../auth/auth.service.js";
 
-const state = {
-    businesses: [],
-    category: "Todos",
-    search: "",
-    rendered: false
-};
+const state = { businesses: [], category: "Todos", search: "", rendered: false };
 
-function escapeHtml(value) {
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-function normalizeCategory(value) {
-    return String(value || "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .trim()
-        .toLowerCase();
-}
-
-function buildBusinessUrl(id, action = "") {
-    const url = `negocio.html?id=${encodeURIComponent(id)}`;
-    return action ? `${url}&action=${encodeURIComponent(action)}` : url;
-}
-
-function redirectToLogin(id, action) {
-    const returnUrl = buildBusinessUrl(id, action);
-    window.location.href = `acceso/login-usuario.html?return=${encodeURIComponent(returnUrl)}`;
-}
-
-async function isAuthenticated() {
-    const { data } = await AuthService.getSession();
-    return Boolean(data?.session);
-}
+function escapeHtml(value) { return String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;"); }
+function normalizeCategory(value) { return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase(); }
+function buildBusinessUrl(id, action = "") { const url = `negocio.html?id=${encodeURIComponent(id)}`; return action ? `${url}&action=${encodeURIComponent(action)}` : url; }
+function redirectToLogin(id, action) { window.location.href = `acceso/login-usuario.html?return=${encodeURIComponent(buildBusinessUrl(id, action))}`; }
+async function isAuthenticated() { const { data } = await AuthService.getSession(); return Boolean(data?.session); }
 
 function matchesBusiness(business) {
     const search = state.search.trim().toLowerCase();
     const selectedCategory = normalizeCategory(state.category);
-    const matchesCategory = selectedCategory === "todos"
-        || normalizeCategory(business.categoria) === selectedCategory;
-
-    const haystack = [business.nombre, business.categoria, business.descripcion]
-        .join(" ")
-        .toLowerCase();
-
+    const matchesCategory = selectedCategory === "todos" || normalizeCategory(business.categoria) === selectedCategory;
+    const haystack = [business.nombre, business.categoria, business.descripcion].join(" ").toLowerCase();
     return matchesCategory && (!search || haystack.includes(search));
 }
 
 function renderBusinessCardsOnce() {
     const container = document.getElementById("contenedor");
     if (!container || state.rendered) return;
-
-    container.innerHTML = state.businesses.map((business) => {
+    container.innerHTML = state.businesses.map(business => {
         const id = escapeHtml(business.id || "");
         const name = escapeHtml(business.nombre || "Negocio");
-        const description = escapeHtml(
-            business.descripcion || "Conoce este negocio dentro de la comunidad neXsv."
-        );
+        const description = escapeHtml(business.descripcion || "Conoce este negocio dentro de la comunidad neXsv.");
         const logo = String(business.logo || "").trim();
         const category = escapeHtml(business.categoria || "Negocio");
-
-        return `
-            <article class="card nex-public-business-card" data-business-id="${id}" data-category="${escapeHtml(category)}">
-                <div class="logo-frame">
-                    ${logo
-                        ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">`
-                        : ""}
-                    <div class="nex-business-logo-fallback" ${logo ? "hidden" : ""} aria-hidden="true">
-                        <i class="fa-solid fa-store"></i>
-                    </div>
-                    <span class="featured-badge"><i class="fa-solid fa-star"></i> Publicado</span>
-                </div>
-
-                <div class="card-content">
-                    <h3>${name}</h3>
-                    <div class="verified-badge">
-                        <i class="fa-solid fa-check"></i> Verificado en neXsv
-                    </div>
-                    <p>${description}</p>
-
-                    <div class="nex-public-business-actions">
-                        <button type="button" class="btn btn-w nex-business-action" data-action="whatsapp" data-business-id="${id}">WhatsApp</button>
-                        <button type="button" class="btn btn-v nex-business-action" data-action="detail" data-business-id="${id}">Ver más</button>
-                        <button type="button" class="btn btn-share nex-business-action" data-action="share" data-business-id="${id}">Compartir</button>
-                    </div>
-
-                    <button type="button" class="btn-map nex-business-action" data-action="location" data-business-id="${id}">
-                        <i class="fa-solid fa-location-dot"></i> Cómo llegar
-                    </button>
-                </div>
-            </article>
-        `;
+        return `<article class="card nex-public-business-card" data-business-id="${id}" data-category="${category}"><div class="logo-frame">${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">` : ""}<div class="nex-business-logo-fallback" ${logo ? "hidden" : ""} aria-hidden="true"><i class="fa-solid fa-store"></i></div><span class="featured-badge"><i class="fa-solid fa-star"></i> Publicado</span></div><div class="card-content"><h3>${name}</h3><div class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</div><p>${description}</p><div class="nex-public-business-actions"><button type="button" class="btn btn-w nex-business-action" data-action="whatsapp" data-business-id="${id}">WhatsApp</button><button type="button" class="btn btn-v nex-business-action" data-action="detail" data-business-id="${id}">Ver más</button><button type="button" class="btn btn-share nex-business-action" data-action="share" data-business-id="${id}">Compartir</button></div><button type="button" class="btn-map nex-business-action" data-action="location" data-business-id="${id}"><i class="fa-solid fa-location-dot"></i> Cómo llegar</button></div></article>`;
     }).join("");
-
     state.rendered = true;
     bindBusinessActions();
 }
@@ -106,214 +35,66 @@ function renderBusinessCardsOnce() {
 function renderBusinesses() {
     const container = document.getElementById("contenedor");
     if (!container) return;
-
-    // Los elementos se crean una sola vez. Cambiar categoría o búsqueda
-    // únicamente oculta/muestra tarjetas existentes, evitando recargar logos.
     const cards = container.querySelectorAll(".nex-public-business-card");
     let visible = 0;
-
     cards.forEach((card, index) => {
         const business = state.businesses[index];
         const show = Boolean(business && matchesBusiness(business));
         card.hidden = !show;
-        if (show) visible += 1;
+        if (show) visible++;
     });
-
     let empty = container.querySelector(".directory-empty-results");
     if (!visible) {
-        if (!empty) {
-            empty = document.createElement("div");
-            empty.className = "directory-empty directory-empty-results";
-            empty.setAttribute("role", "status");
-            empty.innerHTML = `
-                <strong>No encontramos negocios con esos criterios.</strong>
-                <span>Prueba con otra búsqueda o categoría.</span>
-            `;
-            container.appendChild(empty);
-        }
+        if (!empty) { empty = document.createElement("div"); empty.className = "directory-empty directory-empty-results"; empty.setAttribute("role", "status"); empty.innerHTML = `<strong>No encontramos negocios con esos criterios.</strong><span>Prueba con otra búsqueda o categoría.</span>`; container.appendChild(empty); }
         empty.hidden = false;
-    } else if (empty) {
-        empty.hidden = true;
-    }
+    } else if (empty) empty.hidden = true;
 }
 
 function setCategory(category, button) {
-    const nextCategory = category || "Todos";
-    state.category = nextCategory;
-
-    if (normalizeCategory(nextCategory) === "todos") {
-        state.category = "Todos";
-        state.search = "";
-        const input = document.getElementById("buscador");
-        if (input) input.value = "";
-    }
-
-    document.querySelectorAll(".categorias button").forEach((item) => item.classList.remove("activo"));
+    state.category = category || "Todos";
+    if (normalizeCategory(state.category) === "todos") { state.category = "Todos"; state.search = ""; const input = document.getElementById("buscador"); if (input) input.value = ""; }
+    document.querySelectorAll(".categorias button").forEach(item => item.classList.remove("activo"));
     if (button) button.classList.add("activo");
     renderBusinesses();
 }
-
-function searchBusinesses() {
-    const input = document.getElementById("buscador");
-    state.search = input?.value || "";
-    renderBusinesses();
-}
-
-function toggleMoreCategories(button) {
-    const more = document.getElementById("masCategorias");
-    if (!more) return;
-    const isOpen = more.classList.toggle("mostrar");
-    if (button) button.classList.toggle("activo", isOpen);
-}
+function searchBusinesses() { state.search = document.getElementById("buscador")?.value || ""; renderBusinesses(); }
+function toggleMoreCategories(button) { const more = document.getElementById("masCategorias"); if (!more) return; const isOpen = more.classList.toggle("mostrar"); if (button) button.classList.toggle("activo", isOpen); }
 
 async function handleBusinessAction(action, businessId) {
     if (!businessId) return;
-
-    if (action === "share") {
-        const url = new URL(`negocio.html?id=${encodeURIComponent(businessId)}`, window.location.href).href;
-        const shareData = {
-            title: "Negocio en neXsv",
-            text: "Conoce este negocio dentro de neXsv.",
-            url
-        };
-        if (navigator.share) {
-            try { await navigator.share(shareData); } catch (_) {}
-            return;
-        }
-        try {
-            await navigator.clipboard.writeText(url);
-            alert("Enlace del negocio copiado.");
-        } catch (_) {
-            window.prompt("Copia este enlace:", url);
-        }
-        return;
-    }
-
-    const authenticated = await isAuthenticated();
-    if (!authenticated) {
-        redirectToLogin(businessId, action);
-        return;
-    }
-
+    if (action === "share") { const url = new URL(`negocio.html?id=${encodeURIComponent(businessId)}`, window.location.href).href; const shareData = { title: "Negocio en neXsv", text: "Conoce este negocio dentro de neXsv.", url }; if (navigator.share) { try { await navigator.share(shareData); } catch (_) {} return; } try { await navigator.clipboard.writeText(url); alert("Enlace del negocio copiado."); } catch (_) { window.prompt("Copia este enlace:", url); } return; }
+    if (!(await isAuthenticated())) { redirectToLogin(businessId, action); return; }
     window.location.href = buildBusinessUrl(businessId, action === "detail" ? "" : action);
 }
+function bindBusinessActions() { document.querySelectorAll(".nex-business-action").forEach(button => { if (button.dataset.actionBound === "true") return; button.dataset.actionBound = "true"; button.addEventListener("click", () => handleBusinessAction(button.dataset.action, button.dataset.businessId)); }); }
 
-function bindBusinessActions() {
-    document.querySelectorAll(".nex-business-action").forEach((button) => {
-        if (button.dataset.actionBound === "true") return;
-        button.dataset.actionBound = "true";
-        button.addEventListener("click", () => {
-            handleBusinessAction(button.dataset.action, button.dataset.businessId);
-        });
-    });
-}
-
-window.filtrar = setCategory;
-window.buscar = searchBusinesses;
-window.mostrarMas = toggleMoreCategories;
+window.filtrar = setCategory; window.buscar = searchBusinesses; window.mostrarMas = toggleMoreCategories;
 
 function bindDirectoryControls() {
-    document.querySelectorAll(".categorias button").forEach((button) => {
+    document.querySelectorAll(".categorias button").forEach(button => {
         if (button.dataset.directoryBound === "true") return;
-        button.dataset.directoryBound = "true";
-        button.removeAttribute("onclick");
-
+        button.dataset.directoryBound = "true"; button.removeAttribute("onclick");
         const text = button.textContent.trim();
-        if (/^Todos$/i.test(text)) {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                setCategory("Todos", button);
-            });
-            return;
-        }
-        if (/Más categorías/i.test(text)) {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                toggleMoreCategories(button);
-            });
-            return;
-        }
-
-        const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim();
-        if (categoryMatch) {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                setCategory(categoryMatch, button);
-            });
-        }
+        if (/^Todos$/i.test(text)) button.addEventListener("click", event => { event.preventDefault(); setCategory("Todos", button); });
+        else if (/Más categorías/i.test(text)) button.addEventListener("click", event => { event.preventDefault(); toggleMoreCategories(button); });
+        else { const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim(); if (categoryMatch) button.addEventListener("click", event => { event.preventDefault(); setCategory(categoryMatch, button); }); }
     });
-
     const input = document.getElementById("buscador");
-    if (input && input.dataset.directoryBound !== "true") {
-        input.dataset.directoryBound = "true";
-        input.removeAttribute("onkeyup");
-        input.addEventListener("input", searchBusinesses);
-    }
+    if (input && input.dataset.directoryBound !== "true") { input.dataset.directoryBound = "true"; input.removeAttribute("onkeyup"); input.addEventListener("input", searchBusinesses); }
 }
 
 function injectDirectoryStyles() {
     if (document.getElementById("nex-public-business-directory-styles")) return;
-    const style = document.createElement("style");
-    style.id = "nex-public-business-directory-styles";
-    style.textContent = `
-        .nex-public-business-card .logo-frame{position:relative;}
-        .nex-public-business-card .featured-badge{z-index:2;}
-        .nex-public-business-card .card-content h3{margin-top:0;}
-        .nex-public-business-card .card-content p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
-        .nex-public-business-card .verified-badge{margin-bottom:12px;}
-        .nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px;}
-        .nex-public-business-actions .btn{border:0;}
-        .nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none;}
-        .nex-business-action{cursor:pointer;}
-        .nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px;}
-        .directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B;}
-        .directory-empty strong{color:#233A72;font-size:16px;}
-        .directory-empty span{font-size:14px;}
-        .nex-public-business-card[hidden]{display:none!important;}
-        .directory-empty-results[hidden]{display:none!important;}
-        @media(max-width:768px){
-            .nex-public-business-card .logo-frame{height:190px;}
-            .nex-public-business-card .card-content h3{font-size:22px;}
-            .nex-public-business-actions{gap:9px;}
-        }
-    `;
-    document.head.appendChild(style);
+    const style = document.createElement("style"); style.id = "nex-public-business-directory-styles"; style.textContent = `.nex-public-business-card .logo-frame{position:relative}.nex-public-business-card .featured-badge{z-index:2}.nex-public-business-card .card-content h3{margin-top:0}.nex-public-business-card .card-content p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.nex-public-business-card .verified-badge{margin-bottom:12px}.nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px}.nex-public-business-actions .btn{border:0}.nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none}.nex-business-action{cursor:pointer}.nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px}.directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B}.directory-empty strong{color:#233A72;font-size:16px}.directory-empty span{font-size:14px}.nex-public-business-card[hidden]{display:none!important}.directory-empty-results[hidden]{display:none!important}@media(max-width:768px){.nex-public-business-card .logo-frame{height:190px}.nex-public-business-card .card-content h3{font-size:22px}.nex-public-business-actions{gap:9px}}`; document.head.appendChild(style);
 }
 
 async function initPublicBusinessDirectory() {
-    const container = document.getElementById("contenedor");
-    if (!container) return;
-
-    injectDirectoryStyles();
-    bindDirectoryControls();
-
-    container.innerHTML = `
-        <div class="directory-empty" role="status">
-            <strong>Cargando negocios publicados…</strong>
-            <span>Estamos consultando el directorio de neXsv.</span>
-        </div>
-    `;
-
+    const container = document.getElementById("contenedor"); if (!container) return;
+    injectDirectoryStyles(); bindDirectoryControls();
+    container.innerHTML = `<div class="directory-empty" role="status"><strong>Cargando negocios publicados…</strong><span>Estamos consultando el directorio de neXsv.</span></div>`;
     const { data, error } = await BusinessService.getPublicBusinessDirectory();
-    if (error) {
-        console.error("Error cargando el directorio público de negocios:", error);
-        container.innerHTML = `
-            <div class="directory-empty" role="alert">
-                <strong>No pudimos cargar los negocios.</strong>
-                <span>Intenta nuevamente en unos momentos.</span>
-            </div>
-        `;
-        return;
-    }
-
+    if (error) { console.error("Error cargando el directorio público de negocios:", error); container.innerHTML = `<div class="directory-empty" role="alert"><strong>No pudimos cargar los negocios.</strong><span>Intenta nuevamente en unos momentos.</span></div>`; return; }
     state.businesses = Array.isArray(data) ? data : [];
-    state.rendered = false;
-    renderBusinessCardsOnce();
-    renderBusinesses();
+    state.rendered = false; renderBusinessCardsOnce(); renderBusinesses();
 }
-
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initPublicBusinessDirectory, { once: true });
-} else {
-    initPublicBusinessDirectory();
-}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initPublicBusinessDirectory, { once: true }); else initPublicBusinessDirectory();
