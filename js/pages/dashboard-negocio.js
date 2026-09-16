@@ -1,51 +1,95 @@
 import AuthSession from "../auth/auth.session.js";
 import BusinessService from "../services/business.service.js";
+import BusinessMediaService from "../services/business-media.service.js";
 import CommunityService from "../services/community.service.js";
+import ProfileService from "../services/profile.service.js";
 import { supabase } from "../core/supabase-client.js";
 import { APP_CONFIG } from "../core/config.js";
 
 let currentBusiness = null;
+let currentUser = null;
+let selectedMediaType = "FOTO";
 
 document.addEventListener("DOMContentLoaded", async () => {
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
     if (!AuthSession.isAuthenticated()) { window.location.href = APP_CONFIG.routes.login; return; }
-    const user = AuthSession.getCurrentUser();
-    renderOwner(user);
-    const { data: businesses, error } = await BusinessService.getBusinessesByOwner(user.id);
+    currentUser = AuthSession.getCurrentUser();
+    renderOwner(currentUser);
+    await loadPersonalProfile(currentUser);
+    const { data: businesses, error } = await BusinessService.getBusinessesByOwner(currentUser.id);
     if (error) { console.error("Error al cargar negocios:", error); renderError(); return; }
     renderSummary(businesses);
     renderBusinesses(businesses);
     initializeBusinessSelector(businesses);
-    await loadCommunityPublications(user.id);
+    bindBusinessMediaControls();
+    await loadCommunityPublications(currentUser.id);
 });
 
 function renderOwner(user) {
     const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "Miembro";
     const firstName = fullName.trim().split(" ")[0] || "Miembro";
     setText("businessOwnerName", fullName);
+    setText("businessProfileName", fullName);
     setText("welcomeTitle", `¡Hola, ${firstName}!`);
+    setDashboardAvatar(null, fullName);
+}
+
+async function loadPersonalProfile(user) {
+    const { data: profile, error } = await ProfileService.getProfile(user.id);
+    if (error && error.code !== "PGRST116") { console.warn("No se pudo cargar el perfil:", error); return; }
+    const fullName = [profile?.nombre, profile?.apellido].filter(Boolean).join(" ").trim() || user.user_metadata?.full_name || user.user_metadata?.name || "Miembro neXsv";
+    setText("businessOwnerName", fullName);
+    setText("businessProfileName", fullName);
+    setDashboardAvatar(profile?.foto || null, fullName);
+}
+
+function setDashboardAvatar(photo, name) {
+    const image = document.getElementById("businessProfileImage");
+    const initials = document.getElementById("businessProfileInitials");
+    const headerImage = document.querySelector("#headerAvatar img");
+    const headerInitials = document.getElementById("headerAvatarInitials");
+    const value = initialsFromName(name);
+    if (image && initials) {
+        image.hidden = !photo;
+        image.src = photo || "";
+        initials.textContent = value;
+        initials.style.display = photo ? "none" : "grid";
+    }
+    if (headerImage) headerImage.remove();
+    if (photo) {
+        const avatar = document.getElementById("headerAvatar");
+        if (avatar) { const img = document.createElement("img"); img.src = photo; img.alt = "Foto de perfil"; avatar.prepend(img); }
+        if (headerInitials) headerInitials.style.display = "none";
+    } else if (headerInitials) {
+        headerInitials.textContent = value;
+        headerInitials.style.display = "inline";
+    }
+}
+
+function initialsFromName(name = "Miembro") {
+    return String(name).trim().split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]?.toUpperCase()).join("") || "M";
 }
 
 function renderSummary(businesses) {
     setText("businessTotal", businesses.length);
     setText("businessReviewsSummary", "—");
+    setText("businessSavesSummary", 0);
+    setText("businessSharesSummary", 0);
+    setText("businessCommentsSummary", 0);
 }
 
 function initializeBusinessSelector(businesses) {
     const row = document.getElementById("businessSelectorRow");
     const selector = document.getElementById("businessSelector");
     if (!row || !selector || !businesses.length) return;
-
     row.hidden = false;
     selector.innerHTML = businesses.map(business => `<option value="${escapeAttr(business.id)}">${escapeHtml(business.nombre || "Mi negocio")}</option>`).join("");
-
     const storedId = sessionStorage.getItem("nexsv_selected_business_id");
     const selected = businesses.find(business => business.id === storedId) || businesses[0];
     selector.value = selected.id;
     currentBusiness = selected;
     sessionStorage.setItem("nexsv_selected_business_id", selected.id);
     loadSelectedBusiness(selected);
-
     selector.addEventListener("change", async () => {
         const business = businesses.find(item => item.id === selector.value);
         if (!business) return;
@@ -60,7 +104,7 @@ async function loadSelectedBusiness(business) {
     const selector = document.getElementById("businessSelector");
     if (selector) selector.setAttribute("aria-label", `Seleccionar negocio. Actual: ${business.nombre || "Mi negocio"}`);
     if (empty) empty.classList.remove("visible");
-    await loadBusinessPublications(business.id);
+    await Promise.all([loadBusinessPublications(business.id), loadBusinessMedia(business.id)]);
 }
 
 async function loadBusinessPublications(businessId) {
@@ -93,10 +137,12 @@ function publicationCard(publication) {
                 <div class="business-publication-metric"><i class="fa-regular fa-eye"></i><strong data-publication-metric="views">0</strong><span>Vistas</span></div>
                 <div class="business-publication-metric"><i class="fa-regular fa-comments"></i><strong data-publication-metric="comments">0</strong><span>Comentarios</span></div>
                 <div class="business-publication-metric"><i class="fa-regular fa-comment"></i><strong data-publication-metric="conversations">0</strong><span>Conversaciones</span></div>
+                <div class="business-publication-metric"><i class="fa-regular fa-share-from-square"></i><strong data-publication-metric="shares">0</strong><span>Compartidos</span></div>
+                <div class="business-publication-metric"><i class="fa-regular fa-bookmark"></i><strong data-publication-metric="saves">0</strong><span>Guardados</span></div>
             </div>
             <div class="business-publication-actions">
                 <a class="business-view-publication" href="${url}">Ver publicación <i class="fa-solid fa-arrow-right"></i></a>
-                <button class="business-share-publication" type="button" data-share-url="${escapeAttr(new URL(url, window.location.href).href)}"><i class="fa-solid fa-arrow-up-from-bracket"></i> Compartir</button>
+                <button class="business-share-publication" type="button" data-share-url="${escapeAttr(new URL(url, window.location.href).href)}"><i class="fa-regular fa-share-from-square"></i> Compartir</button>
             </div>
         </div>
     </article>`;
@@ -121,10 +167,7 @@ function communityPublicationCard(publication) {
     return `<article class="business-publication-card business-community-publication-card">
         <div class="business-publication-media">${image ? `<img src="${escapeAttr(image)}" alt="Imagen de la publicación">` : `<div class="business-publication-no-image"><i class="fa-solid fa-users"></i></div>`}</div>
         <div class="business-publication-content">
-            <span class="business-publication-type">${escapeHtml(typeLabel(publication.type))}</span>
-            <h3>${escapeHtml(title)}</h3>
-            <p class="business-publication-body">${escapeHtml(publication.body || "")}</p>
-            <span class="business-publication-date">${escapeHtml(formatDate(publication.created_at))}</span>
+            <span class="business-publication-type">${escapeHtml(typeLabel(publication.type))}</span><h3>${escapeHtml(title)}</h3><p class="business-publication-body">${escapeHtml(publication.body || "")}</p><span class="business-publication-date">${escapeHtml(formatDate(publication.created_at))}</span>
             <div class="business-publication-actions"><a class="business-view-publication" href="${url}">Ver publicación <i class="fa-solid fa-arrow-right"></i></a></div>
         </div>
     </article>`;
@@ -133,18 +176,28 @@ function communityPublicationCard(publication) {
 async function loadPublicationMetrics(publicationIds) {
     const { data, error } = await supabase.rpc("get_my_community_publication_metrics");
     if (error) { console.warn("No se pudieron cargar las métricas de publicaciones:", error); return; }
+    const { data: engagementData, error: engagementError } = await supabase.rpc("get_my_community_publication_engagement_metrics");
+    if (engagementError) console.warn("No se pudieron cargar compartidos y guardados:", engagementError);
     const selected = new Set(publicationIds);
     const metrics = (data || []).filter(item => selected.has(item.publication_id));
+    const engagement = new Map((engagementData || []).map(item => [item.publication_id, item]));
     const totals = metrics.reduce((a, item) => ({ views: a.views + Number(item.views || 0), comments: a.comments + Number(item.comments || 0), conversations: a.conversations + Number(item.conversations || 0) }), { views: 0, comments: 0, conversations: 0 });
+    let shares = 0, saves = 0;
     metrics.forEach(item => {
         const card = document.querySelector(`[data-publication-id="${CSS.escape(item.publication_id)}"]`);
+        const extra = engagement.get(item.publication_id) || {};
+        shares += Number(extra.shares || 0); saves += Number(extra.saves || 0);
         if (!card) return;
-        setMetric(card, "views", item.views); setMetric(card, "comments", item.comments); setMetric(card, "conversations", item.conversations);
+        setMetric(card, "views", item.views); setMetric(card, "comments", item.comments); setMetric(card, "conversations", item.conversations); setMetric(card, "shares", extra.shares); setMetric(card, "saves", extra.saves);
     });
     setText("businessViews", totals.views); setText("businessViewsSummary", totals.views);
-    setText("businessComments", totals.comments);
+    setText("businessComments", totals.comments); setText("businessCommentsSummary", totals.comments);
     setText("businessConversations", totals.conversations); setText("businessConversationsSummary", totals.conversations); setText("businessConversationsOpportunity", totals.conversations);
+    setText("businessShares", shares); setText("businessSharesSummary", shares);
+    setText("businessSaves", saves); setText("businessSavesSummary", saves);
     setText("businessInterests", "—"); setText("businessInterestsResult", "—");
+    const rate = totals.views ? Math.round((totals.conversations / totals.views) * 1000) / 10 : 0;
+    setText("businessConversationRate", `${rate}%`);
     await loadMessageTotal(publicationIds);
 }
 
@@ -170,35 +223,55 @@ function bindPublicationActions() {
     }));
 }
 
-function resetPublicationTotals() { setText("businessViews", 0); setText("businessViewsSummary", 0); setText("businessComments", 0); setText("businessConversations", 0); setText("businessConversationsSummary", 0); setText("businessConversationsOpportunity", 0); setText("businessMessages", 0); setText("businessInterests", "—"); setText("businessInterestsResult", "—"); }
+function bindBusinessMediaControls() {
+    const input = document.getElementById("businessMediaInput");
+    const photoButton = document.getElementById("businessMediaPhoto");
+    const promoButton = document.getElementById("businessMediaPromo");
+    photoButton?.addEventListener("click", () => { selectedMediaType = "FOTO"; input?.click(); });
+    promoButton?.addEventListener("click", () => { selectedMediaType = "PROMOCION"; input?.click(); });
+    input?.addEventListener("change", async () => {
+        const files = input.files;
+        if (!files?.length || !currentBusiness) return;
+        setMediaStatus("Subiendo material…");
+        const result = await BusinessMediaService.uploadBusinessMedia(currentBusiness.id, files, selectedMediaType);
+        input.value = "";
+        if (result.error) { setMediaStatus(result.error.message || "No se pudo subir el material.", "error"); return; }
+        setMediaStatus(`${result.data.length} imagen${result.data.length === 1 ? "" : "es"} agregada${result.data.length === 1 ? "" : "s"}.`, "ok");
+        await loadBusinessMedia(currentBusiness.id);
+    });
+}
+
+async function loadBusinessMedia(businessId) {
+    const gallery = document.getElementById("businessMediaGallery");
+    if (!gallery) return;
+    gallery.innerHTML = `<div class="business-media-loading"><i class="fa-solid fa-spinner fa-spin"></i> Cargando…</div>`;
+    const result = await BusinessMediaService.getBusinessMedia(businessId);
+    if (result.error) { gallery.innerHTML = `<span class="business-media-empty">Aplica el módulo de material visual para comenzar.</span>`; console.warn("No se pudo cargar material del negocio:", result.error); return; }
+    if (!result.data.length) { gallery.innerHTML = `<span class="business-media-empty">Todavía no hay fotos ni artes para este negocio.</span>`; return; }
+    gallery.innerHTML = result.data.map(media => `<div class="business-media-item"><img src="${escapeAttr(media.url || "")}" alt="${media.tipo === "PROMOCION" ? "Arte promocional" : "Foto del negocio"}"><span class="business-media-kind">${media.tipo === "PROMOCION" ? "Arte" : "Foto"}</span><button type="button" class="business-media-delete" data-media-id="${escapeAttr(media.id)}" aria-label="Eliminar imagen"><i class="fa-regular fa-trash-can"></i></button></div>`).join("");
+    gallery.querySelectorAll(".business-media-delete").forEach(button => button.addEventListener("click", async () => {
+        const media = result.data.find(item => item.id === button.dataset.mediaId);
+        if (!media || !confirm("¿Eliminar esta imagen del material del negocio?")) return;
+        const deleted = await BusinessMediaService.deleteBusinessMedia(media);
+        if (deleted.error) { setMediaStatus("No se pudo eliminar la imagen.", "error"); return; }
+        await loadBusinessMedia(businessId);
+        setMediaStatus("Imagen eliminada.", "ok");
+    }));
+}
+
+function setMediaStatus(message, type = "") { const element = document.getElementById("businessMediaStatus"); if (element) { element.textContent = message; element.className = `business-media-status ${type}`; } }
+function resetPublicationTotals() { setText("businessViews", 0); setText("businessViewsSummary", 0); setText("businessComments", 0); setText("businessCommentsSummary", 0); setText("businessConversations", 0); setText("businessConversationsSummary", 0); setText("businessConversationsOpportunity", 0); setText("businessMessages", 0); setText("businessShares", 0); setText("businessSharesSummary", 0); setText("businessSaves", 0); setText("businessSavesSummary", 0); setText("businessConversationRate", "0%"); setText("businessInterests", "—"); setText("businessInterestsResult", "—"); }
 function setMetric(card, metric, value) { card.querySelector(`[data-publication-metric="${metric}"]`)?.replaceChildren(document.createTextNode(String(Number(value || 0)))); }
 
 function renderBusinesses(businesses) {
-    const container = document.getElementById("businessList");
-    const toggle = document.getElementById("businessListToggle");
-    if (!container) return;
+    const container = document.getElementById("businessList"); const toggle = document.getElementById("businessListToggle"); if (!container) return;
     if (!businesses.length) { container.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-store"></i><strong>Aún no tienes un negocio registrado</strong><span>Incorpora tu primer negocio para comenzar.</span><a href="incorporar-negocio.html" class="business-primary-btn">Incorporar negocio</a></div>`; if (toggle) toggle.hidden = true; return; }
     container.innerHTML = businesses.map((business, index) => `<div class="business-list-entry ${index > 1 ? "business-list-extra" : ""}">${businessCard(business)}</div>`).join("");
-    if (toggle) {
-        const extra = businesses.length - 2;
-        toggle.hidden = extra <= 0;
-        toggle.dataset.expanded = "false";
-        toggle.innerHTML = `<span>Ver ${extra} ${extra === 1 ? "negocio más" : "negocios más"}</span><i class="fa-solid fa-chevron-down"></i>`;
-        toggle.onclick = () => {
-            const expanded = toggle.dataset.expanded === "true";
-            document.querySelectorAll(".business-list-extra").forEach(item => item.classList.toggle("visible", !expanded));
-            toggle.dataset.expanded = expanded ? "false" : "true";
-            toggle.innerHTML = expanded ? `<span>Ver ${extra} ${extra === 1 ? "negocio más" : "negocios más"}</span><i class="fa-solid fa-chevron-down"></i>` : `<span>Mostrar menos</span><i class="fa-solid fa-chevron-up"></i>`;
-        };
-    }
+    if (toggle) { const extra = businesses.length - 2; toggle.hidden = extra <= 0; toggle.dataset.expanded = "false"; toggle.innerHTML = `<span>Ver ${extra} ${extra === 1 ? "negocio más" : "negocios más"}</span><i class="fa-solid fa-chevron-down"></i>`; toggle.onclick = () => { const expanded = toggle.dataset.expanded === "true"; document.querySelectorAll(".business-list-extra").forEach(item => item.classList.toggle("visible", !expanded)); toggle.dataset.expanded = expanded ? "false" : "true"; toggle.innerHTML = expanded ? `<span>Ver ${extra} ${extra === 1 ? "negocio más" : "negocios más"}</span><i class="fa-solid fa-chevron-down"></i>` : `<span>Mostrar menos</span><i class="fa-solid fa-chevron-up"></i>`; }; }
 }
 function businessCard(business) {
-    const status = normalize(business.estado), isActive = status === "activo", isCorrection = status === "correccion";
-    const statusLabel = isActive ? "Publicado" : isCorrection ? "Requiere corrección" : "En proceso";
-    const statusClass = isActive ? "active" : isCorrection ? "correction" : "pending";
-    const location = [business.municipio, business.departamento].filter(Boolean).join(", ") || "Ubicación pendiente";
-    const expiration = business.fecha_vencimiento ? formatDate(business.fecha_vencimiento) : "Pendiente";
-    return `<article class="business-item-card"><div class="business-item-main"><div class="business-item-logo">${business.logo ? `<img src="${escapeAttr(business.logo)}" alt="${escapeAttr(business.nombre || "Negocio")}">` : `<i class="fa-solid fa-store"></i>`}</div><div class="business-item-info"><div class="business-item-heading"><div><h3>${escapeHtml(business.nombre || "Mi negocio")}</h3><span>${escapeHtml(business.categoria || "Negocio")}</span></div><span class="business-status ${statusClass}"><i class="fa-solid fa-circle"></i>${statusLabel}</span></div><p><i class="fa-solid fa-location-dot"></i> ${escapeHtml(location)}</p>${isActive ? `<small class="business-validity"><i class="fa-regular fa-calendar"></i> Vigencia hasta ${expiration}</small>` : ""}</div></div><div class="business-item-actions"><a href="#" class="business-outline-btn">Editar información</a>${isActive ? `<a href="#publicaciones" class="business-primary-small">Ver publicaciones <i class="fa-solid fa-arrow-right"></i></a>` : `<span class="business-process-note">La publicación estará disponible al completar el proceso.</span>`}</div></article>`;
+    const status = normalize(business.estado), isActive = status === "activo", isCorrection = status === "correccion"; const statusLabel = isActive ? "Publicado" : isCorrection ? "Requiere corrección" : "En proceso"; const statusClass = isActive ? "active" : isCorrection ? "correction" : "pending"; const location = [business.municipio, business.departamento].filter(Boolean).join(", ") || "Ubicación pendiente"; const expiration = business.fecha_vencimiento ? formatDate(business.fecha_vencimiento) : "Pendiente";
+    return `<article class="business-item-card"><div class="business-item-main"><div class="business-item-logo">${business.logo ? `<img src="${escapeAttr(business.logo)}" alt="${escapeAttr(business.nombre || "Negocio")}">` : `<i class="fa-solid fa-store"></i>`}</div><div class="business-item-info"><div class="business-item-heading"><div><h3>${escapeHtml(business.nombre || "Mi negocio")}</h3><span>${escapeHtml(business.categoria || "Negocio")}</span></div><span class="business-status ${statusClass}"><i class="fa-solid fa-circle"></i>${statusLabel}</span></div><p><i class="fa-solid fa-location-dot"></i> ${escapeHtml(location)}</p>${isActive ? `<small class="business-validity"><i class="fa-regular fa-calendar"></i> Vigencia hasta ${expiration}</small>` : ""}</div></div><div class="business-item-actions"><a href="#" class="business-outline-btn">Editar información</a>${isActive ? `<a href="#contenido-visual" class="business-primary-small">Ver publicaciones <i class="fa-solid fa-arrow-right"></i></a>` : `<span class="business-process-note">La publicación estará disponible al completar el proceso.</span>`}</div></article>`;
 }
 function renderError() { setText("businessTotal", "—"); setText("businessViewsSummary", "—"); setText("businessConversationsSummary", "—"); const container = document.getElementById("businessList"); if (container) container.innerHTML = `<div class="business-empty-state"><i class="fa-solid fa-triangle-exclamation"></i><strong>No pudimos cargar tus negocios</strong><span>Intenta nuevamente en unos momentos.</span></div>`; }
 function typeLabel(type) { const labels = { VENTA: "Venta", INTERCAMBIO: "Intercambio", BUSCO: "Busco", REGALO: "Regalo", RECOMENDACION: "Recomendación", OFERTA: "Oferta", EVENTO: "Evento" }; return labels[normalize(type).toUpperCase()] || "Publicación"; }
