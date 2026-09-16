@@ -15,88 +15,22 @@
     text-align:left;
     cursor:pointer;
 }
+.member-home .dashboard-menu .menu-more-toggle:hover{background:#F5F7FB}
+.member-home .dashboard-menu .menu-more-toggle i:first-child{width:18px;flex:0 0 18px;margin:0;text-align:center;color:#475569}
+.member-home .dashboard-menu .menu-more-toggle span{flex:1;min-width:0}
+.member-home .dashboard-menu .menu-more-toggle[aria-expanded="true"]{color:#233A72}
+.member-home .dashboard-menu .menu-more{padding-left:32px}
+.member-home .dashboard-menu .menu-more a{min-height:44px;padding:11px 14px;margin-bottom:4px}
 
-.member-home .dashboard-menu .menu-more-toggle:hover{
-    background:#F5F7FB;
-}
+#colegioOtro{width:100%;min-height:48px;padding:14px 16px!important;border:1px solid #DCE3EF!important;border-radius:12px!important;background:#FFFFFF!important;color:#233A72!important;font:inherit;font-size:.95rem;box-shadow:none!important;outline:none;-webkit-appearance:none;appearance:none}
+#colegioOtro:focus{border-color:#2F80ED!important;box-shadow:0 0 0 4px rgba(47,128,237,.12)!important}
+#colegioOtro:-webkit-autofill,#colegioOtro:-webkit-autofill:hover,#colegioOtro:-webkit-autofill:focus{-webkit-text-fill-color:#233A72;-webkit-box-shadow:0 0 0 1000px #FFFFFF inset!important}
+#colegio{width:100%;min-height:48px;padding:14px 42px 14px 16px;border:1px solid #DCE3EF;border-radius:12px;background:#FFFFFF;color:#233A72;font:inherit;font-size:.95rem;outline:none}
+#colegio:focus{border-color:#2F80ED;box-shadow:0 0 0 4px rgba(47,128,237,.12)}
+#colegio:invalid{color:#64748B}
+#colegioOtro[style*="display: none"]{display:none!important}
 
-.member-home .dashboard-menu .menu-more-toggle i:first-child{
-    width:18px;
-    flex:0 0 18px;
-    margin:0;
-    text-align:center;
-    color:#475569;
-}
-
-.member-home .dashboard-menu .menu-more-toggle span{
-    flex:1;
-    min-width:0;
-}
-
-.member-home .dashboard-menu .menu-more-toggle[aria-expanded="true"]{
-    color:#233A72;
-}
-
-.member-home .dashboard-menu .menu-more{
-    padding-left:32px;
-}
-
-.member-home .dashboard-menu .menu-more a{
-    min-height:44px;
-    padding:11px 14px;
-    margin-bottom:4px;
-}
-
-/* El campo para un colegio no listado mantiene exactamente el lenguaje visual del formulario. */
-#colegioOtro{
-    width:100%;
-    min-height:48px;
-    padding:14px 16px !important;
-    border:1px solid #DCE3EF !important;
-    border-radius:12px !important;
-    background:#FFFFFF !important;
-    color:#233A72 !important;
-    font:inherit;
-    font-size:.95rem;
-    box-shadow:none !important;
-    outline:none;
-    -webkit-appearance:none;
-    appearance:none;
-}
-
-#colegioOtro:focus{
-    border-color:#2F80ED !important;
-    box-shadow:0 0 0 4px rgba(47,128,237,.12) !important;
-}
-
-#colegioOtro:-webkit-autofill,
-#colegioOtro:-webkit-autofill:hover,
-#colegioOtro:-webkit-autofill:focus{
-    -webkit-text-fill-color:#233A72;
-    -webkit-box-shadow:0 0 0 1000px #FFFFFF inset !important;
-}
-
-/* El selector de colegio usa el mismo lenguaje visual que los demás campos. */
-#colegio{
-    width:100%;
-    min-height:48px;
-    padding:14px 42px 14px 16px;
-    border:1px solid #DCE3EF;
-    border-radius:12px;
-    background:#FFFFFF;
-    color:#233A72;
-    font:inherit;
-    font-size:.95rem;
-    outline:none;
-}
-
-#colegio:focus{
-    border-color:#2F80ED;
-    box-shadow:0 0 0 4px rgba(47,128,237,.12);
-}
-
-#colegio:invalid{
-    color:#64748B;
-}
-
-#colegioOtro[style*="display: none"]{ display:none !important; }
+/* Sistema de iconografía neXsv: Guardar = chincheta, no bookmark genérico. */
+.nexsv-save-icon{width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;color:#C58B00;font-size:.9rem}
+.nexsv-save-icon .fa-thumbtack{transform:rotate(-18deg)}
+.dashboard-saved-section .nexsv-save-icon{margin-right:8px;vertical-align:-1px}
