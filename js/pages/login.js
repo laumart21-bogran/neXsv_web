@@ -16,128 +16,90 @@ const loginMessage = document.getElementById("loginMessage");
 const togglePassword = document.getElementById("togglePassword");
 const togglePasswordIcon = document.getElementById("togglePasswordIcon");
 
-/**
- * Mostrar mensaje
- */
-function showMessage(message, type = "error") {
+function getReturnUrl() {
+    const value = new URLSearchParams(window.location.search).get("return");
+    if (!value) return "";
 
+    // Solo aceptamos rutas relativas internas para evitar open redirects.
+    if (/^https?:\/\//i.test(value) || value.startsWith("//")) return "";
+    return value;
+}
+
+function getPostLoginUrl() {
+    return getReturnUrl() || APP_CONFIG.routes.dashboard;
+}
+
+function syncRegisterLink() {
+    const registerLink = document.querySelector("a[href='registro.html']");
+    const returnUrl = getReturnUrl();
+    if (registerLink && returnUrl) {
+        registerLink.href = `registro.html?return=${encodeURIComponent(returnUrl)}`;
+    }
+}
+
+syncRegisterLink();
+
+function showMessage(message, type = "error") {
     loginMessage.textContent = message;
     loginMessage.className = type;
-
 }
 
-/**
- * Limpiar mensaje
- */
 function clearMessage() {
-
     loginMessage.textContent = "";
     loginMessage.className = "";
-
 }
 
-/**
- * Bloquear interfaz
- */
 function setLoading(isLoading) {
-
     loginButton.disabled = isLoading;
-
-    loginButton.textContent = isLoading
-        ? "Ingresando..."
-        : "Entrar";
-
+    loginButton.textContent = isLoading ? "Ingresando..." : "Entrar";
 }
 
-/**
- * Mostrar / ocultar contraseña
- */
 togglePassword.addEventListener("click", () => {
-
     const isPassword = passwordInput.type === "password";
-
-    passwordInput.type = isPassword
-        ? "text"
-        : "password";
-
+    passwordInput.type = isPassword ? "text" : "password";
     togglePasswordIcon.className = isPassword
         ? "fa-regular fa-eye-slash"
         : "fa-regular fa-eye";
-
 });
 
-/**
- * Login
- */
 form.addEventListener("submit", async (event) => {
-
     event.preventDefault();
-
     clearMessage();
 
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
     if (!email || !password) {
-
         showMessage("Completa todos los campos.");
-
         return;
-
     }
 
     try {
-
         setLoading(true);
 
-        const { error } = await AuthService.signIn(
-            email,
-            password
-        );
+        const { error } = await AuthService.signIn(email, password);
 
         if (error) {
-
             switch (error.message) {
-
                 case "Invalid login credentials":
-
                     showMessage("Correo o contraseña incorrectos.");
                     break;
-
                 case "Email not confirmed":
-
                     showMessage("Debes confirmar tu correo antes de ingresar.");
                     break;
-
                 default:
-
                     showMessage(error.message);
-
             }
-
             return;
-
         }
 
-        showMessage(
-            "Inicio de sesión exitoso.",
-            "success"
-        );
-
-        window.location.href = APP_CONFIG.routes.dashboard;
+        showMessage("Inicio de sesión exitoso.", "success");
+        window.location.href = getPostLoginUrl();
 
     } catch (error) {
-
         console.error(error);
-
-        showMessage(
-            "Ocurrió un error inesperado."
-        );
-
+        showMessage("Ocurrió un error inesperado.");
     } finally {
-
         setLoading(false);
-
     }
-
 });
