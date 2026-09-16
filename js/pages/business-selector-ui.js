@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const buildMenu = () => {
         if (!selector.options.length) return false;
         menu.innerHTML = Array.from(selector.options).map(option => {
-            const logo = findBusinessLogo(option.textContent);
+            const logo = findBusinessLogo(option.value);
             return `<button type="button" class="business-selector-option" role="option" data-business-id="${escapeAttr(option.value)}"><span class="business-selector-option-logo">${logo ? `<img src="${escapeAttr(logo)}" alt="">` : `<i class="fa-solid fa-store"></i>`}</span><span>${escapeHtml(option.textContent)}</span>${option.selected ? '<i class="fa-solid fa-check business-selector-check"></i>' : ''}</button>`;
         }).join("");
         triggerName.textContent = selector.options[selector.selectedIndex]?.textContent || "Mi negocio";
@@ -32,7 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
             option.querySelector(".business-selector-check")?.remove();
             if (active) option.insertAdjacentHTML("beforeend", '<i class="fa-solid fa-check business-selector-check"></i>');
         });
-        setBusinessLogo(findBusinessLogo(selected.textContent));
+        const business = findBusinessData(selected.value, selected.textContent);
+        setBusinessLogo(business?.logo || findBusinessLogo(selected.value));
+        setSidebarIdentity(business, selected.textContent);
     };
 
     const closeMenu = () => { menu.hidden = true; trigger.setAttribute("aria-expanded", "false"); };
@@ -49,30 +51,47 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(selector, { childList: true });
     if (buildMenu()) syncMenu();
 
-    const sidebarObserver = new MutationObserver(() => {
-        const sidebar = document.getElementById("businessSidebarIcon");
-        const selected = selector.options[selector.selectedIndex];
-        if (sidebar?.querySelector("img")?.alt?.startsWith("Foto de perfil") && selected) setBusinessLogo(findBusinessLogo(selected.textContent));
-    });
-    const sidebar = document.getElementById("businessSidebarIcon");
-    if (sidebar) sidebarObserver.observe(sidebar, { childList: true, attributes: true, attributeFilter: ["class"] });
-
-    function findBusinessLogo(name) {
-        const wanted = String(name || "").trim();
+    function findBusinessLogo(id) {
+        const card = document.querySelector(`.business-item-card[data-business-id="${CSS.escape(id)}"]`);
+        if (card?.querySelector(".business-item-logo img")?.src) return card.querySelector(".business-item-logo img").src;
         const cards = document.querySelectorAll(".business-item-card");
-        for (const card of cards) {
-            const title = card.querySelector(".business-item-heading h3")?.textContent?.trim();
-            if (title === wanted) return card.querySelector(".business-item-logo img")?.src || "";
+        const selectedName = selector.querySelector(`option[value="${CSS.escape(id)}"]`)?.textContent?.trim();
+        for (const item of cards) {
+            if (item.querySelector(".business-item-info h3")?.textContent?.trim() === selectedName) {
+                return item.querySelector(".business-item-logo img")?.src || "";
+            }
         }
         return "";
+    }
+
+    function findBusinessData(id, name) {
+        const cards = document.querySelectorAll(".business-item-card");
+        for (const card of cards) {
+            if (card.querySelector(".business-item-info h3")?.textContent?.trim() === String(name).trim()) {
+                return {
+                    logo: card.querySelector(".business-item-logo img")?.src || "",
+                    category: card.querySelector(".business-item-info .business-item-heading span")?.textContent?.trim() || "Negocio",
+                    location: card.querySelector(".business-item-info > p")?.textContent?.replace(/^\s*/, "").trim() || ""
+                };
+            }
+        }
+        return null;
+    }
+
+    function setSidebarIdentity(business, fallbackName) {
+        const name = business?.name || String(fallbackName || "Mi negocio").trim();
+        const nameElement = document.getElementById("businessSidebarName");
+        const categoryElement = document.getElementById("businessSidebarCategory");
+        const descriptionElement = document.getElementById("businessSidebarDescription");
+        if (nameElement) nameElement.textContent = name;
+        if (categoryElement) categoryElement.textContent = business?.category || "Negocio";
+        if (descriptionElement) descriptionElement.textContent = business?.location ? `Gestiona la presencia de este negocio en neXsv. · ${business.location}` : "Gestiona la presencia de este negocio en neXsv.";
     }
 
     function setBusinessLogo(logo) {
         [document.getElementById("businessSwitcherIcon"), document.getElementById("businessSidebarIcon")].forEach(container => {
             if (!container) return;
-            const current = container.querySelector("img");
-            if (current && logo && current.src === logo) return;
-            current?.remove();
+            container.querySelector("img")?.remove();
             container.classList.toggle("has-business-logo", Boolean(logo));
             if (logo) {
                 const img = document.createElement("img");
