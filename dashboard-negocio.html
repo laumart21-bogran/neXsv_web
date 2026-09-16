@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/dashboard-business-layout.css?v=20260914-1">
     <link rel="stylesheet" href="css/nexsv-ux-system.css?v=20260915-3">
     <link rel="stylesheet" href="css/dashboard-responsive.css">
-    <link rel="stylesheet" href="css/dashboard-negocio-enhanced.css?v=20260916-3">
+    <link rel="stylesheet" href="css/dashboard-negocio-enhanced.css?v=20260916-4">
 </head>
 <body>
 <header class="business-topbar">
@@ -28,10 +28,13 @@
 
 <main class="business-dashboard">
     <aside class="business-sidebar">
-        <div class="business-sidebar-card">
+        <div class="business-sidebar-card" id="selectedBusinessCard">
             <div class="business-sidebar-icon" id="businessSidebarIcon"><i class="fa-solid fa-store"></i></div>
-            <h2>Mis negocios</h2>
-            <p>Administra tu presencia y descubre cómo está funcionando.</p>
+            <span class="business-sidebar-kicker">Gestionando</span>
+            <h2 id="businessSidebarName">Mi negocio</h2>
+            <strong class="business-sidebar-category" id="businessSidebarCategory">Negocio</strong>
+            <p id="businessSidebarDescription">Selecciona un negocio para administrar su presencia en neXsv.</p>
+            <button type="button" class="business-sidebar-edit" id="businessSidebarEdit"><i class="fa-regular fa-pen-to-square"></i> Editar perfil del negocio</button>
         </div>
         <nav class="business-menu" aria-label="Gestión de negocios">
             <a href="dashboard-negocio.html" class="active"><i class="fa-solid fa-house"></i>Inicio</a>
@@ -67,7 +70,6 @@
                         <span id="businessSelectorTriggerName">Mi negocio</span><i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div id="businessSelectorMenu" class="business-selector-menu" role="listbox" hidden></div>
-                    <select id="businessSelector" class="business-selector-native" aria-label="Seleccionar negocio"></select>
                 </div>
             </div>
         </section>
