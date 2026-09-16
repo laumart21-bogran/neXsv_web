@@ -95,13 +95,6 @@ function subscribeDashboardRealtime() {
         .subscribe();
 }
 
-function businessCard(business) {
-    const status = String(business.estado || "").toUpperCase();
-    const label = status === "ACTIVO" ? "Publicado" : status === "PENDIENTE" ? "En proceso" : (business.estado || "En proceso");
-    const businessUrl = `dashboard-negocio.html?business=${encodeURIComponent(business.id)}`;
-    return `<article class="business-slide"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><span class="business-slide-status">${escapeHtml(label)}</span><strong>${escapeHtml(business.nombre || "Mi negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio")}${business.municipio ? ` · ${escapeHtml(business.municipio)}` : ""}</small></div><a href="${businessUrl}" class="business-slide-link">Administrar <i class="fa-solid fa-arrow-right"></i></a></article>`;
-}
-
 async function loadBusinesses() {
     const { data, error } = await BusinessService.getBusinessesByOwner(currentUser.id);
     if (error) { console.warn("No pudimos cargar los negocios del miembro:", error); return; }
@@ -111,16 +104,17 @@ async function loadBusinesses() {
     const spaceAction = document.getElementById("spaceBusinessAction");
     const spaceTitle = document.getElementById("spaceBusinessTitle");
     const spaceText = document.getElementById("spaceBusinessText");
+    if (!spaceAction) return;
     if (memberBusinesses.length) {
         if (sidebarLink) sidebarLink.hidden = false;
-        if (spaceAction) spaceAction.href = `dashboard-negocio.html?business=${encodeURIComponent(memberBusinesses[0].id)}`;
+        spaceAction.href = `dashboard-negocio.html?business=${encodeURIComponent(memberBusinesses[0].id)}`;
         if (spaceTitle) spaceTitle.textContent = "Mis negocios";
         if (spaceText) spaceText.textContent = memberBusinesses.length === 1 ? "Administra tu negocio dentro de neXsv." : `Administra tus ${memberBusinesses.length} negocios dentro de neXsv.`;
     } else {
         if (sidebarLink) sidebarLink.hidden = true;
-        if (spaceAction) spaceAction.href = "incorporar-negocio.html";
-        if (spaceTitle) spaceTitle.textContent = "Tengo un negocio";
-        if (spaceText) spaceText.textContent = "Incorpora tu negocio y forma parte de neXsv.";
+        spaceAction.href = "incorporar-negocio.html";
+        if (spaceTitle) spaceTitle.textContent = "¿Tienes un negocio?";
+        if (spaceText) spaceText.textContent = "Si tienes un negocio, adminístralo en neXsv.";
     }
 }
 
