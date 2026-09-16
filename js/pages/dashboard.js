@@ -128,7 +128,7 @@ function initializeBusinessPublishSelector(businesses) {
 
 function publicationCard(publication, compact = false, showMetrics = false) {
     const image = publication.images?.[0]?.public_url;
-    const metrics = showMetrics ? `<div class="dashboard-publication-metrics"><span><i class="fa-regular fa-eye"></i> <b data-metric="views">—</b> vistas</span><a href="comunidad.html?publicacion=${encodeURIComponent(publication.id)}#comentarios"><i class="fa-regular fa-comments"></i> <b data-metric="comments">—</b> comentarios</a><a href="mensajes.html?publication=${encodeURIComponent(publication.id)}"><i class="fa-regular fa-paper-plane"></i> <b data-metric="conversations">—</b> conversaciones</a></div>` : "";
+    const metrics = showMetrics ? `<div class="dashboard-publication-metrics"><span><i class="fa-regular fa-eye"></i> <b data-metric="views">—</b> vistas</span><a href="comunidad.html?publicacion=${encodeURIComponent(publication.id)}#comentarios"><i class="fa-regular fa-message"></i> <b data-metric="comments">—</b> comentarios</a><a href="mensajes.html?publication=${encodeURIComponent(publication.id)}"><i class="fa-regular fa-comments"></i> <b data-metric="conversations">—</b> conversaciones</a></div>` : "";
     return `<article class="dashboard-publication-card ${compact ? "compact" : ""}" data-publication-id="${escapeHtml(publication.id)}">${image ? `<img src="${escapeHtml(image)}" alt="Imagen de publicación" loading="lazy">` : `<div class="dashboard-publication-placeholder"><i class="fa-regular fa-image"></i></div>`}<div class="dashboard-publication-copy"><span class="dashboard-publication-type">${escapeHtml(TYPE_LABELS[publication.type] || publication.type)}</span>${publication.title ? `<strong>${escapeHtml(publication.title)}</strong>` : ""}<p>${escapeHtml(publication.body)}</p><small>${escapeHtml(formatDate(publication.created_at))}</small>${metrics}</div></article>`;
 }
 
@@ -221,4 +221,3 @@ async function initialize() {
 }
 
 document.addEventListener("DOMContentLoaded", initialize);
-window.addEventListener("beforeunload", () => { if (dashboardChannel) supabase.removeChannel(dashboardChannel); });
