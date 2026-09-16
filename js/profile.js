@@ -13,13 +13,8 @@ function setAvatar(photo, name) {
     pairs.forEach(([imageId, initialsId]) => {
         const image = document.getElementById(imageId);
         const fallback = document.getElementById(initialsId);
-        if (photo) {
-            if (image) { image.src = photo; image.style.display = "block"; }
-            if (fallback) fallback.style.display = "none";
-        } else {
-            if (image) image.style.display = "none";
-            if (fallback) { fallback.textContent = initials(name); fallback.style.display = "block"; }
-        }
+        if (photo) { if (image) { image.src = photo; image.style.display = "block"; } if (fallback) fallback.style.display = "none"; }
+        else { if (image) image.style.display = "none"; if (fallback) { fallback.textContent = initials(name); fallback.style.display = "block"; } }
     });
     const profileImage = document.getElementById("profilePreview");
     const profileInitials = document.getElementById("profileInitials");
@@ -39,13 +34,8 @@ function updateProgress(profile) {
     const text = document.getElementById("profileProgressText");
     if (fill) fill.style.width = `${percent}%`;
     if (value) value.textContent = `${percent}%`;
-    if (percent === 100) {
-        if (title) title.textContent = "Perfil completo ✓";
-        if (text) text.textContent = "Tu información está completa para tu experiencia en neXsv.";
-    } else {
-        if (title) title.textContent = "Completa tu perfil";
-        if (text) text.textContent = `Has completado el ${percent}% de tu perfil.`;
-    }
+    if (percent === 100) { if (title) title.textContent = "Perfil completo ✓"; if (text) text.textContent = "Tu información está completa para tu experiencia en neXsv."; }
+    else { if (title) title.textContent = "Completa tu perfil"; if (text) text.textContent = `Has completado el ${percent}% de tu perfil.`; }
 }
 
 function initializeMoreMenu() {
@@ -66,29 +56,38 @@ function initializeMoreMenu() {
 function bindBusinessVisibility() {
     const link = document.getElementById("sidebarMyBusinesses");
     if (!link || !currentUser) return;
-    profileService.getProfile(currentUser.id).then(() => supabase.from("businesses").select("id", { count: "exact", head: true }).eq("owner_id", currentUser.id)).then(({ count, error }) => {
-        if (!error) link.hidden = !(Number(count) > 0);
-    }).catch(() => { link.hidden = true; });
+    supabase.from("businesses").select("id", { count: "exact", head: true }).eq("owner_id", currentUser.id).then(({ count, error }) => { if (!error) link.hidden = !(Number(count) > 0); }).catch(() => { link.hidden = true; });
+}
+
+function updateOtherSchoolVisibility() {
+    const select = document.getElementById("colegio");
+    const other = document.getElementById("colegioOtro");
+    if (!select || !other) return;
+    const isOther = select.value === "Otro";
+    other.style.display = isOther ? "block" : "none";
+    other.required = isOther;
+    if (!isOther) other.value = "";
 }
 
 async function loadProfile() {
     const { data: { user } } = await supabase.auth.getUser();
     currentUser = user;
     if (!user) { window.location.href = "acceso/login-usuario.html"; return; }
-
     let { data: perfil, error } = await profileService.getProfile(user.id);
-    if (error) {
-        const nuevo = await profileService.createProfile({ authUserId: user.id, nombre: "", apellido: "" });
-        perfil = nuevo.data;
-    }
+    if (error) { const nuevo = await profileService.createProfile({ authUserId: user.id, nombre: "", apellido: "" }); perfil = nuevo.data; }
     currentProfile = perfil || {};
-
     const nombreCompleto = `${currentProfile.nombre ?? ""} ${currentProfile.apellido ?? ""}`.trim() || user.user_metadata?.full_name || user.user_metadata?.name || "Miembro";
     document.getElementById("nombre").value = nombreCompleto;
     document.getElementById("correo").value = user.email ?? "";
     document.getElementById("telefono").value = currentProfile.telefono ?? "";
     document.getElementById("ciudad").value = currentProfile.ciudad ?? "";
-    document.getElementById("colegio").value = currentProfile.colegio ?? "";
+    const schoolSelect = document.getElementById("colegio");
+    const schoolOther = document.getElementById("colegioOtro");
+    const storedSchool = currentProfile.colegio ?? "";
+    const knownSchools = Array.from(schoolSelect?.options || []).map(option => option.value);
+    if (schoolSelect) schoolSelect.value = knownSchools.includes(storedSchool) ? storedSchool : (storedSchool ? "Otro" : "");
+    if (schoolOther) schoolOther.value = storedSchool && !knownSchools.includes(storedSchool) ? storedSchool : "";
+    updateOtherSchoolVisibility();
     document.getElementById("topUserName").textContent = nombreCompleto;
     document.getElementById("memberName").textContent = nombreCompleto;
     document.getElementById("memberEmail").textContent = user.email ?? "";
@@ -99,6 +98,7 @@ async function loadProfile() {
 
 document.addEventListener("DOMContentLoaded", async () => {
     initializeMoreMenu();
+    document.getElementById("colegio")?.addEventListener("change", updateOtherSchoolVisibility);
     await loadProfile();
 
     document.getElementById("profileForm")?.addEventListener("submit", async event => {
@@ -110,12 +110,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         const apellido = partes.join(" ");
         const telefono = document.getElementById("telefono").value.trim();
         const ciudad = document.getElementById("ciudad").value.trim();
-        const colegio = document.getElementById("colegio").value;
+        const select = document.getElementById("colegio");
+        const other = document.getElementById("colegioOtro");
+        const colegio = select.value === "Otro" ? other.value.trim() : select.value;
+        if (select.value === "Otro" && !colegio) { if (message) message.textContent = "Escribe el nombre de tu colegio."; other.focus(); return; }
         const resultado = await profileService.updateProfile(currentUser.id, { nombre, apellido, telefono, ciudad, colegio });
-        if (resultado.error) {
-            if (message) message.textContent = "No se pudieron guardar los cambios.";
-            return;
-        }
+        if (resultado.error) { if (message) message.textContent = "No se pudieron guardar los cambios."; return; }
         currentProfile = { ...currentProfile, ...resultado.data };
         const nombreActualizado = `${nombre} ${apellido}`.trim() || "Miembro";
         document.getElementById("topUserName").textContent = nombreActualizado;
@@ -139,9 +139,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const nombre = `${currentProfile.nombre ?? ""} ${currentProfile.apellido ?? ""}`.trim() || "Miembro";
             setAvatar(url, nombre);
             updateProgress(currentProfile);
-        } catch (error) {
-            console.error("Error al subir fotografía:", error);
-            alert("No se pudo subir la fotografía.");
-        }
+        } catch (error) { console.error("Error al subir fotografía:", error); alert("No se pudo subir la fotografía."); }
     });
 });
