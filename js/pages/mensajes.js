@@ -23,6 +23,12 @@ let activeConversationId = null;
 let activeChannel = null;
 const profileCache = new Map();
 
+function initializePlatformLogo() {
+    document.querySelectorAll(".dashboard-logo, .messages-logo, .nex-logo, .logo-link").forEach(logo => {
+        logo.setAttribute("href", "index.html");
+    });
+}
+
 function escapeHtml(value) {
     return String(value ?? "")
         .replaceAll("&", "&amp;")
@@ -306,6 +312,7 @@ function chatHeaderBackHandler() {
 
 async function initialize() {
     try {
+        initializePlatformLogo();
         await AuthSession.initialize();
         currentUser = AuthSession.getCurrentUser();
 
