@@ -30,8 +30,13 @@ class CommunityService {
     }
 
     async getComments(publicationId, limit = 50) {
-        const { data, error } = await supabase.from("community_publication_comments").select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
-        return { data: data || [], error };
+        const withReplies = await supabase.from("community_publication_comments").select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
+        if (!withReplies.error) return { data: withReplies.data || [], error: null };
+
+        // Compatibilidad con instalaciones donde aún no se ejecutó la migración de respuestas.
+        const withoutReplies = await supabase.from("community_publication_comments").select("id, publication_id, author_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
+        if (withoutReplies.error) return { data: [], error: withoutReplies.error };
+        return { data: (withoutReplies.data || []).map(comment => ({ ...comment, parent_id: null })), error: null };
     }
 
     async getCommentCounts(publicationIds = []) {
