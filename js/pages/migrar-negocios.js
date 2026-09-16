@@ -1,7 +1,7 @@
 import AuthService from "../auth/auth.service.js";
 import { supabase } from "../core/supabase-client.js";
 
-const LEGACY_URL = "https://script.google.com/macros/s/AKfycbxzXObZPIXrJO3n4I1-zoDOx40ftAVYLKyl_4M_GrTq95RZfhcZ4iMrN/exec";
+const LEGACY_URL = "https://script.google.com/macros/s/AKfycbzBJjz-YlrDG6qQQNiPzixOhaKwgtLux29H3T_9gcvvIJeHKaYhT-nsWwwKu7jcdUd/exec";
 const CHUNK_SIZE = 25;
 
 const button = document.getElementById("btnMigrar");
