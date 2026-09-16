@@ -4,6 +4,12 @@ import profileService from "./services/profile.service.js";
 let currentUser = null;
 let currentProfile = null;
 
+function initializePlatformLogo() {
+    document.querySelectorAll(".dashboard-logo, .messages-logo, .nex-logo, .logo-link").forEach(logo => {
+        logo.setAttribute("href", "index.html");
+    });
+}
+
 function initials(name = "Miembro") {
     return String(name).trim().split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]?.toUpperCase()).join("") || "M";
 }
@@ -97,6 +103,7 @@ async function loadProfile() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    initializePlatformLogo();
     initializeMoreMenu();
     document.getElementById("colegio")?.addEventListener("change", updateOtherSchoolVisibility);
     await loadProfile();
