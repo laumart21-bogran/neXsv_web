@@ -15,11 +15,12 @@ function setStatus(message, type = "") {
 
 function loadLegacyBusinesses() {
     return new Promise((resolve, reject) => {
-        const callbackName = `nexsvLegacyCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+        const callbackName = `nexsvLegacyCallback_${Date.now()}`;
         const script = document.createElement("script");
+        let finished = false;
+
         const timeout = setTimeout(() => {
-            cleanup();
-            reject(new Error("Tiempo de espera agotado al consultar la fuente histórica."));
+            fail(new Error("Tiempo de espera agotado al consultar la fuente histórica."));
         }, JSONP_TIMEOUT);
 
         function cleanup() {
@@ -28,17 +29,26 @@ function loadLegacyBusinesses() {
             script.remove();
         }
 
+        function fail(error) {
+            if (finished) return;
+            finished = true;
+            cleanup();
+            reject(error);
+        }
+
         window[callbackName] = (payload) => {
+            if (finished) return;
+            finished = true;
             cleanup();
             resolve(payload);
         };
 
         script.onerror = () => {
-            cleanup();
-            reject(new Error("No se pudo cargar la fuente histórica de negocios."));
+            fail(new Error("El App Web de Google Apps Script respondió con un error al cargar JSONP."));
         };
 
-        script.src = `${LEGACY_URL}?callback=${encodeURIComponent(callbackName)}`;
+        // Apps Script documenta JSONP usando el parámetro "prefix".
+        script.src = `${LEGACY_URL}?prefix=${encodeURIComponent(callbackName)}`;
         document.head.appendChild(script);
     });
 }
@@ -62,14 +72,12 @@ async function migrate() {
     } catch (error) {
         console.error("Error leyendo fuente histórica:", error);
         setStatus(
-            "No se pudo conectar con la fuente histórica de negocios. Revisa que la implementación del Apps Script esté activa.",
+            "No se pudo cargar la fuente histórica. La implementación de Apps Script responde directamente, pero el modo JSONP no está llegando correctamente al navegador.",
             "error"
         );
         button.disabled = false;
         return;
     }
-
-    const businesses = Array.isArray(payload?.negocios) ? payload.negocios : [];
 
     if (payload?.error) {
         console.error("Error de Apps Script:", payload);
@@ -77,6 +85,8 @@ async function migrate() {
         button.disabled = false;
         return;
     }
+
+    const businesses = Array.isArray(payload?.negocios) ? payload.negocios : [];
 
     if (!businesses.length) {
         setStatus("La fuente histórica no devolvió negocios. No se modificó Supabase.", "error");
