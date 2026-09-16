@@ -1,4 +1,5 @@
 import BusinessService from "../services/business.service.js";
+import AuthService from "../auth/auth.service.js";
 
 const state = {
     businesses: [],
@@ -11,7 +12,7 @@ function escapeHtml(value) {
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
+        .replace(/\"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
 
@@ -23,6 +24,21 @@ function normalizeCategory(value) {
         .toLowerCase();
 }
 
+function buildBusinessUrl(id, action = "") {
+    const url = `negocio.html?id=${encodeURIComponent(id)}`;
+    return action ? `${url}&action=${encodeURIComponent(action)}` : url;
+}
+
+function redirectToLogin(id, action) {
+    const returnUrl = buildBusinessUrl(id, action);
+    window.location.href = `acceso/login-usuario.html?return=${encodeURIComponent(returnUrl)}`;
+}
+
+async function isAuthenticated() {
+    const { data } = await AuthService.getSession();
+    return Boolean(data?.session);
+}
+
 function renderBusinesses() {
     const container = document.getElementById("contenedor");
     if (!container) return;
@@ -31,9 +47,8 @@ function renderBusinesses() {
     const selectedCategory = normalizeCategory(state.category);
 
     const filtered = state.businesses.filter((business) => {
-        const matchesCategory =
-            selectedCategory === "todos" ||
-            normalizeCategory(business.categoria) === selectedCategory;
+        const matchesCategory = selectedCategory === "todos"
+            || normalizeCategory(business.categoria) === selectedCategory;
 
         const haystack = [business.nombre, business.categoria, business.descripcion]
             .join(" ")
@@ -82,28 +97,33 @@ function renderBusinesses() {
                     <p>${description}</p>
 
                     <div class="nex-public-business-actions">
-                        <button type="button" class="btn btn-w nex-gated-action" data-gated-action="whatsapp" data-business-id="${id}">
-                            WhatsApp
-                        </button>
-                        <button type="button" class="btn btn-v nex-gated-action" data-gated-action="detail" data-business-id="${id}">
-                            Ver más
-                        </button>
-                        <button type="button" class="btn btn-share nex-gated-action" data-gated-action="share" data-business-id="${id}">
-                            Compartir
-                        </button>
+                        <button type="button" class="btn btn-w nex-business-action" data-action="whatsapp" data-business-id="${id}">WhatsApp</button>
+                        <button type="button" class="btn btn-v nex-business-action" data-action="detail" data-business-id="${id}">Ver más</button>
+                        <button type="button" class="btn btn-share nex-business-action" data-action="share" data-business-id="${id}">Compartir</button>
                     </div>
 
-                    <button type="button" class="btn-map nex-gated-action" data-gated-action="location" data-business-id="${id}">
+                    <button type="button" class="btn-map nex-business-action" data-action="location" data-business-id="${id}">
                         <i class="fa-solid fa-location-dot"></i> Cómo llegar
                     </button>
                 </div>
             </article>
         `;
     }).join("");
+
+    bindBusinessActions();
 }
 
 function setCategory(category, button) {
-    state.category = category || "Todos";
+    const nextCategory = category || "Todos";
+    state.category = nextCategory;
+
+    if (normalizeCategory(nextCategory) === "todos") {
+        // "Todos" siempre limpia cualquier filtro anterior.
+        state.category = "Todos";
+        state.search = "";
+        const input = document.getElementById("buscador");
+        if (input) input.value = "";
+    }
 
     document.querySelectorAll(".categorias button").forEach((item) => {
         item.classList.remove("activo");
@@ -125,9 +145,51 @@ function toggleMoreCategories(button) {
     if (!more) return;
 
     const isOpen = more.classList.toggle("mostrar");
-    if (button) {
-        button.classList.toggle("activo", isOpen);
+    if (button) button.classList.toggle("activo", isOpen);
+}
+
+async function handleBusinessAction(action, businessId) {
+    if (!businessId) return;
+
+    if (action === "share") {
+        const url = new URL(`negocio.html?id=${encodeURIComponent(businessId)}`, window.location.href).href;
+        const shareData = {
+            title: "Negocio en neXsv",
+            text: "Conoce este negocio dentro de neXsv.",
+            url
+        };
+
+        if (navigator.share) {
+            try { await navigator.share(shareData); } catch (_) {}
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(url);
+            alert("Enlace del negocio copiado.");
+        } catch (_) {
+            window.prompt("Copia este enlace:", url);
+        }
+        return;
     }
+
+    const authenticated = await isAuthenticated();
+    if (!authenticated) {
+        redirectToLogin(businessId, action);
+        return;
+    }
+
+    window.location.href = buildBusinessUrl(businessId, action === "detail" ? "" : action);
+}
+
+function bindBusinessActions() {
+    document.querySelectorAll(".nex-business-action").forEach((button) => {
+        if (button.dataset.actionBound === "true") return;
+        button.dataset.actionBound = "true";
+        button.addEventListener("click", () => {
+            handleBusinessAction(button.dataset.action, button.dataset.businessId);
+        });
+    });
 }
 
 // Compatibilidad con cualquier llamada externa existente.
@@ -139,8 +201,6 @@ function bindDirectoryControls() {
     document.querySelectorAll(".categorias button").forEach((button) => {
         if (button.dataset.directoryBound === "true") return;
         button.dataset.directoryBound = "true";
-
-        // Evitamos que los onclick antiguos de negocios.html llamen a otra lógica.
         button.removeAttribute("onclick");
 
         const text = button.textContent.trim();
@@ -195,7 +255,7 @@ function injectDirectoryStyles() {
         .nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px;}
         .nex-public-business-actions .btn{border:0;}
         .nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none;}
-        .nex-gated-action{cursor:pointer;}
+        .nex-business-action{cursor:pointer;}
         .nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px;}
         .directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B;}
         .directory-empty strong{color:#233A72;font-size:16px;}
