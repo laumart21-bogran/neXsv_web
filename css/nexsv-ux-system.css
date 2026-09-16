@@ -25,11 +25,16 @@ body{background:var(--nx-bg);color:var(--nx-text);font-family:Montserrat,Inter,s
 .member-home .community-type:hover,.member-home .community-type.active{border-color:#F2D98B!important;background:#FFF8DF!important;color:#9A6A00!important}
 .member-home .activity-hub-icon.publication,.member-home .activity-hub-icon.review{background:#F1F5FF!important;color:var(--nx-blue)!important}
 .member-home .activity-hub-icon.message{background:#F1F5FF!important;color:var(--nx-blue)!important}
-.member-home .activity-hub-icon.saved{background:#FFF8DF!important;color:#9A6A00!important}
+.member-home .activity-hub-icon.saved{background:#F1F5FF!important;color:var(--nx-blue)!important}
+.member-home .nexsv-save-icon{color:var(--nx-blue)!important}
 .member-home .dashboard-publication-type{background:#F1F5FF!important;color:var(--nx-blue)!important}
 .member-home .dashboard-inline-composer{background:#FAFBFC;border-color:var(--nx-border)}
 .member-home .community-publish{background:var(--nx-yellow)!important;color:#1D2A3A!important;border:1px solid #E6B82D!important;box-shadow:0 6px 16px rgba(245,197,66,.18)}
 .member-home .community-publish:hover{background:var(--nx-yellow-strong)!important}
+.member-home .dashboard-publication-metrics i{color:var(--nx-blue)!important}
+.member-home .dashboard-publication-metrics [data-metric="views"]{color:var(--nx-blue)!important}
+.member-home .dashboard-publication-metrics [data-metric="comments"]{color:var(--nx-blue)!important}
+.member-home .dashboard-publication-metrics [data-metric="conversations"]{color:var(--nx-blue)!important}
 .business-summary-card,.business-section,.business-welcome{border-radius:20px}
 .business-summary-card .summary-icon{background:#F1F5FF;color:var(--nx-blue)}
 .business-summary-card:nth-child(2) .summary-icon{background:#F1F5FF;color:var(--nx-blue)}
