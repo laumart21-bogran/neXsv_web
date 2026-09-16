@@ -16,11 +16,13 @@
     cursor:pointer;
 }
 .member-home .dashboard-menu .menu-more-toggle:hover{background:#F5F7FB}
-.member-home .dashboard-menu .menu-more-toggle i:first-child{width:18px;flex:0 0 18px;margin:0;text-align:center;color:#475569}
+.member-home .dashboard-menu .menu-more-toggle i:first-child{width:18px;flex:0 0 18px;margin:0;text-align:center;color:#3155B6!important}
 .member-home .dashboard-menu .menu-more-toggle span{flex:1;min-width:0}
 .member-home .dashboard-menu .menu-more-toggle[aria-expanded="true"]{color:#233A72}
 .member-home .dashboard-menu .menu-more{padding-left:32px}
 .member-home .dashboard-menu .menu-more a{min-height:44px;padding:11px 14px;margin-bottom:4px}
+.member-home .dashboard-menu a i{color:#3155B6!important}
+.member-home .dashboard-menu a.active i{color:#3155B6!important}
 
 #colegioOtro{width:100%;min-height:48px;padding:14px 16px!important;border:1px solid #DCE3EF!important;border-radius:12px!important;background:#FFFFFF!important;color:#233A72!important;font:inherit;font-size:.95rem;box-shadow:none!important;outline:none;-webkit-appearance:none;appearance:none}
 #colegioOtro:focus{border-color:#2F80ED!important;box-shadow:0 0 0 4px rgba(47,128,237,.12)!important}
