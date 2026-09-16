@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="css/dashboard-business-layout.css?v=20260914-1">
     <link rel="stylesheet" href="css/nexsv-ux-system.css?v=20260915-3">
     <link rel="stylesheet" href="css/dashboard-responsive.css">
-    <link rel="stylesheet" href="css/dashboard-negocio-enhanced.css?v=20260916-2">
+    <link rel="stylesheet" href="css/dashboard-negocio-enhanced.css?v=20260916-3">
 </head>
 <body>
 <header class="business-topbar">
@@ -29,7 +29,7 @@
 <main class="business-dashboard">
     <aside class="business-sidebar">
         <div class="business-sidebar-card">
-            <div class="business-sidebar-icon"><i class="fa-regular fa-building"></i></div>
+            <div class="business-sidebar-icon" id="businessSidebarIcon"><i class="fa-solid fa-store"></i></div>
             <h2>Mis negocios</h2>
             <p>Administra tu presencia y descubre cómo está funcionando.</p>
         </div>
@@ -55,14 +55,19 @@
         </section>
 
         <section class="business-switcher" aria-label="Negocio seleccionado">
-            <div class="business-switcher-icon"><i class="fa-solid fa-store"></i></div>
+            <div class="business-switcher-icon" id="businessSwitcherIcon"><i class="fa-solid fa-store"></i></div>
             <div class="business-switcher-copy">
                 <span>Gestionando</span>
                 <strong id="businessSwitcherName">Mi negocio</strong>
             </div>
             <div class="business-switcher-control" id="businessSelectorRow" hidden>
-                <label for="businessSelector">Cambiar negocio</label>
-                <select id="businessSelector" aria-label="Seleccionar negocio"></select>
+                <label for="businessSelectorTrigger">Cambiar negocio</label>
+                <div class="business-selector-custom">
+                    <button type="button" id="businessSelectorTrigger" class="business-selector-trigger" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="businessSelectorTriggerName">Mi negocio</span><i class="fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div id="businessSelectorMenu" class="business-selector-menu" role="listbox" hidden></div>
+                </div>
             </div>
         </section>
 
@@ -123,7 +128,7 @@
                 <div id="communityPublications" class="business-publication-slider" aria-live="polite"></div>
                 <button type="button" class="business-slider-arrow" data-slider-target="communityPublications" data-slider-direction="next" aria-label="Más publicaciones de la comunidad"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-            <div id="communityPublicationsEmpty" class="business-empty-state business-publications-empty"><i class="fa-regular fa-users"></i><strong>Aún no hay publicaciones para mostrar</strong><span>Cuando haya contenido relevante de la comunidad, aparecerá aquí.</span></div>
+            <div id="communityPublicationsEmpty" class="business-empty-state business-publications-empty"><i class="fa-solid fa-users"></i><strong>Aún no hay publicaciones para mostrar</strong><span>Cuando haya contenido relevante de la comunidad, aparecerá aquí.</span></div>
         </section>
 
         <section class="business-section" id="oportunidades">
@@ -159,14 +164,15 @@
         </section>
 
         <section class="business-section" id="aprende">
-            <div class="business-section-title"><div><span class="section-kicker">Próximo paso</span><h2>Aprende a hacer crecer tu negocio</h2><p>Contenido práctico para convertir visibilidad en mejores decisiones.</p></div></div>
-            <div class="business-learning-strip"><article><span>📚</span><strong>Cómo conseguir más visibilidad</strong><small>Próximamente</small></article><article><span>💬</span><strong>Cómo convertir interés en conversación</strong><small>Próximamente</small></article><article><span>📈</span><strong>Cómo leer tus resultados</strong><small>Próximamente</small></article></div>
+            <div class="business-section-title"><div><span class="section-kicker">Aprende</span><h2>Pequeñas acciones para mejorar tu presencia</h2><p>Contenido práctico para sacar más provecho de tu espacio de negocio.</p></div></div>
+            <div class="business-learning-grid">
+                <article class="business-learning-card"><span class="learning-icon blue"><i class="fa-solid fa-bullhorn"></i></span><div><strong>Publica con intención</strong><p>Comparte contenido útil y relevante para las personas que buscas alcanzar.</p></div></article>
+                <article class="business-learning-card"><span class="learning-icon yellow"><i class="fa-solid fa-image"></i></span><div><strong>Cuida tu presencia visual</strong><p>Usa fotografías y material claro para que tu negocio sea reconocible.</p></div></article>
+                <article class="business-learning-card"><span class="learning-icon green"><i class="fa-solid fa-comments"></i></span><div><strong>Responde y conversa</strong><p>Las conversaciones son parte del recorrido de confianza dentro de neXsv.</p></div></article>
+            </div>
         </section>
     </section>
 </main>
-
-<script>const requestedBusinessId=new URLSearchParams(window.location.search).get("business");if(requestedBusinessId)sessionStorage.setItem("nexsv_selected_business_id",requestedBusinessId);</script>
-<script type="module" src="js/app.js"></script>
-<script type="module" src="js/pages/dashboard-negocio.js?v=20260916-5"></script>
+<script type="module" src="js/pages/dashboard-negocio.js"></script>
 </body>
 </html>
