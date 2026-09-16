@@ -26,6 +26,32 @@ function renderAvatar(photo, nombre) {
     });
 }
 
+function updateProfileProgress(profile) {
+    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.colegio, profile?.foto];
+    const completed = fields.filter(value => String(value ?? "").trim()).length;
+    const percent = Math.round((completed / fields.length) * 100);
+    const card = document.getElementById("profileProgress");
+    const fill = document.getElementById("profileProgressFill");
+    const value = document.getElementById("profileProgressValue");
+    const title = document.getElementById("profileProgressTitle");
+    const text = document.getElementById("profileProgressText");
+    const link = document.getElementById("profileProgressLink");
+    if (!card || !fill || !value) return;
+    fill.style.width = `${percent}%`;
+    value.textContent = `${percent}%`;
+    if (percent >= 100) {
+        card.classList.add("complete");
+        if (title) title.textContent = "Perfil completo";
+        if (text) text.textContent = "Tu información está lista para acompañarte dentro de neXsv.";
+        if (link) { link.textContent = "Ver mi perfil "; link.insertAdjacentHTML("beforeend", '<i class="fa-solid fa-arrow-right"></i>'); }
+    } else {
+        card.classList.remove("complete");
+        if (title) title.textContent = "Completa tu perfil";
+        if (text) text.textContent = `Has completado el ${percent}% de tu perfil. Agrega algunos datos para aprovechar mejor neXsv.`;
+        if (link) { link.textContent = "Completar perfil "; link.insertAdjacentHTML("beforeend", '<i class="fa-solid fa-arrow-right"></i>'); }
+    }
+}
+
 function initializeMoreMenu() {
     const toggle = document.querySelector(".menu-more-toggle");
     const menu = document.getElementById("memberMoreMenu");
@@ -35,7 +61,7 @@ function initializeMoreMenu() {
         const expanded = toggle.getAttribute("aria-expanded") === "true";
         toggle.setAttribute("aria-expanded", String(!expanded));
         menu.hidden = expanded;
-        if (label) label.textContent = expanded ? "Ver más" : "Ver menos";
+        if (label) label.textContent = expanded ? "Mi actividad" : "Ocultar actividad";
         const icon = toggle.querySelector("i");
         if (icon) { icon.classList.toggle("fa-chevron-down", expanded); icon.classList.toggle("fa-chevron-up", !expanded); }
     });
@@ -77,15 +103,25 @@ function businessCard(business) {
 }
 
 async function loadBusinesses() {
-    const slider = document.getElementById("businessSlider");
-    if (!slider) return;
     const { data, error } = await BusinessService.getBusinessesByOwner(currentUser.id);
-    if (error) { slider.innerHTML = `<div class="feed-placeholder">No pudimos cargar tus negocios.</div>`; return; }
+    if (error) { console.warn("No pudimos cargar los negocios del miembro:", error); return; }
     memberBusinesses = data || [];
     initializeBusinessPublishSelector(memberBusinesses);
-    if (!memberBusinesses.length) { slider.innerHTML = `<div class="business-slide empty"><div class="business-slide-icon"><i class="fa-solid fa-store"></i></div><div class="business-slide-info"><strong>Aún no tienes negocios registrados</strong><small>Cuando incorpores uno, aparecerá aquí.</small></div><a href="incorporar-negocio.html" class="business-slide-link">Incorporar <i class="fa-solid fa-arrow-right"></i></a></div>`; return; }
-    slider.innerHTML = memberBusinesses.map(businessCard).join("");
-    setupScroller("businessSlider", "businessPrev", "businessNext");
+    const sidebarLink = document.getElementById("sidebarMyBusinesses");
+    const spaceAction = document.getElementById("spaceBusinessAction");
+    const spaceTitle = document.getElementById("spaceBusinessTitle");
+    const spaceText = document.getElementById("spaceBusinessText");
+    if (memberBusinesses.length) {
+        if (sidebarLink) sidebarLink.hidden = false;
+        if (spaceAction) spaceAction.href = `dashboard-negocio.html?business=${encodeURIComponent(memberBusinesses[0].id)}`;
+        if (spaceTitle) spaceTitle.textContent = "Mis negocios";
+        if (spaceText) spaceText.textContent = memberBusinesses.length === 1 ? "Administra tu negocio dentro de neXsv." : `Administra tus ${memberBusinesses.length} negocios dentro de neXsv.`;
+    } else {
+        if (sidebarLink) sidebarLink.hidden = true;
+        if (spaceAction) spaceAction.href = "incorporar-negocio.html";
+        if (spaceTitle) spaceTitle.textContent = "Tengo un negocio";
+        if (spaceText) spaceText.textContent = "Incorpora tu negocio y forma parte de neXsv.";
+    }
 }
 
 function initializeBusinessPublishSelector(businesses) {
@@ -102,14 +138,28 @@ function publicationCard(publication, compact = false, showMetrics = false) {
     return `<article class="dashboard-publication-card ${compact ? "compact" : ""}" data-publication-id="${escapeHtml(publication.id)}">${image ? `<img src="${escapeHtml(image)}" alt="Imagen de publicación" loading="lazy">` : `<div class="dashboard-publication-placeholder"><i class="fa-regular fa-image"></i></div>`}<div class="dashboard-publication-copy"><span class="dashboard-publication-type">${escapeHtml(TYPE_LABELS[publication.type] || publication.type)}</span>${publication.title ? `<strong>${escapeHtml(publication.title)}</strong>` : ""}<p>${escapeHtml(publication.body)}</p><small>${escapeHtml(formatDate(publication.created_at))}</small>${metrics}</div></article>`;
 }
 
+function recommendedBusinessCard(business) {
+    const name = business.nombre || "Negocio";
+    const initialsText = initials(name);
+    const logo = business.logo ? `<img src="${escapeHtml(business.logo)}" alt="Logo de ${escapeHtml(name)}" loading="lazy">` : `<span>${escapeHtml(initialsText)}</span>`;
+    return `<a class="recommended-business-card" href="negocio.html?id=${encodeURIComponent(business.id)}"><div class="recommended-business-logo">${logo}</div><strong>${escapeHtml(name)}</strong><small>${escapeHtml(business.categoria || "Negocio")}</small></a>`;
+}
+
+async function loadRecommendedBusinesses() {
+    const container = document.getElementById("recommendedBusinesses");
+    if (!container) return;
+    const { data, error } = await BusinessService.getPublicBusinessDirectory();
+    if (error) { container.innerHTML = `<div class="feed-placeholder">No pudimos cargar los negocios recomendados.</div>`; return; }
+    const businesses = (data || []).slice(0, 6);
+    container.innerHTML = businesses.length ? businesses.map(recommendedBusinessCard).join("") : `<div class="feed-placeholder">Aún no hay negocios publicados.</div>`;
+}
+
 async function loadDashboardCommunity() {
     const result = await CommunityService.getPublications({ type: "TODAS", limit: 3 });
     if (result.error) return;
     const publications = result.data || [];
     const recent = publications.filter(p => Date.now() - new Date(p.created_at).getTime() <= 7 * 86400000).length;
     setText("recentCount", recent);
-    const highlights = document.getElementById("communityHighlights");
-    if (highlights) highlights.innerHTML = publications.length ? publications.map(p => publicationCard(p, true)).join("") : `<div class="feed-placeholder">Todavía no hay publicaciones nuevas. Sé de las primeras personas en compartir algo.</div>`;
     const mineResult = await supabase.from("community_publications").select("id,author_id,business_id,type,title,body,created_at,updated_at").eq("author_id", currentUser.id).eq("status", "PUBLICADA").order("created_at", { ascending: false }).limit(3);
     const mine = mineResult.data || [];
     setText("myPublicationCount", mine.length);
@@ -170,8 +220,9 @@ async function initialize() {
     const verifiedBadge = document.getElementById("memberVerifiedBadge");
     if (verifiedBadge) verifiedBadge.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${verified ? "Miembro verificado" : "Miembro neXsv"}`;
     renderAvatar(perfil?.foto, nombreCompleto);
+    updateProfileProgress(perfil || {});
 
-    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadDashboardCommunity()]);
+    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadRecommendedBusinesses(), loadDashboardCommunity()]);
     subscribeDashboardRealtime();
 }
 
