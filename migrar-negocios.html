@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migración de negocios | neXsv</title>
+    <style>
+        body{font-family:Arial,sans-serif;background:#f5f7fb;color:#1d2a3a;margin:0;padding:40px}
+        main{max-width:760px;margin:auto;background:#fff;border-radius:18px;padding:32px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+        h1{color:#3155B6;margin-top:0}
+        button{background:#F5C542;border:0;border-radius:12px;padding:14px 20px;font-weight:700;cursor:pointer}
+        button:disabled{opacity:.55;cursor:not-allowed}
+        #estado{margin-top:20px;white-space:pre-wrap;line-height:1.6}
+        .ok{color:#2e7d32}.error{color:#b3261e}
+    </style>
+</head>
+<body>
+<main>
+    <h1>Migración de negocios históricos</h1>
+    <p>Esta herramienta toma los negocios de la fuente antigua de Google Apps Script y los incorpora a Supabase sin borrar los negocios que ya existen.</p>
+    <p><strong>Solo debe ejecutarse una vez por un administrador.</strong></p>
+    <button id="btnMigrar">Migrar negocios ahora</button>
+    <div id="estado">Preparado.</div>
+</main>
+<script type="module" src="js/pages/migrar-negocios.js?v=20260916-1"></script>
+</body>
+</html>
