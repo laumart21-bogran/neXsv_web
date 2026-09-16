@@ -34,11 +34,12 @@ function renderBusinessCardsOnce() {
 
 function renderBusinesses() {
     const container = document.getElementById("contenedor");
-    if (!container) return;
+    if (!container || !state.rendered) return;
     const cards = container.querySelectorAll(".nex-public-business-card");
+    const businessesById = new Map(state.businesses.map(business => [String(business.id), business]));
     let visible = 0;
-    cards.forEach((card, index) => {
-        const business = state.businesses[index];
+    cards.forEach(card => {
+        const business = businessesById.get(String(card.dataset.businessId));
         const show = Boolean(business && matchesBusiness(business));
         card.hidden = !show;
         if (show) visible++;
@@ -62,39 +63,82 @@ function toggleMoreCategories(button) { const more = document.getElementById("ma
 
 async function handleBusinessAction(action, businessId) {
     if (!businessId) return;
-    if (action === "share") { const url = new URL(`negocio.html?id=${encodeURIComponent(businessId)}`, window.location.href).href; const shareData = { title: "Negocio en neXsv", text: "Conoce este negocio dentro de neXsv.", url }; if (navigator.share) { try { await navigator.share(shareData); } catch (_) {} return; } try { await navigator.clipboard.writeText(url); alert("Enlace del negocio copiado."); } catch (_) { window.prompt("Copia este enlace:", url); } return; }
+    if (action === "share") {
+        const url = new URL(`negocio.html?id=${encodeURIComponent(businessId)}`, window.location.href).href;
+        const shareData = { title: "Negocio en neXsv", text: "Conoce este negocio dentro de neXsv.", url };
+        if (navigator.share) { try { await navigator.share(shareData); } catch (_) {} return; }
+        try { await navigator.clipboard.writeText(url); alert("Enlace del negocio copiado."); }
+        catch (_) { window.prompt("Copia este enlace:", url); }
+        return;
+    }
     if (!(await isAuthenticated())) { redirectToLogin(businessId, action); return; }
     window.location.href = buildBusinessUrl(businessId, action === "detail" ? "" : action);
 }
-function bindBusinessActions() { document.querySelectorAll(".nex-business-action").forEach(button => { if (button.dataset.actionBound === "true") return; button.dataset.actionBound = "true"; button.addEventListener("click", () => handleBusinessAction(button.dataset.action, button.dataset.businessId)); }); }
+function bindBusinessActions() {
+    document.querySelectorAll(".nex-business-action").forEach(button => {
+        if (button.dataset.actionBound === "true") return;
+        button.dataset.actionBound = "true";
+        button.addEventListener("click", () => handleBusinessAction(button.dataset.action, button.dataset.businessId));
+    });
+}
 
-window.filtrar = setCategory; window.buscar = searchBusinesses; window.mostrarMas = toggleMoreCategories;
+window.filtrar = setCategory;
+window.buscar = searchBusinesses;
+window.mostrarMas = toggleMoreCategories;
 
 function bindDirectoryControls() {
     document.querySelectorAll(".categorias button").forEach(button => {
         if (button.dataset.directoryBound === "true") return;
-        button.dataset.directoryBound = "true"; button.removeAttribute("onclick");
+        button.dataset.directoryBound = "true";
+        button.removeAttribute("onclick");
         const text = button.textContent.trim();
-        if (/^Todos$/i.test(text)) button.addEventListener("click", event => { event.preventDefault(); setCategory("Todos", button); });
-        else if (/Más categorías/i.test(text)) button.addEventListener("click", event => { event.preventDefault(); toggleMoreCategories(button); });
-        else { const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim(); if (categoryMatch) button.addEventListener("click", event => { event.preventDefault(); setCategory(categoryMatch, button); }); }
+        if (/^Todos$/i.test(text)) {
+            button.addEventListener("click", event => { event.preventDefault(); setCategory("Todos", button); });
+        } else if (/Más categorías/i.test(text)) {
+            button.addEventListener("click", event => { event.preventDefault(); toggleMoreCategories(button); });
+        } else {
+            const categoryMatch = text.replace(/^[^A-Za-zÁÉÍÓÚÜÑ]+/i, "").trim();
+            if (categoryMatch) button.addEventListener("click", event => { event.preventDefault(); setCategory(categoryMatch, button); });
+        }
     });
     const input = document.getElementById("buscador");
-    if (input && input.dataset.directoryBound !== "true") { input.dataset.directoryBound = "true"; input.removeAttribute("onkeyup"); input.addEventListener("input", searchBusinesses); }
+    if (input && input.dataset.directoryBound !== "true") {
+        input.dataset.directoryBound = "true";
+        input.removeAttribute("onkeyup");
+        input.addEventListener("input", searchBusinesses);
+    }
 }
 
 function injectDirectoryStyles() {
     if (document.getElementById("nex-public-business-directory-styles")) return;
-    const style = document.createElement("style"); style.id = "nex-public-business-directory-styles"; style.textContent = `.nex-public-business-card .logo-frame{position:relative}.nex-public-business-card .featured-badge{z-index:2}.nex-public-business-card .card-content h3{margin-top:0}.nex-public-business-card .card-content p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.nex-public-business-card .verified-badge{margin-bottom:12px}.nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px}.nex-public-business-actions .btn{border:0}.nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none}.nex-business-action{cursor:pointer}.nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px}.directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B}.directory-empty strong{color:#233A72;font-size:16px}.directory-empty span{font-size:14px}.nex-public-business-card[hidden]{display:none!important}.directory-empty-results[hidden]{display:none!important}@media(max-width:768px){.nex-public-business-card .logo-frame{height:190px}.nex-public-business-card .card-content h3{font-size:22px}.nex-public-business-actions{gap:9px}}`; document.head.appendChild(style);
+    const style = document.createElement("style");
+    style.id = "nex-public-business-directory-styles";
+    style.textContent = `.nex-public-business-card .logo-frame{position:relative}.nex-public-business-card .featured-badge{z-index:2}.nex-public-business-card .card-content h3{margin-top:0}.nex-public-business-card .card-content p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.nex-public-business-card .verified-badge{margin-bottom:12px}.nex-public-business-actions{display:flex;gap:12px;margin-top:auto;flex-wrap:wrap;padding-top:20px}.nex-public-business-actions .btn{border:0}.nex-public-business-card .btn-map{border:0;outline:0;box-shadow:none}.nex-business-action{cursor:pointer}.nex-business-logo-fallback{display:flex;align-items:center;justify-content:center;width:92px;height:92px;border-radius:24px;background:#eef3ff;color:#3155B6;font-size:32px}.directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B}.directory-empty strong{color:#233A72;font-size:16px}.directory-empty span{font-size:14px}.nex-public-business-card[hidden]{display:none!important}.directory-empty-results[hidden]{display:none!important}@media(max-width:768px){.nex-public-business-card .logo-frame{height:190px}.nex-public-business-card .card-content h3{font-size:22px}.nex-public-business-actions{gap:9px}}`;
+    document.head.appendChild(style);
 }
 
 async function initPublicBusinessDirectory() {
-    const container = document.getElementById("contenedor"); if (!container) return;
-    injectDirectoryStyles(); bindDirectoryControls();
-    container.innerHTML = `<div class="directory-empty" role="status"><strong>Cargando negocios publicados…</strong><span>Estamos consultando el directorio de neXsv.</span></div>`;
+    if (window.__nexsvBusinessDirectoryInitStarted) return;
+    window.__nexsvBusinessDirectoryInitStarted = true;
+
+    const container = document.getElementById("contenedor");
+    if (!container) return;
+
+    injectDirectoryStyles();
+    bindDirectoryControls();
+
     const { data, error } = await BusinessService.getPublicBusinessDirectory();
-    if (error) { console.error("Error cargando el directorio público de negocios:", error); container.innerHTML = `<div class="directory-empty" role="alert"><strong>No pudimos cargar los negocios.</strong><span>Intenta nuevamente en unos momentos.</span></div>`; return; }
+    if (error) {
+        console.error("Error cargando el directorio público de negocios:", error);
+        container.innerHTML = `<div class="directory-empty" role="alert"><strong>No pudimos cargar los negocios.</strong><span>Intenta nuevamente en unos momentos.</span></div>`;
+        return;
+    }
+
     state.businesses = Array.isArray(data) ? data : [];
-    state.rendered = false; renderBusinessCardsOnce(); renderBusinesses();
+    state.rendered = false;
+    renderBusinessCardsOnce();
+    renderBusinesses();
 }
-if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initPublicBusinessDirectory, { once: true }); else initPublicBusinessDirectory();
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initPublicBusinessDirectory, { once: true });
+else initPublicBusinessDirectory();
