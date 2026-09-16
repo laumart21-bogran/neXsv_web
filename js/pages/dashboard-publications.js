@@ -45,7 +45,21 @@ async function loadPublicationImages() {
     enhancePublicationCards([...container.querySelectorAll("[data-publication-id]")]);
 }
 
+async function initializeBusinessVisibility() {
+    const action = document.getElementById("spaceBusinessAction");
+    if (!action) return;
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { count, error } = await supabase.from("businesses").select("id", { count: "exact", head: true }).eq("owner_id", user.id);
+    if (error) {
+        action.hidden = true;
+        return;
+    }
+    action.hidden = !(Number(count) > 0);
+}
+
 function initialize() {
+    initializeBusinessVisibility();
     const container = document.getElementById("myPublications");
     if (!container) return;
     const observer = new MutationObserver(() => {
