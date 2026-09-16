@@ -4,6 +4,8 @@ import AuthService from "../auth/auth.service.js";
 const params = new URLSearchParams(window.location.search);
 const businessId = params.get("id");
 const requestedAction = params.get("action");
+let publicBusiness = null;
+let fullBusiness = null;
 
 function escapeHtml(value) {
     return String(value ?? "")
@@ -30,7 +32,58 @@ function firstValue(data, keys) {
     return "";
 }
 
-function renderBusiness(data) {
+function renderPublicBusiness(data) {
+    const container = document.getElementById("contenido");
+    if (!container) return;
+
+    const name = escapeHtml(data.nombre || "Negocio");
+    const category = escapeHtml(data.categoria || "Negocio");
+    const description = escapeHtml(data.descripcion || "Este negocio forma parte de la comunidad neXsv.");
+    const logo = String(data.logo || "").trim();
+
+    container.innerHTML = `
+        <section class="business-hero-card">
+            <div class="business-logo">
+                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}">` : `<i class="fa-solid fa-store"></i>`}
+            </div>
+            <div>
+                <span class="category-badge">${category}</span>
+                <span class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</span>
+                <h1>${name}</h1>
+                <p>${description}</p>
+            </div>
+        </section>
+
+        <section class="detail-grid">
+            <article class="detail-card">
+                <h2>Conoce este negocio</h2>
+                <p>${description}</p>
+            </article>
+
+            <article class="detail-card">
+                <h2>Información de contacto</h2>
+                <div class="access-gate">
+                    <div class="access-gate-icon"><i class="fa-solid fa-lock"></i></div>
+                    <strong>Información exclusiva para miembros</strong>
+                    <p>Inicia sesión o crea tu cuenta gratuita para ver WhatsApp, ubicación y datos de contacto.</p>
+                    <div class="access-gate-actions">
+                        <a class="gate-primary" href="acceso/registro.html?return=${encodeURIComponent(`negocio.html?id=${businessId}`)}">Crear cuenta gratis</a>
+                        <a class="gate-secondary" href="acceso/login-usuario.html?return=${encodeURIComponent(`negocio.html?id=${businessId}`)}">Ya tengo cuenta</a>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <div class="detail-footer-actions">
+            <button type="button" id="shareBusiness" class="share-btn"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
+            <a href="negocios.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a>
+        </div>
+    `;
+
+    document.getElementById("shareBusiness")?.addEventListener("click", shareBusiness);
+}
+
+function renderAuthenticatedBusiness(data) {
     const container = document.getElementById("contenido");
     if (!container) return;
 
@@ -60,7 +113,7 @@ function renderBusiness(data) {
 
     const socialItems = [instagram, facebook, tiktok, otherSocial]
         .filter(Boolean)
-        .map((url) => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`)
+        .map(url => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`)
         .join("");
 
     const metaItems = [
@@ -114,18 +167,26 @@ async function shareBusiness() {
         text: "Conoce este negocio en neXsv",
         url: window.location.href.split("&action=")[0]
     };
-
     if (navigator.share) {
         try { await navigator.share(shareData); } catch (_) {}
         return;
     }
-
     try {
         await navigator.clipboard.writeText(shareData.url);
         alert("Enlace copiado.");
     } catch (_) {
         window.prompt("Copia este enlace:", shareData.url);
     }
+}
+
+async function loadAuthenticatedDetails() {
+    const { data, error } = await BusinessService.getAuthenticatedBusinessDetail(businessId);
+    if (error || !data) {
+        console.error("Error cargando detalle del negocio:", error);
+        return;
+    }
+    fullBusiness = data;
+    renderAuthenticatedBusiness(data);
 }
 
 async function init() {
@@ -137,21 +198,27 @@ async function init() {
         return;
     }
 
-    const { data: sessionData } = await AuthService.getSession();
-    if (!sessionData?.session) {
-        const returnUrl = `negocio.html?id=${encodeURIComponent(businessId)}${requestedAction ? `&action=${encodeURIComponent(requestedAction)}` : ""}`;
-        window.location.href = `acceso/login-usuario.html?return=${encodeURIComponent(returnUrl)}`;
-        return;
-    }
-
-    const { data, error } = await BusinessService.getAuthenticatedBusinessDetail(businessId);
-    if (error || !data) {
-        console.error("Error cargando detalle del negocio:", error);
+    // Carga inmediata del contenido público: no esperamos a Supabase Auth.
+    const { data, error } = await BusinessService.getPublicBusinessDirectory();
+    if (error) {
+        console.error("Error cargando directorio público:", error);
         container.innerHTML = `<div class="state-card"><strong>No fue posible cargar este negocio.</strong><a href="negocios.html">Volver al directorio</a></div>`;
         return;
     }
 
-    renderBusiness(data);
+    publicBusiness = (data || []).find(item => item.id === businessId);
+    if (!publicBusiness) {
+        container.innerHTML = `<div class="state-card"><strong>Este negocio no está disponible.</strong><a href="negocios.html">Volver al directorio</a></div>`;
+        return;
+    }
+
+    renderPublicBusiness(publicBusiness);
+
+    // La comprobación de sesión ocurre después de pintar la página.
+    const { data: sessionData } = await AuthService.getSession();
+    if (sessionData?.session) {
+        await loadAuthenticatedDetails();
+    }
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
