@@ -39,10 +39,3 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
 </script>
 
 `);
-
-if (window.location.pathname.endsWith("/negocios.html") || window.location.pathname === "/negocios.html") {
-    const directoryScript = document.createElement("script");
-    directoryScript.type = "module";
-    directoryScript.src = "js/pages/negocios-directory.js?v=20260916-1";
-    document.head.appendChild(directoryScript);
-}
