@@ -17,6 +17,8 @@ declare
     v_name text;
     v_category text;
     v_description text;
+    v_offer text;
+    v_stage text;
     v_whatsapp text;
     v_maps text;
     v_logo text;
@@ -25,6 +27,8 @@ declare
     v_instagram text;
     v_facebook text;
     v_tiktok text;
+    v_other_social text;
+    v_other_objective text;
     v_department text;
     v_municipality text;
     v_inserted integer := 0;
@@ -78,7 +82,6 @@ begin
             continue;
         end if;
 
-        -- Evita duplicar negocios ya migrados o creados en Supabase.
         if exists (
             select 1
             from public.businesses b
@@ -98,6 +101,18 @@ begin
             item->>'Descripcion_final',
             item->>'Describe tu negocio',
             item->>'descripcion',
+            ''
+        )), '');
+
+        v_offer := nullif(trim(coalesce(
+            item->>'¿Qué vendes o qué servicio ofreces?',
+            item->>'tipo_oferta',
+            ''
+        )), '');
+
+        v_stage := nullif(trim(coalesce(
+            item->>'Etapa del negocio',
+            item->>'etapa_negocio',
             ''
         )), '');
 
@@ -121,11 +136,10 @@ begin
             ''
         )), '');
 
-        -- Mantiene las imágenes de Drive compatibles con el directorio actual.
         if v_logo like '%drive.google.com%' then
-            v_logo := regexp_replace(v_logo, '^.*?/d/([A-Za-z0-9_-]+).*$','https://drive.google.com/uc?export=view&id=\\1');
-            if v_logo = item->>'Link de imagen resp' or v_logo like '%drive.google.com%' then
-                v_logo := regexp_replace(coalesce(item->>'Link de imagen resp', ''), '^.*?id=([A-Za-z0-9_-]+).*$','https://drive.google.com/uc?export=view&id=\\1');
+            v_logo := regexp_replace(v_logo, '^.*?/d/([A-Za-z0-9_-]+).*$', 'https://drive.google.com/uc?export=view&id=\\1');
+            if v_logo like '%drive.google.com%' then
+                v_logo := regexp_replace(coalesce(item->>'Link de imagen resp', ''), '^.*?id=([A-Za-z0-9_-]+).*$', 'https://drive.google.com/uc?export=view&id=\\1');
             end if;
         end if;
 
@@ -134,6 +148,8 @@ begin
         v_instagram := nullif(trim(coalesce(item->>'Instagram', item->>'instagram', '')), '');
         v_facebook := nullif(trim(coalesce(item->>'Facebook', item->>'facebook', '')), '');
         v_tiktok := nullif(trim(coalesce(item->>'TikTok', item->>'tiktok', '')), '');
+        v_other_social := nullif(trim(coalesce(item->>'Otra red social', item->>'otra_red_social', '')), '');
+        v_other_objective := nullif(trim(coalesce(item->>'Otro objetivo', item->>'otro_objetivo', '')), '');
         v_department := nullif(trim(coalesce(item->>'Departamento', item->>'departamento', '')), '');
         v_municipality := nullif(trim(coalesce(item->>'Municipio', item->>'municipio', '')), '');
 
@@ -142,6 +158,8 @@ begin
             nombre,
             categoria,
             descripcion,
+            tipo_oferta,
+            etapa_negocio,
             departamento,
             municipio,
             whatsapp,
@@ -151,6 +169,8 @@ begin
             instagram,
             facebook,
             tiktok,
+            otra_red_social,
+            otro_objetivo,
             logo,
             estado
         ) values (
@@ -158,6 +178,8 @@ begin
             v_name,
             v_category,
             v_description,
+            v_offer,
+            v_stage,
             v_department,
             v_municipality,
             v_whatsapp,
@@ -167,6 +189,8 @@ begin
             v_instagram,
             v_facebook,
             v_tiktok,
+            v_other_social,
+            v_other_objective,
             v_logo,
             'ACTIVO'
         );
