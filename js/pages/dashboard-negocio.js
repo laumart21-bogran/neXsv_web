@@ -35,7 +35,6 @@ function renderOwner(user) {
     const fullName = user.user_metadata?.full_name || user.user_metadata?.name || "Miembro";
     const firstName = fullName.trim().split(" ")[0] || "Miembro";
     setText("businessOwnerName", fullName);
-    setText("welcomeTitle", `¡Hola, ${firstName}!`);
     setDashboardHeaderAvatar(null, fullName);
 }
 
