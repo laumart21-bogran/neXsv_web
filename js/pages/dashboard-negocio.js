@@ -140,36 +140,89 @@ function bindHorizontalSliders() {
 
 function initializeBusinessSelector(businesses) {
     const row = document.getElementById("businessSelectorRow");
-    const selector = document.getElementById("businessSelector");
-    if (!row || !selector || !businesses.length) return;
+    const trigger = document.getElementById("businessSelectorTrigger");
+    const triggerName = document.getElementById("businessSelectorTriggerName");
+    const menu = document.getElementById("businessSelectorMenu");
+    if (!row || !trigger || !triggerName || !menu || !businesses.length) return;
 
     row.hidden = false;
-    selector.innerHTML = businesses.map(business => `<option value="${escapeAttr(business.id)}">${escapeHtml(business.nombre || "Mi negocio")}</option>`).join("");
-
     const storedId = sessionStorage.getItem("nexsv_selected_business_id");
     const selected = businesses.find(business => business.id === storedId) || businesses[0];
-    selector.value = selected.id;
+
+    const renderMenu = () => {
+        menu.innerHTML = businesses.map(business => {
+            const logo = business.logo || "";
+            const selectedClass = business.id === currentBusiness?.id ? " selected" : "";
+            return `<button type="button" class="business-selector-option${selectedClass}" role="option" data-business-id="${escapeAttr(business.id)}">
+                <span class="business-selector-option-logo">${logo ? `<img src="${escapeAttr(logo)}" alt="">` : '<i class="fa-solid fa-store"></i>'}</span>
+                <span>${escapeHtml(business.nombre || "Mi negocio")}</span>
+                ${business.id === currentBusiness?.id ? '<i class="fa-solid fa-check business-selector-check"></i>' : ""}
+            </button>`;
+        }).join("");
+
+        menu.querySelectorAll(".business-selector-option").forEach(option => {
+            option.addEventListener("click", async () => {
+                const business = businesses.find(item => item.id === option.dataset.businessId);
+                if (!business) return;
+                currentBusiness = business;
+                sessionStorage.setItem("nexsv_selected_business_id", business.id);
+                updateSelectedBusinessLabels(business);
+                closeBusinessSelector();
+                renderMenu();
+                await loadSelectedBusiness(business);
+            });
+        });
+    };
+
+    const openBusinessSelector = () => {
+        menu.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+    };
+    const closeBusinessSelector = () => {
+        menu.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+    };
+
+    trigger.addEventListener("click", event => {
+        event.stopPropagation();
+        menu.hidden ? openBusinessSelector() : closeBusinessSelector();
+    });
+    document.addEventListener("click", event => {
+        if (!row.contains(event.target)) closeBusinessSelector();
+    });
+
     currentBusiness = selected;
     sessionStorage.setItem("nexsv_selected_business_id", selected.id);
     updateSelectedBusinessLabels(selected);
+    renderMenu();
     loadSelectedBusiness(selected);
-
-    selector.addEventListener("change", async () => {
-        const business = businesses.find(item => item.id === selector.value);
-        if (!business) return;
-        currentBusiness = business;
-        sessionStorage.setItem("nexsv_selected_business_id", business.id);
-        updateSelectedBusinessLabels(business);
-        await loadSelectedBusiness(business);
-    });
 }
 
 function updateSelectedBusinessLabels(business) {
     const name = business.nombre || "Mi negocio";
+    const category = business.categoria || "Negocio";
+    const description = business.descripcion || "Gestiona la presencia de este negocio en neXsv.";
+
     setText("businessSwitcherName", name);
     setText("businessMediaBusinessName", name);
-    const selector = document.getElementById("businessSelector");
-    if (selector) selector.setAttribute("aria-label", `Seleccionar negocio. Actual: ${name}`);
+    setText("businessSidebarName", name);
+    setText("businessSidebarCategory", category);
+    setText("businessSidebarDescription", description);
+
+    setBusinessIdentityImage("businessSwitcherIcon", business.logo);
+    setBusinessIdentityImage("businessSidebarIcon", business.logo);
+}
+
+function setBusinessIdentityImage(id, logo) {
+    const container = document.getElementById(id);
+    if (!container) return;
+
+    container.innerHTML = logo
+        ? `<img src="${escapeAttr(logo)}" alt="Logo del negocio">`
+        : '<i class="fa-solid fa-store"></i>';
+
+    container.classList.toggle("has-business-logo", Boolean(logo));
+    container.classList.toggle("has-profile-photo", false);
 }
 
 async function loadSelectedBusiness(business) {
