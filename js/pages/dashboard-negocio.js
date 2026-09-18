@@ -17,11 +17,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentUser = AuthSession.getCurrentUser();
     renderOwner(currentUser);
-    const welcomeObserver = new MutationObserver(() => {
+    const welcomeHero = document.querySelector(".business-welcome");
+    const welcomeObserver = welcomeHero ? new MutationObserver(() => {
         if (currentBusiness) syncBusinessWelcome(currentBusiness);
-    });
-    const welcomeTitle = document.getElementById("welcomeTitle");
-    if (welcomeTitle) welcomeObserver.observe(welcomeTitle, { childList: true, characterData: true, subtree: true });
+    }) : null;
+    if (welcomeHero && welcomeObserver) {
+        welcomeObserver.observe(welcomeHero, { childList: true, characterData: true, subtree: true });
+    }
     bindHorizontalSliders();
     bindSummarySlider();
     await loadOwnerProfile();
@@ -203,13 +205,18 @@ function initializeBusinessSelector(businesses) {
 }
 
 function syncBusinessWelcome(business) {
-    const name = business?.nombre || document.getElementById("businessSwitcherName")?.textContent?.trim() || "tu negocio";
-    const kicker = document.getElementById("businessWelcomeKicker") || document.querySelector(".business-welcome .business-label");
-    const title = document.getElementById("welcomeTitle") || document.querySelector(".business-welcome h1");
+    const name = String(business?.nombre || document.getElementById("businessSwitcherName")?.textContent || "tu negocio").trim();
+    const hero = document.querySelector(".business-welcome");
+    const kicker = document.getElementById("businessWelcomeKicker") || hero?.querySelector(".business-label");
+    const title = document.getElementById("welcomeTitle") || hero?.querySelector("h1");
     const nextKicker = `Espacio de ${name}`;
     const nextTitle = `Bienvenido al espacio de ${name}`;
+
     if (kicker && kicker.textContent !== nextKicker) kicker.textContent = nextKicker;
     if (title && title.textContent !== nextTitle) title.textContent = nextTitle;
+
+    // Deja una marca verificable del negocio activo en el propio hero.
+    if (hero) hero.dataset.businessName = name;
 }
 
 function updateSelectedBusinessLabels(business) {
@@ -241,9 +248,11 @@ function setBusinessIdentityImage(id, logo) {
 }
 
 async function loadSelectedBusiness(business) {
+    syncBusinessWelcome(business);
     const empty = document.getElementById("businessPublicationsEmpty");
     if (empty) empty.classList.remove("visible");
     await Promise.all([loadBusinessPublications(business.id), loadBusinessMedia(business.id)]);
+    syncBusinessWelcome(business);
 }
 
 async function loadBusinessPublications(businessId) {
