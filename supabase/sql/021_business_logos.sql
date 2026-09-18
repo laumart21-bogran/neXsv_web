@@ -14,11 +14,13 @@ set public = true,
     file_size_limit = 5242880,
     allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
 
+drop policy if exists "business logos public read" on storage.objects;
 create policy "business logos public read"
 on storage.objects for select
 to public
 using (bucket_id = 'business-logos');
 
+drop policy if exists "business owners upload logos" on storage.objects;
 create policy "business owners upload logos"
 on storage.objects for insert
 to authenticated
@@ -27,6 +29,7 @@ with check (
     and (storage.foldername(name))[1] = auth.uid()::text
 );
 
+drop policy if exists "business owners update logos" on storage.objects;
 create policy "business owners update logos"
 on storage.objects for update
 to authenticated
@@ -39,6 +42,7 @@ with check (
     and (storage.foldername(name))[1] = auth.uid()::text
 );
 
+drop policy if exists "business owners delete logos" on storage.objects;
 create policy "business owners delete logos"
 on storage.objects for delete
 to authenticated
