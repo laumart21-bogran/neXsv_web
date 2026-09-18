@@ -204,6 +204,8 @@ function updateSelectedBusinessLabels(business) {
     const description = business.descripcion || "Gestiona la presencia de este negocio en neXsv.";
 
     setText("businessSwitcherName", name);
+    setText("businessWelcomeKicker", `Espacio de ${name}`);
+    setText("welcomeTitle", `Bienvenido al espacio de ${name}`);
     setText("businessMediaBusinessName", name);
     setText("businessSidebarName", name);
     setText("businessSidebarCategory", category);
