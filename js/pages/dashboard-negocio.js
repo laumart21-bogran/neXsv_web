@@ -17,13 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentUser = AuthSession.getCurrentUser();
     renderOwner(currentUser);
-    const welcomeHero = document.querySelector(".business-welcome");
-    const welcomeObserver = welcomeHero ? new MutationObserver(() => {
-        if (currentBusiness) syncBusinessWelcome(currentBusiness);
-    }) : null;
-    if (welcomeHero && welcomeObserver) {
-        welcomeObserver.observe(welcomeHero, { childList: true, characterData: true, subtree: true });
-    }
     bindHorizontalSliders();
     bindSummarySlider();
     await loadOwnerProfile();
@@ -204,28 +197,17 @@ function initializeBusinessSelector(businesses) {
     loadSelectedBusiness(selected);
 }
 
-function syncBusinessWelcome(business) {
-    const name = String(business?.nombre || document.getElementById("businessSwitcherName")?.textContent || "tu negocio").trim();
-    const hero = document.querySelector(".business-welcome");
-    const kicker = document.getElementById("businessWelcomeKicker") || hero?.querySelector(".business-label");
-    const title = document.getElementById("welcomeTitle") || hero?.querySelector("h1");
-    const nextKicker = `Espacio de ${name}`;
-    const nextTitle = `Bienvenido al espacio de ${name}`;
-
-    if (kicker && kicker.textContent !== nextKicker) kicker.textContent = nextKicker;
-    if (title && title.textContent !== nextTitle) title.textContent = nextTitle;
-
-    // Deja una marca verificable del negocio activo en el propio hero.
-    if (hero) hero.dataset.businessName = name;
-}
-
 function updateSelectedBusinessLabels(business) {
     const name = business.nombre || "Mi negocio";
     const category = business.categoria || "Negocio";
     const description = business.descripcion || "Gestiona la presencia de este negocio en neXsv.";
 
     setText("businessSwitcherName", name);
-    syncBusinessWelcome(business);
+
+    // La bienvenida pertenece al negocio activo: un solo punto de actualización.
+    setText("businessWelcomeKicker", `Espacio de ${name}`);
+    setText("welcomeTitle", `Bienvenido al espacio de ${name}`);
+
     setText("businessMediaBusinessName", name);
     setText("businessSidebarName", name);
     setText("businessSidebarCategory", category);
@@ -248,11 +230,9 @@ function setBusinessIdentityImage(id, logo) {
 }
 
 async function loadSelectedBusiness(business) {
-    syncBusinessWelcome(business);
     const empty = document.getElementById("businessPublicationsEmpty");
     if (empty) empty.classList.remove("visible");
     await Promise.all([loadBusinessPublications(business.id), loadBusinessMedia(business.id)]);
-    syncBusinessWelcome(business);
 }
 
 async function loadBusinessPublications(businessId) {
