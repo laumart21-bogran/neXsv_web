@@ -206,8 +206,10 @@ function syncBusinessWelcome(business) {
     const name = business?.nombre || document.getElementById("businessSwitcherName")?.textContent?.trim() || "tu negocio";
     const kicker = document.getElementById("businessWelcomeKicker");
     const title = document.getElementById("welcomeTitle");
-    if (kicker) kicker.textContent = `Espacio de ${name}`;
-    if (title) title.textContent = `Bienvenido al espacio de ${name}`;
+    const nextKicker = `Espacio de ${name}`;
+    const nextTitle = `Bienvenido al espacio de ${name}`;
+    if (kicker && kicker.textContent !== nextKicker) kicker.textContent = nextKicker;
+    if (title && title.textContent !== nextTitle) title.textContent = nextTitle;
 }
 
 function updateSelectedBusinessLabels(business) {
