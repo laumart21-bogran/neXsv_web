@@ -17,6 +17,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     currentUser = AuthSession.getCurrentUser();
     renderOwner(currentUser);
+    const welcomeObserver = new MutationObserver(() => {
+        if (currentBusiness) syncBusinessWelcome(currentBusiness);
+    });
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    if (welcomeTitle) welcomeObserver.observe(welcomeTitle, { childList: true, characterData: true, subtree: true });
     bindHorizontalSliders();
     bindSummarySlider();
     await loadOwnerProfile();
@@ -197,14 +202,21 @@ function initializeBusinessSelector(businesses) {
     loadSelectedBusiness(selected);
 }
 
+function syncBusinessWelcome(business) {
+    const name = business?.nombre || document.getElementById("businessSwitcherName")?.textContent?.trim() || "tu negocio";
+    const kicker = document.getElementById("businessWelcomeKicker");
+    const title = document.getElementById("welcomeTitle");
+    if (kicker) kicker.textContent = `Espacio de ${name}`;
+    if (title) title.textContent = `Bienvenido al espacio de ${name}`;
+}
+
 function updateSelectedBusinessLabels(business) {
     const name = business.nombre || "Mi negocio";
     const category = business.categoria || "Negocio";
     const description = business.descripcion || "Gestiona la presencia de este negocio en neXsv.";
 
     setText("businessSwitcherName", name);
-    setText("businessWelcomeKicker", `Espacio de ${name}`);
-    setText("welcomeTitle", `Bienvenido al espacio de ${name}`);
+    syncBusinessWelcome(business);
     setText("businessMediaBusinessName", name);
     setText("businessSidebarName", name);
     setText("businessSidebarCategory", category);
