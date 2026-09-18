@@ -204,8 +204,8 @@ function initializeBusinessSelector(businesses) {
 
 function syncBusinessWelcome(business) {
     const name = business?.nombre || document.getElementById("businessSwitcherName")?.textContent?.trim() || "tu negocio";
-    const kicker = document.getElementById("businessWelcomeKicker");
-    const title = document.getElementById("welcomeTitle");
+    const kicker = document.getElementById("businessWelcomeKicker") || document.querySelector(".business-welcome .business-label");
+    const title = document.getElementById("welcomeTitle") || document.querySelector(".business-welcome h1");
     const nextKicker = `Espacio de ${name}`;
     const nextTitle = `Bienvenido al espacio de ${name}`;
     if (kicker && kicker.textContent !== nextKicker) kicker.textContent = nextKicker;
