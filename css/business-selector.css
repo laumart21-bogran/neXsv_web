@@ -12,3 +12,23 @@
 .business-publish-now-icon{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}.business-publish-now .business-publish-chip:first-child i{color:#F0B90B!important}.business-publish-now .business-publish-chip:nth-child(2) i{color:#3155B6!important}.business-publish-now .business-publish-chip:nth-child(3) i{color:#3155B6!important}
 .business-header-avatar{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}
 @media(max-width:700px){.business-selector-row{align-items:flex-start;flex-direction:column}.business-selector-row select{width:100%;min-width:0}.business-welcome h1::after{font-size:1.65rem}}
+
+/* Selector compacto del negocio activo */
+.business-switcher{position:relative}
+.business-selector-custom{position:relative;min-width:250px}
+.business-selector-trigger{width:100%;min-height:40px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;border:1px solid #DCE3EF;border-radius:12px;background:#fff;color:#233A72;font:700 .78rem Montserrat,sans-serif;cursor:pointer;outline:none}
+.business-selector-trigger:hover{border-color:#B9C8EA;background:#F8FAFF}
+.business-selector-trigger:focus{border-color:#3155B6;box-shadow:0 0 0 3px rgba(49,85,182,.10)}
+.business-selector-menu{position:absolute;right:0;top:calc(100% + 7px);z-index:80;width:100%;max-height:280px;overflow:auto;padding:6px;border:1px solid #E1E7F0;border-radius:14px;background:#fff;box-shadow:0 14px 32px rgba(35,58,114,.14)}
+.business-selector-menu[hidden]{display:none}
+.business-selector-option{width:100%;display:flex;align-items:center;gap:9px;padding:9px;border:0;border-radius:10px;background:transparent;color:#475569;text-align:left;font:600 .73rem Montserrat,sans-serif;cursor:pointer}
+.business-selector-option:hover,.business-selector-option.selected{background:#F1F5FF;color:#233A72}
+.business-selector-option-logo{width:30px;height:30px;flex:0 0 30px;border-radius:9px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#3155B6,#67C2D2);color:#fff}
+.business-selector-option-logo img{width:100%;height:100%;object-fit:cover}
+.business-selector-option>span:nth-child(2){flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.business-selector-check{color:#3155B6;margin-left:auto}
+.business-switcher-icon,.business-sidebar-icon{overflow:hidden}
+.business-switcher-icon.has-business-logo,.business-sidebar-icon.has-business-logo{padding:0;background:#fff!important}
+.business-switcher-icon.has-business-logo img{width:100%;height:100%;object-fit:cover}
+.business-sidebar-icon.has-business-logo img{width:100%;height:100%;object-fit:cover}
+@media(max-width:700px){.business-selector-custom{width:100%;min-width:0}.business-selector-menu{left:0;right:auto;width:100%}}
