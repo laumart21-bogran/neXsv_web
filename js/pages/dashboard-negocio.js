@@ -191,7 +191,7 @@ function updateBusinessIdentity(business) {
 
     setText("businessSwitcherName", name);
     const publicLink = document.getElementById("businessPublicProfileLink");
-    if (publicLink) publicLink.href = "negocio.html?id=" + encodeURIComponent(business.id);
+    if (publicLink) publicLink.href = "negocio.html?id=" + encodeURIComponent(business.id) + "&preview=owner";
 
     // La bienvenida pertenece al negocio activo: un solo punto de actualización.
     setText("businessWelcomeKicker", `Espacio de ${name}`);
