@@ -24,11 +24,12 @@ class BusinessService {
     // =====================================================
 
     async getPublicBusinessDetail(businessId) {
-        const { data, error } = await supabase.rpc("get_public_business_directory");
-        const business = (data || []).find(item => String(item.id) === String(businessId)) || null;
+        const { data, error } = await supabase.rpc("get_authenticated_business_detail", {
+            p_business_id: businessId
+        });
         return {
-            data: business,
-            error: error || (!business ? new Error("BUSINESS_NOT_FOUND") : null)
+            data,
+            error
         };
     }
 
