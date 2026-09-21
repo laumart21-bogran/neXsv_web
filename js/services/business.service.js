@@ -20,6 +20,15 @@ class BusinessService {
     }
 
     // =====================================================
+    // DETALLE PÚBLICO
+    // =====================================================
+
+    async getPublicBusinessDetail(businessId) {
+        const { data, error } = await supabase.rpc("get_public_business_detail", { p_business_id: businessId });
+        return { data, error };
+    }
+
+    // =====================================================
     // DETALLE PARA MIEMBROS AUTENTICADOS
     // El RPC controla qué datos comerciales puede recibir un miembro.
     // =====================================================
