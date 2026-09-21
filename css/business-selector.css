@@ -3,7 +3,6 @@
 .business-label,.section-kicker{color:#3155B6!important}
 .business-label{position:relative;padding-bottom:11px!important}.business-label::after{content:"";display:block;position:absolute;left:0;bottom:0;width:42px;height:3px;border-radius:3px;background:#F5C542!important}
 #resultados .section-kicker,#publicaciones .section-kicker,#oportunidades .section-kicker,#comunidad .section-kicker,#fotos .section-kicker,#mis-negocios .section-kicker,#aprende .section-kicker{color:#3155B6!important}
-.business-welcome h1{font-size:0!important;color:#3155B6!important}.business-welcome h1::after{content:"Gestiona tu negocio aquí";font-size:2rem;line-height:1.2;color:#3155B6!important}
 .business-sidebar-icon,.business-publication-no-image,.business-empty-state>i,.business-compact-placeholder i{color:#3155B6!important}
 .business-sidebar-icon{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}
 .business-summary-card:nth-child(2) .summary-icon,.business-summary-card:nth-child(3) .summary-icon{background:#F1F5FF!important;color:#3155B6!important}
@@ -11,7 +10,7 @@
 .business-status.active,.business-validity{color:#3155B6!important}.business-status.active{background:#F1F5FF!important}.business-publication-type{color:#3155B6!important}.business-publication-metric:nth-child(2) i{color:#3155B6!important}.business-funnel-card .funnel-icon,.business-opportunity-card .opportunity-icon.conversation{color:#3155B6!important}.opportunity-icon.interest,.funnel-icon.funnel-interest{background:#FFF8DF!important;color:#9A6A00!important}.business-empty-state>i{color:#3155B6!important}.business-community-publication-card .business-publication-type{color:#3155B6!important}.business-compact-placeholder i{color:#3155B6!important}
 .business-publish-now-icon{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}.business-publish-now .business-publish-chip:first-child i{color:#F0B90B!important}.business-publish-now .business-publish-chip:nth-child(2) i{color:#3155B6!important}.business-publish-now .business-publish-chip:nth-child(3) i{color:#3155B6!important}
 .business-header-avatar{background:linear-gradient(135deg,#3155B6,#67C2D2)!important;color:#fff!important}
-@media(max-width:700px){.business-selector-row{align-items:flex-start;flex-direction:column}.business-selector-row select{width:100%;min-width:0}.business-welcome h1::after{font-size:1.65rem}}
+@media(max-width:700px){.business-selector-row{align-items:flex-start;flex-direction:column}.business-selector-row select{width:100%;min-width:0}}
 
 /* Selector compacto del negocio activo */
 .business-switcher{position:relative}
