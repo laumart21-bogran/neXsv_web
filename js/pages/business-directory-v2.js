@@ -54,15 +54,14 @@ function render() {
 
         return `<article class="card nex-business-card" data-business-id="${id}">
             <div class="logo-frame">
-                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="eager" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">` : ""}
-                <div class="business-logo-fallback" ${logo ? "hidden" : ""}><span aria-hidden="true">🏪</span></div>
+                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="eager" onerror="this.style.display='none';">` : ""}
                 <span class="featured-badge"><i class="fa-solid fa-star"></i> Publicado</span>
             </div>
             <div class="card-content">
                 <span class="business-category">${category}</span>
                 <h3>${name}</h3>
                 <div class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</div>
-                <p>${description}</p>
+                <p>${description}</p>\n                <button type="button" class="description-toggle" data-action="description" data-id="${id}" aria-expanded="false">Leer más</button>
                 <div class="business-actions">
                     <button type="button" data-action="whatsapp" data-id="${id}" class="btn btn-w">WhatsApp</button>
                     <button type="button" data-action="detail" data-id="${id}" class="btn btn-v">Ver más</button>
@@ -111,7 +110,7 @@ async function shareBusiness(id) {
 
 async function handleAction(action, id) {
     if (!id) return;
-    if (action === "share") {
+    if (action === "description") {\n        const card = document.querySelector(`.nex-business-card[data-business-id="${CSS.escape(id)}"]`);\n        if (!card) return;\n        const expanded = card.classList.toggle("description-expanded");\n        const toggle = card.querySelector(".description-toggle");\n        if (toggle) { toggle.textContent = expanded ? "Ver menos" : "Leer más"; toggle.setAttribute("aria-expanded", String(expanded)); }\n        return;\n    }\n    if (action === "share") {
         await shareBusiness(id);
         return;
     }
