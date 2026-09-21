@@ -179,7 +179,7 @@ function initializeBusinessSelector(businesses) {
 
     currentBusiness = selected;
     sessionStorage.setItem("nexsv_selected_business_id", selected.id);
-    updateSelectedBusinessLabels(selected);
+    updateBusinessIdentity(selected);
     renderMenu();
     loadSelectedBusiness(selected);
 }
