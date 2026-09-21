@@ -49,7 +49,9 @@ function render() {
         const id = escapeHtml(business.id);
         const name = escapeHtml(business.nombre || "Negocio");
         const category = escapeHtml(business.categoria || "Negocio");
-        const description = escapeHtml(business.descripcion || "Conoce este negocio dentro de la comunidad neXsv.");
+        const rawDescription = String(business.descripcion || "Conoce este negocio dentro de la comunidad neXsv.").trim();
+        const description = escapeHtml(rawDescription);
+        const needsExpand = rawDescription.length > 120;
         const logo = String(business.logo || "").trim();
 
         return `<article class="card nex-business-card" data-business-id="${id}">
@@ -62,7 +64,7 @@ function render() {
                 <h3>${name}</h3>
                 <div class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</div>
                 <p>${description}</p>
-                <button type="button" class="description-toggle" data-action="description" data-id="${id}" aria-expanded="false">Leer más</button>
+                ${needsExpand ? `<button type="button" class="description-toggle" data-action="description" data-id="${id}" aria-expanded="false">Leer más</button>` : ""}
                 <div class="business-actions">
                     <button type="button" data-action="whatsapp" data-id="${id}" class="btn btn-w">WhatsApp</button>
                     <button type="button" data-action="detail" data-id="${id}" class="btn btn-v">Ver más</button>
