@@ -19,9 +19,6 @@
 .business-share-publication{background:#FFF4CF !important;border-color:#F2D98B !important;color:#8A6500 !important}
 .business-share-publication:hover{background:#FFE9A6 !important;border-color:#E8C765 !important}
 
-/* Lenguaje del nuevo panel */
-.business-welcome .business-label{font-size:0}
-.business-welcome .business-label::after{content:"Bienvenido a tu dashboard inteligente";font-size:.78rem}
 .business-sidebar-card h2{font-size:0}
 .business-sidebar-card h2::after{content:"Gestión de tus negocios";font-size:1.2rem}
 .business-user-info span{font-size:0}
