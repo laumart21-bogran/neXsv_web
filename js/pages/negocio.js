@@ -5,6 +5,7 @@ const LEGACY_URL="https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrW
 const params=new URLSearchParams(window.location.search);
 const businessId=params.get("id");
 const requestedAction=params.get("action");
+const ownerPreview=params.get("preview")==="owner";
 
 function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\x27/g,"&#039;");}
 function slugify(text){return String(text??"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-").replace(/^-+|-+$/g,"");}
@@ -35,7 +36,7 @@ function renderBusiness(data,images,reviews){
 }
 async function init(){
  const container=document.getElementById("contenido");if(!container)return;if(!businessId){container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";return;}
- const publicResult=await BusinessService.getPublicBusinessDetail(businessId);let data=publicResult.data||null;let legacyData=null;
+ const publicResult=ownerPreview ? await BusinessService.getBusinessById(businessId) : await BusinessService.getPublicBusinessDetail(businessId);let data=publicResult.data||null;let legacyData=null;
  if(!data)legacyData=await loadLegacy();
  if(!data&&legacyData){const fallback=findLegacyBusiness(legacyData,params.get("nombre")||"");if(fallback){const k=Object.keys(fallback).reduce((acc,key)=>{acc[key.trim()]=fallback[key];return acc;},{});data={nombre:k["Nombre de tu negocio"],categoria:k["Categoría de tu negocio"],descripcion:k["Descripcion_final"]||k["Describe tu negocio"],whatsapp:k["WhatsApp del negocio"],google_maps_url:k["Link de ubicación del Negocio (Link de Google Maps)"]||k["Ubicación del Negocio (Link de Google Maps)"],logo:convertirDrive(k["Link de imagen resp"]||k["Imagen_final"])};}}
  if(!data){container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";return;}
