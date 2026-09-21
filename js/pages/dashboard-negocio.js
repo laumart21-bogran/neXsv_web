@@ -46,7 +46,6 @@ async function loadOwnerProfile() {
     const fullName = `${profile.nombre || ""} ${profile.apellido || ""}`.trim() || currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || "Miembro";
     setText("businessOwnerName", fullName);
     setDashboardHeaderAvatar(profile.foto, fullName);
-    setBusinessSidebarPhoto(profile.foto, fullName);
 }
 
 function setDashboardHeaderAvatar(photo, name) {
@@ -64,18 +63,6 @@ function setDashboardHeaderAvatar(photo, name) {
     } else if (initials) {
         initials.textContent = value;
         initials.style.display = "inline";
-    }
-}
-
-function setBusinessSidebarPhoto(photo, name) {
-    const container = document.querySelector(".business-sidebar-icon");
-    if (!container) return;
-    if (photo) {
-        container.innerHTML = `<img src="${escapeAttr(photo)}" alt="Foto de perfil de ${escapeAttr(name)}">`;
-        container.classList.add("has-profile-photo");
-    } else {
-        container.innerHTML = `<i class="fa-solid fa-store"></i>`;
-        container.classList.remove("has-profile-photo");
     }
 }
 
@@ -165,7 +152,7 @@ function initializeBusinessSelector(businesses) {
                 if (!business) return;
                 currentBusiness = business;
                 sessionStorage.setItem("nexsv_selected_business_id", business.id);
-                updateSelectedBusinessLabels(business);
+                updateBusinessIdentity(business);
                 closeBusinessSelector();
                 renderMenu();
                 await loadSelectedBusiness(business);
@@ -197,7 +184,7 @@ function initializeBusinessSelector(businesses) {
     loadSelectedBusiness(selected);
 }
 
-function updateSelectedBusinessLabels(business) {
+function updateBusinessIdentity(business) {
     const name = business.nombre || "Mi negocio";
     const category = business.categoria || "Negocio";
     const description = business.descripcion || "Gestiona la presencia de este negocio en neXsv.";
