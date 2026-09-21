@@ -54,8 +54,8 @@ function render() {
 
         return `<article class="card nex-business-card" data-business-id="${id}">
             <div class="logo-frame">
-                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">` : ""}
-                <div class="business-logo-fallback" ${logo ? "hidden" : ""}><i class="fa-solid fa-store"></i></div>
+                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}" loading="eager" onerror="this.style.display='none';this.nextElementSibling.hidden=false;">` : ""}
+                <div class="business-logo-fallback" ${logo ? "hidden" : ""}><span aria-hidden="true">🏪</span></div>
                 <span class="featured-badge"><i class="fa-solid fa-star"></i> Publicado</span>
             </div>
             <div class="card-content">
