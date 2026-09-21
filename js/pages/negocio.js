@@ -1,19 +1,15 @@
 import BusinessService from "../services/business.service.js";
+import BusinessMediaService from "../services/business-media.service.js";
 import AuthService from "../auth/auth.service.js";
 
 const params = new URLSearchParams(window.location.search);
 const businessId = params.get("id");
 const requestedAction = params.get("action");
-let publicBusiness = null;
-let fullBusiness = null;
 
 function escapeHtml(value) {
     return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/\"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
 function normalizeWhatsapp(value) {
@@ -32,7 +28,7 @@ function firstValue(data, keys) {
     return "";
 }
 
-function renderPublicBusiness(data) {
+function renderBusiness(data, media = []) {
     const container = document.getElementById("contenido");
     if (!container) return;
 
@@ -41,56 +37,6 @@ function renderPublicBusiness(data) {
     const description = escapeHtml(data.descripcion || "Este negocio forma parte de la comunidad neXsv.");
     const logo = String(data.logo || "").trim();
 
-    container.innerHTML = `
-        <section class="business-hero-card">
-            <div class="business-logo">
-                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}">` : `<i class="fa-solid fa-store"></i>`}
-            </div>
-            <div>
-                <span class="category-badge">${category}</span>
-                <span class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</span>
-                <h1>${name}</h1>
-                <p>${description}</p>
-            </div>
-        </section>
-
-        <section class="detail-grid">
-            <article class="detail-card">
-                <h2>Conoce este negocio</h2>
-                <p>${description}</p>
-            </article>
-
-            <article class="detail-card">
-                <h2>Información de contacto</h2>
-                <div class="access-gate">
-                    <div class="access-gate-icon"><i class="fa-solid fa-lock"></i></div>
-                    <strong>Información exclusiva para miembros</strong>
-                    <p>Inicia sesión o crea tu cuenta gratuita para ver WhatsApp, ubicación y datos de contacto.</p>
-                    <div class="access-gate-actions">
-                        <a class="gate-primary" href="acceso/registro.html?return=${encodeURIComponent(`negocio.html?id=${businessId}`)}">Crear cuenta gratis</a>
-                        <a class="gate-secondary" href="acceso/login-usuario.html?return=${encodeURIComponent(`negocio.html?id=${businessId}`)}">Ya tengo cuenta</a>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <div class="detail-footer-actions">
-            <button type="button" id="shareBusiness" class="share-btn"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
-            <a href="negocios.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a>
-        </div>
-    `;
-
-    document.getElementById("shareBusiness")?.addEventListener("click", shareBusiness);
-}
-
-function renderAuthenticatedBusiness(data) {
-    const container = document.getElementById("contenido");
-    if (!container) return;
-
-    const name = escapeHtml(data.nombre || "Negocio");
-    const category = escapeHtml(data.categoria || "Negocio");
-    const description = escapeHtml(data.descripcion || "Este negocio forma parte de la comunidad neXsv.");
-    const logo = String(data.logo || "").trim();
     const whatsapp = normalizeWhatsapp(data.whatsapp);
     const maps = firstValue(data, ["google_maps_url", "maps_url", "ubicacion_url"]);
     const email = firstValue(data, ["email"]);
@@ -104,17 +50,21 @@ function renderAuthenticatedBusiness(data) {
     const typeOffer = firstValue(data, ["tipo_oferta"]);
     const stage = firstValue(data, ["etapa_negocio"]);
 
+    const galleryItems = media.slice(0, 3).map(item => `
+        <div class="business-gallery-item">
+            <img src="${escapeHtml(item.url)}" alt="Foto de ${name}" loading="lazy">
+        </div>
+    `).join("");
+
     const contactItems = [
-        whatsapp ? `<a class="detail-action whatsapp" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>` : "",
-        email ? `<a class="detail-action" href="mailto:${escapeHtml(email)}">Correo</a>` : "",
-        website ? `<a class="detail-action" href="${escapeHtml(website)}" target="_blank" rel="noopener">Sitio web</a>` : "",
-        maps ? `<a class="detail-action" href="${escapeHtml(maps)}" target="_blank" rel="noopener">Cómo llegar</a>` : ""
+        whatsapp ? `<a class="detail-action whatsapp" href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : "",
+        email ? `<a class="detail-action" href="mailto:${escapeHtml(email)}"><i class="fa-regular fa-envelope"></i> Correo</a>` : "",
+        website ? `<a class="detail-action" href="${escapeHtml(website)}" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Sitio web</a>` : "",
+        maps ? `<a class="detail-action" href="${escapeHtml(maps)}" target="_blank" rel="noopener"><i class="fa-solid fa-location-dot"></i> Cómo llegar</a>` : ""
     ].filter(Boolean).join("");
 
-    const socialItems = [instagram, facebook, tiktok, otherSocial]
-        .filter(Boolean)
-        .map(url => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`)
-        .join("");
+    const socialItems = [instagram, facebook, tiktok, otherSocial].filter(Boolean)
+        .map(url => `<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>`).join("");
 
     const metaItems = [
         departamento || municipio ? `<div><strong>Ubicación</strong><span>${escapeHtml([municipio, departamento].filter(Boolean).join(", "))}</span></div>` : "",
@@ -123,70 +73,66 @@ function renderAuthenticatedBusiness(data) {
     ].filter(Boolean).join("");
 
     container.innerHTML = `
-        <section class="business-hero-card">
-            <div class="business-logo">
-                ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}">` : `<i class="fa-solid fa-store"></i>`}
-            </div>
-            <div>
-                <span class="category-badge">${category}</span>
-                <span class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</span>
-                <h1>${name}</h1>
-                <p>${description}</p>
+        ${galleryItems ? `<section class="business-gallery">${galleryItems}</section>` : ""}
+        <section class="business-info">
+            <div class="business-identity">
+                <div class="business-logo">
+                    ${logo ? `<img src="${escapeHtml(logo)}" alt="Logo de ${name}">` : `<i class="fa-solid fa-store"></i>`}
+                </div>
+                <div class="identity-copy">
+                    <span class="badge">${category}</span>
+                    <span class="verified-badge"><i class="fa-solid fa-check"></i> Verificado en neXsv</span>
+                    <h1>${name}</h1>
+                    <p class="descripcion">${description}</p>
+                    <div class="botones">
+                        ${whatsapp ? `<a href="${escapeHtml(whatsapp)}" target="_blank" rel="noopener" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>` : ""}
+                        ${maps ? `<a href="${escapeHtml(maps)}" target="_blank" rel="noopener" class="btn btn-mapa"><i class="fa-solid fa-location-dot"></i> Cómo llegar</a>` : ""}
+                        <button type="button" id="shareBusiness" class="btn btn-share"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section class="detail-grid">
             <article class="detail-card">
                 <h2>Conoce este negocio</h2>
-                <p>${description}</p>
+                <p class="descripcion">${description}</p>
                 ${metaItems ? `<div class="meta-grid">${metaItems}</div>` : ""}
             </article>
-
             <article class="detail-card">
                 <h2>Contacto</h2>
-                <div class="contact-actions">${contactItems || `<p class="muted">Este negocio aún no ha publicado datos de contacto.</p>`}</div>
+                <div class="contact-actions">${contactItems || `<p class="review-note">Este negocio aún no ha publicado datos de contacto.</p>`}</div>
                 ${socialItems ? `<div class="social-list">${socialItems}</div>` : ""}
             </article>
         </section>
 
+        <section class="detail-card" style="margin-top:24px">
+            <h2>Reseñas del negocio</h2>
+            <div class="review-summary">
+                <div class="review-score">0.0</div>
+                <div><div class="review-stars">★★★★★</div><div class="review-note">Aún no hay reseñas registradas para este negocio.</div></div>
+            </div>
+            <div class="review-empty">Las reseñas volverán a mostrarse aquí con sus comentarios y valoración cuando conectemos el módulo de reputación con el nuevo sistema de negocios.</div>
+        </section>
+
         <div class="detail-footer-actions">
-            <button type="button" id="shareBusiness" class="share-btn"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
-            <a href="negocios.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a>
+            <button type="button" id="shareBusinessFooter" class="btn btn-share"><i class="fa-solid fa-share-nodes"></i> Compartir</button>
+            <a href="negocios.html" class="btn back-btn"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a>
         </div>
     `;
 
-    document.getElementById("shareBusiness")?.addEventListener("click", shareBusiness);
+    const share = async () => {
+        const shareData = { title: data.nombre || "Negocio en neXsv", text: "Conoce este negocio en neXsv", url: window.location.href.split("&action=")[0] };
+        if (navigator.share) { try { await navigator.share(shareData); } catch (_) {} return; }
+        try { await navigator.clipboard.writeText(shareData.url); alert("Enlace copiado."); }
+        catch (_) { window.prompt("Copia este enlace:", shareData.url); }
+    };
+
+    document.getElementById("shareBusiness")?.addEventListener("click", share);
+    document.getElementById("shareBusinessFooter")?.addEventListener("click", share);
 
     if (requestedAction === "whatsapp" && whatsapp) window.open(whatsapp, "_blank", "noopener");
     if (requestedAction === "location" && maps) window.open(maps, "_blank", "noopener");
-}
-
-async function shareBusiness() {
-    const shareData = {
-        title: document.title,
-        text: "Conoce este negocio en neXsv",
-        url: window.location.href.split("&action=")[0]
-    };
-    if (navigator.share) {
-        try { await navigator.share(shareData); } catch (_) {}
-        return;
-    }
-    try {
-        await navigator.clipboard.writeText(shareData.url);
-        alert("Enlace copiado.");
-    } catch (_) {
-        window.prompt("Copia este enlace:", shareData.url);
-    }
-}
-
-async function loadAuthenticatedDetails() {
-    const { data, error } = await BusinessService.getAuthenticatedBusinessDetail(businessId);
-    if (error || !data) {
-        console.error("Error cargando detalle del negocio:", error);
-        return;
-    }
-    fullBusiness = data;
-    renderAuthenticatedBusiness(data);
 }
 
 async function init() {
@@ -198,27 +144,22 @@ async function init() {
         return;
     }
 
-    // Carga inmediata del contenido público: no esperamos a Supabase Auth.
-    const { data, error } = await BusinessService.getPublicBusinessDirectory();
-    if (error) {
-        console.error("Error cargando directorio público:", error);
+    const { data: sessionData } = await AuthService.getSession();
+    if (!sessionData?.session) {
+        const returnUrl = `negocio.html?id=${encodeURIComponent(businessId)}${requestedAction ? `&action=${encodeURIComponent(requestedAction)}` : ""}`;
+        window.location.href = `acceso/login-usuario.html?return=${encodeURIComponent(returnUrl)}`;
+        return;
+    }
+
+    const { data, error } = await BusinessService.getAuthenticatedBusinessDetail(businessId);
+    if (error || !data) {
+        console.error("Error cargando detalle del negocio:", error);
         container.innerHTML = `<div class="state-card"><strong>No fue posible cargar este negocio.</strong><a href="negocios.html">Volver al directorio</a></div>`;
         return;
     }
 
-    publicBusiness = (data || []).find(item => item.id === businessId);
-    if (!publicBusiness) {
-        container.innerHTML = `<div class="state-card"><strong>Este negocio no está disponible.</strong><a href="negocios.html">Volver al directorio</a></div>`;
-        return;
-    }
-
-    renderPublicBusiness(publicBusiness);
-
-    // La comprobación de sesión ocurre después de pintar la página.
-    const { data: sessionData } = await AuthService.getSession();
-    if (sessionData?.session) {
-        await loadAuthenticatedDetails();
-    }
+    const mediaResult = await BusinessMediaService.getPublicBusinessMedia(businessId);
+    renderBusiness(data, mediaResult.data || []);
 }
 
 if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
