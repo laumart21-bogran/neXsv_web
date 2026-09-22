@@ -132,8 +132,11 @@ function initializeBusinessSelector(businesses) {
     if (!row || !trigger || !triggerName || !menu || !businesses.length) return;
 
     row.hidden = false;
+    const requestedId = new URLSearchParams(window.location.search).get("business");
     const storedId = sessionStorage.getItem("nexsv_selected_business_id");
-    const selected = businesses.find(business => business.id === storedId) || businesses[0];
+    const selected = businesses.find(business => business.id === requestedId)
+        || businesses.find(business => business.id === storedId)
+        || businesses[0];
 
     const renderMenu = () => {
         menu.innerHTML = businesses.map(business => {
