@@ -1,4 +1,4 @@
-:root{--invite-blue:#2A4B7C;--invite-green:#34A88E;--invite-yellow:#F5B041;--invite-purple:#7656C8}
+[hidden]{display:none !important}\n:root{--invite-blue:#1657B8;--invite-green:#19C2C6;--invite-yellow:#F7C531;--invite-purple:#7656C8}
 *{box-sizing:border-box}
 body{margin:0;font-family:Montserrat,Arial,sans-serif;background:#fff;color:#1f2937;min-height:100vh}
 .business-invitation-page{min-height:100vh;padding:30px 24px 46px}
