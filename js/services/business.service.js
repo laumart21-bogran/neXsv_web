@@ -38,6 +38,30 @@ class BusinessService {
     // El RPC controla qué datos comerciales puede recibir un miembro.
     // =====================================================
 
+    async getBusinessManagementInvite(token) {
+        const { data, error } = await supabase.rpc("get_business_management_invite", {
+            p_token: token
+        });
+        return { data, error };
+    }
+
+    async getMyBusinessManagementInvites() {
+        const { data, error } = await supabase.rpc("get_my_business_management_invites");
+        return { data: data || [], error };
+    }
+
+    async acceptBusinessManagementInvite(token) {
+        const { data, error } = await supabase.rpc("accept_business_management_invite", {
+            p_token: token
+        });
+        return { data, error };
+    }
+
+    // =====================================================
+    // DETALLE PARA MIEMBROS AUTENTICADOS
+    // El RPC controla qué datos comerciales puede recibir un miembro.
+    // =====================================================
+
     async getAuthenticatedBusinessDetail(businessId) {
 
         const { data, error } = await supabase
