@@ -196,6 +196,34 @@ function initializeInlineComposer() {
     });
 }
 
+
+async function loadBusinessManagementInvite() {
+    const banner = document.getElementById("businessInviteBanner");
+    if (!banner) return;
+
+    const result = await BusinessService.getMyBusinessManagementInvites();
+    if (result.error || !Array.isArray(result.data) || !result.data.length) {
+        banner.hidden = true;
+        return;
+    }
+
+    const invite = result.data[0];
+    const name = invite.nombre || "tu negocio";
+    setText("businessInviteBannerName", "Comienza a gestionar " + name);
+
+    const logo = document.getElementById("businessInviteBannerLogo");
+    if (logo) {
+        logo.innerHTML = invite.logo
+            ? '<img src="' + escapeHtml(invite.logo) + '" alt="Logo de ' + escapeHtml(name) + '">'
+            : '<i class="fa-solid fa-store"></i>';
+    }
+
+    const link = document.getElementById("businessInviteBannerLink");
+    if (link) link.href = "gestiona-tu-negocio.html?token=" + encodeURIComponent(invite.token);
+
+    banner.hidden = false;
+}
+
 async function initialize() {
     initializeMoreMenu();
     initializeNotificationPopover();
@@ -216,7 +244,7 @@ async function initialize() {
     renderAvatar(perfil?.foto, nombreCompleto);
     updateProfileProgress(perfil || {});
 
-    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadRecommendedBusinesses(), loadDashboardCommunity()]);
+    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadBusinessManagementInvite(), loadRecommendedBusinesses(), loadDashboardCommunity()]);
     subscribeDashboardRealtime();
 }
 
