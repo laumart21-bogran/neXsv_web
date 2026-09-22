@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestiona tu negocio | neXsv</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="css/design-system.css"><link rel="stylesheet" href="css/business-invitation.css">
+</head>
+<body>
+<main class="business-invitation-page"><section class="business-invitation-card" id="invitationCard">
+<a class="business-invitation-logo" href="index.html"><img src="logo.png" alt="neXsv"></a>
+<div id="invitationLoading" class="invitation-state"><i class="fa-solid fa-spinner fa-spin"></i><span>Preparando tu invitación...</span></div>
+<div id="invitationContent" hidden>
+<span class="invitation-kicker"><i class="fa-solid fa-store"></i> Invitación privada</span>
+<h1>Tu negocio ya está en <strong>neXsv</strong></h1>
+<p class="invitation-intro">Hemos preparado la presencia de tu negocio dentro de nuestra red. Ahora puedes comenzar a gestionarla.</p>
+<article class="invited-business"><div class="invited-business-logo" id="invitedBusinessLogo"><i class="fa-solid fa-store"></i></div><div><h2 id="invitedBusinessName">Tu negocio</h2><span id="invitedBusinessCategory">Negocio</span><p id="invitedBusinessDescription"></p></div></article>
+<div id="loggedOutActions" class="invitation-actions" hidden><a id="loginInviteLink" class="invitation-primary" href="#"><i class="fa-solid fa-right-to-bracket"></i> Ya tengo cuenta</a><a id="registerInviteLink" class="invitation-secondary" href="#"><i class="fa-solid fa-user-plus"></i> Crear mi cuenta</a></div>
+<div id="loggedInActions" class="invitation-actions" hidden><button id="acceptInviteBtn" class="invitation-primary" type="button"><i class="fa-solid fa-store"></i> Comenzar a gestionar</button></div>
+<p id="invitationMessage" class="invitation-message" aria-live="polite"></p>
+<p class="invitation-note"><i class="fa-solid fa-shield-halved"></i> Esta invitación es personal y está vinculada al correo con el que fue enviada.</p>
+</div>
+<div id="invitationError" class="invitation-state invitation-error" hidden><i class="fa-solid fa-link-slash"></i><strong>Esta invitación ya no está disponible.</strong><span>Si esperabas recibir acceso a tu negocio, comunícate con el equipo de neXsv.</span><a href="index.html" class="invitation-secondary">Volver a neXsv</a></div>
+</section></main>
+<script type="module" src="js/pages/gestiona-tu-negocio.js?v=20260922-1"></script>
+</body></html>
