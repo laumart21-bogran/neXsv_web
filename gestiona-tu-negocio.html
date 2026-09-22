@@ -15,10 +15,22 @@
 <div id="invitationContent" hidden>
 <span class="invitation-kicker"><i class="fa-solid fa-store"></i> Invitación privada</span>
 <h1>Tu negocio ya está en <strong>neXsv</strong></h1>
-<p class="invitation-intro">Hemos preparado la presencia de tu negocio dentro de nuestra red. Ahora puedes comenzar a gestionarla.</p>
+<p class="invitation-intro">Hemos preparado la presencia de tu negocio dentro de nuestra red. Ahora puedes comenzar a gestionarla.</p><div class="invitation-access-badge">Acceso exclusivo para negocios verificados.</div>
 <article class="invited-business"><div class="invited-business-logo" id="invitedBusinessLogo"><i class="fa-solid fa-store"></i></div><div><h2 id="invitedBusinessName">Tu negocio</h2><span id="invitedBusinessCategory">Negocio</span><p id="invitedBusinessDescription"></p></div></article>
-<div id="loggedOutActions" class="invitation-actions" hidden><a id="loginInviteLink" class="invitation-primary" href="#"><i class="fa-solid fa-right-to-bracket"></i> Ya tengo cuenta</a><a id="registerInviteLink" class="invitation-secondary" href="#"><i class="fa-solid fa-user-plus"></i> Crear mi cuenta</a></div>
-<div id="loggedInActions" class="invitation-actions" hidden><button id="acceptInviteBtn" class="invitation-primary" type="button"><i class="fa-solid fa-store"></i> Comenzar a gestionar</button></div>
+<section class="invitation-features" aria-label="Qué puedes hacer ahora">
+<h2>¿Qué puedes hacer ahora?</h2>
+<div class="invitation-feature-grid">
+<article><span><i class="fa-solid fa-pen"></i></span><strong>Editar información</strong><small>Mantén tus datos actualizados</small></article>
+<article><span><i class="fa-regular fa-image"></i></span><strong>Gestionar fotografías</strong><small>Muestra lo mejor de tu negocio</small></article>
+<article><span><i class="fa-solid fa-chart-column"></i></span><strong>Ver estadísticas</strong><small>Conoce el impacto de tu presencia</small></article>
+<article><span><i class="fa-solid fa-gear"></i></span><strong>Administrar tu perfil</strong><small>Controla tu negocio</small></article>
+</div>
+</section>
+<div id="loggedOutActions" class="invitation-actions" hidden>
+<a id="loginInviteLink" class="invitation-action-card" href="#"><span class="invitation-action-icon"><i class="fa-regular fa-user"></i></span><span><strong>Ya tengo una cuenta</strong><small>Inicia sesión para gestionar tu negocio.</small></span><b>Iniciar sesión <i class="fa-solid fa-arrow-right"></i></b></a>
+<a id="registerInviteLink" class="invitation-action-card" href="#"><span class="invitation-action-icon"><i class="fa-solid fa-user-plus"></i></span><span><strong>Crear mi cuenta</strong><small>Regístrate y comienza a gestionar tu negocio.</small></span><b>Crear cuenta <i class="fa-solid fa-arrow-right"></i></b></a>
+</div>
+<div id="loggedInActions" class="invitation-actions invitation-actions-single" hidden><button id="acceptInviteBtn" class="invitation-primary" type="button"><i class="fa-solid fa-store"></i> Comenzar a gestionar</button></div>
 <p id="invitationMessage" class="invitation-message" aria-live="polite"></p>
 <p class="invitation-note"><i class="fa-solid fa-shield-halved"></i> Esta invitación es personal y está vinculada al correo con el que fue enviada.</p>
 </div>
