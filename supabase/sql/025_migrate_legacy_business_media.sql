@@ -80,8 +80,8 @@ using (
 
 -- ----------------------------------------------------------
 -- Inserción controlada de filas históricas
--- owner_id queda NULL hasta que el propietario reclame
--- el negocio mediante el sistema de invitaciones.
+-- Durante esta migración única se limita por ruta y por negocio.
+-- No se concede acceso general al bucket.
 -- ----------------------------------------------------------
 drop policy if exists "Migración controlada de material histórico" on public.business_media;
 
@@ -92,23 +92,19 @@ to authenticated
 with check (
     owner_id is null
     and tipo = 'FOTO'
-    and (storage.foldername(storage_path))[1] = 'migration'
+    and (
+        storage_path like 'migration/3007d57a-d04e-48ee-a4d6-f434ce0ff0d0/%'
+        or storage_path like 'migration/afa06334-d6ee-417f-aef8-ca11cd11773c/%'
+    )
     and business_id in (
         '3007d57a-d04e-48ee-a4d6-f434ce0ff0d0'::uuid,
         'afa06334-d6ee-417f-aef8-ca11cd11773c'::uuid
-    )
-    and auth.uid() = (
-        select b.owner_id
-        from public.businesses b
-        where b.id = 'd049bed8-26c2-4590-9922-c3acfd365ae2'::uuid
     )
 );
 
 -- ----------------------------------------------------------
 -- Upload de archivos históricos.
--- La primera carpeta debe ser "migration" y la segunda el
--- business_id. Solo el propietario actual de Motion21 puede
--- ejecutar esta migración.
+-- La ruta queda limitada a LMarketing y MovuX.
 -- ----------------------------------------------------------
 drop policy if exists "Migración controlada de archivos históricos" on storage.objects;
 
@@ -118,20 +114,18 @@ for insert
 to authenticated
 with check (
     bucket_id = 'business-media'
-    and (storage.foldername(name))[1] = 'migration'
-    and (storage.foldername(name))[2] in (
-        '3007d57a-d04e-48ee-a4d6-f434ce0ff0d0',
-        'afa06334-d6ee-417f-aef8-ca11cd11773c'
-    )
-    and auth.uid() = (
-        select b.owner_id
-        from public.businesses b
-        where b.id = 'd049bed8-26c2-4590-9922-c3acfd365ae2'::uuid
+    and (
+        name like 'migration/3007d57a-d04e-48ee-a4d6-f434ce0ff0d0/%'
+        or name like 'migration/afa06334-d6ee-417f-aef8-ca11cd11773c/%'
     )
 );
 
--- Supabase puede necesitar SELECT para devolver los metadatos
--- del objeto recién creado durante el upload.
+-- ----------------------------------------------------------
+-- SELECT necesario durante upload.
+-- Supabase puede ejecutar RETURNING para devolver metadatos
+-- del objeto recién creado; por eso INSERT y SELECT deben
+-- cubrir la misma ruta.
+-- ----------------------------------------------------------
 drop policy if exists "Migración controlada puede leer archivos" on storage.objects;
 
 create policy "Migración controlada puede leer archivos"
@@ -140,18 +134,11 @@ for select
 to authenticated
 using (
     bucket_id = 'business-media'
-    and (storage.foldername(name))[1] = 'migration'
-    and (storage.foldername(name))[2] in (
-        '3007d57a-d04e-48ee-a4d6-f434ce0ff0d0',
-        'afa06334-d6ee-417f-aef8-ca11cd11773c'
-    )
-    and auth.uid() = (
-        select b.owner_id
-        from public.businesses b
-        where b.id = 'd049bed8-26c2-4590-9922-c3acfd365ae2'::uuid
+    and (
+        name like 'migration/3007d57a-d04e-48ee-a4d6-f434ce0ff0d0/%'
+        or name like 'migration/afa06334-d6ee-417f-aef8-ca11cd11773c/%'
     )
 );
-
 
 -- ----------------------------------------------------------
 -- Cuando un negocio sea reclamado, su propietario podrá ver
