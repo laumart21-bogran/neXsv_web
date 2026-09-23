@@ -28,9 +28,10 @@ class BusinessMediaService {
     async getPublicBusinessMedia(businessId) {
         const { data, error } = await supabase
             .from("business_media")
-            .select("id, business_id, tipo, storage_path, public_url, created_at")
+            .select("id, business_id, tipo, slot, storage_path, public_url, created_at")
             .eq("business_id", businessId)
-            .order("created_at", { ascending: true });
+            .in("slot", [2, 3])
+            .order("slot", { ascending: true });
 
         if (error) return { data: [], error };
 
