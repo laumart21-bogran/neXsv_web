@@ -37,13 +37,34 @@ function renderBusiness(data,images,reviews){
 async function init(){
  const container=document.getElementById("contenido");if(!container)return;if(!businessId){container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";return;}
  const publicResult=ownerPreview ? await BusinessService.getBusinessById(businessId) : await BusinessService.getPublicBusinessDetail(businessId);let data=publicResult.data||null;let legacyData=null;
- if(!data)legacyData=await loadLegacy();
- if(!data&&legacyData){const fallback=findLegacyBusiness(legacyData,params.get("nombre")||"");if(fallback){const k=Object.keys(fallback).reduce((acc,key)=>{acc[key.trim()]=fallback[key];return acc;},{});data={nombre:k["Nombre de tu negocio"],categoria:k["Categoría de tu negocio"],descripcion:k["Descripcion_final"]||k["Describe tu negocio"],whatsapp:k["WhatsApp del negocio"],google_maps_url:k["Link de ubicación del Negocio (Link de Google Maps)"]||k["Ubicación del Negocio (Link de Google Maps)"],logo:convertirDrive(k["Link de imagen resp"]||k["Imagen_final"])};}}
+ if(!data){
+     legacyData=await loadLegacy();
+     const fallback=findLegacyBusiness(legacyData,params.get("nombre")||"");
+     if(fallback){
+         const k=Object.keys(fallback).reduce((acc,key)=>{acc[key.trim()]=fallback[key];return acc;},{});
+         data={nombre:k["Nombre de tu negocio"],categoria:k["Categoría de tu negocio"],descripcion:k["Descripcion_final"]||k["Describe tu negocio"],whatsapp:k["WhatsApp del negocio"],google_maps_url:k["Link de ubicación del Negocio (Link de Google Maps)"]||k["Ubicación del Negocio (Link de Google Maps)"],logo:convertirDrive(k["Link de imagen resp"]||k["Imagen_final"])};
+     }
+ }
  if(!data){container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";return;}
- const mediaResult=await BusinessMediaService.getPublicBusinessMedia(businessId);let images=(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean).slice(0,3);
- legacyData=legacyData||await loadLegacy();const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);if(!images.length)images=legacyImages(legacyBusiness).slice(0,3);
- const publicReviewsResult=await BusinessService.getPublicBusinessReviews(businessId);
- const reviews=publicReviewsResult.error ? legacyReviews(legacyData,data.nombre) : (publicReviewsResult.data||[]);
+
+ // Estas consultas son independientes: se ejecutan en paralelo para que
+ // la página pública no quede esperando una respuesta detrás de otra.
+ const [mediaResult,publicReviewsResult]=await Promise.all([
+     BusinessMediaService.getPublicBusinessMedia(businessId),
+     BusinessService.getPublicBusinessReviews(businessId)
+ ]);
+ let images=(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean).slice(0,3);
+
+ // La fuente histórica solo se consulta si realmente necesitamos un fallback.
+ if((mediaResult.error||publicReviewsResult.error)&&!legacyData) legacyData=await loadLegacy();
+
+ if(!images.length&&legacyData){
+     const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);
+     images=legacyImages(legacyBusiness).slice(0,3);
+ }
+ const reviews=publicReviewsResult.error
+     ? legacyReviews(legacyData,data.nombre)
+     : (publicReviewsResult.data||[]);
  renderBusiness(data,images,reviews);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
