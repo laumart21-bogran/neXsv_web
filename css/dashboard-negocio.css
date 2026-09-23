@@ -53,3 +53,37 @@
     .business-public-preview-copy{flex-basis:calc(100% - 70px)}
     .business-public-preview-card .business-card-action{width:100%;justify-content:center}
 }
+
+/* Presentación pública del negocio */
+.business-presentation-preview{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:20px;align-items:center;padding:18px 20px;margin-bottom:20px;background:#F7F9FD;border:1px solid #E6EBF3;border-radius:18px}
+.business-presentation-preview-label{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;color:#64748B;font-size:.78rem;line-height:1.5}
+.business-presentation-preview-label i{color:#3155B6;margin-top:2px}
+.business-presentation-preview-label strong{color:#233A72}
+.business-presentation-preview-label span{flex-basis:100%;padding-left:25px}
+.business-presentation-mini-card{border:1px solid #E3E8F0;border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 6px 18px rgba(35,58,114,.06)}
+.business-presentation-mini-cover{height:100px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #EEF1F5}
+.business-presentation-mini-cover img{width:100%;height:100%;object-fit:contain;padding:12px}
+.business-presentation-mini-cover i{font-size:28px;color:#94A3B8}
+.business-presentation-mini-content{padding:10px 12px}
+.business-presentation-mini-content>span{display:block;color:#64748B;font-size:.62rem}
+.business-presentation-mini-content strong{display:block;color:#233A72;font-size:.86rem;margin:3px 0}
+.business-presentation-mini-content small{color:#2E7D32;font-size:.62rem}
+.business-presentation-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.business-presentation-slot{border:1px solid #E6EBF3;border-radius:18px;padding:16px;background:#fff;display:flex;flex-direction:column}
+.presentation-slot-media{height:145px;border-radius:13px;background:#F7F9FD;border:1px dashed #D7DFEB;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#94A3B8}
+.presentation-slot-media img{width:100%;height:100%;object-fit:contain;background:#fff;padding:10px}
+.business-presentation-slot.primary .presentation-slot-media{background:#fff}
+.business-presentation-slot.primary .presentation-slot-media img{object-fit:contain}
+.presentation-slot-copy{display:flex;gap:10px;margin:14px 0 12px}
+.presentation-slot-number{width:26px;height:26px;flex:0 0 26px;border-radius:50%;background:#EEF3FF;color:#3155B6;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800}
+.presentation-slot-copy h3{margin:0;color:#233A72;font-size:.88rem;line-height:1.35}
+.presentation-slot-copy h3 span{color:#3155B6}
+.presentation-slot-copy p{margin:7px 0 0;color:#64748B;font-size:.74rem;line-height:1.45}
+.presentation-slot-copy p strong{color:#233A72}
+.business-presentation-upload{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:auto;padding:10px 12px;border-radius:11px;background:#F1F5FF;color:#3155B6;font-size:.76rem;font-weight:800;cursor:pointer}
+.business-presentation-upload:hover{background:#E6EDFF}
+.business-presentation-status{min-height:20px;margin:14px 0 0;color:#64748B;font-size:.76rem}
+.business-presentation-status.success{color:#2E7D32}
+.business-presentation-status.error{color:#B42318}
+@media(max-width:900px){.business-presentation-preview{grid-template-columns:1fr}.business-presentation-mini-card{max-width:300px}.business-presentation-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.business-presentation-grid{grid-template-columns:1fr}.presentation-slot-media{height:170px}}
