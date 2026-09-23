@@ -40,6 +40,8 @@ $$;
 revoke all on function public.get_public_business_detail(uuid) from public;
 grant execute on function public.get_public_business_detail(uuid) to anon, authenticated;
 
+grant select on public.business_media to anon, authenticated;
+
 -- ----------------------------------------------------------
 -- Lectura pública de medios de negocios activos
 -- Necesaria para que la página pública pueda generar URLs
