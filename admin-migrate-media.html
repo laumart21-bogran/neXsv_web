@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>neXsv | Migración de fotografías</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0;color:#24324a}
+main{max-width:760px;margin:50px auto;padding:30px;background:#fff;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+h1{margin-top:0}
+.notice{padding:14px 16px;background:#eef5ff;border-radius:12px;margin:18px 0}
+button{border:0;border-radius:10px;padding:13px 18px;background:#2A4B7C;color:#fff;font-weight:700;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+.status{margin-top:20px;white-space:pre-wrap;font-family:monospace;background:#f7f8fa;padding:15px;border-radius:10px}
+.ok{color:#147a4a}.error{color:#b42318}
+</style>
+</head>
+<body>
+<main>
+<h1>📸 Migración de fotografías neXsv</h1>
+<div id="session" class="notice">Comprobando sesión…</div>
+<div class="notice">
+<strong>Esta herramienta está limitada a:</strong><br>
+LMarketing — 3 fotografías<br>
+MovuX — 2 fotografías
+</div>
+<button id="run" disabled>Migrar las 5 fotografías</button>
+<div id="status" class="status">Esperando…</div>
+</main>
+<script type="module" src="js/pages/admin-migrate-media.js?v=20260923-1"></script>
+</body>
+</html>
