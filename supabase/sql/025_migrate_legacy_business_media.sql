@@ -149,3 +149,45 @@ using (
         where b.id = 'd049bed8-26c2-4590-9922-c3acfd365ae2'::uuid
     )
 );
+
+
+-- ----------------------------------------------------------
+-- Cuando un negocio sea reclamado, su propietario podrá ver
+-- y eliminar también el material histórico migrado.
+-- No se modifica owner_id automáticamente en esta migración:
+-- la propiedad sigue siendo controlada por el flujo de claim.
+-- ----------------------------------------------------------
+drop policy if exists "Propietarios pueden eliminar material" on public.business_media;
+
+create policy "Propietarios pueden eliminar material"
+on public.business_media
+for delete
+to authenticated
+using (
+    owner_id = auth.uid()
+    or exists (
+        select 1
+        from public.businesses b
+        where b.id = business_media.business_id
+          and b.owner_id = auth.uid()
+    )
+);
+
+drop policy if exists "Propietarios pueden eliminar material de negocio" on storage.objects;
+
+create policy "Propietarios pueden eliminar material de negocio"
+on storage.objects
+for delete
+to authenticated
+using (
+    bucket_id = 'business-media'
+    and (
+        (storage.foldername(name))[1] = auth.uid()::text
+        or exists (
+            select 1
+            from public.businesses b
+            where b.id::text = (storage.foldername(name))[2]
+              and b.owner_id = auth.uid()
+        )
+    )
+);
