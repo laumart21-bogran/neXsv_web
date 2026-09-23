@@ -24,11 +24,24 @@ class BusinessService {
     // =====================================================
 
     async getPublicBusinessDetail(businessId) {
-        const { data, error } = await supabase.rpc("get_authenticated_business_detail", {
+        const { data, error } = await supabase.rpc("get_public_business_detail", {
             p_business_id: businessId
         });
         return {
             data,
+            error
+        };
+    }
+
+    async getPublicBusinessReviews(businessId) {
+        const { data, error } = await supabase
+            .from("business_reviews")
+            .select("id, business_id, nombre, estrellas, comentario, created_at")
+            .eq("business_id", businessId)
+            .order("created_at", { ascending: true });
+
+        return {
+            data: data || [],
             error
         };
     }
