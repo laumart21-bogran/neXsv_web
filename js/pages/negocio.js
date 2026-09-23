@@ -42,6 +42,8 @@ async function init(){
  if(!data){container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";return;}
  const mediaResult=await BusinessMediaService.getPublicBusinessMedia(businessId);let images=(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean).slice(0,3);
  legacyData=legacyData||await loadLegacy();const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);if(!images.length)images=legacyImages(legacyBusiness).slice(0,3);
- const reviews=legacyReviews(legacyData,data.nombre);renderBusiness(data,images,reviews);
+ const publicReviewsResult=await BusinessService.getPublicBusinessReviews(businessId);
+ const reviews=publicReviewsResult.error ? legacyReviews(legacyData,data.nombre) : (publicReviewsResult.data||[]);
+ renderBusiness(data,images,reviews);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
