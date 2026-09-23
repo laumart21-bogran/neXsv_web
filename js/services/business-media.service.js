@@ -40,7 +40,12 @@ class BusinessMediaService {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: [], error: new Error("Usuario no autenticado.") };
-        const { data, error } = await supabase.from("business_media").select("id, business_id, tipo, storage_path, public_url, created_at").eq("business_id", businessId).eq("owner_id", userId).order("created_at", { ascending: false });
+        const { data, error } = await supabase
+            .from("business_media")
+            .select("id, business_id, tipo, storage_path, public_url, created_at")
+            .eq("business_id", businessId)
+            .or(`owner_id.eq.${userId},businesses.owner_id.eq.${userId}`)
+            .order("created_at", { ascending: false });
         if (error) return { data: [], error };
         const rows = [];
         for (const item of data || []) {
@@ -82,7 +87,10 @@ class BusinessMediaService {
         if (!media?.id || !media?.storage_path) return { error: new Error("Material no válido.") };
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
-        const { error } = await supabase.from("business_media").delete().eq("id", media.id).eq("owner_id", userId);
+        const { error } = await supabase
+            .from("business_media")
+            .delete()
+            .eq("id", media.id);
         if (error) return { error };
         const { error: storageError } = await supabase.storage.from(BUCKET).remove([media.storage_path]);
         return { error: storageError || null };
