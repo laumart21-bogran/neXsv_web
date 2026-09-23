@@ -40,12 +40,23 @@ class BusinessMediaService {
         const { data: userResult } = await supabase.auth.getUser();
         const userId = userResult?.user?.id;
         if (!userId) return { data: [], error: new Error("Usuario no autenticado.") };
-        const { data, error } = await supabase
+        const { data: ownedBusiness, error: ownerError } = await supabase
+            .from("businesses")
+            .select("id")
+            .eq("id", businessId)
+            .eq("owner_id", userId)
+            .maybeSingle();
+
+        if (ownerError) return { data: [], error: ownerError };
+
+        let mediaQuery = supabase
             .from("business_media")
             .select("id, business_id, tipo, storage_path, public_url, created_at")
-            .eq("business_id", businessId)
-            .or(`owner_id.eq.${userId},businesses.owner_id.eq.${userId}`)
-            .order("created_at", { ascending: false });
+            .eq("business_id", businessId);
+
+        if (!ownedBusiness) mediaQuery = mediaQuery.eq("owner_id", userId);
+
+        const { data, error } = await mediaQuery.order("created_at", { ascending: false });
         if (error) return { data: [], error };
         const rows = [];
         for (const item of data || []) {
