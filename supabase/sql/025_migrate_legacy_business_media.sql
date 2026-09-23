@@ -5,8 +5,8 @@
 -- Este script NO elimina fotografías ni registros existentes.
 -- Crea una ruta separada "migration/{business_id}/..." para
 -- los medios históricos que todavía no tienen propietario.
--- El acceso de migración queda limitado al propietario actual
--- de Motion21 y únicamente a estos dos negocios.
+-- El acceso de migración queda limitado temporalmente a la cuenta
+-- autenticada de Laura y únicamente a estos dos negocios.
 
 alter table public.business_media
     alter column owner_id drop not null;
@@ -48,6 +48,7 @@ grant select on public.business_media to anon, authenticated;
 -- firmadas sin exigir que el visitante tenga cuenta.
 -- ----------------------------------------------------------
 drop policy if exists "Miembros pueden ver material de negocios activos" on public.business_media;
+drop policy if exists "Visitantes pueden ver material de negocios activos" on public.business_media;
 
 create policy "Visitantes pueden ver material de negocios activos"
 on public.business_media
@@ -63,6 +64,7 @@ using (
 );
 
 drop policy if exists "Miembros pueden ver material de negocios activos" on storage.objects;
+drop policy if exists "Visitantes pueden ver material de negocios activos" on storage.objects;
 
 create policy "Visitantes pueden ver material de negocios activos"
 on storage.objects
@@ -100,6 +102,7 @@ with check (
         '3007d57a-d04e-48ee-a4d6-f434ce0ff0d0'::uuid,
         'afa06334-d6ee-417f-aef8-ca11cd11773c'::uuid
     )
+    and (auth.jwt() ->> 'email') = 'lauramartinezp9@gmail.com'
 );
 
 -- ----------------------------------------------------------
@@ -118,6 +121,7 @@ with check (
         name like 'migration/3007d57a-d04e-48ee-a4d6-f434ce0ff0d0/%'
         or name like 'migration/afa06334-d6ee-417f-aef8-ca11cd11773c/%'
     )
+    and (auth.jwt() ->> 'email') = 'lauramartinezp9@gmail.com'
 );
 
 -- ----------------------------------------------------------
@@ -138,6 +142,7 @@ using (
         name like 'migration/3007d57a-d04e-48ee-a4d6-f434ce0ff0d0/%'
         or name like 'migration/afa06334-d6ee-417f-aef8-ca11cd11773c/%'
     )
+    and (auth.jwt() ->> 'email') = 'lauramartinezp9@gmail.com'
 );
 
 -- ----------------------------------------------------------
