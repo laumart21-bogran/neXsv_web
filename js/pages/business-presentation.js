@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (result.error || !result.data || result.data.owner_id !== currentUser.id) return;
 
     currentBusiness = result.data;
+    updateMiniCard();
     bindPresentationControls();
     await loadPresentation();
 });
