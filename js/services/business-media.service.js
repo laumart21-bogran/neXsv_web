@@ -26,14 +26,36 @@ class BusinessMediaService {
     }
 
     async getPublicBusinessMedia(businessId) {
-        const { data, error } = await supabase.from("business_media").select("id, business_id, tipo, storage_path, public_url, created_at").eq("business_id", businessId).order("created_at", { ascending: true });
+        const { data, error } = await supabase
+            .from("business_media")
+            .select("id, business_id, tipo, storage_path, public_url, created_at")
+            .eq("business_id", businessId)
+            .order("created_at", { ascending: true });
+
         if (error) return { data: [], error };
-        const rows = [];
-        for (const item of data || []) {
-            const { data: signed, error: signedError } = await supabase.storage.from(BUCKET).createSignedUrl(item.storage_path, 3600);
-            rows.push({ ...item, url: signedError ? null : signed?.signedUrl });
-        }
-        return { data: rows.filter(item => item.url), error: null };
+
+        const items = (data || []).filter(item => item.storage_path);
+        if (!items.length) return { data: [], error: null };
+
+        // Supabase permite generar varias URLs firmadas en una sola llamada.
+        // Esto evita una petición de Storage por cada fotografía.
+        const { data: signedUrls, error: signedError } = await supabase
+            .storage
+            .from(BUCKET)
+            .createSignedUrls(items.map(item => item.storage_path), 3600);
+
+        if (signedError) return { data: [], error: signedError };
+
+        const urlByPath = new Map(
+            (signedUrls || []).map(item => [item.path, item.signedUrl])
+        );
+
+        return {
+            data: items
+                .map(item => ({ ...item, url: urlByPath.get(item.storage_path) || null }))
+                .filter(item => item.url),
+            error: null
+        };
     }
 
     async getBusinessMedia(businessId) {
