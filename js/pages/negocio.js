@@ -53,14 +53,18 @@ async function init(){
      BusinessMediaService.getPublicBusinessMedia(businessId),
      BusinessService.getPublicBusinessReviews(businessId)
  ]);
- let images=(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean).slice(0,3);
+ let images=[];
+ if(data.logo) images.push(data.logo);
+ images.push(...(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean));
+ images=[...new Set(images)].slice(0,3);
 
  // La fuente histórica solo se consulta si realmente necesitamos un fallback.
  if((mediaResult.error||publicReviewsResult.error)&&!legacyData) legacyData=await loadLegacy();
 
- if(!images.length&&legacyData){
+ if(images.length<3&&legacyData){
      const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);
-     images=legacyImages(legacyBusiness).slice(0,3);
+     const fallbackImages=legacyImages(legacyBusiness);
+     images=[...new Set([...images,...fallbackImages])].slice(0,3);
  }
  const reviews=publicReviewsResult.error
      ? legacyReviews(legacyData,data.nombre)
