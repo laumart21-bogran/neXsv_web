@@ -23,13 +23,36 @@ function renderBusiness(data,images,reviews){
  const name=escapeHtml(data.nombre||"Negocio"), category=escapeHtml(data.categoria||"Comunidad"), description=escapeHtml(data.descripcion||"");
  const logo=String(data.logo||"").trim(), whatsapp=normalizeWhatsapp(data.whatsapp), maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]), safeSlug=slugify(data.nombre||"");
  const total=reviews.length, average=total?(reviews.reduce((sum,item)=>sum+Number(item.estrellas||0),0)/total).toFixed(1):"0.0";
- container.innerHTML="<div class=\"galeria\">"+(images.length?images.map((img,index)=>"<div class=\"galeria-item\"><img src=\""+escapeHtml(img)+"\" alt=\"Foto "+(index+1)+" de "+name+"\" loading=\""+(index===0?"eager":"lazy")+"\"></div>").join(""):"<div class=\"galeria-item galeria-empty\">Este negocio aún no tiene fotografías.</div>")+"</div>"+
+ const gallerySlides=images.length
+     ? images.map((img,index)=>"<div class=\"galeria-item\"><img src=\""+escapeHtml(img)+"\" alt=\"Foto "+(index+1)+" de "+name+"\" loading=\""+(index===0?"eager":"lazy")+"\"></div>").join("")
+     : "<div class=\"galeria-item galeria-empty\">Este negocio aún no tiene fotografías.</div>";
+ const galleryDots=images.length>1
+     ? "<div class=\"galeria-controls\">"+images.map((_,index)=>"<button type=\"button\" class=\"galeria-dot"+(index===0?" active":"")+"\" data-gallery-index=\""+index+"\" aria-label=\"Ver imagen "+(index+1)+"\"></button>").join("")+"</div>"
+     : "";
+ container.innerHTML="<div class=\"galeria\"><div class=\"galeria-track\" id=\"businessGalleryTrack\">"+gallerySlides+"</div>"+galleryDots+"</div>"+
  "<div class=\"info\"><div class=\"identity\"><div class=\"logo-box\">"+(logo?"<img src=\""+escapeHtml(logo)+"\" alt=\"Logo de "+name+"\">":"<i class=\"fa-solid fa-store\"></i>")+"</div><div><span class=\"badge\">"+category+"</span><span class=\"verified\"><i class=\"fa-solid fa-circle-check\"></i> Verificado en neXsv</span><h1>"+name+"</h1><p class=\"descripcion\">"+description+"</p></div></div>"+
  "<div class=\"review-summary\"><div class=\"review-score\">⭐ "+average+"</div><div class=\"review-count\">"+total+" "+(total===1?"review":"reviews")+"</div></div>"+
  "<div class=\"botones\">"+(whatsapp?"<a href=\""+escapeHtml(whatsapp)+"\" target=\"_blank\" rel=\"noopener\" class=\"btn btn-whatsapp\"><i class=\"fa-brands fa-whatsapp\"></i> WhatsApp</a>":"")+(maps?"<a href=\""+escapeHtml(maps)+"\" target=\"_blank\" rel=\"noopener\" class=\"btn btn-mapa\"><i class=\"fa-solid fa-location-dot\"></i> Cómo llegar</a>":"")+"<button type=\"button\" id=\"shareBusiness\" class=\"btn btn-share\"><i class=\"fa-solid fa-share-nodes\"></i> Compartir</button></div>"+
  "<section class=\"reviews-section\"><h2>Reviews</h2>"+reviewsHtml(reviews)+"</section><section class=\"review-form\"><h2>Deja tu review</h2><input type=\"text\" id=\"reviewNombre\" placeholder=\"Tu nombre\"><select id=\"reviewEstrellas\"><option value=\"5\">⭐⭐⭐⭐⭐ Excelente</option><option value=\"4\">⭐⭐⭐⭐ Muy bueno</option><option value=\"3\">⭐⭐⭐ Bueno</option><option value=\"2\">⭐⭐ Regular</option><option value=\"1\">⭐ Malo</option></select><textarea id=\"reviewComentario\" placeholder=\"Comparte tu experiencia...\"></textarea><button type=\"button\" id=\"enviarReview\"><i class=\"fa-regular fa-paper-plane\"></i> Enviar review</button><div id=\"mensajeReview\"></div></section><div class=\"detail-footer\"><a href=\"negocios.html\" class=\"btn btn-share\"><i class=\"fa-solid fa-arrow-left\"></i> Volver a negocios</a></div></div>";
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
  document.getElementById("shareBusiness")?.addEventListener("click",share);
+ const galleryTrack=document.getElementById("businessGalleryTrack");
+ const galleryDots=[...document.querySelectorAll(".galeria-dot")];
+ if(galleryTrack&&images.length>1){
+     let galleryIndex=0;
+     let galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
+     const updateGallery=()=>{
+         galleryTrack.style.transform="translateX(-"+(galleryIndex*100)+"%)";
+         galleryDots.forEach((dot,index)=>dot.classList.toggle("active",index===galleryIndex));
+     };
+     galleryDots.forEach(dot=>dot.addEventListener("click",()=>{
+         galleryIndex=Number(dot.dataset.galleryIndex)||0;
+         updateGallery();
+         clearInterval(galleryTimer);
+         galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
+     }));
+ }
+
  document.getElementById("enviarReview")?.addEventListener("click",async()=>{const nombre=document.getElementById("reviewNombre")?.value.trim(),estrellas=document.getElementById("reviewEstrellas")?.value,comentario=document.getElementById("reviewComentario")?.value.trim(),mensaje=document.getElementById("mensajeReview");if(!nombre||!comentario){mensaje.textContent="Completa todos los campos.";return;}mensaje.textContent="Enviando review…";try{const response=await fetch(LEGACY_URL,{method:"POST",body:JSON.stringify({slug:safeSlug,nombre,estrellas,comentario})});if(!response.ok)throw new Error("REVIEW_POST");mensaje.textContent="✅ Review enviada correctamente.";document.getElementById("reviewNombre").value="";document.getElementById("reviewComentario").value="";setTimeout(()=>location.reload(),900);}catch(error){console.error(error);mensaje.textContent="No fue posible enviar la review en este momento.";}});
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
