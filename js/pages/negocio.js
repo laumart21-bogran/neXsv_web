@@ -59,48 +59,64 @@ function renderBusiness(data,images,reviews){
 }
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
- const container=document.getElementById("contenido");if(!container)return;if(!businessId){container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";return;}
- const publicResult=await withTimeout(
-     ownerPreview ? BusinessService.getBusinessById(businessId) : BusinessService.getPublicBusinessDetail(businessId),
-     10000,
-     {data:null,error:new Error("BUSINESS_TIMEOUT")}
- );let data=publicResult.data||null;let legacyData=null;
- if(!data){
-     legacyData=await loadLegacy();
-     const fallback=findLegacyBusiness(legacyData,params.get("nombre")||"");
-     if(fallback){
-         const k=Object.keys(fallback).reduce((acc,key)=>{acc[key.trim()]=fallback[key];return acc;},{});
-         data={nombre:k["Nombre de tu negocio"],categoria:k["Categoría de tu negocio"],descripcion:k["Descripcion_final"]||k["Describe tu negocio"],whatsapp:k["WhatsApp del negocio"],google_maps_url:k["Link de ubicación del Negocio (Link de Google Maps)"]||k["Ubicación del Negocio (Link de Google Maps)"],logo:convertirDrive(k["Link de imagen resp"]||k["Imagen_final"])};
-     }
+ const container=document.getElementById("contenido");
+ if(!container)return;
+ if(!businessId){
+     container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";
+     return;
  }
- if(!data){container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";return;}
 
- // Renderizamos primero la información principal. Las fotos y reviews no
- // deben bloquear la página completa si Supabase Storage tarda o no responde.
+ // Primero obtenemos solo la información básica que ya utiliza el directorio.
+ // Así el negocio puede verse sin esperar contacto, Storage ni reviews.
+ const directoryResult=await withTimeout(
+     BusinessService.getPublicBusinessDirectory(),
+     5000,
+     {data:[],error:new Error("DIRECTORY_TIMEOUT")}
+ );
+ const basicData=(directoryResult.data||[]).find(item=>String(item.id)===String(businessId));
+
+ if(!basicData){
+     container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";
+     return;
+ }
+
+ let data={...basicData};
  renderBusiness(data,data.logo?[data.logo]:[],[]);
- 
+
+ // Los datos secundarios se cargan después de mostrar el negocio.
+ const detailResult=await withTimeout(
+     BusinessService.getPublicBusinessDetail(businessId),
+     5000,
+     {data:null,error:new Error("DETAIL_TIMEOUT")}
+ );
+
+ if(detailResult.data){
+     data={...data,...detailResult.data};
+     renderBusiness(data,data.logo?[data.logo]:[],[]);
+ }
+
  const [mediaResult,publicReviewsResult]=await Promise.all([
-     withTimeout(BusinessMediaService.getPublicBusinessMedia(businessId),8000,{data:[],error:new Error("MEDIA_TIMEOUT")}),
-     withTimeout(BusinessService.getPublicBusinessReviews(businessId),8000,{data:[],error:new Error("REVIEWS_TIMEOUT")})
+     withTimeout(
+         BusinessMediaService.getPublicBusinessMedia(businessId),
+         5000,
+         {data:[],error:new Error("MEDIA_TIMEOUT")}
+     ),
+     withTimeout(
+         BusinessService.getPublicBusinessReviews(businessId),
+         5000,
+         {data:[],error:new Error("REVIEWS_TIMEOUT")}
+     )
  ]);
+
  let images=[];
- if(data.logo) images.push(data.logo);
- images.push(...(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean));
+ if(data.logo)images.push(data.logo);
+ images.push(...(mediaResult.data||[])
+     .filter(item=>item.tipo==="FOTO")
+     .map(item=>item.url)
+     .filter(Boolean));
  images=[...new Set(images)].slice(0,3);
 
- // El fallback histórico tampoco debe bloquear la página pública.
- if((mediaResult.error||publicReviewsResult.error)&&!legacyData){
-     legacyData=await withTimeout(loadLegacy(),5000,null);
- }
-
- if(images.length<3&&legacyData){
-     const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);
-     const fallbackImages=legacyImages(legacyBusiness);
-     images=[...new Set([...images,...fallbackImages])].slice(0,3);
- }
- const reviews=publicReviewsResult.error
-     ? legacyReviews(legacyData,data.nombre)
-     : (publicReviewsResult.data||[]);
+ const reviews=publicReviewsResult.data||[];
  renderBusiness(data,images,reviews);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
