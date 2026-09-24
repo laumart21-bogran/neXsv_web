@@ -1,5 +1,5 @@
 import BusinessService from "../services/business.service.js";
-import BusinessMediaService from "../services/business-media.service.js";
+import BusinessMediaService from "../services/business-media.service.js?v=20260924-3";
 
 const LEGACY_URL="https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 const params=new URLSearchParams(window.location.search);
