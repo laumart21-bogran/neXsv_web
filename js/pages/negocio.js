@@ -37,15 +37,15 @@ function renderBusiness(data,images,reviews){
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
  document.getElementById("shareBusiness")?.addEventListener("click",share);
  const galleryTrack=document.getElementById("businessGalleryTrack");
- const galleryDots=[...document.querySelectorAll(".galeria-dot")];
+ const galleryDotButtons=[...document.querySelectorAll(".galeria-dot")];
  if(galleryTrack&&images.length>1){
      let galleryIndex=0;
      let galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
      const updateGallery=()=>{
          galleryTrack.style.transform="translateX(-"+(galleryIndex*100)+"%)";
-         galleryDots.forEach((dot,index)=>dot.classList.toggle("active",index===galleryIndex));
+         galleryDotButtons.forEach((dot,index)=>dot.classList.toggle("active",index===galleryIndex));
      };
-     galleryDots.forEach(dot=>dot.addEventListener("click",()=>{
+     galleryDotButtons.forEach(dot=>dot.addEventListener("click",()=>{
          galleryIndex=Number(dot.dataset.galleryIndex)||0;
          updateGallery();
          clearInterval(galleryTimer);
@@ -57,6 +57,7 @@ function renderBusiness(data,images,reviews){
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
 }
+function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
  const container=document.getElementById("contenido");if(!container)return;if(!businessId){container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";return;}
  const publicResult=ownerPreview ? await BusinessService.getBusinessById(businessId) : await BusinessService.getPublicBusinessDetail(businessId);let data=publicResult.data||null;let legacyData=null;
