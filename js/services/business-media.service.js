@@ -15,20 +15,16 @@ class BusinessMediaService {
     }
 
     async getPublicBusinessMedia(businessId) {
-        const { data, error } = await supabase
-            .from("business_media")
-            .select("id, business_id, tipo, slot, storage_path, public_url, created_at")
-            .eq("business_id", businessId)
-            .in("slot", [2, 3])
-            .order("slot", { ascending: true });
+        const { data, error } = await supabase.rpc("get_public_business_presentation_media", {
+            p_business_id: businessId
+        });
 
         if (error) return { data: [], error };
 
         const items = (data || []).filter(item => item.storage_path);
         if (!items.length) return { data: [], error: null };
 
-        // Estas imágenes son públicas por diseño: no generamos URLs firmadas
-        // para cada fotografía, evitando una llamada adicional a Storage.
+        // Estas imágenes son públicas por diseño: no generamos URLs firmadas.
         const bucket = supabase.storage.from(BUCKET);
         return {
             data: items.map(item => ({
