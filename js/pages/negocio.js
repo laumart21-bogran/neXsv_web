@@ -70,19 +70,23 @@ async function init(){
  }
  if(!data){container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";return;}
 
- // Estas consultas son independientes: se ejecutan en paralelo para que
- // la página pública no quede esperando una respuesta detrás de otra.
+ // Renderizamos primero la información principal. Las fotos y reviews no
+ // deben bloquear la página completa si Supabase Storage tarda o no responde.
+ renderBusiness(data,data.logo?[data.logo]:[],[]);
+ 
  const [mediaResult,publicReviewsResult]=await Promise.all([
-     BusinessMediaService.getPublicBusinessMedia(businessId),
-     BusinessService.getPublicBusinessReviews(businessId)
+     withTimeout(BusinessMediaService.getPublicBusinessMedia(businessId),8000,{data:[],error:new Error("MEDIA_TIMEOUT")}),
+     withTimeout(BusinessService.getPublicBusinessReviews(businessId),8000,{data:[],error:new Error("REVIEWS_TIMEOUT")})
  ]);
  let images=[];
  if(data.logo) images.push(data.logo);
  images.push(...(mediaResult.data||[]).filter(item=>item.tipo==="FOTO").map(item=>item.url).filter(Boolean));
  images=[...new Set(images)].slice(0,3);
 
- // La fuente histórica solo se consulta si realmente necesitamos un fallback.
- if((mediaResult.error||publicReviewsResult.error)&&!legacyData) legacyData=await loadLegacy();
+ // El fallback histórico tampoco debe bloquear la página pública.
+ if((mediaResult.error||publicReviewsResult.error)&&!legacyData){
+     legacyData=await withTimeout(loadLegacy(),5000,null);
+ }
 
  if(images.length<3&&legacyData){
      const legacyBusiness=findLegacyBusiness(legacyData,data.nombre);
