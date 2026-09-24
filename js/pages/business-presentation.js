@@ -89,10 +89,11 @@ async function replaceLogo(file) {
 }
 
 async function replaceGalleryImage(slot, file) {
-    if (!validateImage(file)) return;
+    if (!await validatePresentationImage(file)) return;
     setStatus("Guardando la imagen complementaria…");
 
-    const result = await BusinessMediaService.replacePresentationImage(currentBusiness.id, slot, file);
+    const optimizedFile = await optimizePresentationImage(file);
+    const result = await BusinessMediaService.replacePresentationImage(currentBusiness.id, slot, optimizedFile);
     if (result.error) {
         setStatus(result.error.message || "No se pudo guardar la imagen.", "error");
         return;
@@ -135,6 +136,66 @@ function validateImage(file) {
         return false;
     }
     return true;
+}
+
+async function validatePresentationImage(file) {
+    if (!validateImage(file)) return false;
+    try {
+        const dimensions = await readImageDimensions(file);
+        if (dimensions.width !== 1600 || dimensions.height !== 900) {
+            setStatus("La imagen debe medir exactamente 1600 × 900 px (16:9).", "error");
+            return false;
+        }
+        return true;
+    } catch (error) {
+        setStatus("No pudimos comprobar las dimensiones de la imagen.", "error");
+        return false;
+    }
+}
+
+function readImageDimensions(file) {
+    return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+        image.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve({ width: image.naturalWidth, height: image.naturalHeight });
+        };
+        image.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("INVALID_IMAGE"));
+        };
+        image.src = url;
+    });
+}
+
+async function optimizePresentationImage(file) {
+    try {
+        const url = URL.createObjectURL(file);
+        const image = new Image();
+        await new Promise((resolve, reject) => {
+            image.onload = resolve;
+            image.onerror = reject;
+            image.src = url;
+        });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 1600;
+        canvas.height = 900;
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, 1600, 900);
+        URL.revokeObjectURL(url);
+
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/webp", 0.82));
+        if (!blob) return file;
+
+        return new File([blob], "presentation-" + Date.now() + ".webp", {
+            type: "image/webp",
+            lastModified: Date.now()
+        });
+    } catch (_) {
+        return file;
+    }
 }
 
 function setStatus(message, type = "") {
