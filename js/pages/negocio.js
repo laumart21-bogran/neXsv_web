@@ -60,7 +60,11 @@ function renderBusiness(data,images,reviews){
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
  const container=document.getElementById("contenido");if(!container)return;if(!businessId){container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";return;}
- const publicResult=ownerPreview ? await BusinessService.getBusinessById(businessId) : await BusinessService.getPublicBusinessDetail(businessId);let data=publicResult.data||null;let legacyData=null;
+ const publicResult=await withTimeout(
+     ownerPreview ? BusinessService.getBusinessById(businessId) : BusinessService.getPublicBusinessDetail(businessId),
+     10000,
+     {data:null,error:new Error("BUSINESS_TIMEOUT")}
+ );let data=publicResult.data||null;let legacyData=null;
  if(!data){
      legacyData=await loadLegacy();
      const fallback=findLegacyBusiness(legacyData,params.get("nombre")||"");
