@@ -60,6 +60,10 @@ async function openModule(module) {
     window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId);
     return;
   }
+  if (module === "publications") {
+    window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId);
+    return;
+  }
   const overlay = document.getElementById("businessModuleOverlay");
   const content = document.getElementById("businessModuleContent");
   if (!overlay || !content) return;
