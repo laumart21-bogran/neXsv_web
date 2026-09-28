@@ -33,6 +33,14 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
 .module-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid #EEF1F6}.module-btn{border:0;border-radius:13px;padding:12px 17px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.module-btn.secondary{background:#F3F7FE;color:#1657B8}.module-btn.primary{background:linear-gradient(135deg,#1657B8,#19C2C6);color:#fff}.module-message{font-size:11px;font-weight:700;margin-right:auto;align-self:center}.module-message.success{color:#2F8B41}.module-message.error{color:#C0392B}
 .presentation-module-preview{display:grid;grid-template-columns:150px 1fr;gap:18px;margin-bottom:22px}.presentation-module-logo{height:120px;border-radius:18px;background:#F3F7FE;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#1657B8}.presentation-module-logo img{width:100%;height:100%;object-fit:contain;padding:10px}.presentation-module-copy{display:flex;flex-direction:column;justify-content:center}.presentation-module-copy strong{font-size:13px;color:#1D2A3A}.presentation-module-copy span{font-size:11px;color:#667085;line-height:1.6;margin-top:5px}.presentation-slots{display:grid;grid-template-columns:1fr 1fr;gap:14px}.presentation-module-slot{border:1px solid #E3E9F2;border-radius:18px;padding:13px;background:#FAFBFD}.presentation-module-slot.primary{grid-column:1/-1}.presentation-module-media{height:120px;border-radius:13px;background:#F3F7FE;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#1657B8;margin-bottom:11px}.presentation-module-media img{width:100%;height:100%;object-fit:cover}.presentation-module-slot.primary .presentation-module-media img{object-fit:contain;padding:10px}.presentation-module-slot h3{font-size:12px;color:#1D2A3A;margin-bottom:5px}.presentation-module-slot p{font-size:10px;line-height:1.5;color:#667085;min-height:30px}.presentation-upload{display:inline-flex;margin-top:10px;padding:9px 12px;border-radius:11px;background:linear-gradient(135deg,#F7C531,#FFD95E);color:#1D2A3A;font-size:10px;font-weight:800;cursor:pointer}.presentation-status{font-size:11px;font-weight:700;margin-top:14px;color:#1657B8}
 @media(max-width:650px){.business-module-card{padding:22px}.module-form-grid,.presentation-slots{grid-template-columns:1fr}.presentation-module-slot.primary{grid-column:auto}.presentation-module-preview{grid-template-columns:1fr}.module-actions{flex-wrap:wrap}.module-message{width:100%;order:3}.module-btn{flex:1}}
+</style><style>
+.datos-practicos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 22px}
+.dato-practico{display:flex;align-items:center;gap:10px;padding:13px 12px;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:15px;min-width:0}
+.dato-practico-icon{width:34px;height:34px;flex:0 0 34px;border-radius:11px;background:#EDF4FF;color:#1657B8;display:flex;align-items:center;justify-content:center}
+.dato-practico-content{min-width:0}.dato-practico-label{display:block;font-size:9px;color:#7A8495;font-weight:700;margin-bottom:3px}.dato-practico-value{display:block;font-size:11px;color:#253247;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dato-practico-link{color:#1657B8;text-decoration:none}.dato-practico-link:hover{text-decoration:underline}
+@media(max-width:850px){.datos-practicos{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.datos-practicos{grid-template-columns:1fr}.dato-practico-value{white-space:normal}}
 </style></head>
 <body>
 <header><a href="negocios.html"><img src="logo.png" alt="neXsv"></a><div class="header-context">Espacio de negocio</div></header>
@@ -70,7 +78,7 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
     <div id="businessModuleContent"></div>
   </section>
 </div>
-<script type="module" src="js/pages/negocio.js?v=20260928-2"></script>
+<script type="module" src="js/pages/negocio.js?v=20260928-3"></script>
 <script type="module" src="js/pages/business-space.js?v=20260928-1"></script>
 </body>
 </html>
