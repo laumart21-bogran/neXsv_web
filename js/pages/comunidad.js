@@ -171,8 +171,12 @@ async function loadBusinessContext() {
     activeBusiness = result.data;
     const ownerCheck = await BusinessService.isBusinessOwner(activeBusinessId);
     if (ownerCheck.error || !ownerCheck.data) throw new Error("Este negocio no pertenece a tu cuenta.");
-    const context = document.querySelector(".community-header-context");
-    if (context) context.textContent = "Publicando como " + (activeBusiness.nombre || "Negocio");
+    const context = document.getElementById("businessPublicationContext");
+    if (context) {
+        context.textContent = "Publicando como " + (activeBusiness.nombre || "Negocio");
+        context.hidden = false;
+    }
+    if (newPublicationBtn) newPublicationBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Publicar como ' + escapeHtml(activeBusiness.nombre || "Negocio");
     return true;
 }
 
