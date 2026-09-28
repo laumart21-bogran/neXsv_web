@@ -1,4 +1,5 @@
 import AuthService from "../auth/auth.service.js";
+import BusinessService from "../services/business.service.js";
 
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
@@ -141,8 +142,14 @@ form.addEventListener("submit", async (event) => {
         );
 
 
-        window.location.href =
-            "../negocio.html?id=" + encodeURIComponent(result.data?.business_id || sessionStorage.getItem("nexsv_selected_business_id") || "") + "&preview=owner";
+        const { data: businesses } = await BusinessService.getBusinessesByOwner((await import("../core/supabase-client.js")).supabase.auth.getUser().then(result => result.data.user?.id));
+        const selectedBusiness = businesses?.find(business => business.id === sessionStorage.getItem("nexsv_selected_business_id")) || businesses?.[0];
+        if (selectedBusiness) {
+            sessionStorage.setItem("nexsv_selected_business_id", selectedBusiness.id);
+            window.location.href = "../negocio.html?id=" + encodeURIComponent(selectedBusiness.id) + "&preview=owner";
+        } else {
+            window.location.href = "../dashboard-negocio.html";
+        }
 
 
     } catch (error) {
