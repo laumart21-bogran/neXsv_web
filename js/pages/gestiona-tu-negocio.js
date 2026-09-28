@@ -52,6 +52,6 @@ async function acceptInvite() {
     return;
   }
   message.textContent = "¡Listo! Tu negocio ya está vinculado a tu cuenta.";
-  setTimeout(() => { window.location.href = "dashboard-negocio.html?business=" + encodeURIComponent(result.data.business_id); }, 700);
+  setTimeout(() => { window.location.href = "negocio.html?id=" + encodeURIComponent(result.data.business_id) + "&preview=owner"; }, 700);
 }
 init();
