@@ -19,7 +19,7 @@ const informationFields = [
   ["google_maps_url","Enlace de ubicación","url",false],
   ["instagram","Instagram","url",false],
   ["facebook","Facebook","url",false],
-  ["tikTok","TikTok","url",false],
+  ["tiktok","TikTok","url",false],
   ["otra_red_social","Otra red social","url",false],
   ["descripcion","Descripción","textarea",false]
 ];
