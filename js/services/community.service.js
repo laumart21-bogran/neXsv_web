@@ -112,8 +112,13 @@ class CommunityService {
     }
 
     async deletePublication(publicationId) {
-        const { data: userResult } = await supabase.auth.getUser(); const userId = userResult?.user?.id;
-        const { data: images } = await supabase.from("community_publication_images").select("storage_path").eq("publication_id", publicationId); if (images?.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
+        const { data: userResult } = await supabase.auth.getUser();
+        const userId = userResult?.user?.id;
+        if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
+        const { data: publication, error: publicationError } = await supabase.from("community_publications").select("id, author_id").eq("id", publicationId).eq("author_id", userId).single();
+        if (publicationError || !publication) return { data: null, error: publicationError || new Error("No tienes permiso para eliminar esta publicación.") };
+        const { data: images } = await supabase.from("community_publication_images").select("storage_path").eq("publication_id", publicationId);
+        if (images?.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
         return await supabase.from("community_publications").update({ status: "ELIMINADA", updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", userId).select().single();
     }
 
