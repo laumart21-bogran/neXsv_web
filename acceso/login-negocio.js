@@ -1,5 +1,6 @@
 import AuthService from "../auth/auth.service.js";
 import BusinessService from "../services/business.service.js";
+import { supabase } from "../core/supabase-client.js";
 
 const form = document.getElementById("loginForm");
 const emailInput = document.getElementById("email");
@@ -142,7 +143,8 @@ form.addEventListener("submit", async (event) => {
         );
 
 
-        const { data: businesses } = await BusinessService.getBusinessesByOwner((await import("../core/supabase-client.js")).supabase.auth.getUser().then(result => result.data.user?.id));
+        const { data: sessionResult } = await supabase.auth.getUser();
+        const { data: businesses } = await BusinessService.getBusinessesByOwner(sessionResult?.user?.id);
         const selectedBusiness = businesses?.find(business => business.id === sessionStorage.getItem("nexsv_selected_business_id")) || businesses?.[0];
         if (selectedBusiness) {
             sessionStorage.setItem("nexsv_selected_business_id", selectedBusiness.id);
