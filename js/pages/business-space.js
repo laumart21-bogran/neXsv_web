@@ -13,6 +13,8 @@ const informationFields = [
   ["tipo_oferta","Tipo de oferta","text",false],
   ["departamento","Departamento","text",false],
   ["municipio","Municipio","text",false],
+  ["dias_atencion","Días de atención","text",false],
+  ["horario_atencion","Horario de atención","text",false],
   ["whatsapp","WhatsApp","text",false],
   ["email","Correo electrónico","email",false],
   ["sitio_web","Sitio web","url",false],
