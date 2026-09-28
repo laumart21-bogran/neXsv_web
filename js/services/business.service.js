@@ -75,6 +75,18 @@ class BusinessService {
     // El RPC controla qué datos comerciales puede recibir un miembro.
     // =====================================================
 
+    async isBusinessOwner(businessId) {
+        const { data, error } = await supabase.rpc("is_business_owner", {
+            p_business_id: businessId
+        });
+        return { data: data === true, error };
+    }
+
+    // =====================================================
+    // DETALLE PARA MIEMBROS AUTENTICADOS
+    // El RPC controla qué datos comerciales puede recibir un miembro.
+    // =====================================================
+
     async getAuthenticatedBusinessDetail(businessId) {
 
         const { data, error } = await supabase
