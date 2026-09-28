@@ -56,6 +56,32 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
 .public-section-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}.public-section-heading h2{margin:0}.public-section-heading span{font-size:10px;font-weight:800;color:#7A8495}
 .public-photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.public-photo{display:block;height:150px;border-radius:15px;overflow:hidden;background:#F3F6FB}.public-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s ease}.public-photo:hover img{transform:scale(1.03)}
 @media(max-width:700px){.public-photo-grid{grid-template-columns:1fr 1fr}.public-photo{height:125px}.public-tabs a{padding-left:12px;padding-right:12px}}
+</style><style>
+/* Ajuste de composición del Espacio de Negocio: referencia del render aprobado */
+.business-space.owner-active{grid-template-columns:minmax(0,1fr) 390px;gap:24px}
+.business-space.owner-active #contenido{min-width:0}
+.business-space.owner-active .galeria{height:300px;margin-bottom:22px;border-radius:20px}
+.business-space.owner-active .galeria-item{height:300px}
+.business-space.owner-active .info{padding:20px 22px;border-radius:20px}
+.business-space.owner-active .identity{gap:18px;margin-bottom:18px}
+.business-space.owner-active .logo-box{width:122px;height:122px;flex-basis:122px;border-radius:18px}
+.business-space.owner-active h1{font-size:34px;margin-bottom:7px}
+.business-space.owner-active .descripcion{margin-bottom:15px}
+.business-space.owner-active .review-summary{margin-top:16px;margin-bottom:18px;padding:14px 16px}
+.business-space.owner-active .botones{gap:9px}
+.business-space.owner-active .btn{padding:11px 15px}
+.business-space.owner-active .public-tabs{margin:24px 0 18px}
+.business-space.owner-active .about-business{padding:20px;border-radius:16px}
+.business-space.owner-active .public-section h2{font-size:18px}
+.business-space.owner-active .public-photo-grid{gap:9px}
+.business-space.owner-active .public-photo{height:145px}
+.business-space.owner-active .business-manage-panel{border-radius:20px;padding:18px;top:88px}
+.business-space.owner-active .business-manage-head h2{font-size:20px}
+.business-space.owner-active .business-manage-actions{gap:2px}
+.business-space.owner-active .business-manage-action:not(.publish-now){min-height:58px;border-radius:10px;padding:11px 9px}
+.business-space.owner-active .business-manage-section-label{padding:13px 7px 5px}
+@media(max-width:1100px){.business-space.owner-active{grid-template-columns:minmax(0,1fr) 350px}}
+@media(max-width:980px){.business-space.owner-active{grid-template-columns:1fr}.business-space.owner-active .business-manage-panel{position:static}.business-space.owner-active .galeria,.business-space.owner-active .galeria-item{height:280px}}
 </style></head>
 <body>
 <header><a href="negocios.html"><img src="logo.png" alt="neXsv"></a><div class="header-context">Espacio de negocio</div></header>
@@ -114,7 +140,7 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
     <div id="businessModuleContent"></div>
   </section>
 </div>
-<script type="module" src="js/pages/negocio.js?v=20260928-5"></script>
+<script type="module" src="js/pages/negocio.js?v=20260928-6"></script>
 <script type="module" src="js/pages/business-space.js?v=20260928-1"></script>
 </body>
 </html>
