@@ -57,6 +57,27 @@ function renderBusiness(data,images,reviews){
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
 }
+function setupOwnerMode(isOwner){
+ const bar=document.getElementById("businessOwnerBar");
+ const panel=document.getElementById("businessManagePanel");
+ const manage=document.getElementById("ownerManageMode");
+ const publicMode=document.getElementById("ownerPublicMode");
+ const close=document.getElementById("closeOwnerManage");
+ if(!bar||!panel)return;
+ if(!isOwner){bar.classList.remove("visible");panel.classList.remove("visible");return;}
+ bar.classList.add("visible");
+ const showPublic=()=>{
+   panel.classList.remove("visible");
+   window.scrollTo({top:0,behavior:"smooth"});
+ };
+ const showManage=()=>{
+   panel.classList.add("visible");
+   panel.scrollIntoView({behavior:"smooth",block:"start"});
+ };
+ manage?.addEventListener("click",showManage);
+ publicMode?.addEventListener("click",showPublic);
+ close?.addEventListener("click",showPublic);
+}
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
  const container=document.getElementById("contenido");
@@ -81,6 +102,14 @@ async function init(){
  }
 
  let data={...basicData};
+
+ const ownerResult=await withTimeout(
+     BusinessService.isBusinessOwner(businessId),
+     4000,
+     {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
+ );
+ setupOwnerMode(ownerResult.data===true);
+
  renderBusiness(data,data.logo?[data.logo]:[],[]);
 
  // Los datos secundarios se cargan después de mostrar el negocio.
