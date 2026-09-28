@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     const { data: businesses, error } = await BusinessService.getBusinessesByOwner(user.id);
     if (error || !businesses?.length) return;
 
+    // Cuando Comunidad se abre desde el espacio de un negocio (?business=...),
+    // el contexto lo controla comunidad.js. No inyectamos ni sobrescribimos
+    // ese contexto desde este módulo de compatibilidad.
+    const businessFromUrl = new URLSearchParams(window.location.search).get("business");
+    if (businessFromUrl) return;
+
     const row = document.createElement("div");
     row.className = "community-business-context";
     row.innerHTML = `<label for="communityBusinessSelector"><i class="fa-solid fa-store"></i> Publicar como</label><select id="communityBusinessSelector"><option value="">Publicación personal</option>${businesses.map(b => `<option value="${escapeAttr(b.id)}">${escapeHtml(b.nombre || "Mi negocio")}</option>`).join("")}</select>`;
