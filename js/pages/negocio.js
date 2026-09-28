@@ -21,7 +21,7 @@ function reviewsHtml(reviews){return reviews.map(review=>"<article class=\"revie
 function renderBusiness(data,images,reviews){
  const container=document.getElementById("contenido");
  const name=escapeHtml(data.nombre||"Negocio"), category=escapeHtml(data.categoria||"Comunidad"), description=escapeHtml(data.descripcion||"");
- const logo=String(data.logo||"").trim(), whatsapp=normalizeWhatsapp(data.whatsapp), maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]), website=firstValue(data,["sitio_web","website","web"]), departamento=firstValue(data,["departamento"]), municipio=firstValue(data,["municipio"]), horario=firstValue(data,["horario","horario_atencion","horario_de_atencion","horario_negocio"]), safeSlug=slugify(data.nombre||"");
+ const logo=String(data.logo||"").trim(), whatsapp=normalizeWhatsapp(data.whatsapp), maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]), website=firstValue(data,["sitio_web","website","web"]), departamento=firstValue(data,["departamento"]), municipio=firstValue(data,["municipio"]), diasAtencion=firstValue(data,["dias_atencion"]), horario=firstValue(data,["horario_atencion","horario","horario_de_atencion","horario_negocio"]), safeSlug=slugify(data.nombre||"");
  const locationText=[municipio,departamento].filter(Boolean).join(", ");
  const total=reviews.length, average=total?(reviews.reduce((sum,item)=>sum+Number(item.estrellas||0),0)/total).toFixed(1):"0.0";
  const gallerySlides=images.length
