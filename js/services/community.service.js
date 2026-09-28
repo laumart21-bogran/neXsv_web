@@ -84,7 +84,7 @@ class CommunityService {
         const cleanBody = String(body || "").trim();
         if (!cleanBody) return { data: null, error: new Error("La publicación no puede estar vacía.") };
         if (!type) return { data: null, error: new Error("Selecciona un tipo de publicación.") };
-        return await supabase.from("community_publications").update({ type, title: title ? String(title).trim() : null, business_id: businessId || null, updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", (await supabase.auth.getUser()).data.user?.id).select().single();
+        return await supabase.from("community_publications").update({ type, title: title ? String(title).trim() : null, body: cleanBody, business_id: businessId || null, updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", (await supabase.auth.getUser()).data.user?.id).select().single();
     }
 
     validateImages(files = []) {
