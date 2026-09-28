@@ -25,7 +25,15 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
 @media(max-width:980px){.business-space.owner-active{grid-template-columns:1fr}.business-manage-panel{position:static}.business-manage-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.business-manage-action.publish-now{grid-column:1/-1}.business-manage-head{margin-bottom:4px}}
 @media(max-width:700px){header{height:68px;padding:0 16px}header img{height:46px}.header-context{display:none}.container{padding:22px 14px 50px}.business-owner-bar{align-items:stretch;flex-direction:column}.business-owner-actions{width:100%}.owner-mode-btn{flex:1;justify-content:center}.business-manage-actions{grid-template-columns:1fr}.business-manage-action.publish-now{grid-column:auto}.galeria,.galeria-item{height:250px}.identity{flex-direction:column}.logo-box{width:96px;height:96px;flex-basis:96px}h1{font-size:31px}.descripcion{font-size:13px}.info{padding:22px}.botones{flex-direction:column}.btn{width:100%}}
 </style>
-</head>
+<style>
+.business-module-overlay{position:fixed;inset:0;background:rgba(20,39,70,.28);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px}.business-module-overlay[hidden]{display:none}
+.business-module-card{position:relative;width:min(760px,100%);max-height:min(88vh,900px);overflow:auto;background:#fff;border-radius:28px;box-shadow:0 25px 70px rgba(20,39,70,.22);padding:30px}.business-module-close{position:absolute;right:22px;top:22px;width:40px;height:40px;border:0;border-radius:13px;background:#F3F7FE;color:#1657B8;cursor:pointer}
+.module-kicker{display:inline-flex;padding:7px 11px;border-radius:999px;background:#EDF4FF;color:#1657B8;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.module-title{font-size:25px;color:#1657B8;margin:10px 45px 6px 0}.module-subtitle{font-size:12px;line-height:1.6;color:#667085;margin-bottom:24px}
+.module-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.module-field{display:flex;flex-direction:column;gap:6px}.module-field.full{grid-column:1/-1}.module-field label{font-size:11px;font-weight:800;color:#344054}.module-field input,.module-field select,.module-field textarea{width:100%;border:1px solid #E3E9F2;border-radius:13px;padding:12px 13px;font:inherit;font-size:12px;color:#1D2A3A;background:#fff;outline:none}.module-field textarea{min-height:110px;resize:vertical}.module-field input:focus,.module-field select:focus,.module-field textarea:focus{border-color:#19C2C6;box-shadow:0 0 0 3px rgba(25,194,198,.1)}
+.module-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:18px;border-top:1px solid #EEF1F6}.module-btn{border:0;border-radius:13px;padding:12px 17px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.module-btn.secondary{background:#F3F7FE;color:#1657B8}.module-btn.primary{background:linear-gradient(135deg,#1657B8,#19C2C6);color:#fff}.module-message{font-size:11px;font-weight:700;margin-right:auto;align-self:center}.module-message.success{color:#2F8B41}.module-message.error{color:#C0392B}
+.presentation-module-preview{display:grid;grid-template-columns:150px 1fr;gap:18px;margin-bottom:22px}.presentation-module-logo{height:120px;border-radius:18px;background:#F3F7FE;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#1657B8}.presentation-module-logo img{width:100%;height:100%;object-fit:contain;padding:10px}.presentation-module-copy{display:flex;flex-direction:column;justify-content:center}.presentation-module-copy strong{font-size:13px;color:#1D2A3A}.presentation-module-copy span{font-size:11px;color:#667085;line-height:1.6;margin-top:5px}.presentation-slots{display:grid;grid-template-columns:1fr 1fr;gap:14px}.presentation-module-slot{border:1px solid #E3E9F2;border-radius:18px;padding:13px;background:#FAFBFD}.presentation-module-slot.primary{grid-column:1/-1}.presentation-module-media{height:120px;border-radius:13px;background:#F3F7FE;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#1657B8;margin-bottom:11px}.presentation-module-media img{width:100%;height:100%;object-fit:cover}.presentation-module-slot.primary .presentation-module-media img{object-fit:contain;padding:10px}.presentation-module-slot h3{font-size:12px;color:#1D2A3A;margin-bottom:5px}.presentation-module-slot p{font-size:10px;line-height:1.5;color:#667085;min-height:30px}.presentation-upload{display:inline-flex;margin-top:10px;padding:9px 12px;border-radius:11px;background:linear-gradient(135deg,#F7C531,#FFD95E);color:#1D2A3A;font-size:10px;font-weight:800;cursor:pointer}.presentation-status{font-size:11px;font-weight:700;margin-top:14px;color:#1657B8}
+@media(max-width:650px){.business-module-card{padding:22px}.module-form-grid,.presentation-slots{grid-template-columns:1fr}.presentation-module-slot.primary{grid-column:auto}.presentation-module-preview{grid-template-columns:1fr}.module-actions{flex-wrap:wrap}.module-message{width:100%;order:3}.module-btn{flex:1}}
+</style></head>
 <body>
 <header><a href="negocios.html"><img src="logo.png" alt="neXsv"></a><div class="header-context">Espacio de negocio</div></header>
 <div class="container">
@@ -46,9 +54,9 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
             <p>Administra cómo se presenta tu negocio y cómo conectas con tu comunidad.</p>
         </div>
         <div class="business-manage-actions">
-            <button type="button" class="business-manage-action publish-now"><i class="fa-solid fa-bullhorn"></i><span><strong>Publicar ahora</strong><small>Crea una publicación para tu comunidad.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-solid fa-store"></i><span><strong>Información</strong><small>Datos principales de tu negocio.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-regular fa-images"></i><span><strong>Presentación</strong><small>Logotipo y fotografías públicas.</small></span></button>
+            <button type="button" class="business-manage-action publish-now" data-business-module="publish"><i class="fa-solid fa-bullhorn"></i><span><strong>Publicar ahora</strong><small>Crea una publicación para tu comunidad.</small></span></button>
+            <button type="button" class="business-manage-action" data-business-module="information"><i class="fa-solid fa-store"></i><span><strong>Información</strong><small>Datos principales de tu negocio.</small></span></button>
+            <button type="button" class="business-manage-action" data-business-module="presentation"><i class="fa-regular fa-images"></i><span><strong>Presentación</strong><small>Logotipo y fotografías públicas.</small></span></button>
             <button type="button" class="business-manage-action"><i class="fa-solid fa-box-open"></i><span><strong>Servicios</strong><small>Gestiona lo que ofrece tu negocio.</small></span></button>
             <button type="button" class="business-manage-action"><i class="fa-regular fa-newspaper"></i><span><strong>Publicaciones</strong><small>Administra noticias y publicaciones.</small></span></button>
             <button type="button" class="business-manage-action"><i class="fa-solid fa-users"></i><span><strong>Comunidad</strong><small>Reviews e interacción con miembros.</small></span></button>
@@ -56,6 +64,13 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
         </div>
     </aside>
 </div>
+<div id="businessModuleOverlay" class="business-module-overlay" hidden>
+  <section class="business-module-card" role="dialog" aria-modal="true" aria-labelledby="businessModuleTitle">
+    <button type="button" id="businessModuleClose" class="business-module-close" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+    <div id="businessModuleContent"></div>
+  </section>
+</div>
 <script type="module" src="js/pages/negocio.js?v=20260928-2"></script>
+<script type="module" src="js/pages/business-space.js?v=20260928-1"></script>
 </body>
 </html>
