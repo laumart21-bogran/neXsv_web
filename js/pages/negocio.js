@@ -59,24 +59,27 @@ function renderBusiness(data,images,reviews){
 }
 function setupOwnerMode(isOwner){
  const bar=document.getElementById("businessOwnerBar");
- const panel=document.getElementById("businessManagePanel");
+ const space=document.getElementById("businessSpace");
  const manage=document.getElementById("ownerManageMode");
  const publicMode=document.getElementById("ownerPublicMode");
- const close=document.getElementById("closeOwnerManage");
- if(!bar||!panel)return;
- if(!isOwner){bar.classList.remove("visible");panel.classList.remove("visible");return;}
+ if(!bar||!space)return;
+ if(!isOwner){
+   bar.classList.remove("visible");
+   space.classList.remove("owner-active");
+   return;
+ }
  bar.classList.add("visible");
  const showPublic=()=>{
-   panel.classList.remove("visible");
+   space.classList.remove("owner-active");
    window.scrollTo({top:0,behavior:"smooth"});
  };
  const showManage=()=>{
-   panel.classList.add("visible");
-   panel.scrollIntoView({behavior:"smooth",block:"start"});
+   space.classList.add("owner-active");
+   window.scrollTo({top:0,behavior:"smooth"});
  };
  manage?.addEventListener("click",showManage);
  publicMode?.addEventListener("click",showPublic);
- close?.addEventListener("click",showPublic);
+ showManage();
 }
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
