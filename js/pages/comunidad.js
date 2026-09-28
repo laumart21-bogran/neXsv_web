@@ -1,5 +1,6 @@
 import CommunityService from "../services/community.service.js";
 import MessagingService from "../services/messaging.service.js";
+import BusinessService from "../services/business.service.js";
 import { supabase } from "../core/supabase-client.js";
 
 const publicationList = document.getElementById("publicationList");
@@ -23,6 +24,8 @@ let currentFilter = "TODAS";
 let selectedFiles = [];
 let editingPublicationId = null;
 let deepLinkedPublicationId = null;
+let activeBusinessId = null;
+let activeBusiness = null;
 
 const TYPE_LABELS = { VENTA: "Vendo", INTERCAMBIO: "Intercambio", BUSCO: "Busco", REGALO: "Regalo", RECOMENDACION: "Recomiendo", OFERTA: "Ofrezco", EVENTO: "Evento" };
 function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
@@ -35,7 +38,14 @@ async function getAuthorProfile(userId) {
     return await CommunityService.getPublicAuthorProfile(userId);
 }
 
-async function enrichPublications(publications) { return Promise.all((publications || []).map(async p => ({ ...p, author: await getAuthorProfile(p.author_id) }))); }
+async function enrichPublications(publications) {
+    return Promise.all((publications || []).map(async p => ({
+        ...p,
+        author: p.business_id && activeBusiness?.id === p.business_id
+            ? { name: activeBusiness.nombre || "Negocio", photo: activeBusiness.logo || null }
+            : await getAuthorProfile(p.author_id)
+    })));
+}
 function avatarHtml(profile, className = "author-avatar") { return `<div class="${className}">${profile?.photo ? `<img src="${escapeHtml(profile.photo)}" alt="Foto de perfil" loading="lazy">` : `<span>${escapeHtml(initials(profile?.name))}</span>`}</div>`; }
 function renderEmpty() { publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon"><i class="fa-regular fa-comments"></i></div><h2>Aún no hay publicaciones</h2><p>Sé de las primeras personas en compartir algo con la comunidad.</p><button type="button" class="community-secondary-btn" id="emptyCreateBtn">Crear publicación</button></div>`; document.getElementById("emptyCreateBtn")?.addEventListener("click", openComposer); }
 function renderError(error) { console.error("Error en Comunidad:", error); publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h2>No pudimos cargar la comunidad</h2><p>${escapeHtml(error?.message || "Actualiza la página e inténtalo nuevamente.")}</p></div>`; }
@@ -44,6 +54,8 @@ function renderPublications(publications) {
     if (!publications.length) return renderEmpty();
     publicationList.innerHTML = publications.map(p => {
         const isMine = p.author_id === currentUser.id;
+        const isBusinessPublication = Boolean(p.business_id);
+        const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
         const commentCount = Number(p.commentCount || 0);
         return `<article class="publication-card" data-publication-id="${escapeHtml(p.id)}">
@@ -64,6 +76,7 @@ function renderPublications(publications) {
     }).join("");
     publicationList.querySelectorAll("[data-interest]").forEach(button => button.addEventListener("click", () => startConversation(button)));
     publicationList.querySelectorAll("[data-edit]").forEach(button => button.addEventListener("click", () => openEditPublication(button.dataset.edit)));
+    publicationList.querySelectorAll("[data-delete]").forEach(button => button.addEventListener("click", () => deletePublication(button.dataset.delete)));
     publicationList.querySelectorAll("[data-comments]").forEach(button => button.addEventListener("click", () => toggleComments(button)));
     publicationList.querySelectorAll("[data-comment-form]").forEach(form => form.addEventListener("submit", submitComment));
     if (deepLinkedPublicationId) focusDeepLinkedPublication();
@@ -71,7 +84,7 @@ function renderPublications(publications) {
 
 async function loadPublications() {
     publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`;
-    const { data, error } = await CommunityService.getPublications({ type: currentFilter });
+    const { data, error } = await CommunityService.getPublications({ type: currentFilter, businessId: activeBusinessId });
     if (error) return renderError(error);
     const publications = await enrichPublications(data);
     const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
@@ -119,11 +132,51 @@ document.querySelectorAll("#editTypeOptions .type-option input").forEach(input =
 document.querySelectorAll(".filter-btn").forEach(button => button.addEventListener("click", async () => { currentFilter = button.dataset.filter || "TODAS"; document.querySelectorAll(".filter-btn").forEach(item => item.classList.toggle("active", item === button)); await loadPublications(); }));
 document.querySelectorAll("[data-close-edit]").forEach(element => element.addEventListener("click", closeEditPublication));
 
-publicationForm?.addEventListener("submit", async event => { event.preventDefault(); showMessage(); const type = publicationForm.querySelector("input[name='type']:checked")?.value; const title = document.getElementById("publicationTitle")?.value.trim() || ""; const body = document.getElementById("publicationBody")?.value.trim() || ""; const submitButton = publicationForm.querySelector("button[type='submit']"); const validation = CommunityService.validateImages(selectedFiles); if (!type || !body) { showMessage("Escribe algo para poder publicar.", "error"); return; } if (!validation.valid) { showMessage(validation.error, "error"); return; } if (!currentUser) { showMessage("Tu sesión no está disponible. Recarga la página e inténtalo nuevamente.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Publicando..."; const { data: publication, error } = await CommunityService.createPublication({ type, title, body }); if (error) { submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(error.message || "No fue posible publicar.", "error"); return; } if (selectedFiles.length) { const { error: imageError } = await CommunityService.uploadPublicationImages(publication.id, selectedFiles); if (imageError) { await CommunityService.deletePublication(publication.id); submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(`No se pudo guardar la publicación con sus fotos. ${imageError.message || "Inténtalo nuevamente."}`, "error"); return; } } submitButton.disabled = false; submitButton.textContent = "Publicar"; publicationForm.reset(); clearSelectedFiles(); document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); closePublicationComposer(); await loadPublications(); });
+publicationForm?.addEventListener("submit", async event => { event.preventDefault(); showMessage(); const type = publicationForm.querySelector("input[name='type']:checked")?.value; const title = document.getElementById("publicationTitle")?.value.trim() || ""; const body = document.getElementById("publicationBody")?.value.trim() || ""; const submitButton = publicationForm.querySelector("button[type='submit']"); const validation = CommunityService.validateImages(selectedFiles); if (!type || !body) { showMessage("Escribe algo para poder publicar.", "error"); return; } if (!validation.valid) { showMessage(validation.error, "error"); return; } if (!currentUser) { showMessage("Tu sesión no está disponible. Recarga la página e inténtalo nuevamente.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Publicando..."; const { data: publication, error } = await CommunityService.createPublication({ type, title, body, businessId: activeBusinessId }); if (error) { submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(error.message || "No fue posible publicar.", "error"); return; } if (selectedFiles.length) { const { error: imageError } = await CommunityService.uploadPublicationImages(publication.id, selectedFiles); if (imageError) { await CommunityService.deletePublication(publication.id); submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(`No se pudo guardar la publicación con sus fotos. ${imageError.message || "Inténtalo nuevamente."}`, "error"); return; } } submitButton.disabled = false; submitButton.textContent = "Publicar"; publicationForm.reset(); clearSelectedFiles(); document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); closePublicationComposer(); await loadPublications(); });
 
-editForm?.addEventListener("submit", async event => { event.preventDefault(); if (!editingPublicationId) return; showEditMessage(); const type = editForm.querySelector("input[name='editType']:checked")?.value; const title = editTitle.value.trim(); const body = editBody.value.trim(); const submitButton = editForm.querySelector("button[type='submit']"); if (!type || !body) { showEditMessage("Escribe algo para poder guardar los cambios.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Guardando..."; const { error } = await CommunityService.updatePublication(editingPublicationId, { type, title, body }); submitButton.disabled = false; submitButton.textContent = "Guardar cambios"; if (error) { console.error("Error editando publicación:", error); showEditMessage(error.message || "No fue posible guardar los cambios.", "error"); return; } closeEditPublication(); await loadPublications(); });
+editForm?.addEventListener("submit", async event => { event.preventDefault(); if (!editingPublicationId) return; showEditMessage(); const type = editForm.querySelector("input[name='editType']:checked")?.value; const title = editTitle.value.trim(); const body = editBody.value.trim(); const submitButton = editForm.querySelector("button[type='submit']"); if (!type || !body) { showEditMessage("Escribe algo para poder guardar los cambios.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Guardando..."; const { error } = await CommunityService.updatePublication(editingPublicationId, { type, title, body, businessId: activeBusinessId }); submitButton.disabled = false; submitButton.textContent = "Guardar cambios"; if (error) { console.error("Error editando publicación:", error); showEditMessage(error.message || "No fue posible guardar los cambios.", "error"); return; } closeEditPublication(); await loadPublications(); });
+
+async function deletePublication(publicationId) {
+    const card = document.querySelector(`[data-publication-id="${CSS.escape(publicationId)}"]`);
+    if (!card) return;
+    const publication = await CommunityService.getPublicationById(publicationId);
+    if (publication.error || !publication.data || publication.data.author_id !== currentUser.id) {
+        alert("No tienes permiso para eliminar esta publicación.");
+        return;
+    }
+    if (!confirm("¿Quieres eliminar esta publicación? Dejará de mostrarse en la comunidad.")) return;
+    const button = card.querySelector("[data-delete]");
+    if (button) {
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Eliminando...';
+    }
+    const { error } = await CommunityService.deletePublication(publicationId);
+    if (error) {
+        if (button) {
+            button.disabled = false;
+            button.innerHTML = '<i class="fa-regular fa-trash-can"></i> Eliminar';
+        }
+        alert(error.message || "No fue posible eliminar la publicación.");
+        return;
+    }
+    await loadPublications();
+}
+
+async function loadBusinessContext() {
+    const params = new URLSearchParams(window.location.search);
+    activeBusinessId = params.get("business") || null;
+    if (!activeBusinessId) return true;
+    const result = await BusinessService.getBusinessById(activeBusinessId);
+    if (result.error || !result.data) throw result.error || new Error("No se encontró el negocio.");
+    activeBusiness = result.data;
+    const ownerCheck = await BusinessService.isBusinessOwner(activeBusinessId);
+    if (ownerCheck.error || !ownerCheck.data) throw new Error("Este negocio no pertenece a tu cuenta.");
+    const context = document.querySelector(".community-header-context");
+    if (context) context.textContent = "Publicando como " + (activeBusiness.nombre || "Negocio");
+    return true;
+}
 
 function applyUrlShortcut() { const params = new URLSearchParams(window.location.search); const type = params.get("type"); const create = params.get("create") === "1"; deepLinkedPublicationId = params.get("publicacion"); if (type && TYPE_LABELS[type]) { const input = document.querySelector(`.type-option input[value="${CSS.escape(type)}"]`); if (input) { input.checked = true; document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); } currentFilter = type; document.querySelectorAll(".filter-btn").forEach(o => o.classList.toggle("active", o.dataset.filter === type)); } if (create) setTimeout(openComposer, 100); }
-async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
+async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } await loadBusinessContext(); applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
 window.addEventListener("keydown", event => { if (event.key === "Escape" && !editModal.hidden) closeEditPublication(); });
 initialize();
