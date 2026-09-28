@@ -64,7 +64,7 @@ function renderPublications(publications) {
             <p class="publication-body">${escapeHtml(p.body)}</p>
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
-                ${isMine ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar publicación</button>` : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-comment-dots"></i> Me interesa</button>`}
+                ${canManage ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar publicación</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>` : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-comment-dots"></i> Me interesa</button>`}
                 <button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comments"></i> ${commentCount ? `Comentarios (${commentCount})` : "Comentar"}</button>
             </div>
             <div class="publication-comments" id="comments-${escapeHtml(p.id)}" hidden>
