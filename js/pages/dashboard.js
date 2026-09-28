@@ -106,8 +106,8 @@ async function loadBusinesses() {
     const spaceText = document.getElementById("spaceBusinessText");
     if (!spaceAction) return;
     if (memberBusinesses.length) {
-        if (sidebarLink) sidebarLink.hidden = false;
-        spaceAction.href = `dashboard-negocio.html?business=${encodeURIComponent(memberBusinesses[0].id)}`;
+        if (sidebarLink) { sidebarLink.hidden = false; sidebarLink.href = `negocio.html?id=${encodeURIComponent(memberBusinesses[0].id)}&preview=owner`; }
+        spaceAction.href = `negocio.html?id=${encodeURIComponent(memberBusinesses[0].id)}&preview=owner`;
         if (spaceTitle) spaceTitle.textContent = "Mis negocios";
         if (spaceText) spaceText.textContent = memberBusinesses.length === 1 ? "Administra tu negocio dentro de neXsv." : `Administra tus ${memberBusinesses.length} negocios dentro de neXsv.`;
     } else {
