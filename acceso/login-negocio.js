@@ -142,7 +142,7 @@ form.addEventListener("submit", async (event) => {
 
 
         window.location.href =
-            "../dashboard-negocio.html";
+            "../negocio.html?id=" + encodeURIComponent(result.data?.business_id || sessionStorage.getItem("nexsv_selected_business_id") || "") + "&preview=owner";
 
 
     } catch (error) {
