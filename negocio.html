@@ -41,6 +41,11 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
 .dato-practico-link{color:#1657B8;text-decoration:none}.dato-practico-link:hover{text-decoration:underline}
 @media(max-width:850px){.datos-practicos{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.datos-practicos{grid-template-columns:1fr}.dato-practico-value{white-space:normal}}
+</style><style>
+.business-manage-section-label{font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:800;color:#8993A4;padding:14px 8px 5px}
+.business-manage-action:not(.publish-now){min-height:55px}
+.business-manage-action:not(.publish-now) i{font-size:15px}
+.business-manage-action:not(.publish-now) small{font-size:9px}
 </style></head>
 <body>
 <header><a href="negocios.html"><img src="logo.png" alt="neXsv"></a><div class="header-context">Espacio de negocio</div></header>
@@ -62,13 +67,34 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
             <p>Administra cómo se presenta tu negocio y cómo conectas con tu comunidad.</p>
         </div>
         <div class="business-manage-actions">
-            <button type="button" class="business-manage-action publish-now" data-business-module="publish"><i class="fa-solid fa-bullhorn"></i><span><strong>Publicar ahora</strong><small>Crea una publicación para tu comunidad.</small></span></button>
-            <button type="button" class="business-manage-action" data-business-module="information"><i class="fa-solid fa-store"></i><span><strong>Información</strong><small>Datos principales de tu negocio.</small></span></button>
-            <button type="button" class="business-manage-action" data-business-module="presentation"><i class="fa-regular fa-images"></i><span><strong>Presentación</strong><small>Logotipo y fotografías públicas.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-solid fa-box-open"></i><span><strong>Servicios</strong><small>Gestiona lo que ofrece tu negocio.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-regular fa-newspaper"></i><span><strong>Publicaciones</strong><small>Administra noticias y publicaciones.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-solid fa-users"></i><span><strong>Comunidad</strong><small>Reviews e interacción con miembros.</small></span></button>
-            <button type="button" class="business-manage-action"><i class="fa-solid fa-chart-line"></i><span><strong>Resultados</strong><small>Consulta el rendimiento de tu negocio.</small></span></button>
+            <button type="button" class="business-manage-action publish-now" data-business-module="publish">
+                <i class="fa-solid fa-bullhorn"></i>
+                <span><strong>Publicar ahora</strong><small>Crea algo nuevo para tu comunidad.</small></span>
+            </button>
+
+            <div class="business-manage-section-label">Gestiona tu negocio</div>
+            <button type="button" class="business-manage-action" data-business-module="information">
+                <i class="fa-solid fa-store"></i><span><strong>Información</strong><small>Datos principales de tu negocio.</small></span>
+            </button>
+            <button type="button" class="business-manage-action" data-business-module="presentation">
+                <i class="fa-regular fa-images"></i><span><strong>Presentación</strong><small>Logotipo y fotografías públicas.</small></span>
+            </button>
+            <button type="button" class="business-manage-action">
+                <i class="fa-solid fa-box-open"></i><span><strong>Servicios</strong><small>Gestiona lo que ofrece tu negocio.</small></span>
+            </button>
+
+            <div class="business-manage-section-label">Conecta con tu comunidad</div>
+            <button type="button" class="business-manage-action">
+                <i class="fa-regular fa-newspaper"></i><span><strong>Publicaciones</strong><small>Administra noticias y novedades.</small></span>
+            </button>
+            <button type="button" class="business-manage-action">
+                <i class="fa-solid fa-users"></i><span><strong>Comunidad</strong><small>Interacción y opiniones de miembros.</small></span>
+            </button>
+
+            <div class="business-manage-section-label">Consulta</div>
+            <button type="button" class="business-manage-action">
+                <i class="fa-solid fa-chart-line"></i><span><strong>Resultados</strong><small>Consulta el rendimiento de tu negocio.</small></span>
+            </button>
         </div>
     </aside>
 </div>
