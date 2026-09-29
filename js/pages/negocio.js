@@ -151,6 +151,11 @@ async function init(){
          BusinessService.getPublicBusinessReviews(businessId),
          5000,
          {data:[],error:new Error("REVIEWS_TIMEOUT")}
+     ),
+     withTimeout(
+         BusinessServiceCatalog.getPublicServices(businessId),
+         5000,
+         {data:[],error:new Error("SERVICES_TIMEOUT")}
      )
  ]);
 
