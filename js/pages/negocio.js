@@ -1,5 +1,6 @@
 import BusinessService from "../services/business.service.js";
 import BusinessMediaService from "../services/business-media.service.js?v=20260924-3";
+import BusinessServiceCatalog from "../services/business-service.service.js";
 
 const LEGACY_URL="https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 const params=new URLSearchParams(window.location.search);
@@ -17,8 +18,8 @@ function findLegacyBusiness(data,name){const target=slugify(name);return (data?.
 function legacyImages(item){if(!item)return [];const k=Object.keys(item).reduce((acc,key)=>{acc[key.trim()]=item[key];return acc;},{});return [k["Link de imagen resp"]||k["Imagen_final"],k["Imagen2"],k["Imagen3"]].map(convertirDrive).filter(Boolean);}
 function legacyReviews(data,name){const target=slugify(name);return (data?.reviews||[]).filter(review=>slugify(review.slug||"")===target);}
 function stars(value){const count=Math.max(0,Math.min(5,Number(value)||0));return "★★★★★".slice(0,count)+"☆☆☆☆☆".slice(0,5-count);}
-function reviewsHtml(reviews){return reviews.map(review=>"<article class=\"review-card\"><div class=\"review-name\">"+stars(review.estrellas)+" — "+escapeHtml(review.nombre||"Miembro")+"</div><div class=\"review-comment\">"+escapeHtml(review.comentario||"")+"</div></article>").join("")||"<div class=\"review-empty\">Este negocio aún no tiene reviews.</div>";}
-function renderBusiness(data,images,reviews){
+function formatPublicServicePrice(service){if(service.precio===null||service.precio===undefined||service.precio==="")return "Consultar";const amount=Number(service.precio).toFixed(2);return service.precio_tipo==="DESDE"?"Desde $"+amount:"$"+amount;}\nfunction reviewsHtml(reviews){return reviews.map(review=>"<article class=\"review-card\"><div class=\"review-name\">"+stars(review.estrellas)+" — "+escapeHtml(review.nombre||"Miembro")+"</div><div class=\"review-comment\">"+escapeHtml(review.comentario||"")+"</div></article>").join("")||"<div class=\"review-empty\">Este negocio aún no tiene reviews.</div>";}
+function renderBusiness(data,images,reviews,services=[]){
  const container=document.getElementById("contenido");
  const name=escapeHtml(data.nombre||"Negocio"), category=escapeHtml(data.categoria||"Comunidad"), description=escapeHtml(data.descripcion||"");
  const logo=String(data.logo||"").trim(), whatsapp=normalizeWhatsapp(data.whatsapp), maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]), website=firstValue(data,["sitio_web","website","web"]), departamento=firstValue(data,["departamento"]), municipio=firstValue(data,["municipio"]), diasAtencion=firstValue(data,["dias_atencion"]), horario=firstValue(data,["horario_atencion","horario","horario_de_atencion","horario_negocio"]), safeSlug=slugify(data.nombre||"");
@@ -140,7 +141,7 @@ async function init(){
      renderBusiness(data,data.logo?[data.logo]:[],[]);
  }
 
- const [mediaResult,publicReviewsResult]=await Promise.all([
+ const [mediaResult,publicReviewsResult,servicesResult]=await Promise.all([
      withTimeout(
          BusinessMediaService.getPublicBusinessMedia(businessId),
          5000,
@@ -162,6 +163,7 @@ async function init(){
  images=[...new Set(images)].slice(0,3);
 
  const reviews=publicReviewsResult.data||[];
- renderBusiness(data,images,reviews);
+ const services=servicesResult.data||[];
+ renderBusiness(data,images,reviews,services);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
