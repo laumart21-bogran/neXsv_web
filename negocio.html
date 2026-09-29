@@ -82,6 +82,17 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
 .business-space.owner-active .business-manage-section-label{padding:13px 7px 5px}
 @media(max-width:1100px){.business-space.owner-active{grid-template-columns:minmax(0,1fr) 350px}}
 @media(max-width:980px){.business-space.owner-active{grid-template-columns:1fr}.business-space.owner-active .business-manage-panel{position:static}.business-space.owner-active .galeria,.business-space.owner-active .galeria-item{height:280px}}
+</style><style>
+.services-module-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;background:#F7F9FD;border:1px solid #EDF1F7;border-radius:15px;margin-bottom:14px;font-size:11px;font-weight:800;color:#667085}
+.services-module-toolbar .module-btn{padding:10px 13px}
+.services-module-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;padding:35px 20px;border:1px dashed #DCE4EF;border-radius:18px;background:#FAFBFD;color:#667085}
+.services-module-empty i{font-size:25px;color:#1657B8;margin-bottom:5px}.services-module-empty strong{font-size:13px;color:#344054}.services-module-empty span{font-size:11px;line-height:1.5}
+.service-module-item{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px;border:1px solid #E7ECF4;border-radius:16px;background:#fff;margin-bottom:9px}
+.service-module-copy{min-width:0}.service-module-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.service-module-top strong{font-size:13px;color:#1D2A3A}.service-module-copy p{font-size:11px;line-height:1.5;color:#667085;margin:5px 0}.service-module-price{font-size:11px;font-weight:800;color:#1657B8}
+.service-module-status{padding:4px 8px;border-radius:999px;font-size:9px;font-weight:800}.service-module-status.active{background:#EFFAF2;color:#2F8B41}.service-module-status.inactive{background:#F2F4F7;color:#667085}
+.service-module-actions{display:flex;gap:5px;flex:0 0 auto}.service-icon-btn{width:34px;height:34px;border:1px solid #E4EAF2;border-radius:10px;background:#F8FAFD;color:#1657B8;cursor:pointer}.service-icon-btn:hover{background:#EDF4FF}.service-icon-btn.danger{color:#C0392B}.service-icon-btn.danger:hover{background:#FFF1F0;border-color:#F2C5C0}
+.service-module-form{margin-top:16px;padding:18px;border-radius:18px;background:#F7F9FD;border:1px solid #E7ECF4}.service-module-form-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}.service-module-form-head h3{font-size:15px;color:#1D2A3A;margin-top:5px}.service-form-close{border:0;background:#fff;width:32px;height:32px;border-radius:10px;color:#667085;cursor:pointer}
+@media(max-width:650px){.service-module-item{align-items:flex-start}.service-module-actions{flex-wrap:wrap}.services-module-toolbar{align-items:flex-start;flex-direction:column}.services-module-toolbar .module-btn{width:100%}}
 </style></head>
 <body>
 <header><a href="negocios.html"><img src="logo.png" alt="neXsv"></a><div class="header-context">Espacio de negocio</div></header>
@@ -115,7 +126,7 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
             <button type="button" class="business-manage-action" data-business-module="presentation">
                 <i class="fa-regular fa-images"></i><span><strong>Presentación</strong><small>Logotipo y fotografías públicas.</small></span>
             </button>
-            <button type="button" class="business-manage-action">
+            <button type="button" class="business-manage-action" data-business-module="services">
                 <i class="fa-solid fa-box-open"></i><span><strong>Servicios</strong><small>Gestiona lo que ofrece tu negocio.</small></span>
             </button>
 
@@ -140,7 +151,7 @@ header{height:78px;padding:0 32px;background:rgba(255,255,255,.94);backdrop-filt
     <div id="businessModuleContent"></div>
   </section>
 </div>
-<script type="module" src="js/pages/negocio.js?v=20260928-6"></script>
-<script type="module" src="js/pages/business-space.js?v=20260928-2"></script>
+<script type="module" src="js/pages/negocio.js?v=20260929-1"></script>
+<script type="module" src="js/pages/business-space.js?v=20260929-1"></script>
 </body>
 </html>
