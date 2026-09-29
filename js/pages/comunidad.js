@@ -85,7 +85,9 @@ function renderPublications(publications) {
 
 async function loadPublications() {
     publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`;
-    const { data, error } = await CommunityService.getPublications({ type: currentFilter, businessId: activeBusinessId });
+    // La Comunidad es pública para todos los miembros. El negocio activo
+    // solo determina a nombre de quién se publica; no limita las publicaciones visibles.
+    const { data, error } = await CommunityService.getPublications({ type: currentFilter });
     if (error) return renderError(error);
     const publications = await enrichPublications(data);
     const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
