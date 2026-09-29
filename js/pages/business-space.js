@@ -60,7 +60,7 @@ async function openModule(module) {
     window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId);
     return;
   }
-  if (module === "publications") {
+  if (module === "publications" || module === "community") {
     window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId);
     return;
   }
