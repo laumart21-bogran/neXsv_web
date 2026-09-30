@@ -77,6 +77,7 @@ async function openModule(module) {
     if (module === "information") renderInformation(content);
     else if (module === "presentation") await renderPresentation(content);
     else if (module === "services") await renderServices(content);
+    else if (module === "results") await renderResults(content);
     else renderUnavailable(content, module);
   } catch (error) {
     content.innerHTML = '<span class="module-kicker">Acceso</span><h2 class="module-title">No pudimos abrir este módulo</h2><p class="module-subtitle">Verifica tu sesión y que este negocio pertenezca a tu cuenta.</p>';
@@ -334,6 +335,40 @@ async function deleteService(serviceId) {
     return;
   }
   await renderServices(document.getElementById("businessModuleContent"));
+}
+
+
+async function renderResults(content) {
+  const result = await supabase.rpc("get_business_results", { p_business_id: currentBusiness.id });
+  if (result.error) {
+    content.innerHTML = '<span class="module-kicker">Resultados</span><h2 class="module-title">Resultados de tu negocio</h2><p class="module-subtitle">Aún falta activar la estructura de métricas para este espacio.</p><div class="results-module-empty"><i class="fa-solid fa-chart-line"></i><strong>Estamos preparando tus resultados</strong><span>Ejecuta el SQL 033 en Supabase para conectar las métricas reales.</span></div>';
+    return;
+  }
+
+  const metrics = result.data?.[0] || { publications:0, views:0, comments:0, conversations:0, messages:0, shares:0, saves:0 };
+  const views = Number(metrics.views || 0);
+  const conversations = Number(metrics.conversations || 0);
+  const conversationRate = views ? ((conversations / views) * 100).toFixed(1) + "%" : "0%";
+
+  content.innerHTML =
+    '<span class="module-kicker">Resultados</span>' +
+    '<h2 class="module-title">Qué está pasando con tu negocio</h2>' +
+    '<p class="module-subtitle">Aquí verás el recorrido de las personas desde que encuentran tu contenido hasta que interactúan contigo.</p>' +
+    '<div class="results-module-highlight"><div><span>Publicaciones activas</span><strong>' + Number(metrics.publications || 0) + '</strong></div><p>Estas métricas corresponden únicamente al negocio que estás gestionando.</p></div>' +
+    '<div class="results-module-grid">' +
+      resultMetric("views", "fa-eye", metrics.views, "Vistas", "Veces que las publicaciones fueron vistas.") +
+      resultMetric("conversations", "fa-comments", metrics.conversations, "Conversaciones", "Personas que iniciaron una conversación.") +
+      resultMetric("messages", "fa-message", metrics.messages, "Mensajes", "Mensajes dentro de conversaciones originadas desde publicaciones.") +
+      resultMetric("comments", "fa-comment", metrics.comments, "Comentarios", "Comentarios publicados en tus contenidos.") +
+      resultMetric("shares", "fa-share-from-square", metrics.shares, "Compartidos", "Veces que tus publicaciones fueron compartidas.") +
+      resultMetric("saves", "fa-bookmark", metrics.saves, "Guardados", "Veces que una persona guardó una publicación.") +
+      resultMetric("rate", "fa-chart-line", conversationRate, "Tasa de conversación", "Conversaciones en relación con las vistas.") +
+    '</div>' +
+    '<div class="results-module-note"><i class="fa-solid fa-circle-info"></i><span><strong>Importante:</strong> las métricas se calculan únicamente con datos reales registrados por neXsv. Las reseñas y otras señales de reputación se conectarán en una siguiente etapa.</span></div>';
+}
+
+function resultMetric(key, icon, value, label, description) {
+  return '<article class="results-module-card"><span class="results-module-icon"><i class="fa-regular ' + icon + '"></i></span><strong data-result-metric="' + key + '">' + escapeText(value) + '</strong><h3>' + escapeText(label) + '</h3><p>' + escapeText(description) + '</p></article>';
 }
 
 function renderUnavailable(content,module){content.innerHTML='<span class="module-kicker">Próximamente</span><h2 class="module-title">'+(module==="services"?"Servicios":"Este módulo")+'</h2><p class="module-subtitle">La estructura ya está preparada. Lo conectaremos en el siguiente paso sin sacar al propietario de su espacio de negocio.</p>'}
