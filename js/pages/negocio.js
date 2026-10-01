@@ -88,10 +88,10 @@ function renderBusiness(data,images,reviews,services=[]){
    </div>
  </section>
  <section id="gestion-resenas" class="public-section management-section">
-   <div class="public-section-heading"><div><span class="management-kicker">Reputación</span><h2>Últimas reseñas</h2><p>Consulta lo que las personas están diciendo sobre tu negocio.</p></div><span>${reviews.length} ${reviews.length===1?"reseña":"reseñas"}</span></div>
+   <div class="public-section-heading"><div><span class="management-kicker">Reputación</span><h2>Últimas reseñas</h2><p>Así se ve la experiencia que las personas comparten sobre tu negocio.</p></div><span>${reviews.length} ${reviews.length===1?"reseña":"reseñas"}</span></div>
    ${reviews.length
-      ? '<div class="management-reviews-grid">'+reviews.slice(0,3).map(review=>'<article class="management-review-card"><div class="management-review-top"><strong>'+escapeHtml(review.nombre||"Miembro")+'</strong><span>'+stars(review.estrellas)+'</span></div><p>'+escapeHtml(review.comentario||"")+'</p></article>').join("")+'</div>'
-      : '<div class="management-publication-empty management-review-empty"><span class="management-empty-icon yellow"><i class="fa-regular fa-star"></i></span><div><strong>Aún no hay reseñas</strong><p>Cuando las personas compartan su experiencia, aparecerá aquí.</p></div></div>'}
+      ? '<div class="management-reviews-list">'+reviews.slice(0,3).map(review=>'<article class="management-review-card"><div class="management-review-avatar"><i class="fa-solid fa-user"></i></div><div class="management-review-content"><div class="management-review-top"><div><strong>'+escapeHtml(review.nombre||"Miembro")+'</strong><span class="management-review-date">Experiencia compartida</span></div><span class="management-review-stars">'+stars(review.estrellas)+'</span></div><p>'+escapeHtml(review.comentario||"")+'</p></div></article>').join("")+'</div>'
+      : '<div class="management-publication-empty management-review-empty"><span class="management-empty-icon"><i class="fa-regular fa-star"></i></span><div><strong>Aún no hay reseñas</strong><p>Cuando las personas compartan su experiencia, aparecerá aquí.</p></div></div>'}
  </section>
 
  <section id="gestion-aprende" class="public-section management-section">
