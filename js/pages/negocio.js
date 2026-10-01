@@ -62,8 +62,9 @@ function renderBusiness(data,images,reviews,services=[]){
 
  <section id="gestion-publicar" class="public-section management-section management-publish-section">
    <div class="management-publish-box">
-     <div><span class="management-kicker">Publica ahora</span><h2>Comparte algo nuevo con tu comunidad</h2><p>Publica una novedad, promoción, recomendación o contenido útil para las personas que siguen tu negocio.</p></div>
-     <button type="button" class="management-publish-btn" data-business-module="publish"><i class="fa-solid fa-bullhorn"></i> Publicar ahora</button>
+     <span class="management-publish-icon"><i class="fa-solid fa-bullhorn"></i></span>
+     <div><span class="management-kicker">Publicar ahora</span><h2>Comparte algo nuevo</h2><p>Una novedad, promoción, recomendación o contenido útil puede ayudarte a mantener activa tu presencia.</p></div>
+     <button type="button" class="management-publish-btn" data-business-module="publish">Publicar ahora <i class="fa-solid fa-arrow-right"></i></button>
    </div>
  </section>
 
@@ -77,13 +78,15 @@ function renderBusiness(data,images,reviews,services=[]){
  </section>
  <section id="gestion-estadisticas" class="public-section management-section">
    <div class="public-section-heading"><div><span class="management-kicker">Estadísticas</span><h2>Qué está pasando con tu negocio</h2><p>Mira las señales principales de tu actividad en neXsv.</p></div><button type="button" class="management-inline-action" data-business-module="results">Ver resultados <i class="fa-solid fa-arrow-right"></i></button></div>
-   <div class="management-stats-grid">
-     <article><span class="management-summary-icon blue"><i class="fa-regular fa-eye"></i></span><div><strong id="ownerStatViews">0</strong><small>Vistas</small></div></article>
-     <article><span class="management-summary-icon green"><i class="fa-regular fa-comments"></i></span><div><strong id="ownerStatConversations">0</strong><small>Conversaciones</small></div></article>
-     <article><span class="management-summary-icon yellow"><i class="fa-regular fa-bookmark"></i></span><div><strong id="ownerStatSaves">0</strong><small>Guardados</small></div></article>
-     <article><span class="management-summary-icon yellow"><i class="fa-regular fa-share-from-square"></i></span><div><strong id="ownerStatShares">0</strong><small>Compartidos</small></div></article>
-     <article><span class="management-summary-icon green"><i class="fa-regular fa-comment"></i></span><div><strong id="ownerStatComments">0</strong><small>Comentarios</small></div></article>
-     <article><span class="management-summary-icon blue"><i class="fa-solid fa-chart-line"></i></span><div><strong id="ownerStatRate">0%</strong><small>Tasa de conversación</small></div></article>
+   <div class="management-stats-grid dashboard-stat-grid">
+     <article><span class="management-summary-icon"><i class="fa-regular fa-eye"></i></span><div><strong id="ownerStatViews">0</strong><small>Vistas</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-circle-check"></i></span><div><strong id="ownerStatInterests">—</strong><small>Me interesa</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-comments"></i></span><div><strong id="ownerStatConversations">0</strong><small>Conversaciones</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-message"></i></span><div><strong id="ownerStatMessages">0</strong><small>Mensajes</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-comment"></i></span><div><strong id="ownerStatComments">0</strong><small>Comentarios</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-share-from-square"></i></span><div><strong id="ownerStatShares">0</strong><small>Compartidos</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-regular fa-bookmark"></i></span><div><strong id="ownerStatSaves">0</strong><small>Guardados</small></div></article>
+     <article><span class="management-summary-icon"><i class="fa-solid fa-chart-line"></i></span><div><strong id="ownerStatRate">0%</strong><small>Tasa de conversación</small></div></article>
    </div>
  </section>
  <section id="gestion-resenas" class="public-section management-section">
@@ -169,7 +172,7 @@ async function loadOwnerStatistics(businessId){
     const totals=metrics.reduce((a,item)=>({views:a.views+Number(item.views||0),comments:a.comments+Number(item.comments||0),conversations:a.conversations+Number(item.conversations||0)}),{views:0,comments:0,conversations:0});
     let shares=0,saves=0;
     metrics.forEach(item=>{const extra=engagement.get(item.publication_id)||{};shares+=Number(extra.shares||0);saves+=Number(extra.saves||0);});
-    set("ownerStatViews",totals.views);set("ownerStatConversations",totals.conversations);set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
+    set("ownerStatViews",totals.views);set("ownerStatInterests","—");set("ownerStatConversations",totals.conversations);set("ownerStatMessages","0");set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
   }catch(error){console.warn("No se pudieron cargar las estadísticas del negocio:",error);}
 }
 
