@@ -47,14 +47,14 @@ function renderBusiness(data,images,reviews,services=[]){
    ? '<div class="galeria-controls">'+images.map((_,index)=>'<button type="button" class="galeria-dot'+(index===0?" active":"")+'" data-gallery-index="'+index+'" aria-label="Ver imagen '+(index+1)+'"></button>').join("")+"</div>"
    : "";
 
- const managementTabs='<nav class="public-tabs management-tabs" aria-label="Gestión del negocio"><a href="#gestion-resumen" class="active">Resumen</a><a href="#gestion-publicaciones">Publicaciones</a><a href="#gestion-resenas">Reseñas</a><a href="#gestion-aprende">Aprende</a></nav>';
+ const managementTabs='<nav class="public-tabs management-tabs" aria-label="Gestión del negocio"><a href="#gestion-resumen" class="active">Resumen</a><a href="#gestion-publicaciones">Publicaciones</a><a href="#gestion-estadisticas">Estadísticas</a><a href="#gestion-resenas">Reseñas</a><a href="#gestion-aprende">Aprende</a></nav>';
  const publicTabs='<nav class="public-tabs" aria-label="Contenido del negocio"><a href="#sobre-negocio" class="active">Información</a><a href="#fotografias-negocio">Fotografías</a><a href="#servicios-negocio">Servicios</a><a href="#reviews-negocio">Reviews</a></nav>';
 
  const managementSections=`
  <section id="gestion-resumen" class="public-section management-section">
    <div class="public-section-heading"><div><span class="management-kicker">Resumen</span><h2>Actividad de tu negocio</h2><p>Un vistazo rápido a lo que está pasando con tu presencia en neXsv.</p></div><span>Visión general</span></div>
    <div class="management-summary-grid">
-     <article><span class="management-summary-icon blue"><i class="fa-regular fa-newspaper"></i></span><div><strong>0</strong><small>Publicaciones</small></div></article>
+     <article><span class="management-summary-icon blue"><i class="fa-regular fa-newspaper"></i></span><div><strong id="ownerStatPublications">0</strong><small>Publicaciones</small></div></article>
      <article><span class="management-summary-icon green"><i class="fa-regular fa-eye"></i></span><div><strong>0</strong><small>Vistas</small></div></article>
      <article><span class="management-summary-icon yellow"><i class="fa-regular fa-comments"></i></span><div><strong>0</strong><small>Conversaciones</small></div></article>
    </div>
@@ -147,10 +147,20 @@ function renderBusiness(data,images,reviews,services=[]){
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
 }
+async function loadOwnerRecentPublications(businessId){
+  try{
+    const result=await CommunityService.getPublications({businessId,limit:6});
+    const container=document.querySelector("#gestion-publicaciones .management-publication-empty");
+    if(!container||!result.data?.length)return;
+    container.outerHTML='<div class="management-publication-grid">'+result.data.slice(0,3).map(item=>{const image=item.images?.[0]?.public_url||item.images?.[0]?.storage_path||"";return '<article class="management-publication-card">'+(image?'<img src="'+escapeHtml(image)+'" alt="">':'<div class="management-publication-placeholder"><i class="fa-regular fa-newspaper"></i></div>')+'<div class="management-publication-card-body"><span>'+escapeHtml(item.type||"PUBLICACIÓN")+'</span><h3>'+escapeHtml(item.title||"Sin título")+'</h3><p>'+escapeHtml(item.body||"")+'</p><a href="comunidad.html?business='+encodeURIComponent(businessId)+'">Ver publicación <i class="fa-solid fa-arrow-right"></i></a></div></article>';}).join("")+'</div>';
+  }catch(error){console.warn("No se pudieron cargar las publicaciones recientes:",error);}
+}
 async function loadOwnerStatistics(businessId){
   try{
     const pubs=await CommunityService.getPublications({businessId,limit:100});
     const ids=(pubs.data||[]).map(item=>item.id).filter(Boolean);
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+    set("ownerStatPublications",ids.length);
     if(!ids.length)return;
     const metricsResult=await supabase.rpc("get_my_community_publication_metrics");
     const engagementResult=await supabase.rpc("get_my_community_publication_engagement_metrics");
@@ -159,7 +169,6 @@ async function loadOwnerStatistics(businessId){
     const totals=metrics.reduce((a,item)=>({views:a.views+Number(item.views||0),comments:a.comments+Number(item.comments||0),conversations:a.conversations+Number(item.conversations||0)}),{views:0,comments:0,conversations:0});
     let shares=0,saves=0;
     metrics.forEach(item=>{const extra=engagement.get(item.publication_id)||{};shares+=Number(extra.shares||0);saves+=Number(extra.saves||0);});
-    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
     set("ownerStatViews",totals.views);set("ownerStatConversations",totals.conversations);set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
   }catch(error){console.warn("No se pudieron cargar las estadísticas del negocio:",error);}
 }
@@ -265,6 +274,6 @@ async function init(){
  const reviews=publicReviewsResult.data||[];
  const services=servicesResult.data||[];
  renderBusiness(data,images,reviews,services);
- if(ownerResult.data===true)loadOwnerStatistics(businessId);
+ if(ownerResult.data===true){loadOwnerStatistics(businessId);loadOwnerRecentPublications(businessId);}
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
