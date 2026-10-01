@@ -351,8 +351,8 @@ async function renderResults(content) {
   const conversationRate = views ? ((conversations / views) * 100).toFixed(1) + "%" : "0%";
 
   content.innerHTML =
-    '<span class="module-kicker">Resultados</span>' +
-    '<h2 class="module-title">Qué está pasando con tu negocio</h2>' +
+    '<span class="module-kicker results-module-kicker">Resultados</span>' +
+    '<h2 class="module-title results-module-title">Qué está pasando con tu negocio</h2>' +
     '<p class="module-subtitle">Aquí verás el recorrido de las personas desde que encuentran tu contenido hasta que interactúan contigo.</p>' +
     '<div class="results-module-highlight"><div><span>Publicaciones activas</span><strong>' + Number(metrics.publications || 0) + '</strong></div><p>Estas métricas corresponden únicamente al negocio que estás gestionando.</p></div>' +
     '<div class="results-module-grid">' +
