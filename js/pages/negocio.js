@@ -29,7 +29,8 @@ function renderBusiness(data,images,reviews,services=[]){
  const ownerMode=document.getElementById("businessSpace")?.classList.contains("owner-active");
  const managementTabs=ownerMode
    ? "<nav class=\"public-tabs management-tabs\" aria-label=\"Gestión del negocio\"><a href=\"#gestion-resumen\" class=\"active\">Resumen</a><a href=\"#gestion-presentacion\">Presentación</a><a href=\"#gestion-actividad\">Actividad</a></nav>"
-   : managementTabs+ "<section id=\"sobre-negocio\" class=\"public-section about-business\"><h2>Sobre "+name+"</h2><p>"+description+"</p></section>"+
+   : "<nav class=\"public-tabs\" aria-label=\"Contenido del negocio\"><a href=\"#sobre-negocio\" class=\"active\">Información</a><a href=\"#fotografias-negocio\">Fotografías</a><a href=\"#servicios-negocio\">Servicios</a><a href=\"#reviews-negocio\">Reviews</a></nav>"+
+ "<section id=\"sobre-negocio\" class=\"public-section about-business\"><h2>Sobre "+name+"</h2><p>"+description+"</p></section>"+
  "<section id=\"fotografias-negocio\" class=\"public-section\"><div class=\"public-section-heading\"><h2>Fotografías</h2><span>"+images.length+" "+(images.length===1?"foto":"fotos")+"</span></div>"+
  (images.length?"<div class=\"public-photo-grid\">"+images.map((img,index)=>"<a href=\""+escapeHtml(img)+"\" target=\"_blank\" rel=\"noopener\" class=\"public-photo\"><img src=\""+escapeHtml(img)+"\" alt=\"Fotografía "+(index+1)+" de "+name+"\"></a>").join("")+"</div>":"<div class=\"review-empty\">Este negocio aún no tiene fotografías.</div>")+
  "</section>"+
