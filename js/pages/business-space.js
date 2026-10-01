@@ -28,15 +28,34 @@ const informationFields = [
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("[data-business-module]").forEach(button => {
-    button.addEventListener("click", () => openModule(button.dataset.businessModule));
+  // Delegación para que también funcionen los botones data-business-module
+  // que negocio.js inserta dinámicamente después del DOMContentLoaded.
+  document.addEventListener("click", event => {
+    const button = event.target.closest("[data-business-module]");
+    if (button) openModule(button.dataset.businessModule);
   });
   document.getElementById("businessModuleClose")?.addEventListener("click", closeModule);
   document.getElementById("businessModuleOverlay")?.addEventListener("click", event => {
     if (event.target.id === "businessModuleOverlay") closeModule();
   });
+  document.getElementById("headerNotificationBtn")?.addEventListener("click", event => {
+    event.stopPropagation();
+    const popover = document.getElementById("headerNotificationPopover");
+    if (popover) popover.hidden = !popover.hidden;
+  });
+  document.addEventListener("click", event => {
+    const popover = document.getElementById("headerNotificationPopover");
+    const button = document.getElementById("headerNotificationBtn");
+    if (popover && !popover.hidden && !popover.contains(event.target) && event.target !== button && !button?.contains(event.target)) {
+      popover.hidden = true;
+    }
+  });
   document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeModule();
+    if (event.key === "Escape") {
+      closeModule();
+      const popover = document.getElementById("headerNotificationPopover");
+      if (popover) popover.hidden = true;
+    }
   });
 });
 
