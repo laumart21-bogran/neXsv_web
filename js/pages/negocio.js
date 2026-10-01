@@ -22,46 +22,91 @@ function formatPublicServicePrice(service){if(service.precio===null||service.pre
 function reviewsHtml(reviews){return reviews.map(review=>"<article class=\"review-card\"><div class=\"review-name\">"+stars(review.estrellas)+" — "+escapeHtml(review.nombre||"Miembro")+"</div><div class=\"review-comment\">"+escapeHtml(review.comentario||"")+"</div></article>").join("")||"<div class=\"review-empty\">Este negocio aún no tiene reviews.</div>";}
 function renderBusiness(data,images,reviews,services=[]){
  const container=document.getElementById("contenido");
- const name=escapeHtml(data.nombre||"Negocio"), category=escapeHtml(data.categoria||"Comunidad"), description=escapeHtml(data.descripcion||"");
- const logo=String(data.logo||"").trim(), whatsapp=normalizeWhatsapp(data.whatsapp), maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]), website=firstValue(data,["sitio_web","website","web"]), departamento=firstValue(data,["departamento"]), municipio=firstValue(data,["municipio"]), diasAtencion=firstValue(data,["dias_atencion"]), horario=firstValue(data,["horario_atencion","horario","horario_de_atencion","horario_negocio"]), safeSlug=slugify(data.nombre||"");
+ const name=escapeHtml(data.nombre||"Negocio");
+ const category=escapeHtml(data.categoria||"Comunidad");
+ const description=escapeHtml(data.descripcion||"");
+ const logo=String(data.logo||"").trim();
+ const whatsapp=normalizeWhatsapp(data.whatsapp);
+ const maps=firstValue(data,["google_maps_url","maps_url","ubicacion_url"]);
+ const website=firstValue(data,["sitio_web","website","web"]);
+ const departamento=firstValue(data,["departamento"]);
+ const municipio=firstValue(data,["municipio"]);
+ const horario=firstValue(data,["horario_atencion","horario","horario_de_atencion","horario_negocio"]);
+ const safeSlug=slugify(data.nombre||"");
  const locationText=[municipio,departamento].filter(Boolean).join(", ");
- const total=reviews.length, average=total?(reviews.reduce((sum,item)=>sum+Number(item.estrellas||0),0)/total).toFixed(1):"0.0";
+ const total=reviews.length;
+ const average=total?(reviews.reduce((sum,item)=>sum+Number(item.estrellas||0),0)/total).toFixed(1):"0.0";
  const ownerMode=document.getElementById("businessSpace")?.classList.contains("owner-active");
- const managementTabs=ownerMode
-   ? "<nav class=\"public-tabs management-tabs\" aria-label=\"Gestión del negocio\"><a href=\"#gestion-resumen\" class=\"active\">Resumen</a><a href=\"#gestion-presentacion\">Presentación</a><a href=\"#gestion-actividad\">Actividad</a></nav>"
-   : "<nav class=\"public-tabs\" aria-label=\"Contenido del negocio\"><a href=\"#sobre-negocio\" class=\"active\">Información</a><a href=\"#fotografias-negocio\">Fotografías</a><a href=\"#servicios-negocio\">Servicios</a><a href=\"#reviews-negocio\">Reviews</a></nav>"+
- "<section id=\"sobre-negocio\" class=\"public-section about-business\"><h2>Sobre "+name+"</h2><p>"+description+"</p></section>"+
- "<section id=\"fotografias-negocio\" class=\"public-section\"><div class=\"public-section-heading\"><h2>Fotografías</h2><span>"+images.length+" "+(images.length===1?"foto":"fotos")+"</span></div>"+
- (images.length?"<div class=\"public-photo-grid\">"+images.map((img,index)=>"<a href=\""+escapeHtml(img)+"\" target=\"_blank\" rel=\"noopener\" class=\"public-photo\"><img src=\""+escapeHtml(img)+"\" alt=\"Fotografía "+(index+1)+" de "+name+"\"></a>").join("")+"</div>":"<div class=\"review-empty\">Este negocio aún no tiene fotografías.</div>")+
- "</section>"+
- "<section id=\"servicios-negocio\" class=\"public-section\"><div class=\"public-section-heading\"><h2>Servicios</h2><span>"+services.length+" "+(services.length===1?"servicio":"servicios")+"</span></div>"+
- (services.length?"<div class=\"public-services-grid\">"+services.map(service=>"<article class=\"public-service-card\"><div class=\"public-service-card-head\"><h3>"+escapeHtml(service.nombre||"Servicio")+"</h3><span>"+escapeHtml(formatPublicServicePrice(service))+"</span></div>"+(service.descripcion?"<p>"+escapeHtml(service.descripcion)+"</p>":"")+"</article>").join("")+"</div>":"<div class=\"review-empty\">Este negocio aún no ha agregado servicios.</div>")+"</section>"+
- ownerMode ? managementSections : "<section id=\"reviews-negocio\" class=\"reviews-section public-section\"><h2>Reviews</h2>"+reviewsHtml(reviews)+"</section>"+"<section class=\"review-form\"><h2>Deja tu review</h2><input type=\"text\" id=\"reviewNombre\" placeholder=\"Tu nombre\"><select id=\"reviewEstrellas\"><option value=\"5\">⭐⭐⭐⭐⭐ Excelente</option><option value=\"4\">⭐⭐⭐⭐ Muy bueno</option><option value=\"3\">⭐⭐⭐ Bueno</option><option value=\"2\">⭐⭐ Regular</option><option value=\"1\">⭐ Malo</option></select><textarea id=\"reviewComentario\" placeholder=\"Comparte tu experiencia...\"></textarea><button type=\"button\" id=\"enviarReview\"><i class=\"fa-regular fa-paper-plane\"></i> Enviar review</button><div id=\"mensajeReview\"></div></section><div class=\"detail-footer\"><a href=\"negocios.html\" class=\"btn btn-share\"><i class=\"fa-solid fa-arrow-left\"></i> Volver a negocios</a></div></div>
+
+ const gallerySlides=images.length
+   ? images.map((img,index)=>'<div class="galeria-item"><img src="'+escapeHtml(img)+'" alt="Foto '+(index+1)+' de '+name+'" loading="'+(index===0?"eager":"lazy")+'"></div>').join("")
+   : '<div class="galeria-item galeria-empty">Este negocio aún no tiene fotografías.</div>';
+ const galleryDots=images.length>1
+   ? '<div class="galeria-controls">'+images.map((_,index)=>'<button type="button" class="galeria-dot'+(index===0?" active":"")+'" data-gallery-index="'+index+'" aria-label="Ver imagen '+(index+1)+'"></button>').join("")+"</div>"
+   : "";
+
+ const managementTabs='<nav class="public-tabs management-tabs" aria-label="Gestión del negocio"><a href="#gestion-resumen" class="active">Resumen</a><a href="#gestion-presentacion">Presentación</a><a href="#gestion-actividad">Actividad</a></nav>';
+ const publicTabs='<nav class="public-tabs" aria-label="Contenido del negocio"><a href="#sobre-negocio" class="active">Información</a><a href="#fotografias-negocio">Fotografías</a><a href="#servicios-negocio">Servicios</a><a href="#reviews-negocio">Reviews</a></nav>';
+
+ const managementSections=`
+ <section id="gestion-resumen" class="public-section management-section">
+   <div class="public-section-heading"><h2>Resumen de tu negocio</h2><span>Visión general</span></div>
+   <div class="management-quick-grid">
+     <button type="button" class="management-quick-card" data-business-module="publications"><span class="management-quick-icon blue"><i class="fa-regular fa-newspaper"></i></span><span><strong>Publicaciones</strong><small>Administra noticias, promociones y novedades.</small></span><i class="fa-solid fa-chevron-right"></i></button>
+     <button type="button" class="management-quick-card" data-business-module="services"><span class="management-quick-icon green"><i class="fa-solid fa-boxes-stacked"></i></span><span><strong>Servicios</strong><small>Mantén actualizada tu oferta.</small></span><i class="fa-solid fa-chevron-right"></i></button>
+     <button type="button" class="management-quick-card" data-business-module="results"><span class="management-quick-icon yellow"><i class="fa-solid fa-chart-line"></i></span><span><strong>Resultados</strong><small>Consulta el rendimiento de tu negocio.</small></span><i class="fa-solid fa-chevron-right"></i></button>
+   </div>
+ </section>
+ <section id="gestion-presentacion" class="public-section management-section">
+   <div class="public-section-heading"><h2>Tu presencia pública</h2><span>Cómo te ven</span></div>
+   <div class="management-presence-grid">
+     <article><span class="management-presence-icon green"><i class="fa-solid fa-circle-check"></i></span><div><strong>Negocio publicado</strong><small>Tu negocio está visible en neXsv.</small></div></article>
+     <article><span class="management-presence-icon blue"><i class="fa-regular fa-image"></i></span><div><strong>Presentación</strong><small>Gestiona logo y fotografías desde Presentación.</small></div></article>
+     <article><span class="management-presence-icon yellow"><i class="fa-solid fa-location-dot"></i></span><div><strong>Información pública</strong><small>Ubicación, horario y contacto disponibles para tus visitantes.</small></div></article>
+   </div>
+ </section>
+ <section id="gestion-actividad" class="public-section management-section">
+   <div class="management-activity-empty"><span class="management-activity-icon"><i class="fa-regular fa-clock"></i></span><div><strong>Tu actividad aparecerá aquí</strong><p>Cuando publiques, recibas interacciones o actualices tu negocio, este espacio mostrará los cambios más recientes.</p></div></div>
+ </section>`;
+
+ const publicSections=`
+ <section id="sobre-negocio" class="public-section about-business"><h2>Sobre ${name}</h2><p>${description}</p></section>
+ <section id="fotografias-negocio" class="public-section"><div class="public-section-heading"><h2>Fotografías</h2><span>${images.length} ${images.length===1?"foto":"fotos"}</span></div>
+ ${images.length?'<div class="public-photo-grid">'+images.map((img,index)=>'<a href="'+escapeHtml(img)+'" target="_blank" rel="noopener" class="public-photo"><img src="'+escapeHtml(img)+'" alt="Fotografía '+(index+1)+' de '+name+'"></a>').join("")+"</div>":'<div class="review-empty">Este negocio aún no tiene fotografías.</div>'}
+ </section>
+ <section id="servicios-negocio" class="public-section"><div class="public-section-heading"><h2>Servicios</h2><span>${services.length} ${services.length===1?"servicio":"servicios"}</span></div>
+ ${services.length?'<div class="public-services-grid">'+services.map(service=>'<article class="public-service-card"><div class="public-service-card-head"><h3>'+escapeHtml(service.nombre||"Servicio")+'</h3><span>'+escapeHtml(formatPublicServicePrice(service))+'</span></div>'+(service.descripcion?'<p>'+escapeHtml(service.descripcion)+'</p>':"")+"</article>").join("")+"</div>":'<div class="review-empty">Este negocio aún no ha agregado servicios.</div>'}
+ </section>
+ <section id="reviews-negocio" class="reviews-section public-section"><h2>Reviews</h2>${reviewsHtml(reviews)}</section>
+ <section class="review-form"><h2>Deja tu review</h2><input type="text" id="reviewNombre" placeholder="Tu nombre"><select id="reviewEstrellas"><option value="5">⭐⭐⭐⭐⭐ Excelente</option><option value="4">⭐⭐⭐⭐ Muy bueno</option><option value="3">⭐⭐⭐ Bueno</option><option value="2">⭐⭐ Regular</option><option value="1">⭐ Malo</option></select><textarea id="reviewComentario" placeholder="Comparte tu experiencia..."></textarea><button type="button" id="enviarReview"><i class="fa-regular fa-paper-plane"></i> Enviar review</button><div id="mensajeReview"></div></section>`;
+
+ container.innerHTML='<div class="galeria"><div class="galeria-track" id="businessGalleryTrack">'+gallerySlides+'</div>'+galleryDots+'</div>'+
+ '<div class="info"><div class="identity"><div class="logo-box">'+(logo?'<img src="'+escapeHtml(logo)+'" alt="Logo de '+name+'">':'<i class="fa-solid fa-store"></i>')+'</div><div><span class="badge">'+category+'</span><span class="verified"><i class="fa-solid fa-circle-check"></i> Verificado en neXsv</span><h1>'+name+'</h1><p class="descripcion">'+description+'</p></div></div>'+
+ '<div class="datos-practicos">'+
+ (locationText?'<div class="dato-practico"><span class="dato-practico-icon"><i class="fa-solid fa-location-dot"></i></span><span class="dato-practico-content"><span class="dato-practico-label">Ubicación</span><span class="dato-practico-value">'+escapeHtml(locationText)+'</span></span></div>':"")+
+ (horario?'<div class="dato-practico"><span class="dato-practico-icon"><i class="fa-regular fa-clock"></i></span><span class="dato-practico-content"><span class="dato-practico-label">Horario de atención</span><span class="dato-practico-value">'+escapeHtml(horario)+'</span></span></div>':"")+
+ (website?'<div class="dato-practico"><span class="dato-practico-icon"><i class="fa-solid fa-globe"></i></span><span class="dato-practico-content"><span class="dato-practico-label">Sitio web</span><a class="dato-practico-value dato-practico-link" href="'+escapeHtml(website)+'" target="_blank" rel="noopener">'+escapeHtml(website.replace(/^https?:\\/\\//i,"").replace(/\\/$/,""))+'</a></span></div>':"")+
+ '</div><div class="review-summary"><div class="review-score">⭐ '+average+'</div><div class="review-count">'+total+' '+(total===1?"review":"reviews")+'</div></div>'+
+ '<div class="botones">'+(whatsapp?'<a href="'+escapeHtml(whatsapp)+'" target="_blank" rel="noopener" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>':"")+(maps?'<a href="'+escapeHtml(maps)+'" target="_blank" rel="noopener" class="btn btn-mapa"><i class="fa-solid fa-location-dot"></i> Cómo llegar</a>':"")+(website?'<a href="'+escapeHtml(website)+'" target="_blank" rel="noopener" class="btn btn-web"><i class="fa-solid fa-globe"></i> Visitar sitio web</a>':"")+'<button type="button" id="shareBusiness" class="btn btn-share"><i class="fa-solid fa-share-nodes"></i> Compartir</button></div>'+
+ (ownerMode?managementTabs:publicTabs)+
+ (ownerMode?managementSections:publicSections)+
+ '<div class="detail-footer"><a href="negocios.html" class="btn btn-share"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a></div></div>';
+
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
- document.querySelectorAll(".management-quick-card[data-business-module]").forEach(card=>{
-   card.addEventListener("click",()=>{
-     document.querySelector('[data-business-module="'+card.dataset.businessModule+'"]')?.click();
-   });
- });
+ document.querySelectorAll(".management-quick-card[data-business-module]").forEach(card=>{card.addEventListener("click",()=>{document.querySelector('[data-business-module="'+card.dataset.businessModule+'"]')?.click();});});
  document.getElementById("shareBusiness")?.addEventListener("click",share);
+
  const galleryTrack=document.getElementById("businessGalleryTrack");
  const galleryDotButtons=[...document.querySelectorAll(".galeria-dot")];
  if(galleryTrack&&images.length>1){
-     let galleryIndex=0;
-     let galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
-     const updateGallery=()=>{
-         galleryTrack.style.transform="translateX(-"+(galleryIndex*100)+"%)";
-         galleryDotButtons.forEach((dot,index)=>dot.classList.toggle("active",index===galleryIndex));
-     };
-     galleryDotButtons.forEach(dot=>dot.addEventListener("click",()=>{
-         galleryIndex=Number(dot.dataset.galleryIndex)||0;
-         updateGallery();
-         clearInterval(galleryTimer);
-         galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
-     }));
+   let galleryIndex=0;
+   let galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);
+   const updateGallery=()=>{galleryTrack.style.transform="translateX(-"+(galleryIndex*100)+"%)";galleryDotButtons.forEach((dot,index)=>dot.classList.toggle("active",index===galleryIndex));};
+   galleryDotButtons.forEach(dot=>dot.addEventListener("click",()=>{galleryIndex=Number(dot.dataset.galleryIndex)||0;updateGallery();clearInterval(galleryTimer);galleryTimer=setInterval(()=>{galleryIndex=(galleryIndex+1)%images.length;updateGallery();},4500);}));
  }
 
  document.getElementById("enviarReview")?.addEventListener("click",async()=>{const nombre=document.getElementById("reviewNombre")?.value.trim(),estrellas=document.getElementById("reviewEstrellas")?.value,comentario=document.getElementById("reviewComentario")?.value.trim(),mensaje=document.getElementById("mensajeReview");if(!nombre||!comentario){mensaje.textContent="Completa todos los campos.";return;}mensaje.textContent="Enviando review…";try{const response=await fetch(LEGACY_URL,{method:"POST",body:JSON.stringify({slug:safeSlug,nombre,estrellas,comentario})});if(!response.ok)throw new Error("REVIEW_POST");mensaje.textContent="✅ Review enviada correctamente.";document.getElementById("reviewNombre").value="";document.getElementById("reviewComentario").value="";setTimeout(()=>location.reload(),900);}catch(error){console.error(error);mensaje.textContent="No fue posible enviar la review en este momento.";}});
+
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
 }
