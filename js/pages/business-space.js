@@ -40,6 +40,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+async function renderOwnerOverview() {
+  const overview = document.getElementById("businessOwnerOverview");
+  if (!overview) return;
+  try {
+    await ensureOwner();
+    overview.hidden = false;
+    const title = document.getElementById("businessOverviewTitle");
+    if (title) title.textContent = "Bienvenido al espacio de " + (currentBusiness.nombre || "tu negocio");
+    const result = await supabase.rpc("get_business_results", { p_business_id: currentBusiness.id });
+    const metrics = result.data?.[0] || {};
+    const setMetric = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = Number(value || 0).toLocaleString("es-SV");
+    };
+    setMetric("overviewPublications", metrics.publications);
+    setMetric("overviewViews", metrics.views);
+    setMetric("overviewConversations", metrics.conversations);
+  } catch (error) {
+    console.warn("No se pudo cargar el resumen del negocio:", error);
+  }
+}
+
 async function ensureOwner() {
   if (!businessId) throw new Error("NEGOCIO_NO_ESPECIFICADO");
   if (currentBusiness && currentUser) return currentBusiness;
