@@ -95,6 +95,8 @@ function setupOwnerMode(isOwner){
  };
  manage?.addEventListener("click",showManage);
  publicMode?.addEventListener("click",showPublic);
+ document.getElementById("ownerSidebarManageMode")?.addEventListener("click",showManage);
+ document.getElementById("ownerSidebarPublicMode")?.addEventListener("click",showPublic);
  showManage();
 }
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
