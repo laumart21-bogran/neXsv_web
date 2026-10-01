@@ -80,7 +80,7 @@ async function ensureOwner() {
 
 async function openModule(module) {
   if (module === "publish") {
-    window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId);
+    window.location.href = "comunidad.html?business=" + encodeURIComponent(businessId) + "&create=1";
     return;
   }
   if (module === "publications" || module === "community") {
