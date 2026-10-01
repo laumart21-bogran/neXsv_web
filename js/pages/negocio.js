@@ -38,6 +38,11 @@ function renderBusiness(data,images,reviews,services=[]){
  (services.length?"<div class=\"public-services-grid\">"+services.map(service=>"<article class=\"public-service-card\"><div class=\"public-service-card-head\"><h3>"+escapeHtml(service.nombre||"Servicio")+"</h3><span>"+escapeHtml(formatPublicServicePrice(service))+"</span></div>"+(service.descripcion?"<p>"+escapeHtml(service.descripcion)+"</p>":"")+"</article>").join("")+"</div>":"<div class=\"review-empty\">Este negocio aún no ha agregado servicios.</div>")+"</section>"+
  ownerMode ? managementSections : "<section id=\"reviews-negocio\" class=\"reviews-section public-section\"><h2>Reviews</h2>"+reviewsHtml(reviews)+"</section>"+"<section class=\"review-form\"><h2>Deja tu review</h2><input type=\"text\" id=\"reviewNombre\" placeholder=\"Tu nombre\"><select id=\"reviewEstrellas\"><option value=\"5\">⭐⭐⭐⭐⭐ Excelente</option><option value=\"4\">⭐⭐⭐⭐ Muy bueno</option><option value=\"3\">⭐⭐⭐ Bueno</option><option value=\"2\">⭐⭐ Regular</option><option value=\"1\">⭐ Malo</option></select><textarea id=\"reviewComentario\" placeholder=\"Comparte tu experiencia...\"></textarea><button type=\"button\" id=\"enviarReview\"><i class=\"fa-regular fa-paper-plane\"></i> Enviar review</button><div id=\"mensajeReview\"></div></section><div class=\"detail-footer\"><a href=\"negocios.html\" class=\"btn btn-share\"><i class=\"fa-solid fa-arrow-left\"></i> Volver a negocios</a></div></div>
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
+ document.querySelectorAll(".management-quick-card[data-business-module]").forEach(card=>{
+   card.addEventListener("click",()=>{
+     document.querySelector('[data-business-module="'+card.dataset.businessModule+'"]')?.click();
+   });
+ });
  document.getElementById("shareBusiness")?.addEventListener("click",share);
  const galleryTrack=document.getElementById("businessGalleryTrack");
  const galleryDotButtons=[...document.querySelectorAll(".galeria-dot")];
