@@ -45,28 +45,49 @@ function renderBusiness(data,images,reviews,services=[]){
    ? '<div class="galeria-controls">'+images.map((_,index)=>'<button type="button" class="galeria-dot'+(index===0?" active":"")+'" data-gallery-index="'+index+'" aria-label="Ver imagen '+(index+1)+'"></button>').join("")+"</div>"
    : "";
 
- const managementTabs='<nav class="public-tabs management-tabs" aria-label="Gestión del negocio"><a href="#gestion-resumen" class="active">Resumen</a><a href="#gestion-presentacion">Presentación</a><a href="#gestion-actividad">Actividad</a></nav>';
+ const managementTabs='<nav class="public-tabs management-tabs" aria-label="Gestión del negocio"><a href="#gestion-resumen" class="active">Resumen</a><a href="#gestion-publicaciones">Publicaciones</a><a href="#gestion-resenas">Reseñas</a><a href="#gestion-aprende">Aprende</a></nav>';
  const publicTabs='<nav class="public-tabs" aria-label="Contenido del negocio"><a href="#sobre-negocio" class="active">Información</a><a href="#fotografias-negocio">Fotografías</a><a href="#servicios-negocio">Servicios</a><a href="#reviews-negocio">Reviews</a></nav>';
 
  const managementSections=`
  <section id="gestion-resumen" class="public-section management-section">
-   <div class="public-section-heading"><h2>Resumen de tu negocio</h2><span>Visión general</span></div>
-   <div class="management-quick-grid">
-     <button type="button" class="management-quick-card" data-business-module="publications"><span class="management-quick-icon blue"><i class="fa-regular fa-newspaper"></i></span><span><strong>Publicaciones</strong><small>Administra noticias, promociones y novedades.</small></span><i class="fa-solid fa-chevron-right"></i></button>
-     <button type="button" class="management-quick-card" data-business-module="services"><span class="management-quick-icon green"><i class="fa-solid fa-boxes-stacked"></i></span><span><strong>Servicios</strong><small>Mantén actualizada tu oferta.</small></span><i class="fa-solid fa-chevron-right"></i></button>
-     <button type="button" class="management-quick-card" data-business-module="results"><span class="management-quick-icon yellow"><i class="fa-solid fa-chart-line"></i></span><span><strong>Resultados</strong><small>Consulta el rendimiento de tu negocio.</small></span><i class="fa-solid fa-chevron-right"></i></button>
+   <div class="public-section-heading"><div><span class="management-kicker">Resumen</span><h2>Actividad de tu negocio</h2><p>Un vistazo rápido a lo que está pasando con tu presencia en neXsv.</p></div><span>Visión general</span></div>
+   <div class="management-summary-grid">
+     <article><span class="management-summary-icon blue"><i class="fa-regular fa-newspaper"></i></span><div><strong>0</strong><small>Publicaciones</small></div></article>
+     <article><span class="management-summary-icon green"><i class="fa-regular fa-eye"></i></span><div><strong>0</strong><small>Vistas</small></div></article>
+     <article><span class="management-summary-icon yellow"><i class="fa-regular fa-comments"></i></span><div><strong>0</strong><small>Conversaciones</small></div></article>
    </div>
  </section>
- <section id="gestion-presentacion" class="public-section management-section">
-   <div class="public-section-heading"><h2>Tu presencia pública</h2><span>Cómo te ven</span></div>
-   <div class="management-presence-grid">
-     <article><span class="management-presence-icon green"><i class="fa-solid fa-circle-check"></i></span><div><strong>Negocio publicado</strong><small>Tu negocio está visible en neXsv.</small></div></article>
-     <article><span class="management-presence-icon blue"><i class="fa-regular fa-image"></i></span><div><strong>Presentación</strong><small>Gestiona logo y fotografías desde Presentación.</small></div></article>
-     <article><span class="management-presence-icon yellow"><i class="fa-solid fa-location-dot"></i></span><div><strong>Información pública</strong><small>Ubicación, horario y contacto disponibles para tus visitantes.</small></div></article>
+
+ <section id="gestion-publicar" class="public-section management-section management-publish-section">
+   <div class="management-publish-box">
+     <div><span class="management-kicker">Publica ahora</span><h2>Comparte algo nuevo con tu comunidad</h2><p>Publica una novedad, promoción, recomendación o contenido útil para las personas que siguen tu negocio.</p></div>
+     <button type="button" class="management-publish-btn" data-business-module="publish"><i class="fa-solid fa-bullhorn"></i> Publicar ahora</button>
    </div>
  </section>
- <section id="gestion-actividad" class="public-section management-section">
-   <div class="management-activity-empty"><span class="management-activity-icon"><i class="fa-regular fa-clock"></i></span><div><strong>Tu actividad aparecerá aquí</strong><p>Cuando publiques, recibas interacciones o actualices tu negocio, este espacio mostrará los cambios más recientes.</p></div></div>
+
+ <section id="gestion-publicaciones" class="public-section management-section">
+   <div class="public-section-heading"><div><span class="management-kicker">Actividad reciente</span><h2>Tus publicaciones recientes</h2><p>Revisa rápidamente lo último que has compartido con tu comunidad.</p></div><button type="button" class="management-inline-action" data-business-module="publications">Ver todas <i class="fa-solid fa-arrow-right"></i></button></div>
+   <div class="management-publication-empty">
+     <span class="management-empty-icon blue"><i class="fa-regular fa-images"></i></span>
+     <div><strong>Aún no tienes publicaciones para este negocio</strong><p>Cuando publiques para este negocio, tus publicaciones aparecerán aquí.</p></div>
+     <button type="button" class="management-empty-btn" data-business-module="publish">Crear mi primera publicación</button>
+   </div>
+ </section>
+
+ <section id="gestion-resenas" class="public-section management-section">
+   <div class="public-section-heading"><div><span class="management-kicker">Reputación</span><h2>Últimas reseñas</h2><p>Consulta lo que las personas están diciendo sobre tu negocio.</p></div><span>${reviews.length} ${reviews.length===1?"reseña":"reseñas"}</span></div>
+   ${reviews.length
+      ? '<div class="management-reviews-grid">'+reviews.slice(0,3).map(review=>'<article class="management-review-card"><div class="management-review-top"><strong>'+escapeHtml(review.nombre||"Miembro")+'</strong><span>'+stars(review.estrellas)+'</span></div><p>'+escapeHtml(review.comentario||"")+'</p></article>').join("")+'</div>'
+      : '<div class="management-publication-empty management-review-empty"><span class="management-empty-icon yellow"><i class="fa-regular fa-star"></i></span><div><strong>Aún no hay reseñas</strong><p>Cuando las personas compartan su experiencia, aparecerá aquí.</p></div></div>'}
+ </section>
+
+ <section id="gestion-aprende" class="public-section management-section">
+   <div class="public-section-heading"><div><span class="management-kicker">Aprende</span><h2>Aprende más sobre cómo vender más</h2><p>Ideas prácticas para aprovechar mejor tu presencia en neXsv.</p></div></div>
+   <div class="management-learning-grid">
+     <article><span class="management-learning-icon blue"><i class="fa-solid fa-bullhorn"></i></span><div><strong>Publica con intención</strong><p>Convierte tus novedades y promociones en contenido útil para tu comunidad.</p></div><i class="fa-solid fa-arrow-right"></i></article>
+     <article><span class="management-learning-icon yellow"><i class="fa-solid fa-image"></i></span><div><strong>Haz que tu negocio destaque</strong><p>Cuida tus fotografías, presentación y propuesta para generar confianza.</p></div><i class="fa-solid fa-arrow-right"></i></article>
+     <article><span class="management-learning-icon green"><i class="fa-solid fa-comments"></i></span><div><strong>Convierte interés en conversación</strong><p>Responde y facilita el siguiente paso para las personas interesadas.</p></div><i class="fa-solid fa-arrow-right"></i></article>
+   </div>
  </section>`;
 
  const publicSections=`
