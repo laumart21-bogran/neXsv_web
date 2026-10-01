@@ -126,6 +126,9 @@ function renderBusiness(data,images,reviews,services=[]){
  (ownerMode?managementSections:publicSections)+
  '<div class="detail-footer"><a href="negocios.html" class="btn btn-share"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a></div></div>';
 
+ const ownerInfoValues={ownerInfoName:data.nombre||"—",ownerInfoCategory:data.categoria||"—",ownerInfoLocation:locationText||"—",ownerInfoSchedule:horario||"—",ownerInfoWebsite:website?website.replace(/^https?:\/\//i,"").replace(/\/$/,""):"—",ownerInfoWhatsapp:whatsapp?whatsapp.replace(/^https?:\/\//i,"").replace(/^https?:\/\/wa\.me\//i,"+"):"—"};
+ Object.entries(ownerInfoValues).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value;});
+
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
  document.querySelectorAll(".management-section [data-business-module]").forEach(action=>{action.addEventListener("click",()=>{document.querySelector('[data-business-module="'+action.dataset.businessModule+'"]')?.click();});});
  document.getElementById("shareBusiness")?.addEventListener("click",share);
