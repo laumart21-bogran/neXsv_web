@@ -77,11 +77,9 @@ function renderBusiness(data,images,reviews,services=[]){
    </div>
  </section>
  <section id="gestion-estadisticas" class="public-section management-section">
-   <div class="public-section-heading"><div><span class="management-kicker">Estadísticas</span><h2>Qué está pasando con tu negocio</h2><p>Mira las señales principales de tu actividad en neXsv.</p></div><button type="button" class="management-inline-action" data-business-module="results">Ver resultados <i class="fa-solid fa-arrow-right"></i></button></div>
+   <div class="public-section-heading"><div><span class="management-kicker">Rendimiento</span><h2>Qué está pasando con tu contenido</h2><p>Estas señales muestran cómo las personas interactúan con lo que publicas en neXsv.</p></div><button type="button" class="management-inline-action" data-business-module="results">Ver resultados <i class="fa-solid fa-arrow-right"></i></button></div>
    <div class="management-stats-grid dashboard-stat-grid">
-     <article><span class="management-summary-icon"><i class="fa-regular fa-eye"></i></span><div><strong id="ownerStatViews">0</strong><small>Vistas</small></div></article>
      <article><span class="management-summary-icon"><i class="fa-regular fa-circle-check"></i></span><div><strong id="ownerStatInterests">—</strong><small>Me interesa</small></div></article>
-     <article><span class="management-summary-icon"><i class="fa-regular fa-comments"></i></span><div><strong id="ownerStatConversations">0</strong><small>Conversaciones</small></div></article>
      <article><span class="management-summary-icon"><i class="fa-regular fa-message"></i></span><div><strong id="ownerStatMessages">0</strong><small>Mensajes</small></div></article>
      <article><span class="management-summary-icon"><i class="fa-regular fa-comment"></i></span><div><strong id="ownerStatComments">0</strong><small>Comentarios</small></div></article>
      <article><span class="management-summary-icon"><i class="fa-regular fa-share-from-square"></i></span><div><strong id="ownerStatShares">0</strong><small>Compartidos</small></div></article>
