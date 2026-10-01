@@ -114,7 +114,7 @@ function renderBusiness(data,images,reviews,services=[]){
  '<div class="detail-footer"><a href="negocios.html" class="btn btn-share"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a></div></div>';
 
  const share=async()=>{const url=window.location.href.split("&action=")[0];const shareData={title:data.nombre||"Negocio en neXsv",text:"Descubre este negocio en neXsv",url};if(navigator.share){try{await navigator.share(shareData);}catch(_){}}else{try{await navigator.clipboard.writeText(url);alert("Enlace copiado.");}catch(_){window.prompt("Copia este enlace:",url);}}};
- document.querySelectorAll(".management-quick-card[data-business-module]").forEach(card=>{card.addEventListener("click",()=>{document.querySelector('[data-business-module="'+card.dataset.businessModule+'"]')?.click();});});
+ document.querySelectorAll(".management-section [data-business-module]").forEach(action=>{action.addEventListener("click",()=>{document.querySelector('[data-business-module="'+action.dataset.businessModule+'"]')?.click();});});
  document.getElementById("shareBusiness")?.addEventListener("click",share);
 
  const galleryTrack=document.getElementById("businessGalleryTrack");
