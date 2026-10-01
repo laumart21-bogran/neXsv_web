@@ -172,7 +172,16 @@ async function loadOwnerStatistics(businessId){
     const totals=metrics.reduce((a,item)=>({views:a.views+Number(item.views||0),comments:a.comments+Number(item.comments||0),conversations:a.conversations+Number(item.conversations||0)}),{views:0,comments:0,conversations:0});
     let shares=0,saves=0;
     metrics.forEach(item=>{const extra=engagement.get(item.publication_id)||{};shares+=Number(extra.shares||0);saves+=Number(extra.saves||0);});
-    set("ownerStatViews",totals.views);set("ownerStatInterests","—");set("ownerStatConversations",totals.conversations);set("ownerStatMessages","0");set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
+    set("ownerStatViews",totals.views);set("ownerStatInterests","—");set("ownerStatConversations",totals.conversations);set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
+    try{
+      const {data: conversations}=await supabase.from("conversations").select("id").in("origin_publication_id",ids);
+      const conversationIds=(conversations||[]).map(item=>item.id);
+      if(!conversationIds.length){set("ownerStatMessages",0);}
+      else{
+        const {data: messages}=await supabase.from("messages").select("id").in("conversation_id",conversationIds);
+        set("ownerStatMessages",(messages||[]).length);
+      }
+    }catch(_){set("ownerStatMessages","—");}
   }catch(error){console.warn("No se pudieron cargar las estadísticas del negocio:",error);}
 }
 
