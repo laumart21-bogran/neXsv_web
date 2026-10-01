@@ -1,6 +1,8 @@
 import BusinessService from "../services/business.service.js";
 import BusinessMediaService from "../services/business-media.service.js?v=20260924-3";
 import BusinessServiceCatalog from "../services/business-service.service.js";
+import CommunityService from "../services/community.service.js";
+import { supabase } from "../core/supabase-client.js";
 
 const LEGACY_URL="https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 const params=new URLSearchParams(window.location.search);
@@ -39,7 +41,7 @@ function renderBusiness(data,images,reviews,services=[]){
  const ownerMode=document.getElementById("businessSpace")?.classList.contains("owner-active");
 
  const gallerySlides=images.length
-   ? images.map((img,index)=>'<div class="galeria-item"><img src="'+escapeHtml(img)+'" alt="Foto '+(index+1)+' de '+name+'" loading="'+(index===0?"eager":"lazy")+'"></div>').join("")
+   ? images.map((img,index)=>'<div class="galeria-item"><img src="'+escapeHtml(img)+'" alt="Foto '+(index+1)+' de '+name+'" loading="'+(index===0?"eager":"lazy")+'">'+(ownerMode&&index===0?'<div class="owner-hero-overlay"><span>Espacio de negocio</span><strong>'+name+'</strong><p>'+description+'</p><small>Datos · Estrategia · Resultados</small></div>':"")+"</div>").join("")
    : '<div class="galeria-item galeria-empty">Este negocio aún no tiene fotografías.</div>';
  const galleryDots=images.length>1
    ? '<div class="galeria-controls">'+images.map((_,index)=>'<button type="button" class="galeria-dot'+(index===0?" active":"")+'" data-gallery-index="'+index+'" aria-label="Ver imagen '+(index+1)+'"></button>').join("")+"</div>"
@@ -73,7 +75,17 @@ function renderBusiness(data,images,reviews,services=[]){
      <button type="button" class="management-empty-btn" data-business-module="publish">Crear mi primera publicación</button>
    </div>
  </section>
-
+ <section id="gestion-estadisticas" class="public-section management-section">
+   <div class="public-section-heading"><div><span class="management-kicker">Estadísticas</span><h2>Qué está pasando con tu negocio</h2><p>Mira las señales principales de tu actividad en neXsv.</p></div><button type="button" class="management-inline-action" data-business-module="results">Ver resultados <i class="fa-solid fa-arrow-right"></i></button></div>
+   <div class="management-stats-grid">
+     <article><span class="management-summary-icon blue"><i class="fa-regular fa-eye"></i></span><div><strong id="ownerStatViews">0</strong><small>Vistas</small></div></article>
+     <article><span class="management-summary-icon green"><i class="fa-regular fa-comments"></i></span><div><strong id="ownerStatConversations">0</strong><small>Conversaciones</small></div></article>
+     <article><span class="management-summary-icon yellow"><i class="fa-regular fa-bookmark"></i></span><div><strong id="ownerStatSaves">0</strong><small>Guardados</small></div></article>
+     <article><span class="management-summary-icon yellow"><i class="fa-regular fa-share-from-square"></i></span><div><strong id="ownerStatShares">0</strong><small>Compartidos</small></div></article>
+     <article><span class="management-summary-icon green"><i class="fa-regular fa-comment"></i></span><div><strong id="ownerStatComments">0</strong><small>Comentarios</small></div></article>
+     <article><span class="management-summary-icon blue"><i class="fa-solid fa-chart-line"></i></span><div><strong id="ownerStatRate">0%</strong><small>Tasa de conversación</small></div></article>
+   </div>
+ </section>
  <section id="gestion-resenas" class="public-section management-section">
    <div class="public-section-heading"><div><span class="management-kicker">Reputación</span><h2>Últimas reseñas</h2><p>Consulta lo que las personas están diciendo sobre tu negocio.</p></div><span>${reviews.length} ${reviews.length===1?"reseña":"reseñas"}</span></div>
    ${reviews.length
@@ -84,10 +96,11 @@ function renderBusiness(data,images,reviews,services=[]){
  <section id="gestion-aprende" class="public-section management-section">
    <div class="public-section-heading"><div><span class="management-kicker">Aprende</span><h2>Aprende más sobre cómo vender más</h2><p>Ideas prácticas para aprovechar mejor tu presencia en neXsv.</p></div></div>
    <div class="management-learning-grid">
-     <article><span class="management-learning-icon blue"><i class="fa-solid fa-bullhorn"></i></span><div><strong>Publica con intención</strong><p>Convierte tus novedades y promociones en contenido útil para tu comunidad.</p></div><i class="fa-solid fa-arrow-right"></i></article>
-     <article><span class="management-learning-icon yellow"><i class="fa-solid fa-image"></i></span><div><strong>Haz que tu negocio destaque</strong><p>Cuida tus fotografías, presentación y propuesta para generar confianza.</p></div><i class="fa-solid fa-arrow-right"></i></article>
-     <article><span class="management-learning-icon green"><i class="fa-solid fa-comments"></i></span><div><strong>Convierte interés en conversación</strong><p>Responde y facilita el siguiente paso para las personas interesadas.</p></div><i class="fa-solid fa-arrow-right"></i></article>
+     <a href="blog.html" class="management-learning-card-link"><article><span class="management-learning-icon blue"><i class="fa-solid fa-bullhorn"></i></span><div><strong>Publica con intención</strong><p>Ideas para crear contenido útil y relevante.</p></div><i class="fa-solid fa-arrow-right"></i></article></a>
+     <a href="blog.html" class="management-learning-card-link"><article><span class="management-learning-icon yellow"><i class="fa-solid fa-image"></i></span><div><strong>Haz que tu negocio destaque</strong><p>Consejos para mejorar tu presentación.</p></div><i class="fa-solid fa-arrow-right"></i></article></a>
+     <a href="blog.html" class="management-learning-card-link"><article><span class="management-learning-icon green"><i class="fa-solid fa-comments"></i></span><div><strong>Convierte interés en conversación</strong><p>Aprende estrategias prácticas para vender más.</p></div><i class="fa-solid fa-arrow-right"></i></article></a>
    </div>
+   <div class="management-blog-link"><a href="blog.html">Ver todos los artículos del blog <i class="fa-solid fa-arrow-right"></i></a></div>
  </section>`;
 
  const publicSections=`
@@ -102,7 +115,7 @@ function renderBusiness(data,images,reviews,services=[]){
  <section class="review-form"><h2>Deja tu review</h2><input type="text" id="reviewNombre" placeholder="Tu nombre"><select id="reviewEstrellas"><option value="5">⭐⭐⭐⭐⭐ Excelente</option><option value="4">⭐⭐⭐⭐ Muy bueno</option><option value="3">⭐⭐⭐ Bueno</option><option value="2">⭐⭐ Regular</option><option value="1">⭐ Malo</option></select><textarea id="reviewComentario" placeholder="Comparte tu experiencia..."></textarea><button type="button" id="enviarReview"><i class="fa-regular fa-paper-plane"></i> Enviar review</button><div id="mensajeReview"></div></section>`;
 
  container.innerHTML='<div class="galeria"><div class="galeria-track" id="businessGalleryTrack">'+gallerySlides+'</div>'+galleryDots+'</div>'+
- '<div class="info"><div class="identity"><div class="logo-box">'+(logo?'<img src="'+escapeHtml(logo)+'" alt="Logo de '+name+'">':'<i class="fa-solid fa-store"></i>')+'</div><div><span class="badge">'+category+'</span><span class="verified"><i class="fa-solid fa-circle-check"></i> Verificado en neXsv</span><h1>'+name+'</h1><p class="descripcion">'+description+'</p></div></div>'+
+ '<div class="info"><div class="identity"><div class="logo-box">'+(logo?'<img src="'+escapeHtml(logo)+'" alt="Logo de '+name+'">':'<i class="fa-solid fa-store"></i>')+'</div><div><span class="badge">'+category+'</span><span class="verified"><i class="fa-solid fa-circle-check"></i> Verificado en neXsv</span>'+(ownerMode?'<span class="owner-badge"><i class="fa-solid fa-circle"></i> Propietario<small>Estás viendo tu negocio</small></span>':"")+'<h1>'+name+'</h1><p class="descripcion">'+description+'</p></div></div>'+
  '<div class="datos-practicos">'+
  (locationText?'<div class="dato-practico"><span class="dato-practico-icon"><i class="fa-solid fa-location-dot"></i></span><span class="dato-practico-content"><span class="dato-practico-label">Ubicación</span><span class="dato-practico-value">'+escapeHtml(locationText)+'</span></span></div>':"")+
  (horario?'<div class="dato-practico"><span class="dato-practico-icon"><i class="fa-regular fa-clock"></i></span><span class="dato-practico-content"><span class="dato-practico-label">Horario de atención</span><span class="dato-practico-value">'+escapeHtml(horario)+'</span></span></div>':"")+
@@ -131,6 +144,23 @@ function renderBusiness(data,images,reviews,services=[]){
  if(requestedAction==="whatsapp"&&whatsapp)window.open(whatsapp,"_blank","noopener");
  if(requestedAction==="location"&&maps)window.open(maps,"_blank","noopener");
 }
+async function loadOwnerStatistics(businessId){
+  try{
+    const pubs=await CommunityService.getPublications({businessId,limit:100});
+    const ids=(pubs.data||[]).map(item=>item.id).filter(Boolean);
+    if(!ids.length)return;
+    const metricsResult=await supabase.rpc("get_my_community_publication_metrics");
+    const engagementResult=await supabase.rpc("get_my_community_publication_engagement_metrics");
+    const metrics=(metricsResult.data||[]).filter(item=>ids.includes(item.publication_id));
+    const engagement=new Map((engagementResult.data||[]).map(item=>[item.publication_id,item]));
+    const totals=metrics.reduce((a,item)=>({views:a.views+Number(item.views||0),comments:a.comments+Number(item.comments||0),conversations:a.conversations+Number(item.conversations||0)}),{views:0,comments:0,conversations:0});
+    let shares=0,saves=0;
+    metrics.forEach(item=>{const extra=engagement.get(item.publication_id)||{};shares+=Number(extra.shares||0);saves+=Number(extra.saves||0);});
+    const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+    set("ownerStatViews",totals.views);set("ownerStatConversations",totals.conversations);set("ownerStatSaves",saves);set("ownerStatShares",shares);set("ownerStatComments",totals.comments);set("ownerStatRate",totals.views?Math.round((totals.conversations/totals.views)*1000)/10+"%":"0%");
+  }catch(error){console.warn("No se pudieron cargar las estadísticas del negocio:",error);}
+}
+
 function setupOwnerMode(isOwner){
  const bar=document.getElementById("businessOwnerBar");
  const space=document.getElementById("businessSpace");
@@ -232,5 +262,6 @@ async function init(){
  const reviews=publicReviewsResult.data||[];
  const services=servicesResult.data||[];
  renderBusiness(data,images,reviews,services);
+ if(ownerResult.data===true)loadOwnerStatistics(businessId);
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
