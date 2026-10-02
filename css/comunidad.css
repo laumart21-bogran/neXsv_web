@@ -178,3 +178,29 @@
   .community-user>i{display:none}.publication-card{border-radius:16px}.publication-author{padding:13px 14px 10px}.publication-images{margin:0 10px}.publication-images img{border-radius:12px}
   .publication-card h2,.publication-body{padding-left:14px;padding-right:14px}.publication-actions{padding:12px 14px 14px}
 }
+
+/* Ajustes finales del carrusel: encabezado + exactamente tres tarjetas visibles */
+.community-business-rail{
+  grid-template-columns:minmax(220px,250px) 40px minmax(0,1fr) 40px;
+  display:grid;
+}
+.community-rail-heading{grid-column:auto}
+.community-business-viewport{grid-column:auto;grid-row:auto}
+.community-rail-arrow:first-of-type,.community-rail-arrow:last-of-type{
+  position:static;margin:0;align-self:center;justify-self:center;
+}
+.community-business-card{min-height:104px}
+.community-business-card .community-business-logo-fallback{display:grid;place-items:center}
+.community-featured-business .featured-logo.community-business-logo-fallback{
+  width:118px;height:118px;margin:4px auto 12px;border-radius:50%;
+}
+.community-recommended-businesses .mini-business-logo.community-business-logo-fallback{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+}
+@media(max-width:1180px){
+  .community-business-rail{grid-template-columns:40px minmax(0,1fr) 40px;display:grid}
+  .community-rail-heading{grid-column:1 / 4;grid-row:1}
+  .community-rail-arrow:first-of-type{grid-column:1;grid-row:2}
+  .community-business-viewport{grid-column:2;grid-row:2}
+  .community-rail-arrow:last-of-type{grid-column:3;grid-row:2}
+}
