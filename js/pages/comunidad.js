@@ -67,7 +67,7 @@ let businessRailTimer = null;
 
 function businessLogoHtml(business, className = "") {
     if (business?.logo) return `<img class="${className}" src="${escapeHtml(business.logo)}" alt="Logo de ${escapeHtml(business.nombre || "negocio")}" loading="lazy">`;
-    return `<span class="${className || "community-business-logo-fallback"}">${escapeHtml(initials(business?.nombre || "N"))}</span>`;
+    return `<span class="community-business-logo-fallback ${escapeHtml(className || "")}">${escapeHtml(initials(business?.nombre || "N"))}</span>`;
 }
 
 function renderBusinessRail() {
