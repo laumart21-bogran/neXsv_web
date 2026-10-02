@@ -175,3 +175,18 @@
 .member-home .profile-avatar{
   background:linear-gradient(135deg,#19C2C6,#1657B8);
 }
+
+
+/* Ajuste puntual: botón Publicar del perfil usa la misma acción principal del sistema */
+.member-home .dashboard-composer-footer #dashboardPublishBtn,
+.member-home .community-publish{
+  background:linear-gradient(135deg,#1657B8,#19C2C6)!important;
+  color:#fff!important;
+  border:0!important;
+  box-shadow:0 6px 16px rgba(22,87,184,.14)!important;
+}
+.member-home .dashboard-composer-footer #dashboardPublishBtn:hover,
+.member-home .community-publish:hover{
+  background:linear-gradient(135deg,#1657B8,#19C2C6)!important;
+  filter:brightness(.98);
+}
