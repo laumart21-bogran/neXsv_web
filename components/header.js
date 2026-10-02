@@ -32,12 +32,17 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
 
 `);
 
-<script type="module">
+<script>
+function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("active");}
+</script>
+
+const authScript = document.createElement("script");
+authScript.type = "module";
+authScript.textContent = `
 (async () => {
     try {
         const { default: AuthSession } = await import("./js/auth/auth.session.js");
         if (!AuthSession.isInitialized()) await AuthSession.initialize();
-
         const syncHeader = (session) => {
             const button = document.getElementById("nexHeaderAuthBtn");
             if (!button) return;
@@ -49,7 +54,6 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
                 button.innerHTML = '<i class="fa-regular fa-user"></i> Acceder →';
             }
         };
-
         syncHeader(AuthSession.getSession());
         const { supabase } = await import("./js/core/supabase-client.js");
         supabase.auth.onAuthStateChange((_event, session) => syncHeader(session));
@@ -57,4 +61,5 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
         console.warn("No se pudo sincronizar el estado de sesión del header:", error);
     }
 })();
-</script>
+`;
+document.head.appendChild(authScript);
