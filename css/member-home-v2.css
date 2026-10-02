@@ -10,3 +10,168 @@
 .member-home .menu-more-toggle{min-height:44px;border-radius:10px}.member-home .menu-more-toggle:hover{background:#F5F7FB}.member-home .dashboard-publication-card.is-clickable{cursor:pointer}.member-home .dashboard-publication-card.is-clickable:hover{border-color:#D5DDEC;box-shadow:0 8px 20px rgba(35,58,114,.07);transform:translateY(-1px)}.member-home #guardados .section-title h2 i{color:#F5B041;margin-right:5px}.member-home #guardados .feed-placeholder{border:1px dashed #E5E9F0;border-radius:14px}
 @media(max-width:900px){.member-home .space-actions{grid-template-columns:1fr}.member-home .discover-publications{grid-template-columns:1fr}.member-home .dashboard-publication-card{min-width:75%}}
 @media(max-width:700px){.member-home .dashboard-header h1{font-size:1.65rem!important}.member-home .profile-progress .progress-header,.member-home .business-slide,.member-home .dashboard-composer-footer{align-items:flex-start;flex-direction:column}.member-home .profile-progress .progress-row{width:100%}.member-home .stats-grid{grid-template-columns:1fr}.member-home .community-publish{align-self:stretch;width:100%}.member-home .activity-hub-grid{grid-template-columns:1fr}.member-home .dashboard-publication-card{min-width:88%}.member-home .slider-arrow{width:30px;height:30px}.dashboard-notification-popover{right:16px}.member-home .business-access,.member-home .community-section,.member-home .activity-hub-section,.member-home .dashboard-feed-section,.member-home .discover-community-section,.member-home .recommended-businesses{padding:20px}}
+
+
+/* ==========================================================
+   SPRINT 1.3 — MI ESPACIO | Sintonía con Espacio del negocio
+   Azul = estructura / Azul-Cyan = acción / Amarillo = CTA / Verde = apoyo
+   ========================================================== */
+
+/* Identidad y navegación */
+.member-home .dashboard-menu a.active{
+  background:#F7C531;
+  color:#1D2A3A;
+}
+.member-home .dashboard-menu a.active i{color:#1657B8}
+.member-home .dashboard-menu a:hover,
+.member-home .dashboard-menu .menu-more-toggle:hover{
+  background:#F5F7FB;
+  color:#3159B7;
+}
+.member-home .dashboard-topbar .dashboard-icon-link{color:#3159B7}
+.member-home .dashboard-topbar .dashboard-icon-link:hover{
+  background:#F3F7FE;
+  color:#1657B8;
+}
+.member-home .notification-btn{
+  background:#F3F7FE;
+  color:#3159B7;
+}
+.member-home .notification-btn:hover{
+  background:#FFF9E8;
+  color:#7B610B;
+}
+
+/* Bienvenida: misma acción visual del espacio de negocio */
+.member-home .welcome-tag{
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
+  color:#fff;
+}
+.member-home .dashboard-header::after{
+  background:rgba(247,197,49,.12);
+}
+
+/* Perfil: progreso con el degradado oficial */
+.member-home .profile-progress .progress-fill{
+  background:linear-gradient(90deg,#19C2C6,#1657B8);
+}
+.member-home .profile-progress .progress-link{
+  color:#1657B8;
+}
+.member-home .profile-progress.complete{
+  background:#F8FCFA;
+  border-color:#DCEFE6;
+}
+
+/* Tres accesos principales: una jerarquía clara */
+.member-home .space-action-icon.community{
+  background:#F3F7FE;
+  color:#1657B8;
+}
+.member-home .space-action-icon.directory{
+  background:#ECF8F2;
+  color:#2F8B41;
+}
+.member-home .space-action-icon.business{
+  background:#FFF9E8;
+  color:#7B610B;
+}
+.member-home .space-action:hover{
+  border-color:#D6E2F4;
+}
+.member-home .space-action-arrow{color:#94A3B8}
+
+/* Publicar: acción principal oficial */
+.member-home .community-publish{
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
+  color:#fff;
+  border:0;
+  box-shadow:0 6px 16px rgba(22,87,184,.14);
+}
+.member-home .community-publish:hover{
+  filter:brightness(.98);
+}
+.member-home .community-type:hover,
+.member-home .community-type.active{
+  border-color:#F7C531;
+  background:#FFF9E8;
+  color:#7B610B;
+}
+
+/* Mensajes de éxito / verificación: verde como apoyo */
+.member-home #dashboardPublicationMessage{
+  color:#2F8B41;
+}
+.member-home .verified-badge{
+  background:#ECF8F2!important;
+  color:#2F8B41!important;
+}
+
+/* Enlaces secundarios: azul, sin convertirlos en CTA */
+.member-home .secondary-link{
+  color:#1657B8;
+}
+.member-home .secondary-link:hover{color:#0D3F89}
+
+/* Negocios recomendados */
+.member-home .recommended-business-card:hover{
+  border-color:#D6E2F4;
+  box-shadow:0 8px 20px rgba(22,87,184,.07);
+}
+.member-home .recommended-business-logo span{
+  background:#F3F7FE;
+  color:#1657B8;
+}
+.member-home .recommended-business-card strong{color:#233A72}
+
+/* Actividad: amarillo para contenido destacado, verde para conversación,
+   azul para elementos neutros/guardados */
+.member-home .activity-hub-icon.publication{
+  background:#FFF9E8;
+  color:#7B610B;
+}
+.member-home .activity-hub-icon.review{
+  background:#FFF9E8;
+  color:#7B610B;
+}
+.member-home .activity-hub-icon.message{
+  background:#ECF8F2;
+  color:#2F8B41;
+}
+.member-home .activity-hub-icon.saved{
+  background:#F3F7FE;
+  color:#3159B7;
+}
+
+/* Publicaciones y controles */
+.member-home .dashboard-publication-type{
+  color:#7B610B;
+  background:#FFF9E8;
+}
+.member-home .slider-arrow{
+  color:#1657B8;
+}
+.member-home .slider-arrow:hover{
+  background:#F3F7FE;
+  border-color:#D6E2F4;
+  color:#0D3F89;
+}
+
+/* Notificaciones */
+.member-home .dashboard-icon-badge{
+  background:#F7C531;
+  color:#1D2A3A;
+}
+.member-home .dashboard-notification-popover a{
+  color:#1657B8;
+}
+
+/* Avatar sin foto: fallback dentro de la paleta oficial */
+.member-home .user-avatar span,
+.member-home .profile-avatar span{
+  background:#F7C531;
+  color:#1D2A3A;
+}
+.member-home .profile-avatar{
+  background:linear-gradient(135deg,#19C2C6,#1657B8);
+}
