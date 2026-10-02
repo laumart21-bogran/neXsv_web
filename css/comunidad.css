@@ -207,122 +207,126 @@
 
 
 /* ==========================================================
-   SPRINT 1.1 — COMUNIDAD | Paleta neXsv equilibrada
-   Azul = estructura / Verde-Azul = acción / Amarillo = CTA
+   SPRINT 1.2 — COMUNIDAD | Sintonía con Espacio del negocio
+   Misma jerarquía cromática:
+   Azul = estructura / Azul-Cyan = acción principal / Amarillo = CTA / Verde = apoyo
    ========================================================== */
-.community-topbar .community-nav a:hover{background:#F5F7FB}
+.community-topbar .community-nav a{
+  color:#526071;
+  background:transparent;
+}
+.community-topbar .community-nav a i{color:#66758A}
+.community-topbar .community-nav a:hover{
+  background:#F5F7FB;
+  color:#3159B7;
+}
 .community-topbar .community-nav a[href="negocios.html"]{
-  background:linear-gradient(135deg,#18A978,#3D5BA9);
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
   color:#fff;
 }
+.community-topbar .community-nav a[href="negocios.html"] i{color:#fff}
 .community-topbar .community-nav a[href="negocios.html"]:hover{
   filter:brightness(.98);
   color:#fff;
 }
 
-.community-rail-icon{
-  background:linear-gradient(135deg,#18A978,#3D5BA9);
-  color:#fff;
-  box-shadow:0 5px 14px rgba(61,91,169,.16);
-}
-.community-rail-arrow:hover{
-  border-color:#9BD7C1;
-  background:#F0FAF6;
-  color:#168B68;
-}
-
+/* Acción principal: mismo degradado que "Gestionar / Publicar" */
 .community-primary-btn{
-  background:linear-gradient(135deg,#18A978 0%,#3D5BA9 100%);
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
   color:#fff;
-  box-shadow:0 6px 16px rgba(61,91,169,.16);
+  box-shadow:0 6px 16px rgba(22,87,184,.14);
 }
 .community-primary-btn:hover{
   filter:brightness(.98);
-  box-shadow:0 8px 19px rgba(61,91,169,.20);
+  box-shadow:0 8px 19px rgba(22,87,184,.18);
 }
 
+/* Elementos de navegación y descubrimiento: discretos */
+.community-rail-icon{
+  background:#F3F7FE;
+  color:#1657B8;
+  box-shadow:none;
+}
+.community-rail-arrow:hover{
+  border-color:#D6E2F4;
+  background:#F3F7FE;
+  color:#1657B8;
+}
+.community-business-copy a{color:#1657B8}
+.community-business-copy a:hover{color:#0D3F89}
+
+/* Amarillo: atención y CTA secundarios */
 .community-filters .filter-btn.active{
-  border-color:#F5B041;
-  background:#FFF4CF;
-  color:#8A6500;
+  border-color:#F7C531;
+  background:#FFF9E8;
+  color:#7B610B;
 }
 .community-filters .filter-btn:hover{
-  border-color:#A8DCC9;
-  background:#F0FAF6;
-  color:#168B68;
+  border-color:#CFE0F4;
+  background:#F5F8FD;
+  color:#1657B8;
 }
-
-.community-featured-business{
-  border-top:3px solid #F5B041;
-}
+.community-featured-business{border-top:3px solid #F7C531}
 .community-featured-business .featured-badge{
-  background:#FFF4CF;
-  color:#8A6500;
+  background:#FFF9E8;
+  color:#7B610B;
 }
 .community-featured-business .featured-action{
-  background:linear-gradient(135deg,#18A978,#3D5BA9);
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
   color:#fff;
 }
-.community-featured-business .featured-action:hover{
-  filter:brightness(.98);
-}
+.community-featured-business .featured-action:hover{filter:brightness(.98)}
 
-.community-users-card{
-  border-top:3px solid #F5B041;
-}
-.community-users-card .side-card-title i{
-  color:#F5B041;
-}
-.community-recommended-businesses{
-  border-top:3px solid #18A978;
-}
-.community-recommended-businesses .side-card-title i{
-  color:#18A978;
-}
+.community-users-card{border-top:3px solid #F7C531}
+.community-users-card .side-card-title i{color:#F7C531}
+.community-recommended-businesses{border-top:3px solid #74D67F}
+.community-recommended-businesses .side-card-title i{color:#35A95C}
 
 .community-user-row button{
-  background:linear-gradient(135deg,#18A978,#3D5BA9);
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
   border-color:transparent;
   color:#fff;
 }
-.community-user-row button:hover{
-  filter:brightness(.98);
-}
+.community-user-row button:hover{filter:brightness(.98)}
 
 .community-recommended-businesses .recommended-business-row a{
-  background:#FFF4CF;
-  color:#8A6500;
+  background:#FFF9E8;
+  color:#7B610B;
 }
 .community-recommended-businesses .recommended-business-row a:hover{
-  background:#F5B041;
-  color:#233A72;
+  background:#F7C531;
+  color:#1D2A3A;
 }
 
-.community-business-copy a{
-  color:#1769D1;
-}
-.community-business-copy a:hover{
-  color:#168B68;
-}
-
+/* Publicación: acciones en la misma jerarquía de neXsv */
 .publication-type{
-  background:#FFF4CF;
-  color:#8A6500;
+  background:#FFF9E8;
+  color:#7B610B;
 }
 .publication-actions .interest-btn{
-  background:linear-gradient(135deg,#18A978,#3D5BA9);
+  background:linear-gradient(135deg,#1657B8,#19C2C6);
   color:#fff;
 }
-.publication-actions .interest-btn:hover{
-  filter:brightness(.98);
-}
+.publication-actions .interest-btn:hover{filter:brightness(.98)}
 .publication-actions .comment-toggle-btn{
-  background:#FFF4CF;
-  color:#8A6500;
-  border-color:#F2D98D;
+  background:#FFF9E8;
+  color:#7B610B;
+  border-color:#F1D77A;
 }
 .publication-actions .comment-toggle-btn:hover,
 .publication-actions .comment-toggle-btn.active{
-  background:#F5B041;
-  color:#233A72;
+  background:#F7C531;
+  color:#1D2A3A;
+}
+
+/* El verde queda como apoyo, no como protagonista */
+.community-recommended-businesses .recommended-business-row a,
+.community-recommended-businesses .side-card-footer{
+  transition:.2s;
+}
+
+/* Mantener el botón de WhatsApp dentro de su propio lenguaje */
+.community-page .btn-whatsapp{
+  background:#EAF8EF;
+  color:#277642;
 }
