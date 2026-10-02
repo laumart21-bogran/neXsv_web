@@ -12,6 +12,14 @@ export const supabase = createClient(
 
     APP_CONFIG.supabase.url,
 
-    APP_CONFIG.supabase.anonKey
+    APP_CONFIG.supabase.anonKey,
+
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+        }
+    }
 
 );
