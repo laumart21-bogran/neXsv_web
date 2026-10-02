@@ -1,9 +1,7 @@
-const usuario = JSON.parse(localStorage.getItem("nexsv.member") || "null");
-
 const botonCuenta = `
-<a href="dashboard.html" class="nex-btn">
-    <i class="fa-regular fa-circle-user"></i>
-    Mi Cuenta
+<a href="acceso/index.html" id="nexMemberHeaderAuthBtn" class="nex-btn">
+    <i class="fa-regular fa-user"></i>
+    Acceder →
 </a>
 `;
 
@@ -271,3 +269,30 @@ document
 </script>
 
 `);
+
+<script type="module">
+(async () => {
+    try {
+        const { default: AuthSession } = await import("./js/auth/auth.session.js");
+        if (!AuthSession.isInitialized()) await AuthSession.initialize();
+
+        const syncHeader = (session) => {
+            const button = document.getElementById("nexMemberHeaderAuthBtn");
+            if (!button) return;
+            if (session?.user) {
+                button.href = "dashboard.html";
+                button.innerHTML = '<i class="fa-regular fa-circle-user"></i> Mi espacio';
+            } else {
+                button.href = "acceso/index.html";
+                button.innerHTML = '<i class="fa-regular fa-user"></i> Acceder →';
+            }
+        };
+
+        syncHeader(AuthSession.getSession());
+        const { supabase } = await import("./js/core/supabase-client.js");
+        supabase.auth.onAuthStateChange((_event, session) => syncHeader(session));
+    } catch (error) {
+        console.warn("No se pudo sincronizar el estado de sesión del header:", error);
+    }
+})();
+</script>
