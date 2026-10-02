@@ -1,13 +1,5 @@
-const usuario = JSON.parse(localStorage.getItem("nexsv.member") || "null");
-
-const botonCuenta = usuario
-    ? `
-<a href="dashboard.html" class="nex-btn">
-    <i class="fa-regular fa-user"></i> Mi Cuenta
-</a>
-`
-    : `
-<a href="acceso/index.html" class="nex-btn">
+const botonCuenta = `
+<a href="acceso/index.html" id="nexHeaderAuthBtn" class="nex-btn">
     <i class="fa-regular fa-user"></i> Acceder →
 </a>
 `;
@@ -30,7 +22,7 @@ body{padding-top:72px!important}
 <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 <nav class="nex-nav" id="mobileMenu">
 <a href="index.html">Inicio</a><a href="como.html">Cómo funciona</a><a href="beneficios.html">Beneficios</a><a href="negocios.html">Negocios</a><a href="blog.html">Blog</a>
-<a href="acceso/index.html" class="nex-btn"><i class="fa-regular fa-user"></i> Acceder →</a>
+${botonCuenta}
 </nav>
 </header>
 
@@ -39,3 +31,30 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
 </script>
 
 `);
+
+<script type="module">
+(async () => {
+    try {
+        const { default: AuthSession } = await import("./js/auth/auth.session.js");
+        if (!AuthSession.isInitialized()) await AuthSession.initialize();
+
+        const syncHeader = (session) => {
+            const button = document.getElementById("nexHeaderAuthBtn");
+            if (!button) return;
+            if (session?.user) {
+                button.href = "dashboard.html";
+                button.innerHTML = '<i class="fa-regular fa-circle-user"></i> Mi espacio';
+            } else {
+                button.href = "acceso/index.html";
+                button.innerHTML = '<i class="fa-regular fa-user"></i> Acceder →';
+            }
+        };
+
+        syncHeader(AuthSession.getSession());
+        const { supabase } = await import("./js/core/supabase-client.js");
+        supabase.auth.onAuthStateChange((_event, session) => syncHeader(session));
+    } catch (error) {
+        console.warn("No se pudo sincronizar el estado de sesión del header:", error);
+    }
+})();
+</script>
