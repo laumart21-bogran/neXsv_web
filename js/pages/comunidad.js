@@ -61,25 +61,144 @@ async function enrichPublications(publications) {
     }));
 }
 function avatarHtml(profile, className = "author-avatar") { return `<div class="${className}">${profile?.photo ? `<img src="${escapeHtml(profile.photo)}" alt="Foto de perfil" loading="lazy">` : `<span>${escapeHtml(initials(profile?.name))}</span>`}</div>`; }
+
+let businessRailIndex = 0;
+let businessRailTimer = null;
+
+function businessLogoHtml(business, className = "") {
+    if (business?.logo) return `<img class="${className}" src="${escapeHtml(business.logo)}" alt="Logo de ${escapeHtml(business.nombre || "negocio")}" loading="lazy">`;
+    return `<span class="${className || "community-business-logo-fallback"}">${escapeHtml(initials(business?.nombre || "N"))}</span>`;
+}
+
+function renderBusinessRail() {
+    const rail = document.getElementById("communityBusinessRail");
+    if (!rail) return;
+    const businesses = [...publicBusinessesById.values()];
+    if (!businesses.length) {
+        rail.innerHTML = `<div class="community-business-card"><div class="community-business-copy"><strong>Aún estamos incorporando negocios</strong><span>Pronto encontrarás más negocios de tu comunidad.</span></div></div>`;
+        return;
+    }
+    businessRailIndex = Math.max(0, Math.min(businessRailIndex, Math.max(0, businesses.length - 3)));
+    const visible = businesses.length <= 3 ? businesses : businesses.slice(businessRailIndex, businessRailIndex + 3);
+    rail.innerHTML = visible.map(business => `
+        <article class="community-business-card">
+            ${businessLogoHtml(business)}
+            <div class="community-business-copy">
+                <strong>${escapeHtml(business.nombre || "Negocio")}</strong>
+                <span>${escapeHtml(business.categoria || "Negocio de la comunidad")}</span>
+                <a href="negocio.html?id=${encodeURIComponent(business.id)}">Ver más <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </article>`).join("");
+}
+
+function stepBusinessRail(direction) {
+    const businesses = [...publicBusinessesById.values()];
+    if (businesses.length <= 3) return;
+    const max = businesses.length - 3;
+    businessRailIndex += direction;
+    if (businessRailIndex > max) businessRailIndex = 0;
+    if (businessRailIndex < 0) businessRailIndex = max;
+    renderBusinessRail();
+}
+
+function startBusinessRail() {
+    if (businessRailTimer) clearInterval(businessRailTimer);
+    const businesses = [...publicBusinessesById.values()];
+    if (businesses.length <= 3) return;
+    businessRailTimer = setInterval(() => stepBusinessRail(1), 5200);
+}
+
+function renderHeaderAvatar() {
+    const target = document.getElementById("communityHeaderAvatar");
+    if (!target || !currentUser) return;
+    getAuthorProfile(currentUser.id).then(profile => {
+        target.innerHTML = profile?.photo
+            ? `<img src="${escapeHtml(profile.photo)}" alt="Foto de perfil">`
+            : `<span>${escapeHtml(initials(profile?.name))}</span>`;
+    }).catch(() => {});
+}
+
+function renderFeaturedBusiness() {
+    const container = document.getElementById("featuredBusinessCard");
+    if (!container) return;
+    const business = [...publicBusinessesById.values()][0];
+    if (!business) {
+        container.innerHTML = `<div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Negocio destacado</strong></div><p class="side-card-muted">Pronto habrá negocios destacados de tu comunidad.</p>`;
+        return;
+    }
+    container.innerHTML = `
+      <div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Nuevo negocio en neXsv</strong></div>
+      ${businessLogoHtml(business, "featured-logo")}
+      <span class="featured-badge">En neXsv</span>
+      <h3>${escapeHtml(business.nombre || "Negocio")}</h3>
+      <p>${escapeHtml(business.descripcion || business.categoria || "Negocio de tu comunidad")}</p>
+      <a class="featured-action" href="negocio.html?id=${encodeURIComponent(business.id)}">Conoce su tarjeta <i class="fa-solid fa-arrow-right"></i></a>`;
+}
+
+function renderRecommendedBusinesses() {
+    const container = document.getElementById("communityRecommendedBusinesses");
+    if (!container) return;
+    const businesses = [...publicBusinessesById.values()].slice(1, 4);
+    if (!businesses.length) {
+        container.innerHTML = `<p class="side-card-muted">Estamos incorporando más negocios para ti.</p>`;
+        return;
+    }
+    container.innerHTML = businesses.map(business => `
+      <div class="recommended-business-row">
+        ${businessLogoHtml(business, "mini-business-logo")}
+        <div class="recommended-business-copy"><strong>${escapeHtml(business.nombre || "Negocio")}</strong><span>${escapeHtml(business.categoria || "Negocio")}</span></div>
+        <a href="negocio.html?id=${encodeURIComponent(business.id)}">Explorar</a>
+      </div>`).join("");
+}
+
+function renderCommunitySidebars(publications) {
+    renderFeaturedBusiness();
+    renderRecommendedBusinesses();
+    const container = document.getElementById("communityUsersList");
+    if (!container) return;
+    const seen = new Set();
+    const users = [];
+    (publications || []).forEach(p => {
+        if (p.business_id || !p.author || seen.has(p.author_id)) return;
+        seen.add(p.author_id);
+        users.push(p);
+    });
+    container.innerHTML = users.slice(0, 3).map(p => `
+      <div class="community-user-row">
+        <div class="mini-avatar">${p.author?.photo ? `<img src="${escapeHtml(p.author.photo)}" alt="">` : escapeHtml(initials(p.author?.name))}</div>
+        <div class="community-user-copy"><strong>${escapeHtml(p.author?.name || "Miembro neXsv")}</strong><span>Parte de la comunidad</span></div>
+        <button type="button" data-jump-publication="${escapeHtml(p.id)}">Ver</button>
+      </div>`).join("") || `<p class="side-card-muted">Cuando haya más publicaciones, aquí verás personas de tu comunidad.</p>`;
+}
+
 function renderEmpty() { publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon"><i class="fa-regular fa-comments"></i></div><h2>Aún no hay publicaciones</h2><p>Sé de las primeras personas en compartir algo con la comunidad.</p><button type="button" class="community-secondary-btn" id="emptyCreateBtn">Crear publicación</button></div>`; document.getElementById("emptyCreateBtn")?.addEventListener("click", openComposer); }
 function renderError(error) { console.error("Error en Comunidad:", error); publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h2>No pudimos cargar la comunidad</h2><p>${escapeHtml(error?.message || "Actualiza la página e inténtalo nuevamente.")}</p></div>`; }
 
 function renderPublications(publications) {
+    renderCommunitySidebars(publications);
     if (!publications.length) return renderEmpty();
     publicationList.innerHTML = publications.map(p => {
         const isMine = p.author_id === currentUser.id;
-        const isBusinessPublication = Boolean(p.business_id);
         const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
         const commentCount = Number(p.commentCount || 0);
         return `<article class="publication-card" data-publication-id="${escapeHtml(p.id)}">
-            <div class="publication-author">${avatarHtml(p.author)}<div class="author-info"><strong>${escapeHtml(p.author.name)}</strong><span>${escapeHtml(formatDate(p.created_at))}${p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span></div><span class="publication-type">${escapeHtml(TYPE_LABELS[p.type] || p.type)}</span></div>
+            <div class="publication-author">
+                ${avatarHtml(p.author)}
+                <div class="author-info">
+                    <strong>${escapeHtml(p.author.name)}</strong>
+                    <span>Miembro de neXsv · ${escapeHtml(formatDate(p.created_at))}${p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
+                </div>
+                <span class="publication-type">${escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
+            </div>
             ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
             <p class="publication-body">${escapeHtml(p.body)}</p>
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
-                ${canManage ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar publicación</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>` : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-comment-dots"></i> Me interesa</button>`}
-                <button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comments"></i> ${commentCount ? `Comentarios (${commentCount})` : "Comentar"}</button>
+                ${canManage
+                    ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>`
+                    : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-handshake"></i> Me interesa</button>`}
+                <button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comment"></i> ${commentCount ? commentCount : "Comentar"}</button>
             </div>
             <div class="publication-comments" id="comments-${escapeHtml(p.id)}" hidden>
                 <div class="comments-header"><div><strong>Comentarios</strong><span>Pregunta, comenta o comparte tu experiencia con tu comunidad.</span></div></div>
@@ -88,11 +207,16 @@ function renderPublications(publications) {
             </div>
         </article>`;
     }).join("");
+
     publicationList.querySelectorAll("[data-interest]").forEach(button => button.addEventListener("click", () => startConversation(button)));
     publicationList.querySelectorAll("[data-edit]").forEach(button => button.addEventListener("click", () => openEditPublication(button.dataset.edit)));
     publicationList.querySelectorAll("[data-delete]").forEach(button => button.addEventListener("click", () => deletePublication(button.dataset.delete)));
     publicationList.querySelectorAll("[data-comments]").forEach(button => button.addEventListener("click", () => toggleComments(button)));
     publicationList.querySelectorAll("[data-comment-form]").forEach(form => form.addEventListener("submit", submitComment));
+    document.querySelectorAll("[data-jump-publication]").forEach(button => button.addEventListener("click", () => {
+        const card = document.querySelector(`[data-publication-id="${CSS.escape(button.dataset.jumpPublication)}"]`);
+        card?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }));
     if (deepLinkedPublicationId) focusDeepLinkedPublication();
 }
 
@@ -140,6 +264,13 @@ function focusDeepLinkedPublication() {
     setTimeout(() => card.classList.remove("deep-link-highlight"), 2800);
 }
 
+document.querySelectorAll("[data-business-slide]").forEach(button => button.addEventListener("click", () => stepBusinessRail(button.dataset.businessSlide === "next" ? 1 : -1)));
+document.querySelectorAll("[data-side-filter]").forEach(button => button.addEventListener("click", async () => {
+    currentFilter = button.dataset.sideFilter || "TODAS";
+    document.querySelectorAll(".filter-btn").forEach(item => item.classList.toggle("active", item.dataset.filter === currentFilter));
+    await loadPublications();
+    document.getElementById("publicationList")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}));
 addPhotosBtn?.addEventListener("click", () => imagesInput?.click());
 imagesInput?.addEventListener("change", () => { const incoming = Array.from(imagesInput.files || []); const validation = CommunityService.validateImages([...selectedFiles, ...incoming]); if (!validation.valid) { showMessage(validation.error, "error"); imagesInput.value = ""; return; } selectedFiles = validation.files; showMessage(); renderPhotoPreview(); imagesInput.value = ""; });
 newPublicationBtn?.addEventListener("click", openComposer); closeComposer?.addEventListener("click", closePublicationComposer);
@@ -197,6 +328,6 @@ async function loadBusinessContext() {
 }
 
 function applyUrlShortcut() { const params = new URLSearchParams(window.location.search); const type = params.get("type"); const create = params.get("create") === "1"; deepLinkedPublicationId = params.get("publicacion"); if (type && TYPE_LABELS[type]) { const input = document.querySelector(`.type-option input[value="${CSS.escape(type)}"]`); if (input) { input.checked = true; document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); } currentFilter = type; document.querySelectorAll(".filter-btn").forEach(o => o.classList.toggle("active", o.dataset.filter === type)); } if (create) setTimeout(openComposer, 100); }
-async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) { publicBusinessesById = new Map((publicBusinessesResult.data || []).map(business => [business.id, business])); } applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
+async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) { publicBusinessesById = new Map((publicBusinessesResult.data || []).map(business => [business.id, business])); } renderBusinessRail(); startBusinessRail(); renderHeaderAvatar(); applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
 window.addEventListener("keydown", event => { if (event.key === "Escape" && !editModal.hidden) closeEditPublication(); });
 initialize();
