@@ -31,11 +31,7 @@ function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("ac
 </script>
 
 `);
-
-<script>
-function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("active");}
-</script>
-
+ 
 const authScript = document.createElement("script");
 authScript.type = "module";
 authScript.textContent = `
@@ -43,9 +39,11 @@ authScript.textContent = `
     try {
         const { default: AuthSession } = await import("./js/auth/auth.session.js");
         if (!AuthSession.isInitialized()) await AuthSession.initialize();
+
         const syncHeader = (session) => {
             const button = document.getElementById("nexHeaderAuthBtn");
             if (!button) return;
+
             if (session?.user) {
                 button.href = "dashboard.html";
                 button.innerHTML = '<i class="fa-regular fa-circle-user"></i> Mi espacio';
@@ -54,7 +52,9 @@ authScript.textContent = `
                 button.innerHTML = '<i class="fa-regular fa-user"></i> Acceder →';
             }
         };
+
         syncHeader(AuthSession.getSession());
+
         const { supabase } = await import("./js/core/supabase-client.js");
         supabase.auth.onAuthStateChange((_event, session) => syncHeader(session));
     } catch (error) {
@@ -62,4 +62,5 @@ authScript.textContent = `
     }
 })();
 `;
+
 document.head.appendChild(authScript);
