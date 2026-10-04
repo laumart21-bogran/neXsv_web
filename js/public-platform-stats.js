@@ -12,7 +12,7 @@ async function loadPublicStats(){
     const stats=data?.[0] || data || {};
     set("publicStatBusinesses",stats.businesses);
     set("publicStatMembers",stats.members);
-    set("publicStatSchools",stats.schools);
+    set("publicStatOpportunities",stats.opportunities);
   }catch(error){
     console.warn("No se pudieron cargar las estadísticas públicas:",error);
   }
