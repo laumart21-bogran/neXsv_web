@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Áreas privadas, autenticación y administración
+Disallow: /acceso/
+Disallow: /dashboard.html
+Disallow: /dashboard-negocio.html
+Disallow: /perfil.html
+Disallow: /mensajes.html
+Disallow: /member-home.html
+Disallow: /admin-
+Disallow: /migrar-
+Disallow: /gestiona-tu-negocio.html
+
+Sitemap: https://nexsv.com/sitemap.xml
