@@ -3,12 +3,40 @@ import BusinessMediaService from "../services/business-media.service.js?v=202609
 import BusinessServiceCatalog from "../services/business-service.service.js";
 import CommunityService from "../services/community.service.js";
 import { supabase } from "../core/supabase-client.js";
+import AuthSession from "../auth/auth.session.js";
+import ProfileService from "../services/profile.service.js";
 
 const LEGACY_URL="https://script.google.com/macros/s/AKfycbz2iBCu10uZ_BZMkZUqDrWSTQdHkNSqWTpFxedVMfepEmbb43Eat5U5FQTEE_I8Eko/exec";
 const params=new URLSearchParams(window.location.search);
 const businessId=params.get("id");
 const requestedAction=params.get("action");
 const ownerPreview=params.get("preview")==="owner";
+
+function initials(nombre){
+ const parts=String(nombre||"").trim().split(/\\s+/).filter(Boolean);
+ return parts.slice(0,2).map(part=>part.charAt(0).toUpperCase()).join("")||"U";
+}
+async function syncBusinessHeaderAvatar(){
+ const avatar=document.getElementById("businessHeaderAvatar");
+ if(!avatar)return;
+ try{
+   if(!AuthSession.isInitialized()) await AuthSession.initialize();
+   const user=AuthSession.getCurrentUser();
+   if(!user){return;}
+   const result=await ProfileService.getProfile(user.id);
+   const profile=result.data||{};
+   const nombre=[profile.nombre,profile.apellido].filter(Boolean).join(" ")||user.email?.split("@")[0]||"Usuario";
+   if(profile.foto){
+     avatar.innerHTML='<img src="'+escapeHtml(profile.foto)+'" alt="">';
+     avatar.classList.add("has-photo");
+   }else{
+     avatar.textContent=initials(nombre);
+     avatar.classList.remove("has-photo");
+   }
+ }catch(error){
+   console.warn("No se pudo cargar el avatar del usuario:",error);
+ }
+}
 
 function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\x27/g,"&#039;");}
 function slugify(text){return String(text??"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w\s-]/g,"").replace(/\s+/g,"-").replace(/-+/g,"-").replace(/^-+|-+$/g,"");}
@@ -261,6 +289,7 @@ function setupOwnerMode(isOwner, refreshView){
 }
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
 async function init(){
+ syncBusinessHeaderAvatar();
  const container=document.getElementById("contenido");
  if(!container)return;
  if(!businessId){
