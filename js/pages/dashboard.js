@@ -1,4 +1,5 @@
 import AuthSession from "../auth/auth.session.js";
+import AuthService from "../auth/auth.service.js";
 import ProfileService from "../services/profile.service.js";
 import BusinessService from "../services/business.service.js";
 import CommunityService from "../services/community.service.js";
@@ -50,6 +51,28 @@ function updateProfileProgress(profile) {
         if (text) text.textContent = `Has completado el ${percent}% de tu perfil. Agrega algunos datos para aprovechar mejor neXsv.`;
         if (link) { link.textContent = "Completar perfil "; link.insertAdjacentHTML("beforeend", '<i class="fa-solid fa-arrow-right"></i>'); }
     }
+}
+
+function initializeLogout(){
+    const button = document.getElementById("dashboardLogoutBtn");
+    if (!button) return;
+
+    button.addEventListener("click", async () => {
+        button.disabled = true;
+        button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cerrando...';
+
+        const { error } = await AuthService.signOut();
+
+        if (error) {
+            console.error("No fue posible cerrar la sesión:", error);
+            button.disabled = false;
+            button.innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión';
+            return;
+        }
+
+        AuthSession.clear();
+        window.location.replace("index.html");
+    });
 }
 
 function initializeMoreMenu() {
@@ -226,6 +249,7 @@ async function loadBusinessManagementInvite() {
 
 async function initialize() {
     initializeMoreMenu();
+    initializeLogout();
     initializeNotificationPopover();
     initializeInlineComposer();
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
