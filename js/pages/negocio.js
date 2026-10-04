@@ -304,12 +304,33 @@ async function init(){
  );
  const basicData=(directoryResult.data||[]).find(item=>String(item.id)===String(businessId));
 
- if(!basicData){
+ // Un negocio gestionado puede no aparecer todavía en el directorio público.
+ // Verificamos primero si el usuario actual es propietario y, en ese caso,
+ // usamos el detalle autenticado para poder abrir igualmente su espacio.
+ const ownerResult=await withTimeout(
+     BusinessService.isBusinessOwner(businessId),
+     4000,
+     {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
+ );
+
+ let data=basicData ? {...basicData} : null;
+
+ if(!data && ownerResult.data===true){
+     const authenticatedDetail=await withTimeout(
+         BusinessService.getAuthenticatedBusinessDetail(businessId),
+         5000,
+         {data:null,error:new Error("AUTHENTICATED_DETAIL_TIMEOUT")}
+     );
+
+     if(authenticatedDetail.data){
+         data={...authenticatedDetail.data};
+     }
+ }
+
+ if(!data){
      container.innerHTML='<div class="loading">No fue posible cargar este negocio.</div>';
      return;
  }
-
- let data={...basicData};
  let images=data.logo?[data.logo]:[];
  let reviews=[];
  let services=[];
@@ -320,11 +341,6 @@ async function init(){
  // la vista pública recupere exactamente la tarjeta que ve un visitante.
  const refreshView=()=>renderBusiness(data,images,reviews,services,publications);
 
- const ownerResult=await withTimeout(
-     BusinessService.isBusinessOwner(businessId),
-     4000,
-     {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
- );
  setupOwnerMode(ownerResult.data===true,refreshView);
 
  refreshView();
