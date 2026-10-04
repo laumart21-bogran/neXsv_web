@@ -16,6 +16,27 @@ function initials(nombre){
  const parts=String(nombre||"").trim().split(/\\s+/).filter(Boolean);
  return parts.slice(0,2).map(part=>part.charAt(0).toUpperCase()).join("")||"U";
 }
+function setupOwnedBusinessesSwitcher(businesses){
+ const switcher=document.getElementById("ownedBusinessesSwitcher");
+ const toggle=document.getElementById("ownedBusinessesToggle");
+ const menu=document.getElementById("ownedBusinessesMenu");
+ const current=document.getElementById("ownedBusinessesCurrent");
+ if(!switcher||!toggle||!menu)return;
+ if(!businesses||businesses.length<=1){switcher.hidden=true;return;}
+ switcher.hidden=false;
+ const active=businesses.find(item=>String(item.id)===String(businessId));
+ if(current)current.textContent=active?.nombre||"Este negocio";
+ menu.innerHTML=businesses.map(item=>'<a class="owned-business-option'+(String(item.id)===String(businessId)?" active":"")+'" href="negocio.html?id='+encodeURIComponent(item.id)+'&preview=owner">'+escapeHtml(item.nombre||"Mi negocio")+'</a>').join("");
+ toggle.onclick=()=>{
+   const expanded=toggle.getAttribute("aria-expanded")==="true";
+   toggle.setAttribute("aria-expanded",String(!expanded));
+   menu.hidden=expanded;
+ };
+ document.addEventListener("click",event=>{
+   if(!switcher.contains(event.target)){toggle.setAttribute("aria-expanded","false");menu.hidden=true;}
+ });
+}
+
 async function syncBusinessHeaderAvatar(){
  const avatar=document.getElementById("businessHeaderAvatar");
  if(!avatar)return;
@@ -309,6 +330,7 @@ async function init(){
  // autenticado; así no dependemos de que el negocio esté publicado en el
  // directorio público.
  let ownerData=null;
+ let ownedBusinesses=[];
  if(ownerPreview){
      try{
          if(!AuthSession.isInitialized()) await AuthSession.initialize();
@@ -319,7 +341,9 @@ async function init(){
                  5000,
                  {data:[],error:new Error("OWNED_BUSINESSES_TIMEOUT")}
              );
-             ownerData=(ownedResult.data||[]).find(item=>String(item.id)===String(businessId))||null;
+             ownedBusinesses=ownedResult.data||[];
+             ownerData=ownedBusinesses.find(item=>String(item.id)===String(businessId))||null;
+             setupOwnedBusinessesSwitcher(ownedBusinesses);
          }
      }catch(error){
          console.warn("No se pudo validar el negocio desde Mi espacio:",error);
