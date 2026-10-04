@@ -304,16 +304,38 @@ async function init(){
  );
  const basicData=(directoryResult.data||[]).find(item=>String(item.id)===String(businessId));
 
- // Un negocio gestionado puede no aparecer todavía en el directorio público.
- // Verificamos primero si el usuario actual es propietario y, en ese caso,
- // usamos el detalle autenticado para poder abrir igualmente su espacio.
- const ownerResult=await withTimeout(
-     BusinessService.isBusinessOwner(businessId),
-     4000,
-     {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
- );
+ // Cuando venimos desde "Mi espacio > Mis negocios", el enlace lleva
+ // preview=owner. En ese flujo usamos directamente los negocios del usuario
+ // autenticado; así no dependemos de que el negocio esté publicado en el
+ // directorio público.
+ let ownerData=null;
+ if(ownerPreview){
+     try{
+         if(!AuthSession.isInitialized()) await AuthSession.initialize();
+         const currentUser=AuthSession.getCurrentUser();
+         if(currentUser){
+             const ownedResult=await withTimeout(
+                 BusinessService.getBusinessesByOwner(currentUser.id),
+                 5000,
+                 {data:[],error:new Error("OWNED_BUSINESSES_TIMEOUT")}
+             );
+             ownerData=(ownedResult.data||[]).find(item=>String(item.id)===String(businessId))||null;
+         }
+     }catch(error){
+         console.warn("No se pudo validar el negocio desde Mi espacio:",error);
+     }
+ }
 
- let data=basicData ? {...basicData} : null;
+ // Para cualquier otra entrada, mantenemos la comprobación normal de propietario.
+ const ownerResult=ownerData
+     ? {data:true,error:null}
+     : await withTimeout(
+         BusinessService.isBusinessOwner(businessId),
+         4000,
+         {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
+     );
+
+ let data=ownerData ? {...ownerData} : (basicData ? {...basicData} : null);
 
  if(!data && ownerResult.data===true){
      const authenticatedDetail=await withTimeout(
