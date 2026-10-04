@@ -1,22 +1,22 @@
 /* neXsv — Mensajes | sistema visual único */
 :root {
     /* NeXsv Design System */
-    --nx-blue: #3B82F6;
-    --nx-blue-dark: #2563EB;
-    --nx-yellow: #F59E0B;
-    --nx-green: #22C55E;
+    --nx-blue: #3159B7;
+    --nx-blue-dark: #254A9E;
+    --nx-yellow: #F7C531;
+    --nx-green: #34A88E;
     --nx-bg: #F5F7FB;
-    --nx-border: #E2E8F0;
-    --nx-text: #1E293B;
-    --nx-muted: #64748B;
-    --nx-yellow-soft: #FFF7E6;
-    --nx-green-soft: #ECFDF3;
-    --nx-blue-soft: #EEF4FF;
+    --nx-border: #E4EAF3;
+    --nx-text: #1D2A3A;
+    --nx-muted: #667085;
+    --nx-yellow-soft: #FFF8E1;
+    --nx-green-soft: #EEF8F3;
+    --nx-blue-soft: #EDF4FF;
 }
 
 * { box-sizing: border-box; }
 
-body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--nx-bg); color: var(--nx-text); }
+body { margin: 0; font-family: "Montserrat", system-ui, sans-serif; background: var(--nx-bg); color: var(--nx-text); }
 .messages-topbar { height: 76px; padding: 0 38px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid var(--nx-border); }
 .messages-logo img { height: 40px; width: auto; display: block; }
 .messages-topbar-actions { display: flex; align-items: center; gap: 24px; }
@@ -71,13 +71,13 @@ body { margin: 0; font-family: Inter, system-ui, sans-serif; background: var(--n
 .message-row.mine .message-group { align-items: flex-end; }
 .message-sender { margin: 0 8px 5px; color: var(--nx-blue); font-size: 12px; line-height: 1.2; font-weight: 700; }
 .message-row.mine .message-sender { color: var(--nx-muted); }
-.message-bubble { display: block; width: fit-content; max-width: 100%; padding: 10px 14px; border-radius: 15px 15px 15px 5px; background: var(--nx-yellow-soft); border: 1px solid rgba(245,176,65,.42); color: var(--nx-text); font-size: 16px; font-weight: 400; line-height: 1.45; text-align: left; white-space: pre-wrap; overflow-wrap:anywhere; box-shadow: 0 1px 3px rgba(35,58,114,.04); }
-.message-row.mine .message-bubble { border-radius: 15px 15px 5px 15px; background: var(--nx-green-soft); border-color: rgba(24,169,120,.30); }
+.message-bubble { display: block; width: fit-content; max-width: 100%; padding: 10px 14px; border-radius: 15px 15px 15px 5px; background: var(--nx-yellow-soft); border: 1px solid rgba(247,197,49,.42); color: var(--nx-text); font-size: 16px; font-weight: 400; line-height: 1.45; text-align: left; white-space: pre-wrap; overflow-wrap:anywhere; box-shadow: 0 1px 3px rgba(29,42,58,.04); }
+.message-row.mine .message-bubble { border-radius: 15px 15px 5px 15px; background: var(--nx-green-soft); border-color: rgba(52,168,142,.30); }
 .message-time { display: block; margin-top: 4px; padding: 0 6px; font-size: 9px; line-height: 1.2; opacity: .58; text-align: right; color: var(--nx-muted); }
 .message-system-empty { margin: auto; text-align: center; color: var(--nx-muted); font-size: 13px; }
 .message-composer { padding: 14px 24px 9px; background: #fff; border-top: 1px solid var(--nx-border); display: flex; align-items: flex-end; gap: 11px; }
 .message-composer textarea { flex: 1; min-height: 50px; max-height: 140px; resize: none; border: 1px solid var(--nx-border); border-radius: 14px; padding: 13px 16px; outline: none; font: inherit; font-size: 15px; line-height: 1.45; color: var(--nx-text); background: #fff; }
-.message-composer textarea:focus { border-color: #93C5FD; box-shadow: 0 0 0 3px rgba(35,58,114,.07); }
+.message-composer textarea:focus { border-color: #AFC3EA; box-shadow: 0 0 0 3px rgba(49,89,183,.07); }
 .send-btn { width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--nx-green); color: #fff; cursor: pointer; display: grid; place-items: center; flex: 0 0 auto; font-size: 17px; }
 .send-btn:hover { filter: brightness(.96); }
 .send-btn:disabled { opacity: .55; cursor: not-allowed; }
