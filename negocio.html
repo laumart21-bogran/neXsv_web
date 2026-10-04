@@ -361,6 +361,21 @@
 }
 
 </style>
+<style id="owned-businesses-switcher-style">
+.owned-businesses-switcher{position:relative;margin-left:auto}
+.owned-businesses-toggle{min-width:150px;border:1px solid #E4EAF3;border-radius:11px;background:#fff;color:#3159B7;padding:9px 11px;display:flex;align-items:center;justify-content:space-between;gap:10px;font:700 10px Montserrat,sans-serif;cursor:pointer}
+.owned-businesses-toggle:hover{background:#F7F9FC}
+.owned-businesses-toggle i{font-size:8px}
+.owned-businesses-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:210px;padding:6px;background:#fff;border:1px solid #E4EAF3;border-radius:12px;box-shadow:0 12px 30px rgba(29,42,58,.12);z-index:15}
+.owned-businesses-menu[hidden]{display:none}
+.owned-business-option{display:block;padding:9px 10px;border-radius:8px;color:#526071;font:600 10px Montserrat,sans-serif;text-decoration:none}
+.owned-business-option:hover,.owned-business-option.active{background:#F4F7FC;color:#3159B7}
+@media(max-width:700px){
+  .owned-business-switcher{width:100%;margin-left:0}
+  .owned-businesses-toggle{width:100%}
+  .owned-businesses-menu{left:0;right:0}
+}
+</style>
 </head>
 <body>
 <header class="nex-app-header">
@@ -385,6 +400,12 @@
 <a class="back-link" href="negocios.html"><i class="fa-solid fa-arrow-left"></i> Volver a negocios</a>
 <div id="businessOwnerBar" class="business-owner-bar">
     <div class="business-owner-context"><i class="fa-solid fa-circle-check"></i><span>Estás gestionando este negocio</span></div>
+    <div id="ownedBusinessesSwitcher" class="owned-businesses-switcher" hidden>
+        <button type="button" id="ownedBusinessesToggle" class="owned-businesses-toggle" aria-expanded="false">
+            <span id="ownedBusinessesCurrent">Este negocio</span><i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div id="ownedBusinessesMenu" class="owned-businesses-menu" hidden></div>
+    </div>
     <div class="business-owner-actions">
         <button type="button" id="ownerPublicMode" class="owner-mode-btn owner-mode-public"><i class="fa-regular fa-eye"></i> Vista pública</button>
         <button type="button" id="ownerManageMode" class="owner-mode-btn owner-mode-manage"><i class="fa-solid fa-gear"></i> Gestionar negocio</button>
