@@ -8,7 +8,7 @@
 
 .dashboard-hero{
 
-    background:linear-gradient(135deg,#1657B8,#19C2C6);
+    background:linear-gradient(135deg,#3159B7,#34A88E);
 
     color:white;
 
@@ -22,7 +22,7 @@
 
     gap:30px;
 
-    box-shadow:0 20px 45px rgba(22,87,184,.25);
+    box-shadow:0 20px 45px rgba(49,89,183,.18);
 
 }
 
@@ -118,7 +118,7 @@
 
     margin-bottom:12px;
 
-    color:#1657B8;
+    color:#3159B7;
 
 }
 
@@ -180,7 +180,7 @@ flex-direction:column;
 
     height:160px;
 
-    background:linear-gradient(135deg,#1657B8,#19C2C6);
+    background:linear-gradient(135deg,#3159B7,#34A88E);
 
 }
 
@@ -200,7 +200,7 @@ flex-direction:column;
 
     background:#EEF5FF;
 
-    color:#1657B8;
+    color:#3159B7;
 
     font-size:12px;
 
@@ -228,7 +228,7 @@ flex-direction:column;
 
 .business-footer a{
 
-    color:#1657B8;
+    color:#3159B7;
 
     text-decoration:none;
 
@@ -242,7 +242,7 @@ flex-direction:column;
 
     margin-bottom:10px;
 
-    color:#1657B8;
+    color:#3159B7;
 
     font-size:13px;
 
