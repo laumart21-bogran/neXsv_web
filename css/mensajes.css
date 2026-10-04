@@ -29,7 +29,7 @@ body { margin: 0; font-family: "Montserrat", system-ui, sans-serif; background: 
 .messages-shell { max-width: 1320px; height: calc(100vh - 132px); min-height: 620px; margin: 0 auto; display: grid; grid-template-columns: 400px minmax(0, 1fr); background: #fff; border: 1px solid var(--nx-border); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 34px rgba(35,58,114,.08); }
 .conversation-panel { border-right: 1px solid var(--nx-border); min-width: 0; }
 .conversation-header { padding: 30px 26px 21px; display: flex; align-items: flex-end; justify-content: space-between; }
-.section-kicker { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; background: #FFF7E6; color: #92400E; font-size: 11px; font-weight: 800; }
+.section-kicker { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; background: #FFF8E1; color: var(--nx-blue); font-size: 11px; font-weight: 800; }
 .conversation-header h1 { margin: 10px 0 0; color: var(--nx-blue); font-size: 32px; line-height: 1.1; }
 .conversation-count { min-width: 34px; height: 34px; padding: 0 10px; border-radius: 17px; display: grid; place-items: center; background: #FFF7E6; color: #92400E; font-size: 14px; font-weight: 800; }
 .conversation-search { margin: 0 24px 18px; height: 48px; display: flex; align-items: center; gap: 11px; padding: 0 15px; border: 1px solid var(--nx-border); border-radius: 12px; background: #FAFBFC; }
