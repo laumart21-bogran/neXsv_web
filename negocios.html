@@ -19,6 +19,81 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overf
 .card-content{padding:18px;display:flex;flex-direction:column;flex:1;min-height:0}.business-category{display:inline-flex;align-self:flex-start;margin-bottom:10px;padding:6px 12px;border-radius:999px;background:#eef3ff;color:var(--primary);font-size:12px;font-weight:700}.card h3{font-size:22px;font-weight:800;margin-bottom:10px;color:var(--primary);min-height:52px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card p{font-size:14px;line-height:1.65;color:#5d6677;min-height:0;max-height:52px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.verified-badge{display:inline-flex;align-items:center;margin-bottom:12px;padding:6px 12px;border-radius:999px;background:rgba(116,214,127,.15);color:#2e7d32;font-size:12px;font-weight:700}.description-toggle{display:inline-flex;align-self:flex-start;margin-top:4px;padding:0;border:0;background:transparent;color:var(--primary);font:700 12px 'Inter',sans-serif;cursor:pointer}.description-toggle:hover{text-decoration:underline}.card.description-expanded p{max-height:none;display:block;-webkit-line-clamp:unset;overflow:visible}.card.description-expanded{height:auto;min-height:470px}.business-actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap;padding-top:12px}.btn{flex:1;text-align:center;padding:11px;border:none;border-radius:14px;text-decoration:none;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;transition:.3s}.btn:hover{transform:translateY(-3px)}.btn-w{background:linear-gradient(135deg,var(--success),#5acb68);color:white}.btn-v{background:linear-gradient(135deg,var(--secondary),var(--primary));color:white}.btn-share{background:linear-gradient(135deg,#F7C531,#ffd95e);color:#1D2A3A}.btn-map{display:block;width:100%;margin-top:10px;padding:10px;text-align:center;border-radius:14px;border:0;font-weight:700;background:#eef3ff;color:var(--primary);cursor:pointer}.btn-map:hover{background:var(--primary);color:white}.business-logo-fallback{display:none!important}.directory-empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:180px;padding:32px;border:1px solid #e3e8f0;border-radius:22px;background:#fff;text-align:center;color:#64748B}.directory-empty strong{color:#233A72;font-size:16px}.directory-empty span{font-size:14px}.card[hidden]{display:none!important}
 footer{margin-top:70px;background:white;padding:40px 20px;text-align:center;color:#6b7280;font-size:14px}.footer-line{width:100%;height:1px;background:#e5e7eb;margin-bottom:20px}@media(max-width:768px){.hero{height:300px}.hero h1{font-size:40px}.hero p{font-size:17px}.main{padding:45px 16px}.grid{grid-template-columns:1fr}.logo-frame{height:180px;flex-basis:180px}.categoria-btn{padding:10px 16px;font-size:13px}}
 </style>
+<style id="nexsv-mobile-directory">
+@media(max-width:768px){
+  .hero{
+    height:260px;
+    padding:72px 16px 30px;
+  }
+  .hero h1{
+    font-size:30px;
+    line-height:1.1;
+  }
+  .hero p{
+    font-size:14px;
+    line-height:1.55;
+  }
+  .main{padding:28px 12px}
+  .search-box{
+    padding:14px;
+    border-radius:18px;
+  }
+  #buscador{
+    width:100%;
+    min-height:44px;
+    font-size:14px;
+  }
+  .categorias{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:12px;
+  }
+  .categoria-btn{
+    flex:1 1 calc(50% - 7px);
+    min-height:40px;
+    padding:9px 10px;
+    font-size:11px;
+  }
+  .grid{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  .card{
+    width:100%;
+    height:auto;
+    min-height:0;
+  }
+  .logo-frame{
+    height:165px;
+    flex-basis:165px;
+  }
+  .card-content{padding:16px}
+  .card h3{
+    font-size:19px;
+    min-height:auto;
+  }
+  .card p{
+    font-size:13px;
+    max-height:none;
+    -webkit-line-clamp:3;
+  }
+  .business-actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  .btn,.btn-map{
+    width:100%;
+    min-height:42px;
+  }
+}
+@media(max-width:400px){
+  .categoria-btn{flex-basis:100%}
+  .hero h1{font-size:26px}
+  .logo-frame{height:145px;flex-basis:145px}
+}
+</style>
 </head>
 <body>
 <script src="components/header.js"></script>
