@@ -15,7 +15,7 @@ as $$
   select
     (select count(*) from public.businesses where upper(coalesce(estado,'')) = 'ACTIVO') as businesses,
     (select count(*) from public.profiles) as members,
-    (select count(*) from public.schools where coalesce(activo,true) = true) as schools;
+    (select count(distinct school_id) from public.profile_schools) as schools;
 $$;
 
 revoke all on function public.get_public_platform_stats() from public;
