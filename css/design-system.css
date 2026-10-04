@@ -1,40 +1,46 @@
 /* ===========================================================
-   neXsv Design System v1.0
+   neXsv Design System v1.1
+   Lenguaje visual común de toda la plataforma
 =========================================================== */
 
-/* ========= COLORES ========= */
-
 :root{
+    /* Marca */
+    --primary:#3159B7;
+    --primary-dark:#254A9E;
+    --secondary:#34A88E;
+    --accent:#F7C531;
 
-    --primary:#3B82F6;
-    --primary-dark:#2563EB;
-
-    --secondary:#6366F1;
-
-    --success:#22C55E;
-    --warning:#F59E0B;
+    /* Estados */
+    --success:#34A88E;
+    --warning:#F7C531;
     --danger:#EF4444;
 
+    /* Superficies */
     --background:#F5F7FB;
     --surface:#FFFFFF;
 
-    --text:#1E293B;
-    --text-light:#64748B;
+    /* Tipografía */
+    --text:#1D2A3A;
+    --text-light:#667085;
+    --heading:#3159B7;
 
-    --border:#E2E8F0;
+    /* Bordes y fondos suaves */
+    --border:#E4EAF3;
+    --primary-soft:#EDF4FF;
+    --yellow-soft:#FFF8E1;
+    --green-soft:#EEF8F3;
 
-    --shadow-sm:0 4px 12px rgba(0,0,0,.05);
-    --shadow-md:0 10px 25px rgba(0,0,0,.08);
-    --shadow-lg:0 20px 45px rgba(0,0,0,.12);
+    /* Profundidad */
+    --shadow-sm:0 4px 12px rgba(29,42,58,.05);
+    --shadow-md:0 10px 25px rgba(29,42,58,.08);
+    --shadow-lg:0 20px 45px rgba(29,42,58,.12);
 
+    /* Forma y movimiento */
     --radius-sm:10px;
     --radius-md:16px;
     --radius-lg:24px;
-
     --transition:.25s ease;
-
 }
-
 
 /* ========= RESET ========= */
 
@@ -43,154 +49,95 @@
 }
 
 body{
-
+    margin:0;
     background:var(--background);
     color:var(--text);
-
-    font-family:
-    Inter,
-    system-ui,
-    sans-serif;
-
+    font-family:"Montserrat",system-ui,sans-serif;
+    text-rendering:optimizeLegibility;
+    -webkit-font-smoothing:antialiased;
 }
-
 
 /* ========= BOTONES ========= */
 
 .btn{
-
     display:inline-flex;
     align-items:center;
     justify-content:center;
-
     padding:14px 24px;
-
     border-radius:14px;
-
     font-weight:600;
-
     text-decoration:none;
-
     transition:var(--transition);
-
     cursor:pointer;
-
 }
 
-
 .btn-primary{
-
     background:var(--primary);
-
     color:white;
-
     box-shadow:var(--shadow-sm);
-
 }
 
 .btn-primary:hover{
-
     background:var(--primary-dark);
-
     transform:translateY(-2px);
-
     box-shadow:var(--shadow-md);
-
 }
 
-
 .btn-secondary{
-
     background:white;
-
     color:var(--primary);
-
     border:1px solid var(--border);
-
 }
 
 .btn-secondary:hover{
-
     border-color:var(--primary);
-
 }
-
 
 /* ========= TARJETAS ========= */
 
 .card{
-
     background:var(--surface);
-
     border-radius:20px;
-
     padding:24px;
-
     box-shadow:var(--shadow-sm);
-
     transition:var(--transition);
-
 }
 
 .card:hover{
-
     transform:translateY(-6px);
-
     box-shadow:var(--shadow-lg);
-
 }
-
 
 /* ========= BADGES ========= */
 
 .badge{
-
     display:inline-flex;
-
     padding:6px 14px;
-
     border-radius:999px;
-
-    background:#EEF4FF;
-
+    background:var(--primary-soft);
     color:var(--primary);
-
     font-size:.85rem;
-
     font-weight:600;
-
 }
-
 
 /* ========= TITULOS ========= */
 
 .section-title{
-
+    color:var(--heading);
     font-size:2rem;
-
     font-weight:700;
-
     margin-bottom:10px;
-
 }
 
 .section-subtitle{
-
     color:var(--text-light);
-
     line-height:1.6;
-
 }
-
 
 /* ========= GRID ========= */
 
 .grid-3{
-
     display:grid;
-
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-
     gap:24px;
-
 }
