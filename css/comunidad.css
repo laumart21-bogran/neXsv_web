@@ -330,3 +330,93 @@
   background:#EAF8EF;
   color:#277642;
 }
+/* Refuerzo móvil — comunidad sin compresión */
+@media(max-width:600px){
+  .community-page{
+    width:100%;
+    max-width:none;
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .community-topbar{
+    height:62px;
+    padding:0 10px;
+    gap:7px;
+  }
+  .community-logo img{height:34px}
+  .community-top-actions{gap:3px}
+  .community-icon-link{
+    width:34px;height:34px;
+    font-size:14px;
+  }
+  .community-user-avatar{width:34px;height:34px}
+  .community-intro{
+    padding:18px 14px;
+    border-radius:18px;
+  }
+  .community-intro h1{font-size:22px;line-height:1.2}
+  .community-intro p{font-size:11px;line-height:1.55}
+  .community-filters{
+    width:100%;
+    overflow-x:auto;
+    flex-wrap:nowrap;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  .community-filters::-webkit-scrollbar{display:none}
+  .community-filters .filter-btn{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:9px 11px;
+    font-size:10px;
+  }
+  .publication-card{
+    width:100%;
+    min-width:0;
+  }
+  .publication-author{
+    min-width:0;
+  }
+  .publication-author>div{min-width:0}
+  .publication-author strong,
+  .publication-author span{
+    overflow-wrap:anywhere;
+  }
+  .publication-body{
+    font-size:12px;
+    line-height:1.65;
+    overflow-wrap:anywhere;
+  }
+  .publication-images{
+    margin:0;
+    grid-template-columns:1fr;
+  }
+  .publication-images img{
+    width:100%;
+    height:auto;
+    max-height:360px;
+    object-fit:cover;
+  }
+  .publication-actions{
+    gap:6px;
+  }
+  .publication-actions button{
+    flex:1 1 calc(50% - 6px);
+    min-height:38px;
+  }
+  .community-business-rail{
+    width:100%;
+    overflow:hidden;
+  }
+  .community-business-track{
+    grid-auto-columns:100%;
+  }
+  .community-business-card{
+    min-width:0;
+  }
+  .publication-modal-card{
+    width:100%;
+    max-height:92vh;
+    overflow:auto;
+  }
+}
