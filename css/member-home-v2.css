@@ -190,3 +190,39 @@
   background:linear-gradient(135deg,#1657B8,#19C2C6)!important;
   filter:brightness(.98);
 }
+
+/* Corrección móvil del carrusel de Mis publicaciones */
+@media(max-width:700px){
+  .member-home .dashboard-publication-slider-wrap{
+    gap:7px;
+    align-items:center;
+  }
+  .member-home .dashboard-publication-slider{
+    width:100%;
+    overflow:hidden;
+  }
+  .member-home .dashboard-publication-card{
+    min-width:100%!important;
+    width:100%;
+    flex:0 0 100%;
+  }
+  .member-home .dashboard-publication-card img,
+  .member-home .dashboard-publication-card .dashboard-publication-placeholder{
+    height:210px;
+  }
+  .member-home .dashboard-publication-copy{
+    padding:15px;
+  }
+  .member-home .dashboard-publication-copy strong{
+    font-size:.95rem;
+  }
+  .member-home .dashboard-publication-copy p{
+    font-size:.8rem;
+    -webkit-line-clamp:3;
+  }
+  .member-home .slider-arrow{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+  }
+}
