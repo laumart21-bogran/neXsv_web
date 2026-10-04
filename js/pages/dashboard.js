@@ -123,21 +123,56 @@ async function loadBusinesses() {
     if (error) { console.warn("No pudimos cargar los negocios del miembro:", error); return; }
     memberBusinesses = data || [];
     initializeBusinessPublishSelector(memberBusinesses);
-    const sidebarLink = document.getElementById("sidebarMyBusinesses");
     const spaceAction = document.getElementById("spaceBusinessAction");
     const spaceTitle = document.getElementById("spaceBusinessTitle");
     const spaceText = document.getElementById("spaceBusinessText");
+    initializeMyBusinessesMenu(memberBusinesses);
     if (!spaceAction) return;
     if (memberBusinesses.length) {
-        if (sidebarLink) { sidebarLink.hidden = false; sidebarLink.href = `negocio.html?id=${encodeURIComponent(memberBusinesses[0].id)}&preview=owner`; }
         spaceAction.href = `negocio.html?id=${encodeURIComponent(memberBusinesses[0].id)}&preview=owner`;
         if (spaceTitle) spaceTitle.textContent = "Mis negocios";
         if (spaceText) spaceText.textContent = memberBusinesses.length === 1 ? "Administra tu negocio dentro de neXsv." : `Administra tus ${memberBusinesses.length} negocios dentro de neXsv.`;
     } else {
-        if (sidebarLink) sidebarLink.hidden = true;
         spaceAction.href = "incorporar-negocio.html";
         if (spaceTitle) spaceTitle.textContent = "¿Tienes un negocio?";
         if (spaceText) spaceText.textContent = "Si tienes un negocio, adminístralo en neXsv.";
+    }
+}
+
+function initializeMyBusinessesMenu(businesses) {
+    const group = document.getElementById("sidebarMyBusinessesGroup");
+    const toggle = document.getElementById("sidebarMyBusinesses");
+    const list = document.getElementById("sidebarMyBusinessesList");
+    const spaceAction = document.getElementById("spaceBusinessAction");
+    if (!group || !toggle || !list) return;
+
+    group.hidden = !(businesses || []).length;
+    if (!businesses?.length) {
+        list.innerHTML = "";
+        return;
+    }
+
+    const first = businesses[0];
+    spaceAction?.setAttribute("href", `negocio.html?id=${encodeURIComponent(first.id)}&preview=owner`);
+
+    list.innerHTML = businesses.map((business, index) => `
+        <a class="member-business-option" href="negocio.html?id=${encodeURIComponent(business.id)}&preview=owner">
+            <i class="fa-solid fa-store"></i>
+            <span>${escapeHtml(business.nombre || `Mi negocio ${index + 1}`)}</span>
+        </a>
+    `).join("");
+
+    toggle.onclick = () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        list.hidden = expanded;
+    };
+
+    // Un solo negocio: conserva el acceso directo.
+    if (businesses.length === 1) {
+        toggle.onclick = () => { window.location.href = `negocio.html?id=${encodeURIComponent(first.id)}&preview=owner`; };
+        toggle.setAttribute("aria-expanded", "false");
+        list.hidden = true;
     }
 }
 
