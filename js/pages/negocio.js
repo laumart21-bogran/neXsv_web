@@ -22,7 +22,7 @@ function legacyReviews(data,name){const target=slugify(name);return (data?.revie
 function stars(value){const count=Math.max(0,Math.min(5,Number(value)||0));return "★★★★★".slice(0,count)+"☆☆☆☆☆".slice(0,5-count);}
 function formatPublicServicePrice(service){if(service.precio===null||service.precio===undefined||service.precio==="")return "Consultar";const amount=Number(service.precio).toFixed(2);return service.precio_tipo==="DESDE"?"Desde $"+amount:"$"+amount;}
 function reviewsHtml(reviews){return reviews.map(review=>"<article class=\"review-card\"><div class=\"review-name\">"+stars(review.estrellas)+" — "+escapeHtml(review.nombre||"Miembro")+"</div><div class=\"review-comment\">"+escapeHtml(review.comentario||"")+"</div></article>").join("")||"<div class=\"review-empty\">Este negocio aún no tiene reviews.</div>";}
-function renderBusiness(data,images,reviews,services=[]){
+function renderBusiness(data,images,reviews,services=[],publications=[]){
  const container=document.getElementById("contenido");
  const name=escapeHtml(data.nombre||"Negocio");
  const category=escapeHtml(data.categoria||"Comunidad");
@@ -106,6 +106,12 @@ function renderBusiness(data,images,reviews,services=[]){
 
  const publicSections=`
  <section id="sobre-negocio" class="public-section about-business"><h2>Sobre ${name}</h2><p>${description}</p></section>
+ <section id="publicaciones-negocio" class="public-section business-publications-section">
+   <div class="public-section-heading"><div><h2>Últimas publicaciones</h2><p class="public-section-subtitle">Lo más reciente que este negocio comparte con su comunidad.</p></div><span>${publications.length} ${publications.length===1?"publicación":"publicaciones"}</span></div>
+   ${publications.length
+     ? '<div class="business-publications-carousel" data-publication-count="'+publications.length+'"><button type="button" class="business-publication-arrow prev" aria-label="Publicación anterior"><i class="fa-solid fa-chevron-left"></i></button><div class="business-publications-viewport"><div class="business-publications-track">'+publications.map((item,index)=>{const image=item.images?.[0]?.public_url||item.images?.[0]?.storage_path||"";return '<article class="business-publication-card" data-publication-index="'+index+'">'+(image?'<div class="business-publication-media"><img src="'+escapeHtml(image)+'" alt="" loading="lazy"></div>':'<div class="business-publication-media business-publication-placeholder"><i class="fa-regular fa-newspaper"></i></div>')+'<div class="business-publication-body"><span class="business-publication-type">'+escapeHtml(item.type||"PUBLICACIÓN")+'</span><h3>'+escapeHtml(item.title||"Sin título")+'</h3><p>'+escapeHtml(item.body||"")+'</p><small>'+new Date(item.created_at).toLocaleDateString("es-SV",{day:"2-digit",month:"short",year:"numeric"})+'</small><a href="comunidad.html?business='+encodeURIComponent(businessId)+'">Ver publicación <i class="fa-solid fa-arrow-right"></i></a></div></article>';}).join("")+'</div></div><button type="button" class="business-publication-arrow next" aria-label="Siguiente publicación"><i class="fa-solid fa-chevron-right"></i></button><div class="business-publication-dots">'+publications.map((_,index)=>'<button type="button" class="business-publication-dot'+(index===0?" active":"")+'" data-publication-index="'+index+'" aria-label="Ver publicación '+(index+1)+'"></button>').join("")+'</div></div>'
+     : '<div class="review-empty">Este negocio aún no ha publicado contenido.</div>'}
+ </section>
  <section id="fotografias-negocio" class="public-section"><div class="public-section-heading"><h2>Fotografías</h2><span>${images.length} ${images.length===1?"foto":"fotos"}</span></div>
  ${images.length?'<div class="public-photo-grid">'+images.map((img,index)=>'<a href="'+escapeHtml(img)+'" target="_blank" rel="noopener" class="public-photo"><img src="'+escapeHtml(img)+'" alt="Fotografía '+(index+1)+' de '+name+'"></a>').join("")+"</div>":'<div class="review-empty">Este negocio aún no tiene fotografías.</div>'}
  </section>
@@ -134,6 +140,43 @@ function renderBusiness(data,images,reviews,services=[]){
  document.querySelectorAll(".management-section [data-business-module]").forEach(action=>{action.addEventListener("click",()=>{document.querySelector('[data-business-module="'+action.dataset.businessModule+'"]')?.click();});});
  document.getElementById("shareBusiness")?.addEventListener("click",share);
 
+
+ const publicationCarousel=document.querySelector(".business-publications-carousel");
+ if(publicationCarousel&&publications.length>1){
+   const track=publicationCarousel.querySelector(".business-publications-track");
+   const cards=[...publicationCarousel.querySelectorAll(".business-publication-card")];
+   const dots=[...publicationCarousel.querySelectorAll(".business-publication-dot")];
+   const prev=publicationCarousel.querySelector(".business-publication-arrow.prev");
+   const next=publicationCarousel.querySelector(".business-publication-arrow.next");
+   let pubIndex=0;
+   let pubTimer;
+   const visibleCount=()=>window.innerWidth<=700?1:Math.min(3,publications.length);
+   const updatePublications=()=>{
+     const count=visibleCount();
+     const maxIndex=Math.max(0,publications.length-count);
+     pubIndex=Math.min(pubIndex,maxIndex);
+     const cardWidth=cards[0]?.getBoundingClientRect().width||0;
+     const gap=18;
+     track.style.transform="translateX(-"+((cardWidth+gap)*pubIndex)+"px)";
+     dots.forEach((dot,index)=>dot.classList.toggle("active",index===pubIndex));
+   };
+   const startPubTimer=()=>{
+     clearInterval(pubTimer);
+     pubTimer=setInterval(()=>{
+       const count=visibleCount();
+       const maxIndex=Math.max(0,publications.length-count);
+       pubIndex=pubIndex>=maxIndex?0:pubIndex+1;
+       updatePublications();
+     },5000);
+   };
+   prev?.addEventListener("click",()=>{const count=visibleCount();const maxIndex=Math.max(0,publications.length-count);pubIndex=pubIndex<=0?maxIndex:pubIndex-1;updatePublications();startPubTimer();});
+   next?.addEventListener("click",()=>{const count=visibleCount();const maxIndex=Math.max(0,publications.length-count);pubIndex=pubIndex>=maxIndex?0:pubIndex+1;updatePublications();startPubTimer();});
+   dots.forEach(dot=>dot.addEventListener("click",()=>{pubIndex=Number(dot.dataset.publicationIndex)||0;updatePublications();startPubTimer();}));
+   window.addEventListener("resize",updatePublications,{passive:true});
+   updatePublications();
+   startPubTimer();
+ }
+ 
  const galleryTrack=document.getElementById("businessGalleryTrack");
  const galleryDotButtons=[...document.querySelectorAll(".galeria-dot")];
  if(galleryTrack&&images.length>1){
@@ -241,11 +284,12 @@ async function init(){
  let images=data.logo?[data.logo]:[];
  let reviews=[];
  let services=[];
+ let publications=[];
 
  // El mismo contenido tiene dos presentaciones: gestión y vista pública.
  // Al cambiar de modo hay que volver a renderizar el contenido para que
  // la vista pública recupere exactamente la tarjeta que ve un visitante.
- const refreshView=()=>renderBusiness(data,images,reviews,services);
+ const refreshView=()=>renderBusiness(data,images,reviews,services,publications);
 
  const ownerResult=await withTimeout(
      BusinessService.isBusinessOwner(businessId),
@@ -268,7 +312,7 @@ async function init(){
      refreshView();
  }
 
- const [mediaResult,publicReviewsResult,servicesResult]=await Promise.all([
+ const [mediaResult,publicReviewsResult,servicesResult,publicationsResult]=await Promise.all([
      withTimeout(
          BusinessMediaService.getPublicBusinessMedia(businessId),
          5000,
@@ -283,6 +327,11 @@ async function init(){
          BusinessServiceCatalog.getPublicServices(businessId),
          5000,
          {data:[],error:new Error("SERVICES_TIMEOUT")}
+     ),
+     withTimeout(
+         CommunityService.getPublications({businessId,limit:8}),
+         5000,
+         {data:[],error:new Error("PUBLICATIONS_TIMEOUT")}
      )
  ]);
 
@@ -296,6 +345,7 @@ async function init(){
 
  reviews=publicReviewsResult.data||[];
  services=servicesResult.data||[];
+ publications=publicationsResult.data||[];
  refreshView();
 
  if(ownerResult.data===true){
