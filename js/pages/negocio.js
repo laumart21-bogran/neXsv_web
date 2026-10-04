@@ -183,7 +183,7 @@ async function loadOwnerStatistics(businessId){
   }catch(error){console.warn("No se pudieron cargar las estadísticas del negocio:",error);}
 }
 
-function setupOwnerMode(isOwner){
+function setupOwnerMode(isOwner, refreshView){
  const bar=document.getElementById("businessOwnerBar");
  const space=document.getElementById("businessSpace");
  const manage=document.getElementById("ownerManageMode");
@@ -194,19 +194,26 @@ function setupOwnerMode(isOwner){
    space.classList.remove("owner-active");
    return;
  }
+
  bar.classList.add("visible");
+
  const showPublic=()=>{
    space.classList.remove("owner-active");
+   refreshView?.();
    window.scrollTo({top:0,behavior:"smooth"});
  };
+
  const showManage=()=>{
    space.classList.add("owner-active");
+   refreshView?.();
    window.scrollTo({top:0,behavior:"smooth"});
  };
+
  manage?.addEventListener("click",showManage);
  publicMode?.addEventListener("click",showPublic);
  document.getElementById("ownerSidebarManageMode")?.addEventListener("click",showManage);
  document.getElementById("ownerSidebarPublicMode")?.addEventListener("click",showPublic);
+
  showManage();
 }
 function withTimeout(promise,ms,fallback){return Promise.race([promise,new Promise(resolve=>setTimeout(()=>resolve(fallback),ms))]);}
@@ -214,12 +221,10 @@ async function init(){
  const container=document.getElementById("contenido");
  if(!container)return;
  if(!businessId){
-     container.innerHTML="<div class=\"loading\">Negocio no especificado.</div>";
+     container.innerHTML='<div class="loading">Negocio no especificado.</div>';
      return;
  }
 
- // Primero obtenemos solo la información básica que ya utiliza el directorio.
- // Así el negocio puede verse sin esperar contacto, Storage ni reviews.
  const directoryResult=await withTimeout(
      BusinessService.getPublicBusinessDirectory(),
      5000,
@@ -228,22 +233,29 @@ async function init(){
  const basicData=(directoryResult.data||[]).find(item=>String(item.id)===String(businessId));
 
  if(!basicData){
-     container.innerHTML="<div class=\"loading\">No fue posible cargar este negocio.</div>";
+     container.innerHTML='<div class="loading">No fue posible cargar este negocio.</div>';
      return;
  }
 
  let data={...basicData};
+ let images=data.logo?[data.logo]:[];
+ let reviews=[];
+ let services=[];
+
+ // El mismo contenido tiene dos presentaciones: gestión y vista pública.
+ // Al cambiar de modo hay que volver a renderizar el contenido para que
+ // la vista pública recupere exactamente la tarjeta que ve un visitante.
+ const refreshView=()=>renderBusiness(data,images,reviews,services);
 
  const ownerResult=await withTimeout(
      BusinessService.isBusinessOwner(businessId),
      4000,
      {data:false,error:new Error("OWNER_CHECK_TIMEOUT")}
  );
- setupOwnerMode(ownerResult.data===true);
+ setupOwnerMode(ownerResult.data===true,refreshView);
 
- renderBusiness(data,data.logo?[data.logo]:[],[]);
+ refreshView();
 
- // Los datos secundarios se cargan después de mostrar el negocio.
  const detailResult=await withTimeout(
      BusinessService.getPublicBusinessDetail(businessId),
      5000,
@@ -252,7 +264,8 @@ async function init(){
 
  if(detailResult.data){
      data={...data,...detailResult.data};
-     renderBusiness(data,data.logo?[data.logo]:[],[]);
+     images=data.logo?[data.logo]:[];
+     refreshView();
  }
 
  const [mediaResult,publicReviewsResult,servicesResult]=await Promise.all([
@@ -273,7 +286,7 @@ async function init(){
      )
  ]);
 
- let images=[];
+ images=[];
  if(data.logo)images.push(data.logo);
  images.push(...(mediaResult.data||[])
      .filter(item=>item.tipo==="FOTO")
@@ -281,9 +294,13 @@ async function init(){
      .filter(Boolean));
  images=[...new Set(images)].slice(0,3);
 
- const reviews=publicReviewsResult.data||[];
- const services=servicesResult.data||[];
- renderBusiness(data,images,reviews,services);
- if(ownerResult.data===true){loadOwnerStatistics(businessId);loadOwnerRecentPublications(businessId);}
+ reviews=publicReviewsResult.data||[];
+ services=servicesResult.data||[];
+ refreshView();
+
+ if(ownerResult.data===true){
+     loadOwnerStatistics(businessId);
+     loadOwnerRecentPublications(businessId);
+ }
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
