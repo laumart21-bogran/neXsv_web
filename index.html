@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
 
@@ -1014,30 +1015,202 @@ font-size:28px;
 
 
 /* ==========================================================
-   SPRINT — HOME | Métricas vivas + exploración neXsv
+   HOME — Estadísticas + exploración | línea gráfica neXsv
    ========================================================== */
-.community-stats{max-width:1200px;margin:34px auto 30px;padding:0 20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.stat-card{position:relative;min-height:158px;padding:24px 22px;background:rgba(255,255,255,.92);border:1px solid #E4EAF2;border-radius:22px;text-align:left;box-shadow:0 10px 30px rgba(35,58,114,.06);overflow:hidden}
-.stat-card::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,#1657B8,#19C2C6)}
-.stat-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#F1F5FF;color:#1657B8;font-size:15px;margin-bottom:14px}
-.stat-number{display:block;font-size:36px;line-height:1;font-weight:800;letter-spacing:-1px;color:#233A72;margin-bottom:8px}
-.stat-label{color:#64748B;font-size:13px;font-weight:600}
-.explore-heading{max-width:760px;margin-bottom:30px}
-.explore-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:12px;color:#1657B8;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-.explore-title{margin:0 0 12px;color:#233A72;font-size:38px;line-height:1.12;letter-spacing:-1.2px}
-.explore-subtitle{margin:0;color:#64748B;max-width:680px;line-height:1.75;font-size:15px}
-.explore-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
-.explore-card{position:relative;display:flex;flex-direction:column;min-height:286px;padding:24px;background:#fff;border:1px solid #E3E9F1;border-radius:22px;text-decoration:none;box-shadow:0 10px 28px rgba(35,58,114,.055);transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;overflow:hidden}
-.explore-card::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#1657B8,#19C2C6);opacity:.75}
-.explore-card:hover{transform:translateY(-4px);border-color:#D3DEEF;box-shadow:0 16px 34px rgba(35,58,114,.10)}
-.explore-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#EEF4FF,#E9F8F7);color:#1657B8;font-size:18px;margin-bottom:20px}
-.explore-card-label{color:#7B8798;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
-.explore-card h3{margin:0 0 10px;color:#233A72;font-size:19px;line-height:1.25}
-.explore-card p{margin:0;color:#64748B;font-size:13px;line-height:1.65}
-.explore-link{display:inline-flex;align-items:center;gap:7px;margin-top:auto;padding-top:20px;color:#1657B8;font-size:12px;font-weight:800}
-.explore-link i{font-size:10px;transition:transform .2s ease}.explore-card:hover .explore-link i{transform:translateX(3px)}
-@media(max-width:900px){.community-stats{grid-template-columns:1fr;max-width:620px}.explore-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.community-stats{padding:0 16px;gap:12px;margin-top:24px}.stat-card{min-height:130px;padding:20px}.stat-number{font-size:30px}.explore-heading{margin-bottom:22px}.explore-title{font-size:30px}.explore-subtitle{font-size:13px;line-height:1.65}.explore-grid{grid-template-columns:1fr;gap:12px}.explore-card{min-height:230px;padding:20px}}
+.community-stats{
+  max-width:1200px;
+  margin:34px auto 30px;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px
+}
+.stat-card{
+  position:relative;
+  min-height:150px;
+  padding:22px 22px 20px;
+  background:#fff;
+  border:1px solid #E4EAF2;
+  border-radius:20px;
+  text-align:left;
+  box-shadow:0 10px 28px rgba(29,42,58,.06);
+  overflow:hidden
+}
+.stat-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,#1657B8 0%,#5FAFC3 55%,#F5C943 100%)
+}
+.stat-card::after{
+  content:"";
+  position:absolute;
+  width:95px;height:95px;
+  right:-38px;bottom:-48px;
+  border-radius:50%;
+  background:rgba(95,175,195,.08)
+}
+.stat-icon{
+  width:42px;height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#EEF4FF;
+  color:#3159B7;
+  font-size:17px;
+  margin-bottom:14px;
+  position:relative;
+  z-index:1
+}
+.stat-card:nth-child(2) .stat-icon{
+  background:#EAF6F4;
+  color:#168C91
+}
+.stat-card:nth-child(3) .stat-icon{
+  background:#FFF5D6;
+  color:#A47700
+}
+.stat-number{
+  display:block;
+  font-size:34px;
+  line-height:1;
+  font-weight:800;
+  letter-spacing:-1px;
+  color:#233A72;
+  margin-bottom:7px;
+  position:relative;
+  z-index:1
+}
+.stat-label{
+  color:#667085;
+  font-size:12px;
+  font-weight:700;
+  position:relative;
+  z-index:1
+}
+.explore-heading{max-width:860px;margin-bottom:30px}
+.explore-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:12px;
+  color:#3159B7;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase
+}
+.explore-title{
+  margin:0 0 14px;
+  color:#233A72;
+  font-size:clamp(2rem,4.2vw,3rem);
+  line-height:1.08;
+  letter-spacing:-1.2px
+}
+.explore-subtitle{
+  margin:0;
+  color:#64748B;
+  max-width:760px;
+  line-height:1.75;
+  font-size:15px
+}
+.explore-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px
+}
+.explore-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-height:292px;
+  padding:24px;
+  background:#fff;
+  border:1px solid #E3E9F1;
+  border-radius:20px;
+  text-decoration:none;
+  box-shadow:0 9px 25px rgba(29,42,58,.055);
+  transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+  overflow:hidden
+}
+.explore-card::before{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,#1657B8,#5FAFC3);
+  opacity:.95
+}
+.explore-card:nth-child(2)::before{background:linear-gradient(90deg,#5FAFC3,#19C2C6)}
+.explore-card:nth-child(3)::before{background:linear-gradient(90deg,#74D67F,#5FAFC3)}
+.explore-card:nth-child(4)::before{background:linear-gradient(90deg,#F5C943,#FFD95E)}
+.explore-card:hover{
+  transform:translateY(-4px);
+  border-color:#D3DEEF;
+  box-shadow:0 16px 34px rgba(29,42,58,.10)
+}
+.explore-icon{
+  width:46px;height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:#EEF4FF;
+  color:#3159B7;
+  font-size:17px;
+  margin-bottom:20px
+}
+.explore-card:nth-child(2) .explore-icon{background:#EAF6F4;color:#168C91}
+.explore-card:nth-child(3) .explore-icon{background:#EDF8EE;color:#438A4B}
+.explore-card:nth-child(4) .explore-icon{background:#FFF5D6;color:#A47700}
+.explore-card-label{
+  color:#7B8798;
+  font-size:9px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  margin-bottom:7px
+}
+.explore-card h3{
+  margin:0 0 10px;
+  color:#233A72;
+  font-size:18px;
+  line-height:1.28
+}
+.explore-card p{
+  margin:0;
+  color:#64748B;
+  font-size:12px;
+  line-height:1.65
+}
+.explore-link{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin-top:auto;
+  padding-top:20px;
+  color:#3159B7;
+  font-size:11px;
+  font-weight:800
+}
+.explore-link i{font-size:9px;transition:transform .2s ease}
+.explore-card:hover .explore-link i{transform:translateX(3px)}
+@media(max-width:900px){
+  .community-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .explore-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .community-stats{padding:0 16px;gap:12px;margin-top:24px}
+  .stat-card{min-height:132px;padding:20px 16px}
+  .stat-icon{width:38px;height:38px;font-size:15px;margin-bottom:12px}
+  .stat-number{font-size:28px}
+  .stat-label{font-size:11px}
+  .explore-heading{margin-bottom:22px}
+  .explore-title{font-size:30px}
+  .explore-subtitle{font-size:13px;line-height:1.65}
+  .explore-grid{grid-template-columns:1fr;gap:12px}
+  .explore-card{min-height:225px;padding:20px}
+}
 </style>
 </head>
 
@@ -1106,7 +1279,7 @@ Exclusivo para comunidades privadas • Negocios seleccionados • Relaciones de
 <div class="container">
   <div class="explore-heading">
     <span class="explore-kicker"><i class="fa-solid fa-link"></i> Dentro de neXsv</span>
-    <h2 class="explore-title" id="exploreTitle">Descubre lo que puedes hacer</h2>
+    <h2 class="explore-title" id="exploreTitle">Descubre qué es lo que puedes hacer dentro de neXsv</h2>
     <p class="explore-subtitle">Una experiencia conectada para descubrir, conocer y conectar dentro de tu comunidad de confianza.</p>
   </div>
   <div class="explore-grid">
