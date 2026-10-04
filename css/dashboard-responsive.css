@@ -119,3 +119,60 @@ html,body{max-width:100%;overflow-x:hidden}
     min-width:0;
   }
 }
+
+/* SPRINT 2.1 — Mi espacio realmente responsive en teléfonos */
+@media(max-width:700px){
+  html,body{overflow-x:hidden}
+  .member-home .dashboard-content{gap:16px}
+  .member-home .card,
+  .member-home .dashboard-header,
+  .member-home .profile-progress,
+  .member-home .business-invite-banner,
+  .member-home .space-actions{width:100%;box-sizing:border-box}
+
+  .member-home .section-title{width:100%;min-width:0}
+  .member-home .section-title>div{min-width:0;width:100%}
+  .member-home .section-title h2,
+  .member-home .section-title p{overflow-wrap:anywhere}
+
+  /* Accesos principales */
+  .member-home .space-actions{grid-template-columns:1fr;gap:10px}
+  .member-home .space-action{width:100%;box-sizing:border-box;min-height:78px;padding:14px}
+  .member-home .space-action-copy{min-width:0}
+  .member-home .space-action-copy strong,
+  .member-home .space-action-copy span{overflow-wrap:anywhere}
+
+  /* Composer */
+  .member-home .community-types{overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px;scrollbar-width:none}
+  .member-home .community-types::-webkit-scrollbar{display:none}
+  .member-home .community-type{flex:0 0 auto}
+  .member-home .dashboard-business-publish-row{display:flex;flex-direction:column;align-items:stretch;gap:6px}
+  .member-home .dashboard-business-publish-row select{width:100%;max-width:100%;box-sizing:border-box}
+  .member-home .dashboard-photo-tools{align-items:flex-start}
+  .member-home .dashboard-photo-tools .dashboard-photo-btn{max-width:100%}
+  .member-home .dashboard-composer-footer{width:100%}
+  .member-home .dashboard-composer-footer #dashboardPublishBtn{width:100%}
+
+  /* Negocios recomendados: una tarjeta completa por desplazamiento */
+  .member-home .recommended-business-list{width:100%;max-width:100%;padding-bottom:4px}
+  .member-home .recommended-business-card{min-width:calc(100% - 8px);max-width:calc(100% - 8px);box-sizing:border-box}
+
+  /* Mis publicaciones: una tarjeta completa, nunca tres comprimidas */
+  .member-home .dashboard-publication-slider-wrap{width:100%;max-width:100%;box-sizing:border-box}
+  .member-home .dashboard-publication-slider{width:100%;max-width:100%;overflow:hidden}
+  .member-home .dashboard-publication-card{min-width:100%!important;width:100%;max-width:100%;flex:0 0 100%!important;box-sizing:border-box}
+  .member-home .dashboard-publication-card img,
+  .member-home .dashboard-publication-card .dashboard-publication-placeholder{height:190px}
+  .member-home .dashboard-publication-copy{min-width:0;padding:15px}
+  .member-home .dashboard-publication-copy p,
+  .member-home .dashboard-publication-copy strong{overflow-wrap:anywhere}
+
+  /* Reseñas y guardados */
+  .member-home .dashboard-review-slider{width:100%;min-width:0}
+  .member-home #mis-resenas .feed-placeholder,
+  .member-home #guardados .feed-placeholder{box-sizing:border-box;width:100%;overflow-wrap:anywhere}
+
+  /* Menú lateral apilado */
+  .member-home .dashboard-sidebar{width:100%;max-width:100%;overflow:hidden}
+  .member-home .dashboard-menu{width:100%;box-sizing:border-box}
+}
