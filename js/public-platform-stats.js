@@ -19,7 +19,7 @@ function animateValue(id, value){
     const progress=Math.min((now-start)/duration,1);
     const eased=1-Math.pow(1-progress,3);
     const shown=Math.round(current+(target-current)*eased);
-    el.textContent=shown.toLocaleString("es-SV");
+    el.textContent=shown.toLocaleString("es-SV")+"+";
     if(progress<1) requestAnimationFrame(frame);
     else el.dataset.value=String(target);
   };
