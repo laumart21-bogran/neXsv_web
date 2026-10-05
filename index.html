@@ -1248,16 +1248,7 @@ font-size:28px;
   transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
   overflow:hidden
 }
-.explore-card::before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:4px;
-  background:#3159B7
-}
-.explore-card:nth-child(2)::before{background:#5FAFC3}
-.explore-card:nth-child(3)::before{background:#74D67F}
-.explore-card:nth-child(4)::before{background:#F5C943}
+.explore-card::before{display:none!important}
 .explore-card:hover{
   transform:translateY(-4px);
   border-color:#D3DEEF;
