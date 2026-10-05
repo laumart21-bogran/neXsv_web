@@ -69,5 +69,5 @@ function bind(){
  document.getElementById("homeSearchClear")?.addEventListener("click",()=>{input.value="";state.term="";document.getElementById("homeSearchClear").hidden=true;render();input.focus()});
  document.querySelectorAll(".home-search-tab").forEach(tab=>tab.addEventListener("click",()=>{state.type=tab.dataset.searchType||"TODOS";document.querySelectorAll(".home-search-tab").forEach(t=>t.classList.toggle("active",t===tab));render()}));
 }
-async function init(){bind();await loadSources();render()}
+async function init(){bind();await loadSources();render();if(window.location.hash==="#homeSearch")openModal()}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init,{once:true});else init();
