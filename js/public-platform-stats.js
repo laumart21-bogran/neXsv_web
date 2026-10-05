@@ -6,52 +6,72 @@ const statIds = {
   opportunities: "publicStatOpportunities"
 };
 
-function animateValue(id, value){
-  const el=document.getElementById(id);
-  const target=Number(value);
+function startContinuousCounter(id, value){
+  const el = document.getElementById(id);
+  const target = Number(value);
+
   if(!el || !Number.isFinite(target)) return;
 
-  const current=Number(el.dataset.value || 0);
-  const duration=1400;
-  const start=performance.now();
+  el.dataset.target = String(target);
 
-  const frame=(now)=>{
-    const progress=Math.min((now-start)/duration,1);
-    const eased=1-Math.pow(1-progress,3);
-    const shown=Math.round(current+(target-current)*eased);
-    el.textContent=shown.toLocaleString("es-SV")+"+";
-    if(progress<1) requestAnimationFrame(frame);
-    else el.dataset.value=String(target);
+  // El contador se inicia una sola vez por elemento y continúa
+  // haciendo ciclos para que las estadísticas se perciban activas.
+  if(el.dataset.counterRunning === "true") return;
+
+  el.dataset.counterRunning = "true";
+
+  const duration = 3200;
+
+  const runCycle = () => {
+    const currentTarget = Number(el.dataset.target || 0);
+    const start = performance.now();
+
+    const frame = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const shown = Math.round(currentTarget * eased);
+
+      el.textContent = shown.toLocaleString("es-SV") + "+";
+
+      if(progress < 1){
+        requestAnimationFrame(frame);
+      }else{
+        // Reinicia inmediatamente para mantener el movimiento continuo.
+        requestAnimationFrame(runCycle);
+      }
+    };
+
+    requestAnimationFrame(frame);
   };
 
-  requestAnimationFrame(frame);
+  runCycle();
 }
 
 async function loadPublicStats(){
   try{
-    const {data,error}=await supabase.rpc("get_public_platform_stats");
+    const {data,error} = await supabase.rpc("get_public_platform_stats");
     if(error) throw error;
 
-    const stats=data?.[0] || data || {};
+    const stats = data?.[0] || data || {};
 
-    animateValue(statIds.businesses, stats.businesses);
-    animateValue(statIds.members, stats.members);
-    animateValue(statIds.opportunities, stats.opportunities);
+    startContinuousCounter(statIds.businesses, stats.businesses);
+    startContinuousCounter(statIds.members, stats.members);
+    startContinuousCounter(statIds.opportunities, stats.opportunities);
 
   }catch(error){
-    console.warn("No se pudieron cargar las estadísticas públicas:",error);
+    console.warn("No se pudieron cargar las estadísticas públicas:", error);
   }
 }
 
 function initPublicStats(){
   loadPublicStats();
 
-  // Mantiene las cifras actualizadas sin recargar toda la página.
+  // Las cifras reales se vuelven a consultar periódicamente.
   window.setInterval(loadPublicStats, 60000);
 }
 
-if(document.readyState==="loading"){
-  document.addEventListener("DOMContentLoaded",initPublicStats,{once:true});
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", initPublicStats, {once:true});
 }else{
   initPublicStats();
 }
