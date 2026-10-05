@@ -25,6 +25,12 @@ body{padding-top:64px!important}
 ${botonCuenta}
 </nav>
 </header>
+<script>
+(function(){
+  const links=document.querySelectorAll(".nex-search-link");
+  links.forEach((link,index)=>{if(index>0)link.remove();});
+})();
+</script>
 
 <script>
 function toggleMenu(){document.getElementById("mobileMenu").classList.toggle("active");}
