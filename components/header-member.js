@@ -91,7 +91,7 @@ color:#2f4ea2;
 transition:.3s;
 }
 
-.nex-nav a:hover{
+.nex-search-link{display:inline-flex;align-items:center;gap:6px}.nex-search-link i{font-size:13px}.nex-nav a:hover{
 opacity:.75;
 }
 
@@ -243,6 +243,10 @@ Beneficios
 
 <a href="negocios.html">
 Negocios
+</a>
+<a href="buscar.html" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv">
+<i class="fa-solid fa-magnifying-glass"></i>
+<span>Buscar</span>
 </a>
 
 <a href="blog.html">
