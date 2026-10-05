@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar en neXsv | Negocios y oportunidades</title>
+<meta name="description" content="Busca negocios, oportunidades y contenido dentro de neXsv.">
+<link rel="canonical" href="https://nexsv.com/buscar.html">
+<link rel="stylesheet" href="css/design-system.css">
+<link rel="stylesheet" href="css/buscar.css?v=20261005-1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+<script src="components/header.js"></script>
+<main class="search-page">
+<section class="search-hero"><div class="search-hero-content">
+<span class="search-eyebrow"><i class="fa-solid fa-magnifying-glass"></i> Búsqueda neXsv</span>
+<h1>Encuentra lo que buscas dentro de tu comunidad.</h1>
+<p>Busca negocios, oportunidades y contenido relevante para ti.</p>
+<div class="global-search-box"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input id="globalSearchInput" type="search" placeholder="¿Qué estás buscando?" autocomplete="off" autofocus><button id="clearSearchBtn" type="button" aria-label="Limpiar búsqueda" hidden><i class="fa-solid fa-xmark"></i></button></div>
+</div></section>
+<section class="search-results-section">
+<div class="search-tabs" role="tablist" aria-label="Tipo de resultado">
+<button class="search-tab active" type="button" data-search-type="TODOS">Todo</button>
+<button class="search-tab" type="button" data-search-type="NEGOCIOS">Negocios</button>
+<button class="search-tab" type="button" data-search-type="OPORTUNIDADES">Oportunidades</button>
+<button class="search-tab" type="button" data-search-type="CONTENIDO">Contenido</button>
+</div>
+<div id="searchStatus" class="search-status">Escribe algo para comenzar.</div>
+<div id="searchResults" class="search-results"></div>
+</section>
+</main>
+<script type="module" src="js/pages/buscar.js?v=20261005-1"></script>
+</body>
+</html>
