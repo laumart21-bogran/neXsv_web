@@ -21,7 +21,7 @@ body{padding-top:64px!important}
 <a href="index.html" class="nex-logo"><img src="logo.png" alt="NeXsv"></a>
 <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 <nav class="nex-nav" id="mobileMenu">
-<a href="index.html">Inicio</a><a href="como.html">Cómo funciona</a><a href="beneficios.html">Beneficios</a><a href="negocios.html">Negocios</a><a href="buscar.html" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a><a href="blog.html">Blog</a>
+<a href="index.html">Inicio</a><a href="como.html">Cómo funciona</a><a href="beneficios.html">Beneficios</a><a href="negocios.html">Negocios</a><a href="index.html#homeSearch" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv"><i class="fa-solid fa-magnifying-glass"></i><span>Buscar</span></a><a href="blog.html">Blog</a>
 ${botonCuenta}
 </nav>
 </header>
