@@ -68,3 +68,5 @@ authScript.textContent = `
 `;
 
 document.head.appendChild(authScript);
+
+.nex-header-search-result-icon,.nex-header-search-result-icon i{background:#EEF5FF!important;color:#1657B8!important}
