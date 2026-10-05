@@ -81,7 +81,7 @@ gap:24px;
 
 text-decoration:none;
 
-font-family:'Inter',sans-serif;
+font-family:'Montserrat',sans-serif;
 
 font-size:15px;
 font-weight:600;
