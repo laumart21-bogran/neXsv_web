@@ -1,30 +1,30 @@
 .search-page{min-height:100vh;background:#F5F7FB;color:#1E293B}
 .search-hero{padding:88px 20px 58px;background:linear-gradient(180deg,#FFFFFF 0%,#FBFCFE 72%,#F8F9FC 100%);border-bottom:1px solid #E2E8F0}
 .search-hero-content{max-width:900px;margin:0 auto;text-align:center}
-.search-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#3159B7;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+.search-eyebrow{display:inline-flex;align-items:center;gap:8px;color:#1657B8;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
 .search-eyebrow i{font-size:13px}
-.search-hero h1{margin:0 auto 14px;max-width:760px;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;letter-spacing:-1.5px;color:#1E2F5B}
+.search-hero h1{margin:0 auto 14px;max-width:760px;font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;letter-spacing:-1.5px;color:#1D2A3A}
 .search-hero p{margin:0 auto 28px;color:#64748B;line-height:1.7;font-size:15px}
 .global-search-box{display:flex;align-items:center;gap:12px;max-width:720px;margin:auto;padding:5px 8px 5px 20px;background:#fff;border:1px solid #D9E1EC;border-radius:16px;box-shadow:0 12px 30px rgba(30,47,91,.07)}
-.global-search-box:focus-within{border-color:#3B82F6;box-shadow:0 0 0 4px rgba(59,130,246,.10),0 12px 30px rgba(30,47,91,.07)}
+.global-search-box:focus-within{border-color:#19C2C6;box-shadow:0 0 0 4px rgba(25,194,198,.10),0 12px 30px rgba(30,47,91,.07)}
 .global-search-box>i{color:#3159B7;font-size:16px}
-.global-search-box input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:14px 0;font:500 16px Inter,system-ui,sans-serif;color:#1E293B}
+.global-search-box input{width:100%;min-width:0;border:0;outline:0;background:transparent;padding:14px 0;font:500 16px Montserrat,system-ui,sans-serif;color:#1E293B}
 .global-search-box input::placeholder{color:#94A3B8}
 .global-search-box button{width:40px;height:40px;border:0;border-radius:10px;background:#F5F7FB;color:#64748B;cursor:pointer}
 .global-search-box button:hover{background:#FFF4C7;color:#1E2F5B}
 
 .search-results-section{max-width:1100px;margin:0 auto;padding:32px 20px 80px}
 .search-tabs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:22px}
-.search-tab{border:1px solid #D9E1EC;background:#fff;color:#64748B;padding:9px 17px;border-radius:10px;font:700 13px Inter,system-ui,sans-serif;cursor:pointer;transition:.2s ease}
+.search-tab{border:1px solid #D9E1EC;background:#fff;color:#64748B;padding:9px 17px;border-radius:10px;font:700 13px Montserrat,system-ui,sans-serif;cursor:pointer;transition:.2s ease}
 .search-tab:hover{border-color:#B9C8DD;color:#1E2F5B;background:#fff}
-.search-tab.active{background:#F7C531;color:#1E2F5B;border-color:#F7C531;box-shadow:0 6px 14px rgba(247,197,49,.20)}
+.search-tab.active{background:#F7C531;color:#1D2A3A;border-color:#F7C531;box-shadow:0 6px 14px rgba(247,197,49,.20)}
 
 .search-status{color:#64748B;font-size:13px;margin-bottom:14px}
 .search-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .search-result{display:flex;gap:16px;padding:20px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;text-decoration:none;color:inherit;box-shadow:0 6px 20px rgba(30,47,91,.045);transition:.2s ease}
 .search-result:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(30,47,91,.08);border-color:#C9D6E8}
-.search-result-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:12px;background:#EEF4FF;color:#3159B7}
-.search-result:nth-child(3n) .search-result-icon{background:#ECFDF3;color:#16804A}
+.search-result-icon{width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;border-radius:12px;background:#EEF5FF;color:#1657B8}
+.search-result:nth-child(3n) .search-result-icon{background:#ECFDF3;color:#2F8B41}
 .search-result:nth-child(3n+2) .search-result-icon{background:#FFF7D6;color:#9A7410}
 .search-result-content{min-width:0}
 .search-result-type{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:5px}
@@ -49,3 +49,6 @@
 .search-result h2{font-size:17px}
 }
 @media(max-width:380px){.search-tab{flex-basis:100%}}
+.search-hero h1,.search-tab,.search-result h2{font-family:'Montserrat',system-ui,sans-serif}
+.search-hero h1{color:#1657B8}
+.search-eyebrow{color:#1657B8;text-transform:none}
