@@ -86,7 +86,7 @@ font-family:'Montserrat',sans-serif;
 font-size:15px;
 font-weight:600;
 
-color:#2f4ea2;
+color:#1657B8;
 
 transition:.3s;
 }
@@ -141,7 +141,7 @@ font-size:24px;
 
 cursor:pointer;
 
-color:#2f4ea2;
+color:#1657B8;
 }
 
 /* ========================================
