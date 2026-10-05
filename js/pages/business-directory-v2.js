@@ -87,8 +87,13 @@ function toggleMoreCategories() {
     const more = document.getElementById("masCategorias");
     const button = document.getElementById("btnMasCategorias");
     if (!more) return;
-    more.classList.toggle("mostrar");
-    if (button) button.classList.toggle("activo", more.classList.contains("mostrar"));
+
+    const isOpen = more.classList.toggle("mostrar");
+
+    if (button) {
+        button.classList.toggle("activo", isOpen);
+        button.textContent = isOpen ? "Ver menos" : "Ver más";
+    }
 }
 
 async function authenticated() {
