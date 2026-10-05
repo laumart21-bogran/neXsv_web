@@ -255,13 +255,6 @@ ${botonCuenta}
 
 </header>
 <script>
-setTimeout(function(){
-  const links=document.querySelectorAll(".nex-search-link");
-  links.forEach((link,index)=>{if(index>0)link.remove();});
-},0);
-</script>
-
-<script>
 
 function toggleMenu(){
 
