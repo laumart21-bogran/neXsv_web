@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
     if (!AuthSession.isAuthenticated()) {
-        window.location.href = APP_CONFIG.routes.login;
+        const returnUrl = "incorporar-negocio.html";
+        window.location.href = APP_CONFIG.routes.login + "?return=" + encodeURIComponent(returnUrl);
         return;
     }
 
