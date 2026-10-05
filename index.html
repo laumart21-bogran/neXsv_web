@@ -1167,13 +1167,7 @@ font-size:28px;
   box-shadow:0 10px 28px rgba(29,42,58,.06);
   overflow:hidden
 }
-.stat-card::before{
-  content:"";
-  position:absolute;
-  top:0;left:0;right:0;
-  height:4px;
-  background:#3159B7
-}
+.stat-card::before{display:none!important}
 .stat-card::after{
   content:"";
   position:absolute;
@@ -1789,6 +1783,3 @@ Términos y condiciones
     
 </body>
 </html>
-
-/* Ajuste final: las estadísticas comparten la forma limpia de las tarjetas neXsv */
-.stat-card::before{display:none!important}
