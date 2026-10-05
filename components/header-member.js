@@ -244,7 +244,7 @@ Beneficios
 <a href="negocios.html">
 Negocios
 </a>
-<a href="buscar.html" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv">
+<a href="index.html#homeSearch" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv">
 <i class="fa-solid fa-magnifying-glass"></i>
 <span>Buscar</span>
 </a>
