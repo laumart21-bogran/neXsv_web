@@ -1238,6 +1238,44 @@ font-size:28px;
   .explore-icon{width:46px;height:46px;font-size:17px;margin-bottom:16px}
   .explore-card h3{font-size:19px}
 }
+
+/* ==========================================================
+   SPRINT 5.5 — Auditoría responsive | Inicio
+========================================================== */
+@media(max-width:600px){
+  .hero{
+    min-height:calc(100dvh - 64px);
+    padding:88px 18px 46px;
+  }
+  .hero-logo{max-width:175px;margin-bottom:22px}
+  .hero h1{font-size:clamp(2.15rem,10vw,3rem);letter-spacing:-1px}
+  .hero p{font-size:15px;line-height:1.65;margin-bottom:26px}
+  .hero-buttons{width:100%;flex-direction:column;gap:10px}
+  .hero-buttons .btn{width:100%;min-height:50px}
+  .hero-trust{font-size:11px;line-height:1.5;margin-top:18px}
+  .section{padding:64px 0}
+  .section .container{padding-left:16px;padding-right:16px}
+  .section h2{font-size:clamp(1.8rem,8vw,2.35rem)}
+  .section-box{padding:24px 18px;border-radius:22px}
+  .grid{grid-template-columns:1fr;gap:14px}
+  .card{padding:24px 18px;border-radius:22px}
+  .planes-section{padding-left:16px;padding-right:16px}
+  .planes-title{font-size:30px;line-height:1.2}
+  .planes-subtitle{font-size:14px;line-height:1.65}
+  .planes-container{gap:16px}
+  .plan-card{max-width:none;padding:30px 22px;border-radius:24px}
+  .featured{transform:none}
+  .plan-card h3{font-size:27px}
+  .plan-price{font-size:21px}
+}
+@media(max-width:380px){
+  .hero{padding-left:14px;padding-right:14px}
+  .hero h1{font-size:2rem}
+  .community-stats{grid-template-columns:1fr!important}
+  .stat-card{min-height:112px}
+  .explore-card{min-height:0}
+}
+
 </style>
 </head>
 
