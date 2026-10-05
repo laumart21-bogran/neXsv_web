@@ -12,7 +12,7 @@ function animateValue(id, value){
   if(!el || !Number.isFinite(target)) return;
 
   const current=Number(el.dataset.value || 0);
-  const duration=500;
+  const duration=1400;
   const start=performance.now();
 
   const frame=(now)=>{
