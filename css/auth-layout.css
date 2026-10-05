@@ -581,3 +581,82 @@ BUSINESS ACCESS
     color:#FFFFFF;
 
 }
+
+
+/* ==========================================================
+   RESPONSIVE FOUNDATION — acceso
+   Evita tarjetas apretadas y mejora la experiencia táctil.
+========================================================== */
+@media (max-width: 600px){
+    .access-page{
+        min-height:100dvh;
+        padding:28px 16px 40px;
+        justify-content:flex-start;
+    }
+
+    .back-link{
+        align-self:flex-start;
+        margin-bottom:22px;
+        min-height:44px;
+    }
+
+    .logo{
+        width:min(180px,58vw);
+        margin-bottom:24px;
+    }
+
+    .auth-card{
+        width:100%;
+        max-width:520px;
+        margin:22px auto;
+        padding:28px 20px;
+        border-radius:20px;
+    }
+
+    .auth-card form{
+        gap:18px;
+    }
+
+    .form-group label{
+        font-size:14px;
+    }
+
+    .input-group{
+        min-height:50px;
+    }
+
+    .input-group input{
+        min-width:0;
+        font-size:16px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+        min-height:50px;
+        padding:14px 16px;
+    }
+
+    .auth-footer{
+        margin-top:32px;
+        font-size:12px;
+    }
+}
+
+@media (max-width: 380px){
+    .access-page{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .auth-card{
+        padding:24px 16px;
+    }
+
+    .hero h1{
+        font-size:1.8rem;
+    }
+
+    .hero p{
+        font-size:15px;
+    }
+}
