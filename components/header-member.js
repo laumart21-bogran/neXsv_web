@@ -91,7 +91,7 @@ color:#1657B8;
 transition:.3s;
 }
 
-.nex-search-link{display:inline-flex;align-items:center;gap:6px}.nex-search-link i{font-size:13px}.nex-nav a:hover{
+.nex-nav a:hover{
 opacity:.75;
 }
 
@@ -209,15 +209,15 @@ body{
 padding-top:72px !important;
 }
 
-</style>
+@media(max-width:950px){.nex-header-main{gap:0}.nex-header-search{display:none}.nex-logo img{height:46px}}</style>
 
 <header class="nex-header">
 
-<a href="index.html" class="nex-logo">
+<div class="nex-header-main"><a href="index.html" class="nex-logo">
 
 <img src="logo.png" alt="NeXsv">
 
-</a>
+</a><div class="nex-header-search" id="nexHeaderSearch"><div class="nex-header-search-wrap"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input class="nex-header-search-input" id="nexHeaderSearchInput" type="search" placeholder="Buscar en tu comunidad..." autocomplete="off" aria-label="Buscar en tu comunidad"></div><div class="nex-header-search-results" id="nexHeaderSearchResults"></div></div></div>
 
 <button
 class="menu-toggle"
@@ -243,10 +243,6 @@ Beneficios
 
 <a href="negocios.html">
 Negocios
-</a>
-<a href="index.html#homeSearch" class="nex-search-link" aria-label="Buscar en neXsv" title="Buscar en neXsv">
-<i class="fa-solid fa-magnifying-glass"></i>
-<span>Buscar</span>
 </a>
 
 <a href="blog.html">
@@ -280,6 +276,11 @@ document
 
 `);
  
+const headerSearchScript = document.createElement("script");
+headerSearchScript.type = "module";
+headerSearchScript.src = "./js/pages/home-search.js?v=20261006-1";
+document.head.appendChild(headerSearchScript);
+
 const authScript = document.createElement("script");
 authScript.type = "module";
 authScript.textContent = `
