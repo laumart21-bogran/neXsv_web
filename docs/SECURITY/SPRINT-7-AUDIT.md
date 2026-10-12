@@ -24,6 +24,13 @@ Comprobar que visitante, miembro, propietario y administrador no puedan acceder 
    - Se añadió `037_sprint7_business_data_surface.sql` para devolver una lista explícita de campos comerciales.
    - Esto evita que una futura columna interna de `businesses` quede expuesta automáticamente.
 
+### Avance Sprint 7.3
+
+7. **Funciones administrativas**
+   - `is_business_owner(uuid)` quedó endurecida con `search_path = ''`.
+   - La RPC histórica `migrate_legacy_businesses(jsonb)` quedó endurecida con `search_path = ''` y mantiene validación de administrador.
+   - Se añadió `039_sprint7_admin_function_hardening.sql`.
+
 ### Hallazgos pendientes de validar en Supabase
 
 4. **RLS de tablas base**
@@ -74,3 +81,16 @@ No se considerará cerrado hasta comprobar:
 - Storage queda vinculado al propietario y al negocio.
 - Solo administradores pueden aprobar/rechazar solicitudes.
 - Existe una prueba reproducible de permisos permitidos y denegados.
+
+
+## Evidencia para cerrar la auditoría
+
+Se añadió `supabase/sql/040_sprint7_rls_diagnostic.sql`. Debe ejecutarse en el SQL Editor de Supabase para obtener el estado real de RLS, policies, grants y Storage. El repositorio por sí solo no puede confirmar ese estado.
+
+### Estado actual
+
+- 7.1 Hardening de RPC y superficie de datos: **implementado**.
+- 7.2 Vinculación de Storage con propietario + negocio: **implementado en migración**.
+- 7.3 Hardening de funciones administrativas: **implementado en migración**.
+- 7.4 RLS/grants reales de tablas base: **pendiente de ejecutar/verificar en Supabase**.
+- Cierre del Sprint 7: **NO CERRADO todavía**.
