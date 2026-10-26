@@ -122,7 +122,13 @@ class CommunityService {
         return await supabase.from("community_publications").update({ status: "ELIMINADA", updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", userId).select().single();
     }
 
-    async setConversationOrigin(conversationId, publicationId) { return await supabase.from("conversations").update({ origin_publication_id: publicationId, updated_at: new Date().toISOString() }).eq("id", conversationId).select().single(); }
+    async setConversationOrigin(conversationId, publicationId) {
+        const { data, error } = await supabase.rpc("set_conversation_origin", {
+            p_conversation_id: conversationId,
+            p_publication_id: publicationId
+        });
+        return { data, error };
+    }
 }
 
 export default new CommunityService();
