@@ -192,4 +192,88 @@ GRANT EXECUTE ON FUNCTION
     public.get_or_create_direct_conversation(uuid)
 TO authenticated;
 
+-- G. Restaurar las dos RPC que el frontend ya invoca y que no aparecen
+-- desplegadas en la base de datos de producción.
+-- Ambas validan la identidad y el acceso a las conversaciones.
+
+CREATE OR REPLACE FUNCTION public.get_other_conversation_participant(
+    p_conversation_id uuid
+)
+RETURNS TABLE (user_id uuid)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $function$
+DECLARE
+    v_user_id uuid := auth.uid();
+BEGIN
+    IF v_user_id IS NULL THEN
+        RAISE EXCEPTION 'AUTH_REQUIRED';
+    END IF;
+
+    IF NOT EXISTS (
+        SELECT 1
+          FROM public.conversation_participants AS cp
+         WHERE cp.conversation_id = p_conversation_id
+           AND cp.user_id = v_user_id
+    ) THEN
+        RAISE EXCEPTION 'CONVERSATION_ACCESS_DENIED';
+    END IF;
+
+    RETURN QUERY
+    SELECT cp.user_id
+      FROM public.conversation_participants AS cp
+     WHERE cp.conversation_id = p_conversation_id
+       AND cp.user_id <> v_user_id
+     LIMIT 1;
+END;
+$function$;
+
+REVOKE ALL ON FUNCTION
+    public.get_other_conversation_participant(uuid)
+FROM PUBLIC, anon;
+
+GRANT EXECUTE ON FUNCTION
+    public.get_other_conversation_participant(uuid)
+TO authenticated;
+
+
+CREATE OR REPLACE FUNCTION public.get_my_unread_message_count()
+RETURNS bigint
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $function$
+DECLARE
+    v_user_id uuid := auth.uid();
+    v_count bigint;
+BEGIN
+    IF v_user_id IS NULL THEN
+        RAISE EXCEPTION 'AUTH_REQUIRED';
+    END IF;
+
+    SELECT pg_catalog.count(*)
+      INTO v_count
+      FROM public.messages AS m
+      JOIN public.conversation_participants AS cp
+        ON cp.conversation_id = m.conversation_id
+     WHERE cp.user_id = v_user_id
+       AND m.sender_id <> v_user_id
+       AND m.created_at > COALESCE(
+           cp.last_read_at,
+           '-infinity'::timestamptz
+       );
+
+    RETURN COALESCE(v_count, 0);
+END;
+$function$;
+
+REVOKE ALL ON FUNCTION
+    public.get_my_unread_message_count()
+FROM PUBLIC, anon;
+
+GRANT EXECUTE ON FUNCTION
+    public.get_my_unread_message_count()
+TO authenticated;
+
 COMMIT;
