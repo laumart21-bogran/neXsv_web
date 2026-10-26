@@ -6,13 +6,17 @@
 
 BEGIN;
 
--- A. Los participantes se crean exclusivamente desde la RPC segura
--- get_or_create_direct_conversation(uuid), propiedad de un rol de confianza.
-REVOKE INSERT, UPDATE
+-- A. Permisos mínimos para participantes:
+-- usuarios autenticados pueden leer sus filas y actualizar solo last_read_at.
+-- La creación de participantes queda reservada a la RPC SECURITY DEFINER.
+REVOKE ALL PRIVILEGES
 ON TABLE public.conversation_participants
 FROM PUBLIC, anon, authenticated;
 
--- La interfaz solo necesita actualizar la fecha de lectura propia.
+GRANT SELECT
+ON TABLE public.conversation_participants
+TO authenticated;
+
 GRANT UPDATE (last_read_at)
 ON TABLE public.conversation_participants
 TO authenticated;
@@ -32,10 +36,15 @@ TO authenticated
 USING (user_id = (SELECT auth.uid()))
 WITH CHECK (user_id = (SELECT auth.uid()));
 
--- B. Las conversaciones se crean y modifican mediante funciones validadas.
-REVOKE INSERT, UPDATE
+-- B. Las conversaciones solo se leen directamente; creación y cambios
+-- quedan reservados a funciones validadas.
+REVOKE ALL PRIVILEGES
 ON TABLE public.conversations
 FROM PUBLIC, anon, authenticated;
+
+GRANT SELECT
+ON TABLE public.conversations
+TO authenticated;
 
 DROP POLICY IF EXISTS
     "Usuarios autenticados pueden crear conversaciones"
@@ -76,10 +85,15 @@ AFTER INSERT ON public.messages
 FOR EACH ROW
 EXECUTE FUNCTION public.touch_conversation_after_message();
 
--- D. No hay edición de mensajes implementada en el frontend.
--- Impedir cambios directos de sender_id/conversation_id/body/fechas.
-REVOKE UPDATE ON TABLE public.messages
+-- D. Permisos mínimos para mensajes: lectura y envío autenticados.
+-- No se permiten acceso anónimo ni edición/eliminación directa.
+REVOKE ALL PRIVILEGES
+ON TABLE public.messages
 FROM PUBLIC, anon, authenticated;
+
+GRANT SELECT, INSERT
+ON TABLE public.messages
+TO authenticated;
 
 DROP POLICY IF EXISTS
     "Usuarios pueden actualizar sus mensajes"
