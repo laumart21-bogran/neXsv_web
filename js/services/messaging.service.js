@@ -74,7 +74,7 @@ class MessagingService {
         const userId = userResult?.user?.id;
         if (!userId) return { data: null, error: new Error("Usuario no autenticado.") };
         const { data, error } = await supabase.from("messages").insert([{ conversation_id: conversationId, sender_id: userId, body: text }]).select().single();
-        if (!error) await supabase.from("conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
+        // updated_at se actualiza automáticamente mediante el trigger SQL al insertar el mensaje.
         return { data, error };
     }
 
