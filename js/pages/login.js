@@ -18,11 +18,16 @@ const togglePasswordIcon = document.getElementById("togglePasswordIcon");
 
 function getReturnUrl() {
     const value = new URLSearchParams(window.location.search).get("return");
-    if (!value) return "";
+    if (!value || value.startsWith("//") || value.includes("\\")) return "";
 
-    // Solo aceptamos rutas relativas internas para evitar open redirects.
-    if (/^https?:\/\//i.test(value) || value.startsWith("//")) return "";
-    return value;
+    try {
+        // Normaliza rutas antiguas relativas y solo permite destinos del mismo sitio.
+        const destination = new URL(value, window.location.origin);
+        if (destination.origin !== window.location.origin) return "";
+        return destination.pathname + destination.search + destination.hash;
+    } catch {
+        return "";
+    }
 }
 
 function getPostLoginUrl() {
