@@ -24,16 +24,9 @@ const toggleConfirmPasswordIcon = document.getElementById("toggleConfirmPassword
 
 function getReturnUrl() {
     const value = new URLSearchParams(window.location.search).get("return");
-    if (!value || value.startsWith("//") || value.includes("\\")) return "";
-
-    try {
-        // Normaliza rutas antiguas relativas y solo permite destinos del mismo sitio.
-        const destination = new URL(value, window.location.origin);
-        if (destination.origin !== window.location.origin) return "";
-        return destination.pathname + destination.search + destination.hash;
-    } catch {
-        return "";
-    }
+    if (!value) return "";
+    if (/^https?:\/\//i.test(value) || value.startsWith("//")) return "";
+    return value;
 }
 
 function showMessage(message, type = "error") {
