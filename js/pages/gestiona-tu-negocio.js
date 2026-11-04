@@ -14,7 +14,8 @@ function escapeHtml(value) {
   return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 function invitationUrl() {
-  return "gestiona-tu-negocio.html?token=" + encodeURIComponent(token);
+  // La ruta debe partir de la raíz del sitio, no de /acceso/.
+  return "/gestiona-tu-negocio.html?token=" + encodeURIComponent(token);
 }
 function showError() {
   loading.hidden = true; content.hidden = true; errorBox.hidden = false;
@@ -31,8 +32,8 @@ async function init() {
   if (business.logo) logo.innerHTML = '<img src="' + escapeHtml(business.logo) + '" alt="Logo de ' + escapeHtml(business.nombre || "negocio") + '">';
   loading.hidden = true; content.hidden = false;
   const returnUrl = invitationUrl();
-  document.getElementById("loginInviteLink").href = "acceso/login-usuario.html?return=" + encodeURIComponent(returnUrl);
-  document.getElementById("registerInviteLink").href = "acceso/registro.html?return=" + encodeURIComponent(returnUrl);
+  document.getElementById("loginInviteLink").href = "/acceso/login-usuario.html?return=" + encodeURIComponent(returnUrl);
+  document.getElementById("registerInviteLink").href = "/acceso/registro.html?return=" + encodeURIComponent(returnUrl);
   if (!AuthSession.isInitialized()) await AuthSession.initialize();
   if (AuthSession.isAuthenticated()) {
     loggedInActions.hidden = false;
@@ -52,6 +53,6 @@ async function acceptInvite() {
     return;
   }
   message.textContent = "¡Listo! Tu negocio ya está vinculado a tu cuenta.";
-  setTimeout(() => { window.location.href = "negocio.html?id=" + encodeURIComponent(result.data.business_id) + "&preview=owner"; }, 700);
+  setTimeout(() => { window.location.href = "/negocio.html?id=" + encodeURIComponent(result.data.business_id) + "&preview=owner"; }, 700);
 }
 init();
