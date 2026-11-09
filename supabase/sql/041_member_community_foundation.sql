@@ -331,9 +331,7 @@ begin
         select 1 from pg_publication where pubname = 'supabase_realtime'
     ) then
         foreach v_table in array array[
-            'notifications',
-            'community_publication_saves',
-            'community_publication_shares'
+            'notifications'
         ]
         loop
             if not exists (
