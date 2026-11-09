@@ -1772,5 +1772,15 @@ Términos y condiciones
 
 </footer>
     
+
+<script type="module">
+  import { supabase } from "./js/core/supabase-client.js";
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session?.user) window.location.replace("comunidad.html");
+  } catch (error) {
+    console.warn("No se pudo comprobar la sesión de neXsv:", error);
+  }
+</script>
 </body>
 </html>
