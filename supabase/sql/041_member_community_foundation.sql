@@ -317,6 +317,42 @@ create trigger trg_notify_community_comment
 after insert on public.community_publication_comments
 for each row execute function public.notify_community_comment();
 
+
+-- ----------------------------------------------------------
+-- 4. Realtime para notificaciones y métricas de engagement
+-- ----------------------------------------------------------
+-- La interfaz se suscribe a postgres_changes. Agregamos las tablas
+-- a supabase_realtime solo si aún no forman parte de la publicación.
+do $
+declare
+    v_table text;
+begin
+    if exists (
+        select 1 from pg_publication where pubname = 'supabase_realtime'
+    ) then
+        foreach v_table in array array[
+            'notifications',
+            'community_publication_saves',
+            'community_publication_shares'
+        ]
+        loop
+            if not exists (
+                select 1
+                from pg_publication_tables
+                where pubname = 'supabase_realtime'
+                  and schemaname = 'public'
+                  and tablename = v_table
+            ) then
+                execute format(
+                    'alter publication supabase_realtime add table public.%I',
+                    v_table
+                );
+            end if;
+        end loop;
+    end if;
+end;
+$;
+
 commit;
 
 -- ==========================================================
