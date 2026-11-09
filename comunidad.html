@@ -24,19 +24,21 @@
     <link rel="stylesheet" href="css/comunidad-replies.css?v=20260914-1">
     <link rel="stylesheet" href="css/community-business-context.css?v=20260914-1">
     <link rel="stylesheet" href="css/community-engagement.css?v=20260916-1">
+    <link rel="stylesheet" href="css/member-notifications-saved.css">
 </head>
 <body>
 <header class="community-topbar">
   <a href="index.html" class="community-logo" aria-label="neXsv Inicio"><img src="logo.png" alt="neXsv"></a>
-  <nav class="community-nav" aria-label="Navegación principal">
-    <a href="index.html"><i class="fa-solid fa-house"></i><span>Inicio</span></a>
+  <button class="community-menu-toggle" id="communityMenuToggle" type="button" aria-expanded="false" aria-controls="communityMainNav" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+  <nav class="community-nav" id="communityMainNav" aria-label="Navegación principal">
+    <a href="comunidad.html"><i class="fa-solid fa-users"></i><span>Comunidad</span></a>
     <a href="negocios.html"><i class="fa-solid fa-store"></i><span>Negocios</span></a>
 
   </nav>
   <div class="community-top-actions">
     <a href="buscar.html" class="community-icon-link" aria-label="Buscar negocios" title="Buscar negocios"><i class="fa-solid fa-magnifying-glass"></i></a>
     <a href="mensajes.html" class="community-icon-link" aria-label="Mensajes" title="Mensajes"><i class="fa-regular fa-comments"></i></a>
-    <button type="button" class="community-icon-link" id="communityNotificationBtn" aria-label="Notificaciones" title="Notificaciones"><i class="fa-regular fa-bell"></i></button>
+    <button type="button" class="community-icon-link" id="communityNotificationBtn" aria-label="Notificaciones" title="Notificaciones"><i class="fa-regular fa-bell"></i><span class="dashboard-icon-badge" id="communityNotificationBadge" hidden>0</span></button>
     <a href="dashboard.html" class="community-user" aria-label="Mi espacio" title="Mi espacio">
       <span class="community-user-avatar" id="communityHeaderAvatar"><span>M</span></span>
       <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
@@ -157,5 +159,14 @@
 <script type="module" src="js/pages/publication-link.js"></script>
 <script type="module" src="js/pages/community-business-context.js?v=20260928-1"></script>
 <script type="module" src="js/pages/community-engagement.js?v=20260916-1"></script>
+<script type="module" src="js/pages/notifications.js"></script>
+<script>
+document.getElementById("communityMenuToggle")?.addEventListener("click", function () {
+  const nav = document.getElementById("communityMainNav");
+  const expanded = this.getAttribute("aria-expanded") === "true";
+  this.setAttribute("aria-expanded", String(!expanded));
+  nav?.classList.toggle("is-open", !expanded);
+});
+</script>
 </body>
 </html>
