@@ -323,7 +323,7 @@ for each row execute function public.notify_community_comment();
 -- ----------------------------------------------------------
 -- La interfaz se suscribe a postgres_changes. Agregamos las tablas
 -- a supabase_realtime solo si aún no forman parte de la publicación.
-do $
+do $$
 declare
     v_table text;
 begin
@@ -349,7 +349,7 @@ begin
         end loop;
     end if;
 end;
-$;
+$$;
 
 commit;
 
