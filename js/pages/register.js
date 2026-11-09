@@ -113,9 +113,8 @@ async function handleRegister(event) {
         form.reset();
 
         const returnUrl = getReturnUrl();
-        const loginUrl = returnUrl
-            ? `${APP_CONFIG.routes.login}?return=${encodeURIComponent(returnUrl)}`
-            : APP_CONFIG.routes.login;
+        const destination = returnUrl || "../comunidad.html";
+        const loginUrl = `${APP_CONFIG.routes.login}?return=${encodeURIComponent(destination)}`;
 
         setTimeout(() => {
             window.location.href = loginUrl;
