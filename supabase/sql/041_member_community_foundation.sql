@@ -332,6 +332,8 @@ begin
     ) then
         foreach v_table in array array[
             'notifications'
+            'community_publication_saves',
+            'community_publication_shares'
         ]
         loop
             if not exists (
