@@ -28,7 +28,7 @@ function renderAvatar(photo, nombre) {
 }
 
 function updateProfileProgress(profile) {
-    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.colegio, profile?.foto];
+    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.profesion, profile?.colegio, profile?.foto];
     const completed = fields.filter(value => String(value ?? "").trim()).length;
     const percent = Math.round((completed / fields.length) * 100);
     const card = document.getElementById("profileProgress");
