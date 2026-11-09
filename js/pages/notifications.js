@@ -88,9 +88,12 @@ async function initialize() {
     document.addEventListener("click", async event => {
         const item = event.target.closest("[data-notification-id]");
         if (!item) return;
+        event.preventDefault();
+        const targetUrl = item.href;
         const { error } = await supabase.from("notifications").update({ read_at: new Date().toISOString() })
             .eq("id", item.dataset.notificationId).eq("recipient_id", currentUser.id);
         if (error) console.warn("No se pudo marcar la notificación como leída:", error);
+        window.location.assign(targetUrl);
     });
     await loadNotifications();
     try {
