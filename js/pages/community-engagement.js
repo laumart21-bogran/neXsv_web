@@ -4,7 +4,7 @@ let currentUser = null;
 let observer = null;
 
 function publicationUrl(id) {
-    return new URL(`comunidad.html?publicacion=${encodeURIComponent(id)}`, window.location.href).href;
+    return `https://verswqljdxiaveicdtfq.supabase.co/functions/v1/share-publication?id=${encodeURIComponent(id)}`;
 }
 
 async function getSaveState(ids) {
