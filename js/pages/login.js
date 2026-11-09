@@ -26,7 +26,7 @@ function getReturnUrl() {
 }
 
 function getPostLoginUrl() {
-    return getReturnUrl() || APP_CONFIG.routes.dashboard;
+    return getReturnUrl() || "../comunidad.html";
 }
 
 function syncRegisterLink() {
