@@ -244,6 +244,9 @@ Beneficios
 <a href="negocios.html">
 Negocios
 </a>
+<a href="comunidad.html">
+Comunidad
+</a>
 
 <a href="blog.html">
 Blog
