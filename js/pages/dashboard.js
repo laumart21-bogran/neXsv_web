@@ -90,24 +90,13 @@ function initializeMoreMenu() {
     });
 }
 
-function initializeNotificationPopover() {
-    const button = document.getElementById("notificationBtn");
-    const popover = document.getElementById("notificationPopover");
-    if (!button || !popover) return;
-    button.addEventListener("click", event => { event.stopPropagation(); popover.hidden = !popover.hidden; });
-    popover.addEventListener("click", event => event.stopPropagation());
-    document.addEventListener("click", () => { popover.hidden = true; });
-}
-
 async function refreshUnreadCount() {
     const { data, error } = await supabase.rpc("get_my_unread_message_count");
     if (error) { console.warn("No se pudo actualizar el contador de mensajes:", error); return 0; }
     const count = Number(data || 0);
     const badge = document.getElementById("messageBadge");
-    const notificationBadge = document.getElementById("notificationBadge");
-    [badge, notificationBadge].forEach(element => { if (!element) return; element.textContent = count > 99 ? "99+" : String(count); element.hidden = count === 0; });
+    if (badge) { badge.textContent = count > 99 ? "99+" : String(count); badge.hidden = count === 0; }
     setText("unreadCount", count);
-    setText("notificationSummary", count ? `Tienes ${count} mensaje${count === 1 ? "" : "s"} sin leer.` : "No tienes mensajes nuevos.");
     return count;
 }
 
@@ -315,7 +304,6 @@ async function loadBusinessManagementInvite() {
 async function initialize() {
     initializeMoreMenu();
     initializeLogout();
-    initializeNotificationPopover();
     initializeInlineComposer();
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
     if (!AuthSession.isAuthenticated()) { window.location.href = APP_CONFIG.routes.login; return; }
