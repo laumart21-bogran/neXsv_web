@@ -36,7 +36,7 @@ function render(items) {
     });
     ["notificationSummary", "communityNotificationSummary"].forEach(id => {
         const summary = document.getElementById(id);
-        if (summary) summary.textContent = unread ? `Tienes ${unread} notificación(es) sin leer.` : "No tienes novedades.";
+        if (summary) summary.textContent = unread ? `Tienes ${unread} notificación(es) sin leer.` : (items.length ? "No tienes notificaciones sin leer." : "Todavía no tienes notificaciones.");
     });
     ["notificationList", "communityNotificationList"].forEach(id => {
         const list = document.getElementById(id);
