@@ -12,10 +12,11 @@ function escapeHtml(value: unknown): string {
 }
 
 function htmlResponse(body: string, status = 200): Response {
-  return new Response(body, {
-    status,
-    headers: { "content-type": "text/html; charset=utf-8", "cache-control": "public, max-age=300" }
-  });
+  const headers = new Headers();
+  headers.set("Content-Type", "text/html; charset=UTF-8");
+  headers.set("Cache-Control", "public, max-age=300");
+  headers.set("X-Content-Type-Options", "nosniff");
+  return new Response(body, { status, headers });
 }
 
 Deno.serve(async (request: Request) => {
