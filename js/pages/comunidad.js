@@ -220,8 +220,51 @@ function renderPublications(publications) {
     if (deepLinkedPublicationId) focusDeepLinkedPublication();
 }
 
+function setSharedPublicationView(active) {
+    const page = document.querySelector(".community-page");
+    page?.classList.toggle("is-shared-publication-view", active);
+    const intro = document.querySelector(".community-intro");
+    if (!intro) return;
+    let backLink = document.getElementById("backToCommunityLink");
+    if (active && !backLink) {
+        backLink = document.createElement("a");
+        backLink.id = "backToCommunityLink";
+        backLink.className = "community-secondary-btn shared-publication-back";
+        backLink.href = "/comunidad.html";
+        backLink.addEventListener("click", event => {
+            event.preventDefault();
+            const communityUrl = new URL("/comunidad.html", window.location.origin);
+            window.location.assign(communityUrl.href);
+        });
+        backLink.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Ver toda la comunidad';
+        intro.querySelector("div")?.appendChild(backLink);
+    }
+    if (backLink) backLink.hidden = !active;
+    const heading = intro.querySelector("h2");
+    const description = intro.querySelector("p");
+    if (heading) heading.textContent = active ? "Publicación compartida" : "Lo que comparte nuestra comunidad";
+    if (description) description.textContent = active
+        ? "Estás viendo el contenido exacto que compartieron contigo."
+        : "Descubre lo que recomiendan, buscan y comparten las personas de tu entorno.";
+}
+
 async function loadPublications() {
-    publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`;
+    publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando publicación...</span></div>`;
+    if (deepLinkedPublicationId) {
+        setSharedPublicationView(true);
+        const { data, error } = await CommunityService.getPublicationById(deepLinkedPublicationId);
+        if (error || !data || data.status !== "PUBLICADA") {
+            publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon warning"><i class="fa-solid fa-link-slash"></i></div><h2>Esta publicación ya no está disponible</h2><p>Puede que haya sido eliminada o que ya no esté publicada.</p><a class="community-secondary-btn" href="comunidad.html">Ver toda la comunidad</a></div>`;
+            return;
+        }
+        const publications = await enrichPublications([data]);
+        const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts([data.id]);
+        if (commentCountError) console.warn("No se pudo cargar el conteo de comentarios:", commentCountError);
+        publications[0].commentCount = Number(commentCounts?.[data.id] || 0);
+        renderPublications(publications);
+        return;
+    }
+    setSharedPublicationView(false);
     // La Comunidad es pública para todos los miembros. El negocio activo
     // solo determina a nombre de quién se publica; no limita las publicaciones visibles.
     const { data, error } = await CommunityService.getPublications({ type: currentFilter });
