@@ -6,7 +6,6 @@
  */
 
 import AuthService from "../auth/auth.service.js";
-import ProfileService from "../services/profile.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
 const form = document.getElementById("registerForm");
@@ -91,17 +90,6 @@ async function registerUser(formData) {
     return result.data.user;
 }
 
-async function createUserProfile(user, formData) {
-    const result = await ProfileService.createProfile({
-        authUserId: user.id,
-        nombre: formData.nombre,
-        apellido: formData.apellido
-    });
-
-    if (result.error) throw result.error;
-    return result.data;
-}
-
 async function handleRegister(event) {
     event.preventDefault();
     clearMessage();
@@ -113,7 +101,6 @@ async function handleRegister(event) {
         setLoading(true);
 
         const user = await registerUser(formData);
-        await createUserProfile(user, formData);
 
         showMessage("Cuenta creada correctamente. Ahora confirma tu correo e inicia sesión.", "success");
         form.reset();
