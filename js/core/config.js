@@ -19,7 +19,7 @@ export const APP_CONFIG = {
 
     },
 
-    routes: {
+    push: { vapidPublicKey: "" },\n\n    routes: {
 
         login: "/acceso/login-usuario.html",
 
