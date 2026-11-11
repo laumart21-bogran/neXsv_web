@@ -421,6 +421,8 @@
   }
 }
 
+
+/* Navegación móvil y anclaje del panel de notificaciones */
 .community-menu-toggle{display:none;width:38px;height:38px;border:1px solid var(--nx-border);border-radius:11px;background:#fff;color:var(--nx-blue);font-size:17px;cursor:pointer}
 @media(max-width:760px){
   .community-topbar{position:relative;z-index:1001}
@@ -433,112 +435,3 @@
 }
 #communityNotificationPopover{position:fixed;top:78px;right:18px}
 @media(max-width:600px){#communityNotificationPopover{top:68px;right:8px}}
-
-
-/* Vista directa de una publicación compartida */
-.community-page.is-shared-publication-view .community-business-rail,
-.community-page.is-shared-publication-view .community-toolbar,
-.community-page.is-shared-publication-view .community-sidebar {
-    display: none !important;
-}
-.community-page.is-shared-publication-view .community-layout {
-    grid-template-columns: minmax(0, 1fr);
-    max-width: 900px;
-    margin-inline: auto;
-}
-.community-page.is-shared-publication-view .community-feed-column {
-    width: 100%;
-    min-width: 0;
-}
-.shared-publication-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-    text-decoration: none;
-}
-.shared-publication-back[hidden] {
-    display: none !important;
-}
-
-
-/* Diálogo de compartir — identidad visual de acceso neXsv */
-.nexsv-share-overlay{
-  position:fixed;inset:0;z-index:10000;
-  display:grid;place-items:center;
-  padding:18px;
-  background:rgba(29,42,58,.58);
-  backdrop-filter:blur(5px);
-  -webkit-backdrop-filter:blur(5px);
-}
-.nexsv-share-card{
-  width:min(100%,430px);
-  padding:28px;
-  border:1px solid rgba(22,87,184,.10);
-  border-radius:26px;
-  background:#fff;
-  color:#1D2A3A;
-  box-shadow:0 22px 60px rgba(22,87,184,.18);
-  font-family:'Montserrat',sans-serif;
-  animation:nexsvShareIn .2s ease-out;
-}
-.nexsv-share-mark{
-  width:48px;height:48px;margin-bottom:16px;
-  display:grid;place-items:center;
-  border-radius:15px;
-  background:linear-gradient(135deg,#1657B8,#19C2C6);
-  color:#fff;font-size:19px;
-}
-.nexsv-share-card h2{
-  margin:0 0 8px;color:#3155B6;
-  font-size:21px;font-weight:800;letter-spacing:-.3px;
-}
-.nexsv-share-card>p:not(.nexsv-share-feedback){
-  margin:0 0 20px;color:#667085;
-  font-size:13px;line-height:1.6;
-}
-.nexsv-share-action{
-  display:flex;align-items:center;gap:12px;
-  width:100%;min-height:54px;margin:0 0 10px;padding:13px 16px;
-  border:1px solid #D8DFEA;border-radius:14px;
-  background:#fff;color:#1657B8;
-  font:600 13px 'Montserrat',sans-serif;text-align:left;
-  cursor:pointer;transition:.2s;
-}
-.nexsv-share-action i{width:20px;text-align:center;font-size:16px}
-.nexsv-share-action:hover:not(:disabled){
-  border-color:#19C2C6;background:#F2FBFC;
-  transform:translateY(-1px);
-}
-.nexsv-share-action-primary{
-  min-height:48px;
-  padding:11px 16px;
-  border:1px solid #F0C12B;
-  background:#F7C531;
-  color:#1D2A3A;
-  font-weight:600;
-  box-shadow:0 4px 10px rgba(247,197,49,.18);
-}
-.nexsv-share-action-primary:hover:not(:disabled){
-  border-color:#E5B51F;
-  background:#F2BE27;
-  box-shadow:0 5px 12px rgba(247,197,49,.22);
-  transform:translateY(-1px);
-}
-.nexsv-share-action:disabled{opacity:.55;cursor:wait}
-.nexsv-share-feedback{
-  min-height:18px;margin:8px 0 4px;
-  color:#277642;font-size:11px;line-height:1.5;font-weight:600;
-}
-.nexsv-share-cancel{
-  width:100%;min-height:44px;margin-top:4px;
-  border:0;border-radius:14px;background:#FFF9E8;
-  color:#7B610B;font:700 13px 'Montserrat',sans-serif;cursor:pointer;
-}
-.nexsv-share-cancel:hover{background:#F7C531;color:#1D2A3A}
-@keyframes nexsvShareIn{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(max-width:480px){
-  .nexsv-share-overlay{padding:14px}
-  .nexsv-share-card{padding:24px 20px;border-radius:22px}
-  .nexsv-share-card h2{font-size:19px}
-}
