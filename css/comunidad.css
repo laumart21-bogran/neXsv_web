@@ -433,3 +433,30 @@
 }
 #communityNotificationPopover{position:fixed;top:78px;right:18px}
 @media(max-width:600px){#communityNotificationPopover{top:68px;right:8px}}
+
+
+/* Vista directa de una publicación compartida */
+.community-page.is-shared-publication-view .community-business-rail,
+.community-page.is-shared-publication-view .community-toolbar,
+.community-page.is-shared-publication-view .community-sidebar {
+    display: none !important;
+}
+.community-page.is-shared-publication-view .community-layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 900px;
+    margin-inline: auto;
+}
+.community-page.is-shared-publication-view .community-feed-column {
+    width: 100%;
+    min-width: 0;
+}
+.shared-publication-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    text-decoration: none;
+}
+.shared-publication-back[hidden] {
+    display: none !important;
+}
