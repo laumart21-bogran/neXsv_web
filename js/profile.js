@@ -31,7 +31,7 @@ function setAvatar(photo, name) {
 }
 
 function updateProgress(profile) {
-    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.colegio, profile?.foto];
+    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.profesion, profile?.colegio, profile?.foto];
     const completed = fields.filter(value => String(value ?? "").trim()).length;
     const percent = Math.round((completed / fields.length) * 100);
     const fill = document.getElementById("profileProgressFill");
@@ -87,6 +87,8 @@ async function loadProfile() {
     document.getElementById("correo").value = user.email ?? "";
     document.getElementById("telefono").value = currentProfile.telefono ?? "";
     document.getElementById("ciudad").value = currentProfile.ciudad ?? "";
+    const professionInput = document.getElementById("profesion");
+    if (professionInput) professionInput.value = currentProfile.profesion ?? "";
     const schoolSelect = document.getElementById("colegio");
     const schoolOther = document.getElementById("colegioOtro");
     const storedSchool = currentProfile.colegio ?? "";
@@ -138,8 +140,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const select = document.getElementById("colegio");
         const other = document.getElementById("colegioOtro");
         const colegio = select.value === "Otro" ? other.value.trim() : select.value;
+        const profesion = document.getElementById("profesion")?.value.trim() || null;
         if (select.value === "Otro" && !colegio) { if (message) message.textContent = "Escribe el nombre de tu colegio."; other.focus(); return; }
-        const resultado = await profileService.updateProfile(currentUser.id, { nombre, apellido, telefono, ciudad, colegio });
+        const resultado = await profileService.updateProfile(currentUser.id, { nombre, apellido, telefono, ciudad, colegio, profesion });
         if (resultado.error) { if (message) message.textContent = "No se pudieron guardar los cambios."; return; }
         currentProfile = { ...currentProfile, ...resultado.data };
         const nombreActualizado = `${nombre} ${apellido}`.trim() || "Miembro";

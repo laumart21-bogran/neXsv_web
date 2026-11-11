@@ -6,7 +6,6 @@
  */
 
 import AuthService from "../auth/auth.service.js";
-import ProfileService from "../services/profile.service.js";
 import { APP_CONFIG } from "../core/config.js";
 
 const form = document.getElementById("registerForm");
@@ -25,8 +24,14 @@ const toggleConfirmPasswordIcon = document.getElementById("toggleConfirmPassword
 function getReturnUrl() {
     const value = new URLSearchParams(window.location.search).get("return");
     if (!value) return "";
-    if (/^https?:\/\//i.test(value) || value.startsWith("//")) return "";
-    return value;
+    try {
+        const target = new URL(value, window.location.href);
+        if (target.origin !== window.location.origin) return "";
+        if (!["http:", "https:"].includes(target.protocol)) return "";
+        return target.pathname + target.search + target.hash;
+    } catch {
+        return "";
+    }
 }
 
 function showMessage(message, type = "error") {
@@ -85,17 +90,6 @@ async function registerUser(formData) {
     return result.data.user;
 }
 
-async function createUserProfile(user, formData) {
-    const result = await ProfileService.createProfile({
-        authUserId: user.id,
-        nombre: formData.nombre,
-        apellido: formData.apellido
-    });
-
-    if (result.error) throw result.error;
-    return result.data;
-}
-
 async function handleRegister(event) {
     event.preventDefault();
     clearMessage();
@@ -107,15 +101,13 @@ async function handleRegister(event) {
         setLoading(true);
 
         const user = await registerUser(formData);
-        await createUserProfile(user, formData);
 
         showMessage("Cuenta creada correctamente. Ahora confirma tu correo e inicia sesión.", "success");
         form.reset();
 
         const returnUrl = getReturnUrl();
-        const loginUrl = returnUrl
-            ? `${APP_CONFIG.routes.login}?return=${encodeURIComponent(returnUrl)}`
-            : APP_CONFIG.routes.login;
+        const destination = returnUrl || "../comunidad.html";
+        const loginUrl = `${APP_CONFIG.routes.login}?return=${encodeURIComponent(destination)}`;
 
         setTimeout(() => {
             window.location.href = loginUrl;

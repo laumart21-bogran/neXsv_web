@@ -19,10 +19,14 @@ const togglePasswordIcon = document.getElementById("togglePasswordIcon");
 function getReturnUrl() {
     const value = new URLSearchParams(window.location.search).get("return");
     if (!value) return "";
-
-    // Solo aceptamos rutas relativas internas para evitar open redirects.
-    if (/^https?:\/\//i.test(value) || value.startsWith("//")) return "";
-    return value;
+    try {
+        const target = new URL(value, window.location.href);
+        if (target.origin !== window.location.origin) return "";
+        if (!["http:", "https:"].includes(target.protocol)) return "";
+        return target.pathname + target.search + target.hash;
+    } catch {
+        return "";
+    }
 }
 
 function getPostLoginUrl() {

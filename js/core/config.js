@@ -9,13 +9,13 @@ export const APP_CONFIG = {
 
     appName: "neXsv",
 
-    environment: "development",
+    environment: "test",
 
     supabase: {
 
-        url: "https://verswqljdxiaveicdtfq.supabase.co",
+        url: "https://hxlkshoexhbhsebkzjbk.supabase.co",
 
-        anonKey: "sb_publishable_4jUefYv7Yd6Bw8q31IPTQQ_5eBgILOp"
+        anonKey: "sb_publishable_21aLKMz56y4xL7SwzkArPw_4itECn0b"
 
     },
 

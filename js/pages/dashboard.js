@@ -28,7 +28,7 @@ function renderAvatar(photo, nombre) {
 }
 
 function updateProfileProgress(profile) {
-    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.colegio, profile?.foto];
+    const fields = [profile?.nombre, profile?.apellido, profile?.telefono, profile?.ciudad, profile?.profesion, profile?.colegio, profile?.foto];
     const completed = fields.filter(value => String(value ?? "").trim()).length;
     const percent = Math.round((completed / fields.length) * 100);
     const card = document.getElementById("profileProgress");
@@ -90,24 +90,13 @@ function initializeMoreMenu() {
     });
 }
 
-function initializeNotificationPopover() {
-    const button = document.getElementById("notificationBtn");
-    const popover = document.getElementById("notificationPopover");
-    if (!button || !popover) return;
-    button.addEventListener("click", event => { event.stopPropagation(); popover.hidden = !popover.hidden; });
-    popover.addEventListener("click", event => event.stopPropagation());
-    document.addEventListener("click", () => { popover.hidden = true; });
-}
-
 async function refreshUnreadCount() {
     const { data, error } = await supabase.rpc("get_my_unread_message_count");
     if (error) { console.warn("No se pudo actualizar el contador de mensajes:", error); return 0; }
     const count = Number(data || 0);
     const badge = document.getElementById("messageBadge");
-    const notificationBadge = document.getElementById("notificationBadge");
-    [badge, notificationBadge].forEach(element => { if (!element) return; element.textContent = count > 99 ? "99+" : String(count); element.hidden = count === 0; });
+    if (badge) { badge.textContent = count > 99 ? "99+" : String(count); badge.hidden = count === 0; }
     setText("unreadCount", count);
-    setText("notificationSummary", count ? `Tienes ${count} mensaje${count === 1 ? "" : "s"} sin leer.` : "No tienes mensajes nuevos.");
     return count;
 }
 
@@ -206,6 +195,36 @@ async function loadRecommendedBusinesses() {
     container.innerHTML = businesses.length ? businesses.map(recommendedBusinessCard).join("") : `<div class="feed-placeholder">Aún no hay negocios publicados.</div>`;
 }
 
+async function loadSavedPublications() {
+    const container = document.getElementById("mySavedPublications");
+    if (!container) return;
+    container.innerHTML = `<div class="feed-placeholder">Cargando tus guardados...</div>`;
+    const { data, error } = await supabase.rpc("get_my_saved_community_publications");
+    if (error) {
+        console.warn("No se pudieron cargar las publicaciones guardadas:", error);
+        container.innerHTML = `<div class="feed-placeholder">No pudimos cargar tus guardados. Inténtalo nuevamente más tarde.</div>`;
+        return;
+    }
+    const publications = data || [];
+    if (!publications.length) {
+        container.innerHTML = `<div class="feed-placeholder">Todavía no has guardado publicaciones. Usa el botón «Guardar» en Comunidad para conservar las que te interesen.</div>`;
+        return;
+    }
+    const ids = publications.map(item => item.id);
+    const { data: images, error: imagesError } = await supabase.from("community_publication_images")
+        .select("publication_id, public_url, sort_order").in("publication_id", ids).order("sort_order", { ascending: true });
+    if (imagesError) console.warn("No se pudieron cargar las imágenes de los guardados:", imagesError);
+    const imagesByPublication = new Map();
+    (images || []).forEach(image => {
+        if (!imagesByPublication.has(image.publication_id)) imagesByPublication.set(image.publication_id, []);
+        imagesByPublication.get(image.publication_id).push(image);
+    });
+    container.innerHTML = publications.map(publication => {
+        const card = publicationCard({ ...publication, images: imagesByPublication.get(publication.id) || [] });
+        return `<a class="dashboard-saved-link" href="comunidad.html?publicacion=${encodeURIComponent(publication.id)}">${card}</a>`;
+    }).join("");
+}
+
 async function loadDashboardCommunity() {
     const result = await CommunityService.getPublications({ type: "TODAS", limit: 3 });
     if (result.error) return;
@@ -285,7 +304,6 @@ async function loadBusinessManagementInvite() {
 async function initialize() {
     initializeMoreMenu();
     initializeLogout();
-    initializeNotificationPopover();
     initializeInlineComposer();
     if (!AuthSession.isInitialized()) await AuthSession.initialize();
     if (!AuthSession.isAuthenticated()) { window.location.href = APP_CONFIG.routes.login; return; }
@@ -303,7 +321,7 @@ async function initialize() {
     renderAvatar(perfil?.foto, nombreCompleto);
     updateProfileProgress(perfil || {});
 
-    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadBusinessManagementInvite(), loadRecommendedBusinesses(), loadDashboardCommunity()]);
+    await Promise.all([refreshUnreadCount(), loadBusinesses(), loadBusinessManagementInvite(), loadRecommendedBusinesses(), loadDashboardCommunity(), loadSavedPublications()]);
     subscribeDashboardRealtime();
 }
 

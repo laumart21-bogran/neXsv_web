@@ -1,0 +1,2 @@
+[functions.share-publication]
+verify_jwt = false
