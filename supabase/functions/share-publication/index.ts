@@ -50,6 +50,20 @@ Deno.serve(async (request: Request) => {
   const destination = `https://nexsv.com/comunidad.html?publicacion=${encodeURIComponent(id)}`;
   const shareUrl = `https://verswqljdxiaveicdtfq.supabase.co/functions/v1/share-publication?id=${encodeURIComponent(id)}`;
 
+  // Social crawlers need the Open Graph HTML. Human browsers should receive
+  // a real HTTP redirect instead of relying on HTML/JavaScript refresh.
+  const userAgent = request.headers.get("user-agent") || "";
+  const isSocialCrawler = /WhatsApp|facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|TelegramBot|Discordbot|SkypeUriPreview|Pinterestbot/i.test(userAgent);
+  if (!isSocialCrawler) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        "Location": destination,
+        "Cache-Control": "no-store"
+      }
+    });
+  }
+
   return htmlResponse(`<!doctype html>
 <html lang="es">
 <head>
