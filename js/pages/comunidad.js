@@ -230,7 +230,12 @@ function setSharedPublicationView(active) {
         backLink = document.createElement("a");
         backLink.id = "backToCommunityLink";
         backLink.className = "community-secondary-btn shared-publication-back";
-        backLink.href = "comunidad.html";
+        backLink.href = "/comunidad.html";
+        backLink.addEventListener("click", event => {
+            event.preventDefault();
+            const communityUrl = new URL("/comunidad.html", window.location.origin);
+            window.location.assign(communityUrl.href);
+        });
         backLink.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Ver toda la comunidad';
         intro.querySelector("div")?.appendChild(backLink);
     }
