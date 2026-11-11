@@ -160,57 +160,100 @@ async function buildStoryImage(card) {
     return new File([blob], "nexsv-publicacion.png", { type: "image/png" });
 }
 
+async function copyPublicationLink(url) {
+    if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+        return true;
+    }
+    window.prompt("Copia el enlace de esta publicación:", url);
+    return false;
+}
+
+function showShareOptions({ url, title, storyFile, button, id }) {
+    document.getElementById("nexsvShareDialog")?.remove();
+    const dialog = document.createElement("div");
+    dialog.id = "nexsvShareDialog";
+    dialog.style.cssText = "position:fixed;inset:0;z-index:10000;background:rgba(10,20,35,.62);display:grid;place-items:center;padding:18px";
+    dialog.innerHTML = `
+      <section role="dialog" aria-modal="true" aria-labelledby="nexsvShareTitle" style="background:#fff;color:#183052;width:min(100%,420px);border-radius:18px;padding:22px;box-shadow:0 18px 60px #0005;font-family:inherit">
+        <h2 id="nexsvShareTitle" style="margin:0 0 8px;font-size:20px">Compartir publicación</h2>
+        <p style="margin:0 0 18px;color:#64748b;font-size:14px">Elige cómo quieres compartir este contenido.</p>
+        <button type="button" data-share-image style="width:100%;padding:13px;margin-bottom:9px;border:0;border-radius:10px;background:#173b68;color:white;font-weight:700">Compartir imagen para historias</button>
+        <button type="button" data-share-link style="width:100%;padding:13px;margin-bottom:9px;border:1px solid #d6deea;border-radius:10px;background:#f7f9fc;color:#173b68;font-weight:700">Compartir enlace</button>
+        <button type="button" data-copy-link style="width:100%;padding:13px;margin-bottom:9px;border:1px solid #d6deea;border-radius:10px;background:#f7f9fc;color:#173b68;font-weight:700">Copiar enlace</button>
+        <button type="button" data-close style="width:100%;padding:10px;border:0;background:transparent;color:#64748b">Cancelar</button>
+      </section>`;
+    document.body.appendChild(dialog);
+    const close = () => dialog.remove();
+    dialog.querySelector("[data-close]").addEventListener("click", close);
+    dialog.addEventListener("click", event => { if (event.target === dialog) close(); });
+    dialog.querySelector("[data-share-image]").addEventListener("click", async () => {
+        try {
+            if (!storyFile) throw new Error("La imagen no está disponible.");
+            if (!navigator.share || !navigator.canShare?.({ files: [storyFile] })) {
+                const objectUrl = URL.createObjectURL(storyFile);
+                const a = document.createElement("a");
+                a.href = objectUrl;
+                a.download = storyFile.name;
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+                close();
+                return;
+            }
+            await navigator.share({ files: [storyFile], title });
+            close();
+            recordShare(id, button);
+        } catch (error) {
+            if (error?.name !== "AbortError") console.warn("No se pudo compartir la imagen:", error);
+        }
+    });
+    dialog.querySelector("[data-share-link]").addEventListener("click", async () => {
+        try {
+            if (navigator.share) await navigator.share({ title, text: "Mira esta publicación en neXsv.", url });
+            else await copyPublicationLink(url);
+            close();
+            recordShare(id, button);
+        } catch (error) {
+            if (error?.name !== "AbortError") console.warn("No se pudo compartir el enlace:", error);
+        }
+    });
+    dialog.querySelector("[data-copy-link]").addEventListener("click", async event => {
+        const copyButton = event.currentTarget;
+        try {
+            const copied = await copyPublicationLink(url);
+            copyButton.textContent = copied ? "¡Enlace copiado!" : "Copia el enlace del cuadro";
+            if (copied) recordShare(id, button);
+        } catch (error) {
+            window.prompt("Copia el enlace de esta publicación:", url);
+        }
+    });
+}
+
+async function recordShare(id, button) {
+    const { error } = await supabase.rpc("record_community_publication_share", { p_publication_id: id });
+    if (error) console.warn("No se pudo registrar el compartido:", error);
+    const original = button.innerHTML;
+    button.innerHTML = `<i class="fa-solid fa-check" aria-hidden="true"></i> Compartido`;
+    setTimeout(() => { if (button.isConnected) button.innerHTML = original; }, 1600);
+}
+
 async function sharePublication(button) {
     const id = button.dataset.publicationId;
     if (!id) return;
     const url = publicationUrl(id);
     const card = document.querySelector(`#publicationList [data-publication-id="${CSS.escape(id)}"]`);
     const title = card?.querySelector("h2")?.textContent?.trim() || "Publicación en neXsv";
-    const text = "Mira esta publicación en neXsv.";
-    let shared = false;
     button.disabled = true;
     try {
         let storyFile = null;
-        if (card && navigator.share && navigator.canShare) {
-            try {
-                storyFile = await buildStoryImage(card);
-            } catch (error) {
-                console.warn("La imagen para historias no pudo generarse; se compartirá el enlace:", error);
-            }
+        if (card) {
+            try { storyFile = await buildStoryImage(card); }
+            catch (error) { console.warn("No se pudo generar la imagen para historias:", error); }
         }
-
-        const shareData = storyFile ? { title, text, url, files: [storyFile] } : { title, text, url };
-        if (navigator.share && (!storyFile || navigator.canShare({ files: [storyFile] }))) {
-            await navigator.share(shareData);
-            shared = true;
-        } else if (navigator.share) {
-            await navigator.share({ title, text, url });
-            shared = true;
-        } else if (navigator.clipboard?.writeText) {
-            await navigator.clipboard.writeText(url);
-            if (storyFile) {
-                const imageUrl = URL.createObjectURL(storyFile);
-                const download = document.createElement("a");
-                download.href = imageUrl;
-                download.download = storyFile.name;
-                download.click();
-                URL.revokeObjectURL(imageUrl);
-            }
-            shared = true;
-        } else {
-            shared = window.prompt("Copia este enlace:", url) !== null;
-        }
-    } catch (error) {
-        if (error?.name !== "AbortError") console.warn("No se pudo compartir la publicación:", error);
+        showShareOptions({ url, title, storyFile, button, id });
     } finally {
         button.disabled = false;
     }
-    if (!shared) return;
-    const { error } = await supabase.rpc("record_community_publication_share", { p_publication_id: id });
-    if (error) console.warn("No se pudo registrar el compartido:", error);
-    const original = button.innerHTML;
-    button.innerHTML = `<i class="fa-solid fa-check" aria-hidden="true"></i> Compartido`;
-    setTimeout(() => { if (button.isConnected) button.innerHTML = original; }, 1600);
 }
 
 function bindDelegatedActions() {
