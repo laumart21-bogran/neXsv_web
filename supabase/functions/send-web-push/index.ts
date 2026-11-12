@@ -13,7 +13,7 @@ Deno.serve(async(req:Request)=>{
  if(req.headers.get("x-nexsv-push-hook")!==secrets.nexsv_push_hook_secret)return reply({error:"Unauthorized"},401);
  let body:{notification_id?:string};try{body=await req.json()}catch{return reply({error:"Invalid payload"},400)}
  if(!body.notification_id)return reply({error:"Missing notification id"},400);
- const {data:n,error:nError}=await admin.from("notifications").select("id,recipient_id,notification_type,title,body,publication_id,conversation_id").eq("id",body.notification_id).maybeSingle();
+ const {data:n,error:nError}=await admin.from("notifications").select("id,recipient_id,notification_type,publication_id,conversation_id").eq("id",body.notification_id).maybeSingle();
  if(nError||!n)return reply({error:"Notification not found"},404);
  if(!["MESSAGE","COMMENT","SAVE"].includes(n.notification_type))return reply({skipped:true});
  const {data:subs,error:sError}=await admin.from("push_subscriptions").select("id,endpoint,p256dh,auth").eq("user_id",n.recipient_id);
@@ -21,10 +21,12 @@ Deno.serve(async(req:Request)=>{
  if(!subs?.length)return reply({sent:0,reason:"No registered devices"});
  const vapid={subject:"mailto:soporte@nexsv.com",publicKey:VAPID_PUBLIC_KEY,privateKey:secrets.nexsv_vapid_private_key};
  const url=n.conversation_id?"/mensajes.html":n.publication_id?"/comunidad.html?publicacion="+encodeURIComponent(n.publication_id):"/comunidad.html";
+ const title=n.notification_type==="MESSAGE"?"Nuevo mensaje en neXsv":"Novedades en tu comunidad";
+ const payloadData={title,body:"Abre neXsv para ver la novedad.",url,tag:"nexsv-"+n.notification_type.toLowerCase()+"-"+n.id};
  let sent=0,expired=0;
  const results=await Promise.allSettled(subs.map(async(row)=>{
   const subscription={endpoint:row.endpoint,expirationTime:null,keys:{p256dh:row.p256dh,auth:row.auth}};
-  const payload=await buildPushPayload({data:{title:n.title||"Novedades en neXsv",body:n.body||"Tienes una nueva actividad en tu comunidad.",url,tag:"nexsv-"+n.notification_type.toLowerCase()+"-"+n.id},options:{ttl:43200,urgency:"normal"}},subscription,vapid);
+  const payload=await buildPushPayload({data:payloadData,options:{ttl:43200,urgency:"normal"}},subscription,vapid);
   const res=await fetch(row.endpoint,payload);
   if(res.status===404||res.status===410){await admin.from("push_subscriptions").delete().eq("id",row.id);expired++;return}
   if(!res.ok)throw new Error("Push service returned "+res.status);
