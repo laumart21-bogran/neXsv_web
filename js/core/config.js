@@ -19,7 +19,11 @@ export const APP_CONFIG = {
 
     },
 
-    push: { vapidPublicKey: "BGY__39TQ9LmwXuTQ1hRaqKajPesPsehwbF3Rp6Jw5FMganSMemF_jBgnH-sujLxs8VcEEOiZHd79omSJg0aLls" },\n\n    routes: {
+    push: {
+        vapidPublicKey: "BGY__39TQ9LmwXuTQ1hRaqKajPesPsehwbF3Rp6Jw5FMganSMemF_jBgnH-sujLxs8VcEEOiZHd79omSJg0aLls"
+    },
+
+    routes: {
 
         login: "/acceso/login-usuario.html",
 
