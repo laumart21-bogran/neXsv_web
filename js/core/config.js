@@ -19,6 +19,12 @@ export const APP_CONFIG = {
 
     },
 
+    push: {
+        vapidPublicKey: "BGY__39TQ9LmwXuTQ1hRaqKajPesPsehwbF3Rp6Jw5FMganSMemF_jBgnH-sujLxs8VcEEOiZHd79omSJg0aLls",
+        projectUrl: "https://hxlkshoexhbhsebkzjbk.supabase.co",
+        publishableKey: "sb_publishable_21aLKMz56y4xL7SwzkArPw_4itECn0b"
+    },
+
     routes: {
 
         login: "/acceso/login-usuario.html",
