@@ -1,6 +1,7 @@
 import { supabase } from "../core/supabase-client.js";
 import { APP_CONFIG } from "../core/config.js";
 
+// "Ahora no" solo pausa el aviso durante esta pestaña; no bloquea futuras visitas.
 const DISMISSED = "nexsv-push-invite-dismissed";
 
 function decodeKey(value) {
@@ -28,17 +29,22 @@ async function pushRequest(accessToken, payload) {
 function createInvite(permission) {
     const anchor = document.querySelector(".community-feed-column .community-intro")
         || document.querySelector(".dashboard-content .dashboard-header");
-    if (!anchor) return null;
+    if (!anchor || document.getElementById("nexsvPushInvite")) return null;
 
     const el = document.createElement("section");
     el.id = "nexsvPushInvite";
     el.className = "nexsv-push-invite";
-    const buttonLabel = permission === "granted" ? "Completar activación" : "Activar notificaciones";
+    const buttonLabel = permission === "granted"
+        ? "Completar activación"
+        : permission === "denied" ? "Ver instrucciones" : "Activar notificaciones";
+    const initialStatus = permission === "denied"
+        ? "Las notificaciones están bloqueadas para este sitio. Habilítalas en los permisos de Chrome y vuelve a intentarlo."
+        : "";
     el.innerHTML = `<span class="nexsv-push-invite-icon"><i class="fa-regular fa-bell"></i></span>
       <div class="nexsv-push-invite-copy">
         <strong>Mantente conectado con tu comunidad</strong>
         <p>No te pierdas mensajes y novedades importantes de neXsv.</p>
-        <small id="nexsvPushStatus" role="status"></small>
+        <small id="nexsvPushStatus" role="status">${initialStatus}</small>
       </div>
       <div class="nexsv-push-invite-actions">
         <button type="button" id="nexsvPushEnable">${buttonLabel}</button>
@@ -50,14 +56,17 @@ function createInvite(permission) {
 
 async function activate(el, button, accessToken) {
     const status = el.querySelector("#nexsvPushStatus");
+    if (Notification.permission === "denied") {
+        status.textContent = "Chrome tiene bloqueado el permiso. Abre los permisos del sitio, cambia Notificaciones a Permitir y vuelve a pulsar aquí.";
+        return;
+    }
+
     button.disabled = true;
     try {
         let permission = Notification.permission;
         if (permission === "default") permission = await Notification.requestPermission();
         if (permission !== "granted") {
-            throw new Error(permission === "denied"
-                ? "El permiso está bloqueado en Chrome. Puedes habilitarlo desde la configuración del sitio."
-                : "No se activaron las notificaciones.");
+            throw new Error("No se concedió el permiso de notificaciones. Puedes intentarlo nuevamente cuando quieras.");
         }
 
         const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
@@ -81,15 +90,43 @@ async function activate(el, button, accessToken) {
     }
 }
 
+// La página y el módulo de autenticación pueden inicializarse en paralelo.
+// Si getSession todavía no devuelve la sesión, esperamos el evento de Supabase.
+async function getSessionWhenReady() {
+    const { data, error } = await supabase.auth.getSession();
+    if (error) console.warn("No se pudo consultar la sesión para Push:", error);
+    if (data?.session?.user && data.session.access_token) return data.session;
+
+    return new Promise(resolve => {
+        let settled = false;
+        let subscription;
+        const finish = session => {
+            if (settled) return;
+            settled = true;
+            window.clearTimeout(timeout);
+            subscription?.data?.subscription?.unsubscribe();
+            resolve(session || null);
+        };
+        const timeout = window.setTimeout(() => finish(null), 10000);
+        const result = supabase.auth.onAuthStateChange((event, session) => {
+            if ((event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") &&
+                session?.user && session.access_token) finish(session);
+        });
+        subscription = result.data;
+    });
+}
+
 async function init() {
     const push = APP_CONFIG.push || {};
     if (!push.vapidPublicKey || !push.projectUrl || !push.publishableKey ||
         !("Notification" in window) || !("serviceWorker" in navigator) ||
-        !("PushManager" in window) || Notification.permission === "denied" ||
-        localStorage.getItem(DISMISSED) === "1") return;
+        !("PushManager" in window) || sessionStorage.getItem(DISMISSED) === "1") return;
 
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error || !session?.user || !session.access_token) return;
+    const session = await getSessionWhenReady();
+    if (!session?.user || !session.access_token) {
+        console.info("Push: aviso no mostrado porque no se encontró una sesión autenticada.");
+        return;
+    }
 
     let registered = false;
     if (Notification.permission === "granted") {
@@ -97,19 +134,26 @@ async function init() {
             const result = await pushRequest(session.access_token, { action: "status" });
             registered = result.registered === true;
         } catch (err) {
-            console.warn("No se pudo consultar el estado de Push:", err);
+            console.warn("No se pudo consultar el estado de Push; se mostrará la invitación:", err);
         }
     }
-    if (registered) return;
+    if (registered) {
+        console.info("Push: este usuario ya tiene un dispositivo registrado.");
+        return;
+    }
 
     const el = createInvite(Notification.permission);
-    if (!el) return;
+    if (!el) {
+        console.warn("Push: no se encontró un espacio de la página donde insertar el aviso.");
+        return;
+    }
     const button = el.querySelector("#nexsvPushEnable");
     button.addEventListener("click", () => activate(el, button, session.access_token));
     el.querySelector("#nexsvPushLater").addEventListener("click", () => {
-        localStorage.setItem(DISMISSED, "1");
+        sessionStorage.setItem(DISMISSED, "1");
         el.remove();
     });
+    console.info("Push: invitación mostrada. Permiso actual:", Notification.permission);
 }
 
 if (document.readyState === "loading") {
