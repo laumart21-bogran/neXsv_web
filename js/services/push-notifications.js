@@ -1,5 +1,6 @@
 import { supabase } from "../core/supabase-client.js";
 import { APP_CONFIG } from "../core/config.js";
+import AuthSession from "../auth/auth.session.js";
 
 // "Ahora no" solo pausa el aviso durante esta pestaña; no bloquea futuras visitas.
 const DISMISSED = "nexsv-push-invite-dismissed";
@@ -90,30 +91,28 @@ async function activate(el, button, accessToken) {
     }
 }
 
-// La página y el módulo de autenticación pueden inicializarse en paralelo.
-// Si getSession todavía no devuelve la sesión, esperamos el evento de Supabase.
+// Reutiliza el gestor de sesión que inicializa el resto de neXsv.
 async function getSessionWhenReady() {
-    const { data, error } = await supabase.auth.getSession();
-    if (error) console.warn("No se pudo consultar la sesión para Push:", error);
-    if (data?.session?.user && data.session.access_token) return data.session;
+    try {
+        if (!AuthSession.isInitialized()) {
+            await AuthSession.initialize();
+        }
 
-    return new Promise(resolve => {
-        let settled = false;
-        let subscription;
-        const finish = session => {
-            if (settled) return;
-            settled = true;
-            window.clearTimeout(timeout);
-            subscription?.unsubscribe();
-            resolve(session || null);
-        };
-        const timeout = window.setTimeout(() => finish(null), 10000);
-        const result = supabase.auth.onAuthStateChange((event, session) => {
-            if ((event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") &&
-                session?.user && session.access_token) finish(session);
-        });
-        subscription = result.data.subscription;
-    });
+        let session = AuthSession.getSession();
+        if (session?.user && session.access_token) return session;
+
+        // Respaldo: consulta directamente el mismo cliente compartido.
+        const { data, error } = await supabase.auth.getSession();
+        if (error) console.warn("Push: error consultando la sesión:", error);
+        session = data?.session || null;
+        if (session?.user && session.access_token) return session;
+
+        console.info("Push: no se encontró una sesión autenticada en AuthSession ni en Supabase.");
+        return null;
+    } catch (error) {
+        console.error("Push: no se pudo inicializar la sesión:", error);
+        return null;
+    }
 }
 
 async function init() {
