@@ -104,7 +104,7 @@ async function getSessionWhenReady() {
             if (settled) return;
             settled = true;
             window.clearTimeout(timeout);
-            subscription?.data?.subscription?.unsubscribe();
+            subscription?.unsubscribe();
             resolve(session || null);
         };
         const timeout = window.setTimeout(() => finish(null), 10000);
@@ -112,7 +112,7 @@ async function getSessionWhenReady() {
             if ((event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") &&
                 session?.user && session.access_token) finish(session);
         });
-        subscription = result.data;
+        subscription = result.data.subscription;
     });
 }
 
