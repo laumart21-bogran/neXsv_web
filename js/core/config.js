@@ -13,10 +13,16 @@ export const APP_CONFIG = {
 
     supabase: {
 
-        url: "https://verswqljdxiaveicdtfq.supabase.co",
+        url: "https://hxlkshoexhbhsebkzjbk.supabase.co",
 
-        anonKey: "sb_publishable_4jUefYv7Yd6Bw8q31IPTQQ_5eBgILOp"
+        anonKey: "sb_publishable_21aLKMz56y4xL7SwzkArPw_4itECn0b"
 
+    },
+
+    push: {
+        vapidPublicKey: "BGY__39TQ9LmwXuTQ1hRaqKajPesPsehwbF3Rp6Jw5FMganSMemF_jBgnH-sujLxs8VcEEOiZHd79omSJg0aLls",
+        projectUrl: "https://hxlkshoexhbhsebkzjbk.supabase.co",
+        publishableKey: "sb_publishable_21aLKMz56y4xL7SwzkArPw_4itECn0b"
     },
 
     routes: {
