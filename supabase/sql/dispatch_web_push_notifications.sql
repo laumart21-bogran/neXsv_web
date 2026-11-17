@@ -1,4 +1,6 @@
 -- Dispatch only existing in-app notifications through Web Push.
+-- The send-web-push Edge Function reads notifications with the service role.
+grant select on table public.notifications to service_role;
 alter table public.notifications drop constraint if exists notifications_type_check;
 alter table public.notifications add constraint notifications_type_check
   check (notification_type = any (array['MESSAGE','COMMENT','SAVE']));
