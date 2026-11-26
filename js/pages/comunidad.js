@@ -81,7 +81,7 @@ function renderBusinessRail() {
     businessRailIndex = Math.max(0, Math.min(businessRailIndex, Math.max(0, businesses.length - 3)));
     const visible = businesses.length <= 3 ? businesses : businesses.slice(businessRailIndex, businessRailIndex + 3);
     rail.innerHTML = visible.map(business => `
-        <article class="community-business-card">
+        <article class="community-business-card" data-business-card="${escapeHtml(business.id)}">
             <div class="community-business-card-main">
                 ${businessLogoHtml(business, "community-business-logo")}
                 <div class="community-business-copy">
@@ -89,8 +89,29 @@ function renderBusinessRail() {
                     <span>${escapeHtml(business.categoria || "Negocio de la comunidad")}</span>
                 </div>
             </div>
+            <div class="community-business-proof" data-business-proof="${escapeHtml(business.id)}">
+                <span class="community-proof-loading">Consultando reseñas…</span>
+            </div>
             <a class="community-business-link" href="negocio.html?id=${encodeURIComponent(business.id)}">Ver perfil <i class="fa-solid fa-arrow-right"></i></a>
         </article>`).join("");
+
+    visible.forEach(async business => {
+        const target = rail.querySelector(`[data-business-proof="${CSS.escape(String(business.id))}"]`);
+        if (!target) return;
+        const { data, error } = await BusinessService.getPublicBusinessReviews(business.id);
+        if (!target.isConnected) return;
+        if (error) {
+            target.innerHTML = `<span class="community-proof-muted">Reseñas no disponibles</span>`;
+            return;
+        }
+        const reviews = data || [];
+        if (!reviews.length) {
+            target.innerHTML = `<span class="community-proof-muted">Aún sin reseñas</span>`;
+            return;
+        }
+        const average = reviews.reduce((sum, review) => sum + Number(review.estrellas || 0), 0) / reviews.length;
+        target.innerHTML = `<span class="community-proof-stars" aria-label="Calificación ${average.toFixed(1)} de 5">★ ${average.toFixed(1)}</span><span class="community-proof-count">${reviews.length} ${reviews.length === 1 ? "reseña" : "reseñas"}</span>`;
+    });
 }
 
 function stepBusinessRail(direction) {
