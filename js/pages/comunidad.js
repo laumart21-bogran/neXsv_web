@@ -82,12 +82,14 @@ function renderBusinessRail() {
     const visible = businesses.length <= 3 ? businesses : businesses.slice(businessRailIndex, businessRailIndex + 3);
     rail.innerHTML = visible.map(business => `
         <article class="community-business-card">
-            ${businessLogoHtml(business)}
-            <div class="community-business-copy">
-                <strong>${escapeHtml(business.nombre || "Negocio")}</strong>
-                <span>${escapeHtml(business.categoria || "Negocio de la comunidad")}</span>
-                <a href="negocio.html?id=${encodeURIComponent(business.id)}">Ver más <i class="fa-solid fa-arrow-right"></i></a>
+            <div class="community-business-card-main">
+                ${businessLogoHtml(business, "community-business-logo")}
+                <div class="community-business-copy">
+                    <strong>${escapeHtml(business.nombre || "Negocio")}</strong>
+                    <span>${escapeHtml(business.categoria || "Negocio de la comunidad")}</span>
+                </div>
             </div>
+            <a class="community-business-link" href="negocio.html?id=${encodeURIComponent(business.id)}">Ver perfil <i class="fa-solid fa-arrow-right"></i></a>
         </article>`).join("");
 }
 
@@ -274,6 +276,95 @@ document.querySelectorAll("[data-side-filter]").forEach(button => button.addEven
 addPhotosBtn?.addEventListener("click", () => imagesInput?.click());
 imagesInput?.addEventListener("change", () => { const incoming = Array.from(imagesInput.files || []); const validation = CommunityService.validateImages([...selectedFiles, ...incoming]); if (!validation.valid) { showMessage(validation.error, "error"); imagesInput.value = ""; return; } selectedFiles = validation.files; showMessage(); renderPhotoPreview(); imagesInput.value = ""; });
 newPublicationBtn?.addEventListener("click", openComposer); closeComposer?.addEventListener("click", closePublicationComposer);
+
+document.getElementById("weeklyQuestionBtn")?.addEventListener("click", () => {
+    const recommendationType = publicationForm?.querySelector('input[name="type"][value="RECOMENDACION"]');
+    if (recommendationType) {
+        recommendationType.checked = true;
+        recommendationType.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    const titleField = document.getElementById("publicationTitle");
+    const bodyField = document.getElementById("publicationBody");
+    if (titleField && !titleField.value.trim()) titleField.value = "Recomendación: academia de natación";
+    if (bodyField && !bodyField.value.trim()) {
+        bodyField.value = "En respuesta a la pregunta de la semana: ¿Qué academia de natación recomiendas para niños?\n\n";
+    }
+    openComposer();
+});
+
+function initializeCommunityBanner() {
+    const banner = document.getElementById("communityHeroBanner");
+    const title = document.getElementById("communityBannerTitle");
+    const description = document.getElementById("communityBannerDescription");
+    const link = document.getElementById("communityBannerLink");
+    const dots = document.getElementById("communityBannerDots");
+    if (!banner || !title || !description || !link || !dots) return;
+
+    const slides = [
+        {
+            title: "Conecta con familias de tu comunidad",
+            description: "Recomienda, pregunta, comparte y descubre grandes oportunidades.",
+            label: "Explora negocios",
+            href: "negocios.html",
+            image: "cover-index.jpg"
+        },
+        {
+            title: "Más confianza. Más oportunidades.",
+            description: "Descubre servicios y negocios que forman parte de tu comunidad.",
+            label: "Descubre negocios",
+            href: "negocios.html",
+            image: "cover-negocios.jpg"
+        },
+        {
+            title: "Tu experiencia puede ayudar a otra familia",
+            description: "Comparte recomendaciones y encuentra respuestas dentro de neXsv.",
+            label: "Compartir en la comunidad",
+            href: "comunidad.html?create=1",
+            image: "cover-index.jpg"
+        }
+    ];
+    let active = 0;
+    let timer = null;
+
+    const render = () => {
+        const slide = slides[active];
+        title.textContent = slide.title;
+        description.textContent = slide.description;
+        link.href = slide.href;
+        link.innerHTML = `${escapeHtml(slide.label)} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>`;
+        banner.style.setProperty("--community-banner-image", `url("${slide.image}")`);
+        dots.querySelectorAll("button").forEach((dot, index) => {
+            dot.classList.toggle("active", index === active);
+            dot.setAttribute("aria-pressed", String(index === active));
+        });
+    };
+
+    dots.innerHTML = slides.map((slide, index) =>
+        `<button type="button" aria-label="Mostrar banner ${index + 1}" aria-pressed="${index === 0}" class="${index === 0 ? "active" : ""}" data-banner-index="${index}"></button>`
+    ).join("");
+
+    const show = (index) => {
+        active = (index + slides.length) % slides.length;
+        render();
+    };
+    document.getElementById("communityBannerPrev")?.addEventListener("click", () => show(active - 1));
+    document.getElementById("communityBannerNext")?.addEventListener("click", () => show(active + 1));
+    dots.addEventListener("click", event => {
+        const dot = event.target.closest("[data-banner-index]");
+        if (dot) show(Number(dot.dataset.bannerIndex));
+    });
+    const start = () => {
+        if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+        if (timer) clearInterval(timer);
+        timer = setInterval(() => show(active + 1), 8000);
+    };
+    banner.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
+    banner.addEventListener("mouseleave", start);
+    render();
+    start();
+}
+
+initializeCommunityBanner();
 document.querySelectorAll(".type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
 document.querySelectorAll("#editTypeOptions .type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll("#editTypeOptions .type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
 document.querySelectorAll(".filter-btn").forEach(button => button.addEventListener("click", async () => { currentFilter = button.dataset.filter || "TODAS"; document.querySelectorAll(".filter-btn").forEach(item => item.classList.toggle("active", item === button)); await loadPublications(); }));
