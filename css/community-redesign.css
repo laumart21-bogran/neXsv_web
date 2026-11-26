@@ -4,13 +4,13 @@
   --community-banner-image:url("../cover-index.jpg");
   position:relative;display:flex;align-items:center;min-height:190px;margin:0 0 16px;
   padding:20px 78px;border:1px solid #E7EDF5;border-radius:20px;overflow:hidden;
-  background-image:linear-gradient(90deg,rgba(246,249,253,.88) 0%,rgba(246,249,253,.68) 42%,rgba(246,249,253,.10) 100%),var(--community-banner-image);
+  background-image:linear-gradient(90deg,rgba(250,252,255,.97) 0%,rgba(250,252,255,.92) 43%,rgba(250,252,255,.68) 62%,rgba(250,252,255,.12) 100%),var(--community-banner-image);
   background-position:center,right center;background-size:cover;background-repeat:no-repeat;background-color:#E8EEF5;
 }
-.community-banner-copy{position:relative;z-index:1;max-width:650px}
-.community-banner-copy h1{margin:0;color:#172B58;font-size:25px;line-height:1.12;font-weight:800;letter-spacing:-.5px}
-.community-banner-copy p{margin:7px 0 11px;color:#53627B;font-size:12px;line-height:1.45}
-.community-banner-copy a{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid #269A91;border-radius:999px;background:rgba(255,255,255,.9);color:#16877F;text-decoration:none;font-size:11px;font-weight:800}
+.community-banner-copy{position:relative;z-index:1;max-width:720px;padding:12px 18px;border:1px solid rgba(255,255,255,.72);border-radius:15px;background:rgba(255,255,255,.36);box-shadow:0 5px 22px rgba(24,43,80,.08);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.community-banner-copy h1{margin:0;color:#102653;font-size:clamp(25px,2.35vw,34px);line-height:1.12;font-weight:900;letter-spacing:-.65px;text-shadow:0 1px 0 rgba(255,255,255,.8)}
+.community-banner-copy p{margin:9px 0 13px;color:#34445F;font-size:clamp(13px,1.15vw,16px);line-height:1.5;font-weight:600;text-shadow:0 1px 0 rgba(255,255,255,.85)}
+.community-banner-copy a{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border:1px solid #269A91;border-radius:999px;background:#FFFFFF;color:#116E69;text-decoration:none;font-size:12px;font-weight:900;box-shadow:0 2px 7px rgba(24,43,80,.08)}
 .community-banner-copy a:hover{background:#EAF7F5}
 .community-banner-arrow{position:absolute;z-index:2;top:50%;transform:translateY(-50%);width:34px;height:34px;border:1px solid #E4EAF2;border-radius:50%;background:rgba(255,255,255,.94);color:#233A72;cursor:pointer;box-shadow:0 2px 8px rgba(35,58,114,.07)}
 .community-banner-arrow.prev{left:16px}.community-banner-arrow.next{right:16px}
@@ -110,8 +110,8 @@
 }
 @media(max-width:760px){
   .community-page{padding:12px 12px 42px}
-  .community-hero-banner{min-height:170px;padding:20px 52px;background-position:center,right center}
-  .community-banner-copy{max-width:100%}
+  .community-hero-banner{min-height:170px;padding:20px 52px;background-position:center,right center;background-image:linear-gradient(90deg,rgba(250,252,255,.96) 0%,rgba(250,252,255,.88) 58%,rgba(250,252,255,.32) 100%),var(--community-banner-image)}
+  .community-banner-copy{max-width:100%;padding:10px 12px;background:rgba(255,255,255,.58)}
   .community-banner-copy h1{font-size:20px;max-width:300px}
   .community-banner-copy p{font-size:10px;max-width:300px}
   .community-banner-arrow.prev{left:8px}.community-banner-arrow.next{right:8px}
