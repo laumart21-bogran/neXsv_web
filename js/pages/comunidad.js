@@ -21,6 +21,7 @@ const editMessage = document.getElementById("editPublicationMessage");
 
 let currentUser = null;
 let currentFilter = "TODAS";
+let activeCommunityTopic = null;
 let selectedFiles = [];
 let editingPublicationId = null;
 let editingPublicationBusinessId = null;
@@ -245,14 +246,31 @@ function renderPublications(publications) {
 
 async function loadPublications() {
     publicationList.innerHTML = `<div class="community-loading"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Cargando comunidad...</span></div>`;
-    // La Comunidad es pública para todos los miembros. El negocio activo
-    // solo determina a nombre de quién se publica; no limita las publicaciones visibles.
-    const { data, error } = await CommunityService.getPublications({ type: currentFilter });
+    // El filtro temático se aplica sobre el contenido ya publicado; no altera datos ni consultas de escritura.
+    const { data, error } = await CommunityService.getPublications({ type: currentFilter, limit: 100 });
     if (error) return renderError(error);
-    const publications = await enrichPublications(data);
+    let publications = await enrichPublications(data);
+    if (activeCommunityTopic) {
+        const terms = {
+            salud: ["salud","médic","medic","doctor","clínic","clinic","dent","terapia","bienestar","psicolog"],
+            ninos: ["niñ","niñ","infantil","niños","niñas","academia","natación","natacion","cumpleaños","juego","campamento","deporte"],
+            educacion: ["educación","educacion","colegio","escuela","academia","clase","tutor","curso","idioma","inglés","ingles","aprendizaje"],
+            restaurantes: ["restaurante","comida","cafeter","café","cafe","pizza","postre","menú","menu","cocina","alimento"]
+        }[activeCommunityTopic] || [];
+        publications = publications.filter(p => {
+            const haystack = [p.title,p.body,p.author?.name].join(" ").toLocaleLowerCase("es");
+            return terms.some(term => haystack.includes(term));
+        });
+    }
     const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
     if (commentCountError) console.warn("No se pudieron cargar los conteos de comentarios:", commentCountError);
     publications.forEach(p => { p.commentCount = Number(commentCounts?.[p.id] || 0); });
+    if (activeCommunityTopic && !publications.length) {
+        const labels = {salud:"Salud y bienestar",ninos:"Actividades para niños",educacion:"Educación y academias",restaurantes:"Restaurantes y sabores"};
+        publicationList.innerHTML = `<div class="community-topic-empty"><strong>Aún no encontramos publicaciones sobre ${labels[activeCommunityTopic]}.</strong><p>Prueba otro tema o comparte la primera experiencia.</p><button type="button" id="emptyTopicClear">Ver todas las publicaciones</button></div>`;
+        document.getElementById("emptyTopicClear")?.addEventListener("click", clearCommunityTopic);
+        return;
+    }
     renderPublications(publications);
 }
 
@@ -313,6 +331,25 @@ document.getElementById("weeklyQuestionBtn")?.addEventListener("click", () => {
     openComposer();
 });
 
+function clearCommunityTopic() {
+    activeCommunityTopic = null;
+    document.querySelectorAll("[data-community-topic]").forEach(button => button.classList.remove("active"));
+    const clear = document.getElementById("clearCommunityTopic");
+    if (clear) clear.hidden = true;
+    loadPublications();
+}
+document.querySelectorAll("[data-community-topic]").forEach(button => {
+    button.addEventListener("click", () => {
+        activeCommunityTopic = button.dataset.communityTopic;
+        document.querySelectorAll("[data-community-topic]").forEach(item => item.classList.toggle("active", item === button));
+        const clear = document.getElementById("clearCommunityTopic");
+        if (clear) clear.hidden = false;
+        loadPublications();
+        document.getElementById("publicationList")?.scrollIntoView({behavior:"smooth",block:"start"});
+    });
+});
+document.getElementById("clearCommunityTopic")?.addEventListener("click", clearCommunityTopic);
+
 function initializeCommunityBanner() {
     const banner = document.getElementById("communityHeroBanner");
     const title = document.getElementById("communityBannerTitle");
@@ -327,14 +364,14 @@ function initializeCommunityBanner() {
             description: "Recomienda, pregunta, comparte y descubre grandes oportunidades.",
             label: "Explora negocios",
             href: "negocios.html",
-            image: "cover-index.jpg"
+            image: "/cover-index.jpg"
         },
         {
             title: "Más confianza. Más oportunidades.",
             description: "Descubre servicios y negocios que forman parte de tu comunidad.",
             label: "Descubre negocios",
             href: "negocios.html",
-            image: "cover-negocios.jpg"
+            image: "/cover-negocios.jpg"
         },
         {
             title: "Tu experiencia puede ayudar a otra familia",
@@ -353,7 +390,7 @@ function initializeCommunityBanner() {
         description.textContent = slide.description;
         link.href = slide.href;
         link.innerHTML = `${escapeHtml(slide.label)} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>`;
-        banner.style.setProperty("--community-banner-image", `url("${slide.image}")`);
+        banner.style.backgroundImage = `linear-gradient(90deg,rgba(246,249,253,.82) 0%,rgba(246,249,253,.55) 43%,rgba(246,249,253,.08) 100%),url("${slide.image}")`;
         dots.querySelectorAll("button").forEach((dot, index) => {
             dot.classList.toggle("active", index === active);
             dot.setAttribute("aria-pressed", String(index === active));
