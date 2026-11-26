@@ -99,19 +99,25 @@ function renderBusinessRail() {
     visible.forEach(async business => {
         const target = rail.querySelector(`[data-business-proof="${CSS.escape(String(business.id))}"]`);
         if (!target) return;
-        const { data, error } = await BusinessService.getPublicBusinessReviews(business.id);
+        const [reviewResult, publicationResult] = await Promise.all([
+            BusinessService.getPublicBusinessReviews(business.id),
+            CommunityService.getPublications({ businessId: business.id, limit: 100 })
+        ]);
         if (!target.isConnected) return;
-        if (error) {
-            target.innerHTML = `<span class="community-proof-muted">Reseñas no disponibles</span>`;
-            return;
-        }
-        const reviews = data || [];
-        if (!reviews.length) {
-            target.innerHTML = `<span class="community-proof-muted">Aún sin reseñas</span>`;
-            return;
-        }
-        const average = reviews.reduce((sum, review) => sum + Number(review.estrellas || 0), 0) / reviews.length;
-        target.innerHTML = `<span class="community-proof-stars" aria-label="Calificación ${average.toFixed(1)} de 5">★ ${average.toFixed(1)}</span><span class="community-proof-count">${reviews.length} ${reviews.length === 1 ? "reseña" : "reseñas"}</span>`;
+        const reviewError = reviewResult.error;
+        const reviews = reviewResult.data || [];
+        const publicationError = publicationResult.error;
+        const publicationCount = (publicationResult.data || []).length;
+        const ratingHtml = !reviewError && reviews.length
+            ? (() => {
+                const average = reviews.reduce((sum, review) => sum + Number(review.estrellas || 0), 0) / reviews.length;
+                return `<span class="community-proof-stars" aria-label="Calificación ${average.toFixed(1)} de 5">★ ${average.toFixed(1)}</span><span class="community-proof-count">${reviews.length} ${reviews.length === 1 ? "reseña" : "reseñas"}</span>`;
+            })()
+            : `<span class="community-proof-muted">${reviewError ? "Calificación no disponible" : "Sin reseñas"}</span>`;
+        const publicationHtml = !publicationError
+            ? `<span class="community-proof-count">${publicationCount} ${publicationCount === 1 ? "publicación" : "publicaciones"}</span>`
+            : "";
+        target.innerHTML = ratingHtml + publicationHtml;
     });
 }
 
