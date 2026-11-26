@@ -128,11 +128,12 @@
       <article class="community-side-card community-popular-topics">
         <div class="side-card-title"><i class="fa-solid fa-fire"></i><strong>Temas populares</strong></div>
         <div class="popular-topic-list">
-          <div class="popular-topic-row"><span class="popular-topic-icon"><i class="fa-solid fa-stethoscope"></i></span><div><strong>Salud y bienestar</strong><small>Servicios y recomendaciones</small></div></div>
-          <div class="popular-topic-row"><span class="popular-topic-icon"><i class="fa-solid fa-star"></i></span><div><strong>Actividades para niños</strong><small>Experiencias para compartir</small></div></div>
-          <div class="popular-topic-row"><span class="popular-topic-icon"><i class="fa-solid fa-graduation-cap"></i></span><div><strong>Educación y academias</strong><small>Aprendizaje y actividades</small></div></div>
-          <div class="popular-topic-row"><span class="popular-topic-icon"><i class="fa-solid fa-utensils"></i></span><div><strong>Restaurantes y sabores</strong><small>Lugares para descubrir</small></div></div>
+          <button type="button" class="popular-topic-row" data-community-topic="salud"><span class="popular-topic-icon"><i class="fa-solid fa-stethoscope"></i></span><span><strong>Salud y bienestar</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="ninos"><span class="popular-topic-icon"><i class="fa-solid fa-star"></i></span><span><strong>Actividades para niños</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="educacion"><span class="popular-topic-icon"><i class="fa-solid fa-graduation-cap"></i></span><span><strong>Educación y academias</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="restaurantes"><span class="popular-topic-icon"><i class="fa-solid fa-utensils"></i></span><span><strong>Restaurantes y sabores</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
         </div>
+        <button type="button" class="popular-topic-clear" id="clearCommunityTopic" hidden>Quitar filtro <i class="fa-solid fa-xmark"></i></button>
         <a href="negocios.html" class="side-card-footer">Explorar negocios <i class="fa-solid fa-arrow-right"></i></a>
       </article>
     </aside>
