@@ -655,3 +655,43 @@
     line-height:1.45 !important;
   }
 }
+
+
+/* Acciones del feed: botones outline azul neXsv, sin rellenos de color */
+#publicationList .publication-actions > button,
+#publicationList .publication-actions > .publication-engagement-btn{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  border:1px solid #D3DDF0 !important;
+  border-radius:12px !important;
+  box-shadow:none !important;
+  font-weight:700 !important;
+}
+#publicationList .publication-actions > button i,
+#publicationList .publication-actions > button .nexsv-save-icon,
+#publicationList .publication-actions > .publication-engagement-btn i{
+  color:#3155B6 !important;
+}
+#publicationList .publication-actions > button:hover,
+#publicationList .publication-actions > .publication-engagement-btn:hover,
+#publicationList .publication-actions > button:focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#233A72 !important;
+  border-color:#3155B6 !important;
+  box-shadow:0 0 0 2px rgba(49,85,182,.08) !important;
+}
+#publicationList .publication-actions > button:hover i,
+#publicationList .publication-actions > .publication-engagement-btn:hover i{
+  color:#233A72 !important;
+}
+#publicationList .publication-actions > button.active,
+#publicationList .publication-actions > button.has-comments,
+#publicationList .publication-actions > .publication-engagement-btn.is-saved{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  border-color:#3155B6 !important;
+}
+#publicationList .publication-actions > button:disabled{opacity:.55}
