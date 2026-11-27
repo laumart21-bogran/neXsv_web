@@ -178,3 +178,23 @@
 
 /* No mostrar el bloque de publicaciones del negocio cuando solo existen reseñas. */
 .business-publications-section[hidden]{display:none!important}
+
+
+/* Foto de referencia del negocio en tarjetas de recomendación */
+.publication-card-recommendation .recommendation-business-link{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:9px 12px;min-height:96px;
+}
+.recommendation-business-info{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
+.publication-card-recommendation .recommendation-business-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.publication-card-recommendation .recommendation-business-link em{margin-left:auto;flex:0 0 auto}
+.recommendation-business-photo{
+  display:block;width:142px;height:82px;flex:0 0 142px;object-fit:cover;
+  border-radius:11px;background:#EEF2F7;
+}
+@media(max-width:600px){
+  .publication-card-recommendation .recommendation-business-link{gap:8px;padding:9px}
+  .recommendation-business-photo{width:92px;height:72px;flex-basis:92px}
+  .publication-card-recommendation .recommendation-business-link em{padding:6px 8px;font-size:9px}
+  .recommendation-business-info{gap:8px}
+}
