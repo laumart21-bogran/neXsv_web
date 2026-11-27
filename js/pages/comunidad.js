@@ -362,7 +362,7 @@ function renderPublications(publications) {
                     <strong>${escapeHtml(p.author.name)}</strong>
                     <span>${p.isLegacyReview ? "Reseña histórica · " : "Miembro de neXsv · "}${escapeHtml(formatDate(p.created_at))}${!p.isLegacyReview && p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
                 </div>
-                <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
+                <span class="publication-type${isRecommendation ? " publication-type-recommendation" : ""}">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
             ${isBusinessRecommendation ? `<h2 class="recommendation-rating-title">${recommendationLabel}</h2><div class="recommendation-review-copy"><div class="recommendation-rating-line"><span class="recommendation-stars" aria-label="${recommendationRating} de 5 estrellas">${escapeHtml(recommendationStars)}</span><span class="recommendation-rating-number">${recommendationRating} de 5</span></div><p>${escapeHtml(recommendationText)}</p></div>` : (p.title ? `<h2>${escapeHtml(p.title)}</h2>` : "")}
             ${!isBusinessRecommendation ? `<p class="publication-body">${escapeHtml(p.body)}</p>` : ""}
