@@ -216,12 +216,14 @@ function renderPublications(publications) {
         const commentCount = Number(p.commentCount || 0);
         const isRecommendation = p.type === "RECOMENDACION";
         const business = p.business_id ? publicBusinessesById.get(p.business_id) : null;
-        const recommendationParts = isRecommendation ? String(p.body || "").split(/\\n|[\r\n]/, 2) : [];
-        const recommendationStars = isRecommendation ? (recommendationParts[0] || "").trim() : "";
-        const recommendationText = isRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
-        const businessPhoto = isRecommendation ? (business?.referencePhoto || "") : "";
-        const businessLink = business ? `<a class="publication-business-link${isRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}"><span class="recommendation-business-info">${businessLogoHtml(business, "publication-business-logo")}<span class="recommendation-business-copy"><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></span>${businessPhoto ? `<img class="recommendation-business-photo" src="${escapeHtml(businessPhoto)}" alt="Fotografía de ${escapeHtml(business.nombre || "negocio")}" loading="lazy">` : ""}</a>` : "";
-        return `<article class="publication-card${isRecommendation ? " publication-card-recommendation" : ""}" data-publication-id="${escapeHtml(p.id)}">
+        // Solo las recomendaciones vinculadas a un negocio (reseñas) usan la tarjeta editorial especial.
+        const isBusinessRecommendation = isRecommendation && Boolean(business);
+        const recommendationParts = isBusinessRecommendation ? String(p.body || "").split(/\\n|[\r\n]/, 2) : [];
+        const recommendationStars = isBusinessRecommendation ? (recommendationParts[0] || "").trim() : "";
+        const recommendationText = isBusinessRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
+        const businessPhoto = isBusinessRecommendation ? (business?.referencePhoto || "") : "";
+        const businessLink = business ? `<a class="publication-business-link${isBusinessRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}"><span class="recommendation-business-info">${businessLogoHtml(business, "publication-business-logo")}<span class="recommendation-business-copy"><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></span>${businessPhoto ? `<img class="recommendation-business-photo" src="${escapeHtml(businessPhoto)}" alt="Fotografía de ${escapeHtml(business.nombre || "negocio")}" loading="lazy">` : ""}</a>` : "";
+        return `<article class="publication-card${isBusinessRecommendation ? " publication-card-recommendation" : ""}" data-publication-id="${escapeHtml(p.id)}">
             <div class="publication-author">
                 ${avatarHtml(p.author)}
                 <div class="author-info">
@@ -231,7 +233,7 @@ function renderPublications(publications) {
                 <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
             ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
-            ${isRecommendation ? `<div class="recommendation-review-copy">${recommendationStars ? `<span class="recommendation-stars" aria-label="Calificación">${escapeHtml(recommendationStars)}</span>` : ""}<p>${escapeHtml(recommendationText)}</p></div>` : `<p class="publication-body">${escapeHtml(p.body)}</p>`}
+            ${isBusinessRecommendation ? `<div class="recommendation-review-copy">${recommendationStars ? `<span class="recommendation-stars" aria-label="Calificación">${escapeHtml(recommendationStars)}</span>` : ""}<p>${escapeHtml(recommendationText)}</p></div>` : `<p class="publication-body">${escapeHtml(p.body)}</p>`}
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
