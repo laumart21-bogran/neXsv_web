@@ -70,6 +70,31 @@ function formatDate(value) { const date = new Date(value); if (Number.isNaN(date
 function showMessage(text, type = "") { publicationMessage.textContent = text || ""; publicationMessage.className = `form-message ${type}`.trim(); }
 function showEditMessage(text, type = "") { editMessage.textContent = text || ""; editMessage.className = `form-message ${type}`.trim(); }
 
+function updateRecommendationBusinessField() {
+    const type = publicationForm?.querySelector("input[name='type']:checked")?.value;
+    const wrapper = document.getElementById("recommendationBusinessField");
+    const input = document.getElementById("recommendationBusinessName");
+    const visible = type === "RECOMENDACION" && !activeBusinessId;
+    if (wrapper) wrapper.hidden = !visible;
+    if (input) input.required = visible;
+}
+function showRecommendationInvite(businessName) {
+    const modal = document.getElementById("recommendationInviteModal");
+    const name = document.getElementById("recommendationInviteBusinessName");
+    const link = document.getElementById("recommendationInviteWhatsapp");
+    if (!modal || !link) return;
+    const cleanName = String(businessName || "").trim();
+    if (name) name.textContent = cleanName;
+    const message = `¡Hola! Quería recomendarte que conozcas neXsv. Una familia de nuestra comunidad recomendó a ${cleanName} y creemos que más familias podrían descubrir sus servicios a través de esta red privada de oportunidades. ¿Te gustaría conocer cómo formar parte? Puedes visitar https://nexsv.com`;
+    link.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    modal.hidden = false;
+    modal.querySelector("[data-close-recommendation-invite]")?.focus();
+}
+function closeRecommendationInvite() {
+    const modal = document.getElementById("recommendationInviteModal");
+    if (modal) modal.hidden = true;
+}
+
 async function getAuthorProfile(userId) {
     return await CommunityService.getPublicAuthorProfile(userId);
 }
@@ -455,6 +480,7 @@ document.getElementById("weeklyQuestionBtn")?.addEventListener("click", () => {
     if (bodyField && !bodyField.value.trim()) {
         bodyField.value = `En respuesta a la pregunta: ${activeWeeklyQuestion || "¿Qué recomiendas a otras familias?"}\n\n`;
     }
+    updateRecommendationBusinessField();
     openComposer();
 });
 
@@ -551,11 +577,57 @@ function initializeCommunityBanner() {
 
 initializeCommunityBanner();
 document.querySelectorAll(".type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
+document.querySelectorAll("#typeOptions input[name='type']").forEach(input => input.addEventListener("change", updateRecommendationBusinessField));
+document.getElementById("recommendationInviteClose")?.addEventListener("click", closeRecommendationInvite);
+document.querySelectorAll("[data-close-recommendation-invite]").forEach(element => element.addEventListener("click", closeRecommendationInvite));
+document.getElementById("recommendationInviteModal")?.addEventListener("click", event => { if (event.target === event.currentTarget) closeRecommendationInvite(); });
 document.querySelectorAll("#editTypeOptions .type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll("#editTypeOptions .type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
 document.querySelectorAll(".filter-btn").forEach(button => button.addEventListener("click", async () => { currentFilter = button.dataset.filter || "TODAS"; document.querySelectorAll(".filter-btn").forEach(item => item.classList.toggle("active", item === button)); await loadPublications(); }));
 document.querySelectorAll("[data-close-edit]").forEach(element => element.addEventListener("click", closeEditPublication));
 
-publicationForm?.addEventListener("submit", async event => { event.preventDefault(); showMessage(); const type = publicationForm.querySelector("input[name='type']:checked")?.value; const title = document.getElementById("publicationTitle")?.value.trim() || ""; const body = document.getElementById("publicationBody")?.value.trim() || ""; const submitButton = publicationForm.querySelector("button[type='submit']"); const validation = CommunityService.validateImages(selectedFiles); if (!type || !body) { showMessage("Escribe algo para poder publicar.", "error"); return; } if (!validation.valid) { showMessage(validation.error, "error"); return; } if (!currentUser) { showMessage("Tu sesión no está disponible. Recarga la página e inténtalo nuevamente.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Publicando..."; const { data: publication, error } = await CommunityService.createPublication({ type, title, body, businessId: activeBusinessId }); if (error) { submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(error.message || "No fue posible publicar.", "error"); return; } if (selectedFiles.length) { const { error: imageError } = await CommunityService.uploadPublicationImages(publication.id, selectedFiles); if (imageError) { await CommunityService.deletePublication(publication.id); submitButton.disabled = false; submitButton.textContent = "Publicar"; showMessage(`No se pudo guardar la publicación con sus fotos. ${imageError.message || "Inténtalo nuevamente."}`, "error"); return; } } submitButton.disabled = false; submitButton.textContent = "Publicar"; publicationForm.reset(); clearSelectedFiles(); document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); closePublicationComposer(); await loadPublications(); });
+publicationForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    showMessage();
+    const type = publicationForm.querySelector("input[name='type']:checked")?.value;
+    const titleField = document.getElementById("publicationTitle");
+    const bodyField = document.getElementById("publicationBody");
+    const businessNameField = document.getElementById("recommendationBusinessName");
+    const businessName = businessNameField?.value.trim() || "";
+    let title = titleField?.value.trim() || "";
+    const body = bodyField?.value.trim() || "";
+    const isCommunityRecommendation = type === "RECOMENDACION" && !activeBusinessId;
+    const submitButton = publicationForm.querySelector("button[type='submit']");
+    const validation = CommunityService.validateImages(selectedFiles);
+    if (!type || !body) { showMessage("Escribe algo para poder publicar.", "error"); return; }
+    if (isCommunityRecommendation && !businessName) { showMessage("Escribe el nombre del negocio que estás recomendando.", "error"); businessNameField?.focus(); return; }
+    if (!validation.valid) { showMessage(validation.error, "error"); return; }
+    if (!currentUser) { showMessage("Tu sesión no está disponible. Recarga la página e inténtalo nuevamente.", "error"); return; }
+    if (isCommunityRecommendation && (!title || title === "Recomendación de la comunidad")) title = `Recomendación: ${businessName}`;
+    submitButton.disabled = true;
+    submitButton.textContent = "Publicando...";
+    const { data: publication, error } = await CommunityService.createPublication({ type, title, body, businessId: activeBusinessId });
+    if (error) {
+        submitButton.disabled = false; submitButton.textContent = "Publicar";
+        showMessage(error.message || "No fue posible publicar.", "error"); return;
+    }
+    if (selectedFiles.length) {
+        const { error: imageError } = await CommunityService.uploadPublicationImages(publication.id, selectedFiles);
+        if (imageError) {
+            await CommunityService.deletePublication(publication.id);
+            submitButton.disabled = false; submitButton.textContent = "Publicar";
+            showMessage(`No se pudo guardar la publicación con sus fotos. ${imageError.message || "Inténtalo nuevamente."}`, "error"); return;
+        }
+    }
+    submitButton.disabled = false;
+    submitButton.textContent = "Publicar";
+    publicationForm.reset();
+    clearSelectedFiles();
+    document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked));
+    updateRecommendationBusinessField();
+    closePublicationComposer();
+    await loadPublications();
+    if (isCommunityRecommendation) showRecommendationInvite(businessName);
+});
 
 editForm?.addEventListener("submit", async event => { event.preventDefault(); if (!editingPublicationId) return; showEditMessage(); const type = editForm.querySelector("input[name='editType']:checked")?.value; const title = editTitle.value.trim(); const body = editBody.value.trim(); const submitButton = editForm.querySelector("button[type='submit']"); if (!type || !body) { showEditMessage("Escribe algo para poder guardar los cambios.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Guardando..."; const { error } = await CommunityService.updatePublication(editingPublicationId, { type, title, body, businessId: editingPublicationBusinessId }); submitButton.disabled = false; submitButton.textContent = "Guardar cambios"; if (error) { console.error("Error editando publicación:", error); showEditMessage(error.message || "No fue posible guardar los cambios.", "error"); return; } closeEditPublication(); await loadPublications(); });
 
