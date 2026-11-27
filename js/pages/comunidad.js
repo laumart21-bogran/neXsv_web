@@ -1,4 +1,4 @@
-import CommunityService from "../services/community.service.js?v=20261127-01";
+import CommunityService from "../services/community.service.js?v=20261127-02";
 import MessagingService from "../services/messaging.service.js";
 import BusinessService from "../services/business.service.js";
 import BusinessMediaService from "../services/business-media.service.js";
