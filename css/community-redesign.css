@@ -564,3 +564,33 @@
     font-size:13px !important;
   }
 }
+
+
+/* Fotografías de publicaciones: formato cuadrado y compacto */
+.publication-images{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+  align-items:start;
+  max-width:460px;
+  margin:12px 16px 0;
+}
+.publication-images img{
+  display:block;
+  width:100%;
+  aspect-ratio:1 / 1;
+  height:auto;
+  max-height:220px;
+  object-fit:cover;
+  border-radius:12px;
+  background:#F2F5F9;
+}
+@media(max-width:600px){
+  .publication-images{
+    grid-template-columns:repeat(auto-fit,minmax(112px,1fr));
+    max-width:100%;
+    gap:8px;
+    margin:10px 14px 0;
+  }
+  .publication-images img{max-height:170px;border-radius:10px}
+}
