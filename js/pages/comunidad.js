@@ -240,10 +240,41 @@ function renderCommunitySidebars(publications) {
 function renderEmpty() { publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon"><i class="fa-regular fa-comments"></i></div><h2>Aún no hay publicaciones</h2><p>Sé de las primeras personas en compartir algo con la comunidad.</p><button type="button" class="community-secondary-btn" id="emptyCreateBtn">Crear publicación</button></div>`; document.getElementById("emptyCreateBtn")?.addEventListener("click", openComposer); }
 function renderError(error) { console.error("Error en Comunidad:", error); publicationList.innerHTML = `<div class="community-empty"><div class="community-empty-icon warning"><i class="fa-solid fa-triangle-exclamation"></i></div><h2>No pudimos cargar la comunidad</h2><p>${escapeHtml(error?.message || "Actualiza la página e inténtalo nuevamente.")}</p></div>`; }
 
+function renderFeedBusinessCard(business) {
+    if (!business) return "";
+    const description = business.descripcion || business.categoria || "Conoce más sobre este negocio de la comunidad.";
+    return `<article class="community-feed-business" data-feed-business="${escapeHtml(business.id)}"><div class="community-feed-business-kicker"><i class="fa-solid fa-store"></i> Descubre en neXsv</div><div class="community-feed-business-main">${businessLogoHtml(business, "community-feed-business-logo")}<div><h3>${escapeHtml(business.nombre || "Negocio de la comunidad")}</h3><span>${escapeHtml(business.categoria || "Negocio")}</span></div></div><p>${escapeHtml(description)}</p><a href="negocio.html?id=${encodeURIComponent(business.id)}">Conoce este negocio <i class="fa-solid fa-arrow-right"></i></a></article>`;
+}
+
+function buildCommunityFeedSequence(publications) {
+    if (currentFilter !== "TODAS") return publications.map(publication => ({ kind: "publication", publication }));
+    const recommendations = publications.filter(item => item.type === "RECOMENDACION");
+    const general = publications.filter(item => item.type !== "RECOMENDACION");
+    const businesses = shuffleItems([...publicBusinessesById.values()]);
+    const sequence = [];
+    let recommendationIndex = 0, generalIndex = 0, businessIndex = 0;
+    while (recommendationIndex < recommendations.length || generalIndex < general.length || businessIndex < businesses.length) {
+        let first = 0;
+        while (first < 2 && recommendationIndex < recommendations.length) {
+            sequence.push({ kind: "publication", publication: recommendations[recommendationIndex++] });
+            first++;
+        }
+        if (first === 0) {
+            while (first < 2 && generalIndex < general.length) {
+                sequence.push({ kind: "publication", publication: general[generalIndex++] });
+                first++;
+            }
+        }
+        if (businessIndex < businesses.length) sequence.push({ kind: "business", business: businesses[businessIndex++] });
+        if (generalIndex < general.length) sequence.push({ kind: "publication", publication: general[generalIndex++] });
+    }
+    return sequence;
+}
+
 function renderPublications(publications) {
     renderCommunitySidebars(publications);
     if (!publications.length) return renderEmpty();
-    publicationList.innerHTML = publications.map(p => {
+    const renderPublication = p => {
         const isMine = p.author_id === currentUser.id;
         const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
@@ -284,7 +315,9 @@ function renderPublications(publications) {
                 <form class="comment-form" data-comment-form="${escapeHtml(p.id)}"><textarea maxlength="1000" rows="2" placeholder="Escribe un comentario..." required></textarea><button type="submit" class="comment-send-btn"><i class="fa-solid fa-paper-plane"></i><span>Comentar</span></button></form>
             </div>
         </article>`;
-    }).join("");
+    };
+    const feedSequence = buildCommunityFeedSequence(publications);
+    publicationList.innerHTML = feedSequence.map(item => item.kind === "business" ? renderFeedBusinessCard(item.business) : renderPublication(item.publication)).join("");
 
     publicationList.querySelectorAll("[data-interest]").forEach(button => button.addEventListener("click", () => startConversation(button)));
     publicationList.querySelectorAll("[data-edit]").forEach(button => button.addEventListener("click", () => openEditPublication(button.dataset.edit)));
