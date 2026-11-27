@@ -479,3 +479,15 @@
   .community-feed-business-logo{width:46px;height:46px;min-width:46px}
   .community-feed-business-main h3{font-size:15px}
 }
+
+.legacy-review-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#738096;
+  font-size:11px;
+  font-weight:600;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#f2f5f8;
+}
