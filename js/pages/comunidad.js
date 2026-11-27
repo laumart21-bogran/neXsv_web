@@ -213,18 +213,24 @@ function renderPublications(publications) {
         const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
         const commentCount = Number(p.commentCount || 0);
-        return `<article class="publication-card" data-publication-id="${escapeHtml(p.id)}">
+        const isRecommendation = p.type === "RECOMENDACION";
+        const business = p.business_id ? publicBusinessesById.get(p.business_id) : null;
+        const recommendationParts = isRecommendation ? String(p.body || "").split(/\\\\n|[\\r\\n]/, 2) : [];
+        const recommendationStars = isRecommendation ? (recommendationParts[0] || "").trim() : "";
+        const recommendationText = isRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
+        const businessLink = business ? `<a class="publication-business-link${isRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}">${businessLogoHtml(business, "publication-business-logo")}<span><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></a>` : "";
+        return `<article class="publication-card${isRecommendation ? " publication-card-recommendation" : ""}" data-publication-id="${escapeHtml(p.id)}">
             <div class="publication-author">
                 ${avatarHtml(p.author)}
                 <div class="author-info">
                     <strong>${escapeHtml(p.author.name)}</strong>
                     <span>Miembro de neXsv · ${escapeHtml(formatDate(p.created_at))}${p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
                 </div>
-                <span class="publication-type">${escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
+                <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
             ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
-            <p class="publication-body">${escapeHtml(p.body)}</p>
-            ${p.business_id && publicBusinessesById.has(p.business_id) ? (() => { const business = publicBusinessesById.get(p.business_id); return `<a class="publication-business-link" href="negocio.html?id=${encodeURIComponent(business.id)}">${businessLogoHtml(business, "publication-business-logo")}<span><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></a>`; })() : ""}
+            ${isRecommendation ? `<div class="recommendation-review-copy">${recommendationStars ? `<span class="recommendation-stars" aria-label="Calificación">${escapeHtml(recommendationStars)}</span>` : ""}<p>${escapeHtml(recommendationText)}</p></div>` : `<p class="publication-body">${escapeHtml(p.body)}</p>`}
+            ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
                 ${canManage
