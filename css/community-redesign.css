@@ -491,3 +491,76 @@
   border-radius:999px;
   background:#f2f5f8;
 }
+
+
+/* neXsv · botones compactos y outline en todas las publicaciones */
+#publicationList .publication-card .publication-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px !important;
+  padding:12px 20px 16px !important;
+}
+#publicationList .publication-card .publication-actions > button,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn{
+  min-height:36px !important;
+  height:36px !important;
+  padding:6px 12px !important;
+  gap:6px !important;
+  border:1px solid #D3DDF0 !important;
+  border-radius:10px !important;
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  box-shadow:none !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  line-height:1.15 !important;
+  letter-spacing:0 !important;
+}
+#publicationList .publication-card .publication-actions > button i,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn i{
+  color:#3155B6 !important;
+  font-size:14px !important;
+  line-height:1 !important;
+}
+#publicationList .publication-card .publication-actions > button:hover,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn:hover,
+#publicationList .publication-card .publication-actions > button:focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#233A72 !important;
+  border-color:#3155B6 !important;
+  box-shadow:0 0 0 2px rgba(49,85,182,.08) !important;
+}
+#publicationList .publication-card .publication-actions > button:hover i,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn:hover i{
+  color:#233A72 !important;
+}
+#publicationList .publication-card .publication-actions > button.active,
+#publicationList .publication-card .publication-actions > button.has-comments,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn.is-saved{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  border-color:#3155B6 !important;
+}
+#publicationList .publication-card .publication-actions > button:disabled{opacity:.55}
+@media(max-width:650px){
+  #publicationList .publication-card .publication-actions{
+    gap:7px !important;
+    padding:10px 14px 13px !important;
+  }
+  #publicationList .publication-card .publication-actions > button,
+  #publicationList .publication-card .publication-actions > .publication-engagement-btn{
+    min-height:33px !important;
+    height:33px !important;
+    padding:5px 9px !important;
+    font-size:12px !important;
+    border-radius:9px !important;
+  }
+  #publicationList .publication-card .publication-actions > button i,
+  #publicationList .publication-card .publication-actions > .publication-engagement-btn i{
+    font-size:13px !important;
+  }
+}
