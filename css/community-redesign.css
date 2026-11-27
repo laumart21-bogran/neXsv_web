@@ -491,3 +491,207 @@
   border-radius:999px;
   background:#f2f5f8;
 }
+
+
+/* Invitación opcional después de publicar una recomendación */
+.recommendation-business-field{display:grid;gap:6px;margin:10px 0}
+.recommendation-business-field[hidden]{display:none!important}
+.recommendation-business-field label{font-size:13px;font-weight:750;color:#26364b}
+.recommendation-business-field input{width:100%;padding:12px 14px;border:1px solid #dce5ef;border-radius:11px;font:inherit}
+.recommendation-business-field small{color:#7a8799;font-size:11px}
+.recommendation-invite-modal[hidden]{display:none!important}
+.recommendation-invite-modal{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:18px}
+.recommendation-invite-backdrop{position:absolute;inset:0;background:rgba(13,24,39,.58);backdrop-filter:blur(3px)}
+.recommendation-invite-card{position:relative;width:min(100%,540px);padding:26px;border:1px solid #e4e9ef;border-radius:22px;background:#fff;box-shadow:0 24px 80px rgba(13,24,39,.22);color:#26364b}
+.recommendation-invite-heading{display:flex;align-items:center;gap:11px}
+.recommendation-invite-heading i{color:#c69a2b;font-size:22px}
+.recommendation-invite-heading h2{margin:0;color:#233a72;font-size:22px}
+.recommendation-invite-card p{margin:14px 0;color:#526177;font-size:15px;line-height:1.5}
+.recommendation-invite-card h3{margin:18px 0 8px;color:#233a72;font-size:17px;line-height:1.4}
+.recommendation-invite-detail{margin-top:0!important}
+.recommendation-invite-business{display:block;margin:10px 0;color:#233a72;font-size:14px}
+.recommendation-invite-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;margin-top:18px;padding:12px 18px;border-radius:13px;background:#55a16c;color:#fff;text-decoration:none;font-size:16px;font-weight:800}
+.recommendation-invite-whatsapp:hover{background:#438d5a}
+.recommendation-invite-skip{display:block;width:100%;margin-top:14px;padding:10px;border:0;background:transparent;color:#748094;font:inherit;font-size:13px;cursor:pointer}
+@media(max-width:600px){.recommendation-invite-card{padding:21px 18px;border-radius:18px}.recommendation-invite-heading h2{font-size:19px}.recommendation-invite-card h3{font-size:16px}.recommendation-invite-card p{font-size:14px}}
+
+.recommendation-invite-x{position:absolute;top:13px;right:13px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f4f8;color:#66738a;font-size:17px;cursor:pointer;transition:background .18s ease,color .18s ease}
+.recommendation-invite-x:hover{background:#e4eaf2;color:#233a72}
+.recommendation-invite-x:focus-visible{outline:3px solid rgba(85,161,108,.35);outline-offset:2px}
+.recommendation-invite-heading{padding-right:34px}
+
+/* Confirmación de eliminación integrada a la identidad visual neXsv */
+.community-confirm-modal[hidden]{display:none!important}
+.community-confirm-modal{position:fixed;inset:0;z-index:1300;display:grid;place-items:center;padding:18px}
+.community-confirm-backdrop{position:absolute;inset:0;background:rgba(27,43,75,.48);backdrop-filter:blur(4px)}
+.community-confirm-card{position:relative;width:min(100%,440px);padding:30px 28px 26px;border:1px solid #E5EAF2;border-radius:20px;background:#fff;color:#34466F;box-shadow:0 22px 70px rgba(35,58,114,.18);text-align:center}
+.community-confirm-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border:1px solid #E5EAF2;border-radius:50%;background:#F4F7FB;color:#64738D;cursor:pointer}
+.community-confirm-icon{width:50px;height:50px;margin:0 auto 13px;border:1px solid #F0E5C8;border-radius:16px;display:grid;place-items:center;background:#FBF7EB;color:#B88718;font-size:20px}
+.community-confirm-card h2{margin:0 0 9px;color:#233A72;font-size:21px;font-weight:800;letter-spacing:-.25px}
+.community-confirm-card p{margin:0;color:#66748A;font-size:14px;line-height:1.55}
+.community-confirm-error{min-height:0;margin-top:8px!important;color:#B94D47!important}
+.community-confirm-error:empty{display:none}
+.community-confirm-actions{display:flex;justify-content:center;gap:10px;margin-top:22px}
+.community-confirm-actions button{min-height:44px;padding:10px 18px;border-radius:12px;font:inherit;font-size:14px;font-weight:800;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
+.community-confirm-cancel{border:1px solid #DCE5EF;background:#F4F7FB;color:#34466F}
+.community-confirm-cancel:hover{background:#EAF0F8}
+.community-confirm-submit{border:1px solid #269A91;background:linear-gradient(110deg,#3159B7 0%,#269A91 100%);color:#fff}
+.community-confirm-submit:hover{filter:brightness(.96);transform:translateY(-1px)}
+.community-confirm-submit:disabled{opacity:.65;cursor:wait;transform:none}
+@media(max-width:480px){.community-confirm-card{padding:27px 18px 22px;border-radius:18px}.community-confirm-actions{flex-direction:column-reverse}.community-confirm-actions button{width:100%}}
+
+
+/* Sistema cromático unificado de acciones y recomendaciones neXsv */
+.publication-type-recommendation{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9;
+}
+.publication-card-recommendation .publication-type{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9;
+}
+.publication-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:9px;
+}
+.publication-actions button,
+.publication-actions .edit-publication-btn,
+.publication-actions .delete-publication-btn,
+.publication-actions .interest-btn,
+.publication-actions .comment-toggle-btn,
+.publication-actions .save-publication-btn,
+.publication-actions .share-publication-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:40px;
+  padding:9px 13px;
+  border:1px solid #D5EEE9 !important;
+  border-radius:12px !important;
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  box-shadow:none !important;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.publication-actions button:hover,
+.publication-actions .edit-publication-btn:hover,
+.publication-actions .delete-publication-btn:hover,
+.publication-actions .interest-btn:hover,
+.publication-actions .comment-toggle-btn:hover,
+.publication-actions .save-publication-btn:hover,
+.publication-actions .share-publication-btn:hover{
+  background:#DFF1EE !important;
+  border-color:#B9E2DA !important;
+  color:#116E69 !important;
+  transform:translateY(-1px);
+}
+.publication-actions button:disabled{opacity:.6;cursor:wait;transform:none}
+.publication-actions button i{color:inherit !important}
+.publication-actions .active,
+.publication-actions .has-comments{
+  background:#DFF1EE !important;
+  border-color:#B9E2DA !important;
+  color:#116E69 !important;
+}
+@media(max-width:600px){
+  .publication-actions{gap:7px}
+  .publication-actions button,
+  .publication-actions .edit-publication-btn,
+  .publication-actions .delete-publication-btn,
+  .publication-actions .interest-btn,
+  .publication-actions .comment-toggle-btn,
+  .publication-actions .save-publication-btn,
+  .publication-actions .share-publication-btn{min-height:38px;padding:8px 10px;font-size:12px}
+}
+
+
+/* Estandarización final del feed: mismas etiquetas, acciones y lectura */
+.publication-card .publication-author .publication-type,
+.publication-card .publication-author .publication-type-recommendation,
+.publication-card-recommendation .publication-author .publication-type{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9 !important;
+}
+.publication-card .publication-body,
+.publication-card-recommendation .recommendation-review-copy p{
+  color:#34466F !important;
+  font-size:15px !important;
+  font-weight:500 !important;
+  line-height:1.5 !important;
+}
+.publication-card .publication-actions > button,
+.publication-card .publication-actions > button.edit-publication-btn,
+.publication-card .publication-actions > button.delete-publication-btn,
+.publication-card .publication-actions > button.interest-btn,
+.publication-card .publication-actions > button.comment-toggle-btn,
+.publication-card .publication-actions > button.save-publication-btn,
+.publication-card .publication-actions > button.share-publication-btn{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9 !important;
+  box-shadow:none !important;
+}
+.publication-card .publication-actions > button:hover,
+.publication-card .publication-actions > button:focus-visible{
+  background:#DFF1EE !important;
+  color:#116E69 !important;
+  border-color:#B9E2DA !important;
+}
+.publication-card .publication-actions > button i{color:inherit !important}
+@media(max-width:650px){
+  .publication-card .publication-body,
+  .publication-card-recommendation .recommendation-review-copy p{
+    font-size:14px !important;
+    line-height:1.45 !important;
+  }
+}
+
+
+/* Acciones del feed: botones outline azul neXsv, sin rellenos de color */
+#publicationList .publication-actions > button,
+#publicationList .publication-actions > .publication-engagement-btn{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  border:1px solid #D3DDF0 !important;
+  border-radius:12px !important;
+  box-shadow:none !important;
+  font-weight:700 !important;
+}
+#publicationList .publication-actions > button i,
+#publicationList .publication-actions > button .nexsv-save-icon,
+#publicationList .publication-actions > .publication-engagement-btn i{
+  color:#3155B6 !important;
+}
+#publicationList .publication-actions > button:hover,
+#publicationList .publication-actions > .publication-engagement-btn:hover,
+#publicationList .publication-actions > button:focus-visible{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#233A72 !important;
+  border-color:#3155B6 !important;
+  box-shadow:0 0 0 2px rgba(49,85,182,.08) !important;
+}
+#publicationList .publication-actions > button:hover i,
+#publicationList .publication-actions > .publication-engagement-btn:hover i{
+  color:#233A72 !important;
+}
+#publicationList .publication-actions > button.active,
+#publicationList .publication-actions > button.has-comments,
+#publicationList .publication-actions > .publication-engagement-btn.is-saved{
+  background:transparent !important;
+  background-color:transparent !important;
+  color:#3155B6 !important;
+  border-color:#3155B6 !important;
+}
+#publicationList .publication-actions > button:disabled{opacity:.55}

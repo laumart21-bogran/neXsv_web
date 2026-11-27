@@ -23,9 +23,9 @@
     <link rel="stylesheet" href="css/comunidad.css">
     <link rel="stylesheet" href="css/comunidad-replies.css?v=20260914-1">
     <link rel="stylesheet" href="css/community-business-context.css?v=20260914-1">
-    <link rel="stylesheet" href="css/community-engagement.css?v=20260916-1">
+    <link rel="stylesheet" href="css/community-engagement.css?v=20261127-2">
     <link rel="stylesheet" href="css/member-notifications-saved.css">
-    <link rel="stylesheet" href="css/community-redesign.css?v=20261127-15">
+    <link rel="stylesheet" href="css/community-redesign.css?v=20261127-17">
 </head>
 <body>
 <header class="community-topbar">
@@ -114,6 +114,11 @@
             <label class="type-option"><input type="radio" name="type" value="EVENTO"><span>Evento</span></label>
           </div>
           <input id="publicationTitle" type="text" maxlength="120" placeholder="Título breve (opcional)">
+          <div id="recommendationBusinessField" class="recommendation-business-field" hidden>
+            <label for="recommendationBusinessName">Nombre de la academia o negocio</label>
+            <input id="recommendationBusinessName" type="text" maxlength="140" placeholder="Ej. Academia 1-2-3-4-5">
+            <small>Así otras familias podrán identificar tu recomendación.</small>
+          </div>
           <textarea id="publicationBody" rows="4" maxlength="2000" placeholder="Cuéntale a la comunidad qué quieres compartir..." required></textarea>
           <div class="photo-upload-row"><input id="publicationImages" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden><button id="addPhotosBtn" class="photo-upload-btn" type="button"><i class="fa-regular fa-image"></i> Agregar fotos <span>Máx. 3</span></button><span id="photoCount" class="photo-count">Ninguna foto seleccionada</span></div>
           <div id="photoPreview" class="photo-preview" aria-live="polite"></div>
@@ -162,6 +167,33 @@
     </form>
   </section>
 </div>
+<section class="community-confirm-modal" id="deletePublicationModal" hidden role="dialog" aria-modal="true" aria-labelledby="deletePublicationTitle">
+  <div class="community-confirm-backdrop" data-close-delete></div>
+  <div class="community-confirm-card">
+    <button type="button" class="community-confirm-x" aria-label="Cerrar" data-close-delete><i class="fa-solid fa-xmark"></i></button>
+    <div class="community-confirm-icon"><i class="fa-regular fa-trash-can"></i></div>
+    <h2 id="deletePublicationTitle">¿Eliminar publicación?</h2>
+    <p>Dejará de mostrarse en la comunidad. Esta acción no se puede deshacer.</p>
+    <p class="community-confirm-error" id="deletePublicationMessage" role="alert"></p>
+    <div class="community-confirm-actions">
+      <button type="button" class="community-confirm-cancel" data-close-delete>Cancelar</button>
+      <button type="button" class="community-confirm-submit" id="confirmDeletePublication"><i class="fa-regular fa-trash-can"></i> Eliminar publicación</button>
+    </div>
+  </div>
+</section>
+<section class="recommendation-invite-modal" id="recommendationInviteModal" hidden role="dialog" aria-modal="true" aria-labelledby="recommendationInviteTitle">
+  <div class="recommendation-invite-backdrop" data-close-recommendation-invite></div>
+  <div class="recommendation-invite-card">
+    <button type="button" class="recommendation-invite-x" id="recommendationInviteX" aria-label="Cerrar invitación" data-close-recommendation-invite><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    <div class="recommendation-invite-heading"><i class="fa-regular fa-heart"></i><h2 id="recommendationInviteTitle">¡Gracias por recomendar!</h2></div>
+    <p>Tu recomendación puede ayudar a otras familias a descubrir este negocio.</p>
+    <h3>¿Te gustaría que este negocio también formara parte de neXsv?</h3>
+    <p class="recommendation-invite-detail">Invítalo a unirse a nuestra red y ayúdanos a conectar más familias con negocios recomendados por su comunidad.</p>
+    <strong class="recommendation-invite-business" id="recommendationInviteBusinessName"></strong>
+    <a class="recommendation-invite-whatsapp" id="recommendationInviteWhatsapp" href="#" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> Invitar por WhatsApp</a>
+    <button type="button" class="recommendation-invite-skip" id="recommendationInviteClose" data-close-recommendation-invite>También puedes continuar sin invitarlo.</button>
+  </div>
+</section>
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/pages/comunidad-runtime.js"></script>
 <script type="module" src="js/pages/comunidad.js?v=20261127-15"></script>
