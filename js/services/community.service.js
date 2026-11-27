@@ -118,8 +118,13 @@ class CommunityService {
         const { data: publication, error: publicationError } = await supabase.from("community_publications").select("id, author_id").eq("id", publicationId).eq("author_id", userId).single();
         if (publicationError || !publication) return { data: null, error: publicationError || new Error("No tienes permiso para eliminar esta publicación.") };
         const { data: images } = await supabase.from("community_publication_images").select("storage_path").eq("publication_id", publicationId);
-        if (images?.length) await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
-        return await supabase.from("community_publications").update({ status: "ELIMINADA", updated_at: new Date().toISOString() }).eq("id", publicationId).eq("author_id", userId).select().single();
+        const { data, error } = await supabase.rpc("delete_my_community_publication", { p_publication_id: publicationId });
+        if (error) return { data: null, error };
+        if (images?.length) {
+            const { error: storageError } = await supabase.storage.from(COMMUNITY_BUCKET).remove(images.map(item => item.storage_path));
+            if (storageError) console.warn("La publicación se eliminó, pero algunas imágenes no pudieron retirarse:", storageError);
+        }
+        return { data: data || { id: publicationId, status: "ELIMINADA" }, error: null };
     }
 
     async setConversationOrigin(conversationId, publicationId) { return await supabase.from("conversations").update({ origin_publication_id: publicationId, updated_at: new Date().toISOString() }).eq("id", conversationId).select().single(); }
