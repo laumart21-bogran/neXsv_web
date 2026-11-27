@@ -85,52 +85,5 @@ $$;
 revoke all on function public.create_business_review_with_publication(uuid, integer, text) from public;
 grant execute on function public.create_business_review_with_publication(uuid, integer, text) to authenticated;
 
--- Historical attribution approved by the product owner:
--- Laura and Cindy's test reviews were both submitted from Laura's account.
-do $$
-declare
-  v_author_id uuid;
-  v_review record;
-  v_publication_id uuid;
-  v_business_name text;
-begin
-  select id into v_author_id
-  from auth.users
-  where lower(email) = lower('lauramartinezp9@gmail.com')
-  limit 1;
-
-  if v_author_id is null then
-    raise notice 'Historical Laura/Cindy reviews not backfilled: account not found.';
-    return;
-  end if;
-
-  for v_review in
-    select id, business_id, estrellas, comentario
-    from public.business_reviews
-    where lower(coalesce(nombre, '')) in ('laura', 'cindy')
-      and publication_id is null
-  loop
-    select nombre into v_business_name
-    from public.businesses
-    where id = v_review.business_id;
-
-    if v_business_name is not null then
-      insert into public.community_publications
-        (author_id, business_id, type, title, body, status, created_at)
-      values
-        (v_author_id, v_review.business_id, 'RECOMENDACION',
-         'Experiencia en ' || v_business_name,
-         repeat('★', greatest(1, least(5, v_review.estrellas))) ||
-           repeat('☆', 5 - greatest(1, least(5, v_review.estrellas))) ||
-           E'\n' || coalesce(v_review.comentario, ''),
-         'PUBLICADA', now())
-      returning id into v_publication_id;
-
-      update public.business_reviews
-      set author_id = v_author_id, publication_id = v_publication_id,
-          nombre = 'Laura'
-      where id = v_review.id;
-    end if;
-  end loop;
-end;
-$$;
+-- Historical reviews are intentionally not backfilled here.
+-- Their authors must be linked only after identity is confirmed using verified account IDs.
