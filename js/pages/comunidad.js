@@ -43,7 +43,8 @@ async function getAuthorProfile(userId) {
 
 async function enrichPublications(publications) {
     return Promise.all((publications || []).map(async p => {
-        if (p.business_id) {
+        // Las recomendaciones vinculadas a un negocio conservan como autor a la persona que las escribió.
+        if (p.business_id && p.type !== "RECOMENDACION") {
             const business = publicBusinessesById.get(p.business_id);
             if (business) {
                 return {
@@ -223,6 +224,7 @@ function renderPublications(publications) {
             </div>
             ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
             <p class="publication-body">${escapeHtml(p.body)}</p>
+            ${p.business_id && publicBusinessesById.has(p.business_id) ? (() => { const business = publicBusinessesById.get(p.business_id); return `<a class="publication-business-link" href="negocio.html?id=${encodeURIComponent(business.id)}">${businessLogoHtml(business, "publication-business-logo")}<span><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></a>`; })() : ""}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
                 ${canManage
