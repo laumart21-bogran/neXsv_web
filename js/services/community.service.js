@@ -32,16 +32,12 @@ class CommunityService {
     async getLikeData(publicationIds = [], userId = null) {
         const ids = [...new Set((publicationIds || []).filter(Boolean))];
         if (!ids.length) return { data: {}, error: null };
-        const { data, error } = await supabase
-            .from("community_publication_likes")
-            .select("publication_id, user_id")
-            .in("publication_id", ids);
+        if (!userId) return { data: {}, error: null };
+        const { data, error } = await supabase.rpc("get_community_publication_like_metrics", { p_publication_ids: ids });
         if (error) return { data: {}, error };
         const result = {};
         (data || []).forEach(row => {
-            if (!result[row.publication_id]) result[row.publication_id] = { count: 0, likedByMe: false };
-            result[row.publication_id].count++;
-            if (userId && row.user_id === userId) result[row.publication_id].likedByMe = true;
+            result[row.publication_id] = { count: Number(row.like_count || 0), likedByMe: Boolean(row.liked_by_me) };
         });
         return { data: result, error: null };
     }
@@ -54,12 +50,10 @@ class CommunityService {
             ? await supabase.from("community_publication_likes").insert({ publication_id: publicationId, user_id: userId })
             : await supabase.from("community_publication_likes").delete().eq("publication_id", publicationId).eq("user_id", userId);
         if (mutation.error) return { data: null, error: mutation.error };
-        const { count, error } = await supabase
-            .from("community_publication_likes")
-            .select("user_id", { count: "exact", head: true })
-            .eq("publication_id", publicationId);
+        const { data, error } = await supabase.rpc("get_community_publication_like_metrics", { p_publication_ids: [publicationId] });
         if (error) return { data: null, error };
-        return { data: { count: Number(count || 0), likedByMe: liked }, error: null };
+        const metric = (data || [])[0];
+        return { data: { count: Number(metric?.like_count || 0), likedByMe: Boolean(metric?.liked_by_me) }, error: null };
     }
 
     async getComments(publicationId, limit = 50) {
