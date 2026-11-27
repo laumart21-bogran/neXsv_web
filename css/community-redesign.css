@@ -519,3 +519,21 @@
 .recommendation-invite-x:hover{background:#e4eaf2;color:#233a72}
 .recommendation-invite-x:focus-visible{outline:3px solid rgba(85,161,108,.35);outline-offset:2px}
 .recommendation-invite-heading{padding-right:34px}
+
+/* Confirmación de eliminación integrada a la interfaz */
+.community-confirm-modal[hidden]{display:none!important}
+.community-confirm-modal{position:fixed;inset:0;z-index:1300;display:grid;place-items:center;padding:18px}
+.community-confirm-backdrop{position:absolute;inset:0;background:rgba(15,27,44,.52);backdrop-filter:blur(3px)}
+.community-confirm-card{position:relative;width:min(100%,440px);padding:28px;border-radius:20px;background:#fff;color:#273b6c;box-shadow:0 22px 70px rgba(15,27,44,.24);text-align:center}
+.community-confirm-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border:0;border-radius:50%;background:#f1f4f8;color:#68758a;cursor:pointer}
+.community-confirm-icon{width:48px;height:48px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:#fff1ef;color:#c45c52;font-size:20px}
+.community-confirm-card h2{margin:0 0 9px;font-size:21px}
+.community-confirm-card p{margin:0;color:#66748a;font-size:14px;line-height:1.5}
+.community-confirm-error{min-height:0;margin-top:8px!important;color:#c34f49!important}
+.community-confirm-error:empty{display:none}
+.community-confirm-actions{display:flex;justify-content:center;gap:10px;margin-top:22px}
+.community-confirm-actions button{min-height:44px;padding:10px 17px;border-radius:11px;font:inherit;font-size:14px;font-weight:750;cursor:pointer}
+.community-confirm-cancel{border:1px solid #dce4ee;background:#fff;color:#40516d}
+.community-confirm-submit{border:1px solid #b94d47;background:#c45c52;color:#fff}
+.community-confirm-submit:disabled{opacity:.65;cursor:wait}
+@media(max-width:480px){.community-confirm-card{padding:25px 18px}.community-confirm-actions{flex-direction:column-reverse}.community-confirm-actions button{width:100%}}
