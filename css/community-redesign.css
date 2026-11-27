@@ -136,3 +136,15 @@
   .community-business-track{transition:none}
   .community-banner-dots button{transition:none}
 }
+
+/* Negocio relacionado en recomendaciones y experiencias */
+.publication-business-link{display:flex;align-items:center;gap:12px;margin:14px 0;padding:12px 14px;border:1px solid #E5EAF1;border-radius:15px;background:#F8FAFD;color:#253247;text-decoration:none;transition:border-color .2s,background .2s}
+.publication-business-link:hover{border-color:#B9CBE7;background:#F2F6FC}
+.publication-business-logo{width:42px;height:42px;flex:0 0 42px;border-radius:11px;object-fit:contain;background:#fff;border:1px solid #E8EDF4;padding:4px}
+.publication-business-logo.community-business-logo-fallback{display:grid;place-items:center;color:#3159B7;font-size:13px;font-weight:800}
+.publication-business-link>span{display:flex;flex-direction:column;gap:3px;min-width:0}
+.publication-business-link strong{font-size:12px;color:#26364B}
+.publication-business-link small{font-size:10px;color:#7A8495}
+.publication-business-link em{margin-left:auto;font-size:10px;font-style:normal;font-weight:800;color:#3159B7;white-space:nowrap}
+.publication-business-link em i{margin-left:4px}
+@media(max-width:600px){.publication-business-link{gap:9px;padding:10px}.publication-business-logo{width:38px;height:38px;flex-basis:38px}.publication-business-link em{font-size:9px}}
