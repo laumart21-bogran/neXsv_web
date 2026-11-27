@@ -26,6 +26,7 @@ let activeCommunityTopic = null;
 let selectedFiles = [];
 let editingPublicationId = null;
 let editingPublicationBusinessId = null;
+let pendingDeletePublicationId = null;
 let deepLinkedPublicationId = null;
 let activeBusinessId = null;
 let activeBusiness = null;
@@ -585,6 +586,10 @@ document.getElementById("recommendationInviteModal")?.addEventListener("click", 
 document.querySelectorAll("#editTypeOptions .type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll("#editTypeOptions .type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
 document.querySelectorAll(".filter-btn").forEach(button => button.addEventListener("click", async () => { currentFilter = button.dataset.filter || "TODAS"; document.querySelectorAll(".filter-btn").forEach(item => item.classList.toggle("active", item === button)); await loadPublications(); }));
 document.querySelectorAll("[data-close-edit]").forEach(element => element.addEventListener("click", closeEditPublication));
+document.getElementById("confirmDeletePublication")?.addEventListener("click", confirmDeletePublication);
+document.querySelectorAll("[data-close-delete]").forEach(element => element.addEventListener("click", closeDeletePublication));
+document.getElementById("deletePublicationModal")?.addEventListener("click", event => { if (event.target === event.currentTarget) closeDeletePublication(); });
+
 
 publicationForm?.addEventListener("submit", async event => {
     event.preventDefault();
@@ -632,29 +637,37 @@ publicationForm?.addEventListener("submit", async event => {
 
 editForm?.addEventListener("submit", async event => { event.preventDefault(); if (!editingPublicationId) return; showEditMessage(); const type = editForm.querySelector("input[name='editType']:checked")?.value; const title = editTitle.value.trim(); const body = editBody.value.trim(); const submitButton = editForm.querySelector("button[type='submit']"); if (!type || !body) { showEditMessage("Escribe algo para poder guardar los cambios.", "error"); return; } submitButton.disabled = true; submitButton.textContent = "Guardando..."; const { error } = await CommunityService.updatePublication(editingPublicationId, { type, title, body, businessId: editingPublicationBusinessId }); submitButton.disabled = false; submitButton.textContent = "Guardar cambios"; if (error) { console.error("Error editando publicación:", error); showEditMessage(error.message || "No fue posible guardar los cambios.", "error"); return; } closeEditPublication(); await loadPublications(); });
 
-async function deletePublication(publicationId) {
+function deletePublication(publicationId) {
     const card = document.querySelector(`[data-publication-id="${CSS.escape(publicationId)}"]`);
     if (!card) return;
-    const publication = await CommunityService.getPublicationById(publicationId);
-    if (publication.error || !publication.data || publication.data.author_id !== currentUser.id) {
-        alert("No tienes permiso para eliminar esta publicación.");
-        return;
+    pendingDeletePublicationId = publicationId;
+    const modal = document.getElementById("deletePublicationModal");
+    const message = document.getElementById("deletePublicationMessage");
+    if (message) message.textContent = "";
+    if (modal) {
+        modal.hidden = false;
+        document.getElementById("confirmDeletePublication")?.focus();
     }
-    if (!confirm("¿Quieres eliminar esta publicación? Dejará de mostrarse en la comunidad.")) return;
-    const button = card.querySelector("[data-delete]");
-    if (button) {
-        button.disabled = true;
-        button.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Eliminando...';
-    }
+}
+function closeDeletePublication() {
+    const modal = document.getElementById("deletePublicationModal");
+    if (modal) modal.hidden = true;
+    pendingDeletePublicationId = null;
+}
+async function confirmDeletePublication() {
+    if (!pendingDeletePublicationId) return;
+    const publicationId = pendingDeletePublicationId;
+    const button = document.getElementById("confirmDeletePublication");
+    const message = document.getElementById("deletePublicationMessage");
+    if (button) { button.disabled = true; button.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Eliminando...'; }
     const { error } = await CommunityService.deletePublication(publicationId);
+    if (button) { button.disabled = false; button.innerHTML = '<i class="fa-regular fa-trash-can"></i> Eliminar publicación'; }
     if (error) {
-        if (button) {
-            button.disabled = false;
-            button.innerHTML = '<i class="fa-regular fa-trash-can"></i> Eliminar';
-        }
-        alert(error.message || "No fue posible eliminar la publicación.");
+        if (message) message.textContent = "No pudimos eliminarla. Inténtalo nuevamente.";
+        console.error("Error eliminando publicación:", error);
         return;
     }
+    closeDeletePublication();
     await loadPublications();
 }
 
@@ -685,5 +698,9 @@ async function initialize() { try { chooseWeeklyQuestion(); const { data, error 
             }));
             publicBusinessesById = new Map(businesses.map(business => [business.id, business]));
         } renderBusinessRail(); startBusinessRail(); renderHeaderAvatar(); applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
-window.addEventListener("keydown", event => { if (event.key === "Escape" && !editModal.hidden) closeEditPublication(); });
+window.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    if (!document.getElementById("deletePublicationModal")?.hidden) closeDeletePublication();
+    if (!editModal.hidden) closeEditPublication();
+});
 initialize();
