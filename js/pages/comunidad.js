@@ -102,9 +102,13 @@ async function loadHistoricalReviewPublications(publications) {
     const businesses = [...publicBusinessesById.values()];
     if (!businesses.length) return publications;
     const normalizeReviewText = value => String(value || "")
-        .replace(/^[★☆\\s]+(?=\\r?$)/gm, "")
-        .replace(/^[★☆\\s]+/, "")
-        .replace(/\\s+/g, " ")
+        .replaceAll("★", "")
+        .replaceAll("☆", "")
+        .replaceAll(String.fromCharCode(10), " ")
+        .replaceAll(String.fromCharCode(13), " ")
+        .split(" ")
+        .filter(Boolean)
+        .join(" ")
         .trim()
         .toLocaleLowerCase("es");
     const recommendationKey = item => {
