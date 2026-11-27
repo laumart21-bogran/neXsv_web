@@ -404,3 +404,78 @@
   .publication-card-recommendation .recommendation-stars{font-size:17px}
   .publication-card-recommendation .recommendation-review-copy p{font-size:14px;line-height:1.45}
 }
+
+
+/* Bloque editorial intercalado en el feed de comunidad */
+.community-feed-business{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin:18px 0;
+  padding:18px 20px;
+  border:1px solid #dce8e8;
+  border-radius:18px;
+  background:linear-gradient(120deg,#f0f8f7 0%,#ffffff 78%);
+  box-shadow:0 5px 18px rgba(34,64,92,.045);
+}
+.community-feed-business-kicker{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#398b88;
+  font-size:12px;
+  font-weight:750;
+  letter-spacing:.02em;
+}
+.community-feed-business-main{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.community-feed-business-logo{
+  width:54px;
+  height:54px;
+  min-width:54px;
+  border:1px solid #e2e8ef;
+  border-radius:13px;
+  background:#fff;
+  object-fit:contain;
+  padding:5px;
+}
+.community-feed-business-main h3{
+  margin:0 0 4px;
+  color:#244477;
+  font-size:17px;
+  font-weight:750;
+}
+.community-feed-business-main span{
+  color:#728096;
+  font-size:12px;
+}
+.community-feed-business>p{
+  margin:0;
+  color:#526177;
+  font-size:14px;
+  line-height:1.45;
+}
+.community-feed-business>a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  align-self:flex-start;
+  gap:8px;
+  min-height:38px;
+  padding:0 16px;
+  border-radius:999px;
+  background:#e4f3f1;
+  color:#32817f;
+  font-size:13px;
+  font-weight:750;
+  text-decoration:none;
+}
+.community-feed-business>a:hover{background:#d8eeeb}
+@media(max-width:650px){
+  .community-feed-business{margin:12px 0;padding:15px;border-radius:15px}
+  .community-feed-business-logo{width:46px;height:46px;min-width:46px}
+  .community-feed-business-main h3{font-size:15px}
+}
