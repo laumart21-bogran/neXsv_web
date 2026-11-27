@@ -567,40 +567,21 @@
 
 
 /* Fotografías de publicaciones: presentación tipo Instagram */
-.publication-images{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:4px;
-  width:100%;
-  max-width:600px;
-  margin:14px auto 0;
-  align-items:stretch;
-}
-.publication-images img{
-  display:block;
-  width:100%;
-  aspect-ratio:1 / 1;
-  height:auto;
-  object-fit:cover;
-  border-radius:2px;
-  background:#F2F5F9;
-}
-/* Una sola foto ocupa el espacio completo del post */
-.publication-images img:only-child{
-  grid-column:1 / -1;
-  width:100%;
-  aspect-ratio:1 / 1;
-  max-width:600px;
-  justify-self:center;
-}
+.publication-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;width:100%;max-width:none;margin:14px 0 0;align-items:stretch}
+.publication-images img{display:block;width:100%;aspect-ratio:1/1;height:auto;object-fit:cover;border-radius:2px;background:#F2F5F9}
+.publication-images img:only-child{grid-column:1/-1;width:100%;max-width:none;aspect-ratio:1/1;justify-self:stretch}
+.publication-reaction-row{display:flex;align-items:center;gap:7px;padding:10px 20px 0;min-height:34px}
+.publication-like-btn{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;padding:0;border:0;border-radius:50%;background:transparent;color:#365BC5;font-size:21px;cursor:pointer;transition:transform .15s ease,color .15s ease}
+.publication-like-btn:hover{transform:scale(1.12)}
+.publication-like-btn.is-liked{color:#E24B68}
+.publication-like-btn:disabled{opacity:.6;cursor:wait}
+.publication-like-count{color:#33415F;font-size:13px;font-weight:600}
 @media(max-width:600px){
-  .publication-images{
-    width:100%;
-    max-width:100%;
-    margin:12px 0 0;
-    gap:3px;
-  }
-  .publication-images img{border-radius:1px}
-  .publication-body{font-size:14px;line-height:1.5}
-  .publication-card h2{font-size:18px}
+.publication-images{width:100%;max-width:100%;margin:12px 0 0;gap:3px}
+.publication-images img{border-radius:1px}
+.publication-reaction-row{padding:9px 14px 0}
+.publication-like-btn{width:27px;height:27px;font-size:21px}
+.publication-like-count{font-size:13px}
+.publication-body{font-size:14px;line-height:1.5}
+.publication-card h2{font-size:18px}
 }
