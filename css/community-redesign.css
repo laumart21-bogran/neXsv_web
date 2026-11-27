@@ -566,31 +566,41 @@
 }
 
 
-/* Fotografías de publicaciones: cuadradas, visibles y proporcionadas */
+/* Fotografías de publicaciones: presentación tipo Instagram */
 .publication-images{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,300px));
-  gap:12px;
-  align-items:start;
-  max-width:620px;
-  margin:14px 20px 0;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:4px;
+  width:100%;
+  max-width:600px;
+  margin:14px auto 0;
+  align-items:stretch;
 }
 .publication-images img{
   display:block;
   width:100%;
   aspect-ratio:1 / 1;
+  height:auto;
   object-fit:cover;
-  border-radius:13px;
+  border-radius:2px;
   background:#F2F5F9;
+}
+/* Una sola foto ocupa el espacio completo del post */
+.publication-images img:only-child{
+  grid-column:1 / -1;
+  width:100%;
+  aspect-ratio:1 / 1;
+  max-width:600px;
+  justify-self:center;
 }
 @media(max-width:600px){
   .publication-images{
-    grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    width:100%;
     max-width:100%;
-    gap:9px;
-    margin:12px 14px 0;
+    margin:12px 0 0;
+    gap:3px;
   }
-  .publication-images img{border-radius:11px}
+  .publication-images img{border-radius:1px}
   .publication-body{font-size:14px;line-height:1.5}
   .publication-card h2{font-size:18px}
 }
