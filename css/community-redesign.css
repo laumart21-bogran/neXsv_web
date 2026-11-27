@@ -539,3 +539,76 @@
 .community-confirm-submit:hover{filter:brightness(.96);transform:translateY(-1px)}
 .community-confirm-submit:disabled{opacity:.65;cursor:wait;transform:none}
 @media(max-width:480px){.community-confirm-card{padding:27px 18px 22px;border-radius:18px}.community-confirm-actions{flex-direction:column-reverse}.community-confirm-actions button{width:100%}}
+
+
+/* Sistema cromático unificado de acciones y recomendaciones neXsv */
+.publication-type-recommendation{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9;
+}
+.publication-card-recommendation .publication-type{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9;
+}
+.publication-actions{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:9px;
+}
+.publication-actions button,
+.publication-actions .edit-publication-btn,
+.publication-actions .delete-publication-btn,
+.publication-actions .interest-btn,
+.publication-actions .comment-toggle-btn,
+.publication-actions .save-publication-btn,
+.publication-actions .share-publication-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:40px;
+  padding:9px 13px;
+  border:1px solid #D5EEE9 !important;
+  border-radius:12px !important;
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  box-shadow:none !important;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  text-decoration:none;
+  transition:background .18s ease,border-color .18s ease,transform .18s ease;
+}
+.publication-actions button:hover,
+.publication-actions .edit-publication-btn:hover,
+.publication-actions .delete-publication-btn:hover,
+.publication-actions .interest-btn:hover,
+.publication-actions .comment-toggle-btn:hover,
+.publication-actions .save-publication-btn:hover,
+.publication-actions .share-publication-btn:hover{
+  background:#DFF1EE !important;
+  border-color:#B9E2DA !important;
+  color:#116E69 !important;
+  transform:translateY(-1px);
+}
+.publication-actions button:disabled{opacity:.6;cursor:wait;transform:none}
+.publication-actions button i{color:inherit !important}
+.publication-actions .active,
+.publication-actions .has-comments{
+  background:#DFF1EE !important;
+  border-color:#B9E2DA !important;
+  color:#116E69 !important;
+}
+@media(max-width:600px){
+  .publication-actions{gap:7px}
+  .publication-actions button,
+  .publication-actions .edit-publication-btn,
+  .publication-actions .delete-publication-btn,
+  .publication-actions .interest-btn,
+  .publication-actions .comment-toggle-btn,
+  .publication-actions .save-publication-btn,
+  .publication-actions .share-publication-btn{min-height:38px;padding:8px 10px;font-size:12px}
+}
