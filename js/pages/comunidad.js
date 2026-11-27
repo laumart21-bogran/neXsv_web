@@ -1,4 +1,4 @@
-import CommunityService from "../services/community.service.js";
+import CommunityService from "../services/community.service.js?v=20261127-01";
 import MessagingService from "../services/messaging.service.js";
 import BusinessService from "../services/business.service.js";
 import BusinessMediaService from "../services/business-media.service.js";
@@ -384,7 +384,7 @@ function renderPublications(publications) {
             ${!isBusinessRecommendation ? `<p class="publication-body">${escapeHtml(p.body)}</p>` : ""}
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
-            ${!p.isLegacyReview ? `<div class="publication-reaction-row"><button type="button" class="publication-like-btn${likedByMe ? " is-liked" : ""}" data-like="${escapeHtml(p.id)}" data-liked="${likedByMe ? "true" : "false"}" aria-label="${likedByMe ? "Quitar me gusta" : "Me gusta"}" aria-pressed="${likedByMe}"><i class="${likedByMe ? "fa-solid" : "fa-regular"} fa-heart"></i></button><span class="publication-like-count" data-like-count="${escapeHtml(p.id)}">${likeCount ? `${likeCount} Me gusta` : "Me gusta"}</span></div>` : ""}
+            ${!p.isLegacyReview ? `<div class="publication-reaction-row"><button type="button" class="publication-like-btn${likedByMe ? " is-liked" : ""}" data-like="${escapeHtml(p.id)}" data-liked="${likedByMe ? "true" : "false"}" aria-label="${likedByMe ? "Quitar me gusta" : "Me gusta"}" aria-pressed="${likedByMe}"><i class="${likedByMe ? "fa-solid" : "fa-regular"} fa-heart"></i></button><span class="publication-like-count" data-like-count="${escapeHtml(p.id)}" data-count="${likeCount}">${likeCount ? `${likeCount} Me gusta` : "Me gusta"}</span></div>` : ""}
             <div class="publication-actions">
                 ${p.isLegacyReview ? "" : (canManage
                     ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>`
