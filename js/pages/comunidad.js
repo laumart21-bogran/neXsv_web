@@ -1,6 +1,7 @@
 import CommunityService from "../services/community.service.js";
 import MessagingService from "../services/messaging.service.js";
 import BusinessService from "../services/business.service.js";
+import BusinessMediaService from "../services/business-media.service.js";
 import { supabase } from "../core/supabase-client.js";
 
 const publicationList = document.getElementById("publicationList");
@@ -218,7 +219,8 @@ function renderPublications(publications) {
         const recommendationParts = isRecommendation ? String(p.body || "").split(/\\n|[\r\n]/, 2) : [];
         const recommendationStars = isRecommendation ? (recommendationParts[0] || "").trim() : "";
         const recommendationText = isRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
-        const businessLink = business ? `<a class="publication-business-link${isRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}">${businessLogoHtml(business, "publication-business-logo")}<span><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></a>` : "";
+        const businessPhoto = isRecommendation ? (business?.referencePhoto || "") : "";
+        const businessLink = business ? \`<a class="publication-business-link\${isRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=\${encodeURIComponent(business.id)}"><span class="recommendation-business-info">\${businessLogoHtml(business, "publication-business-logo")}<span class="recommendation-business-copy"><strong>\${escapeHtml(business.nombre || "Negocio")}</strong><small>\${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></span>\${businessPhoto ? \`<img class="recommendation-business-photo" src="\${escapeHtml(businessPhoto)}" alt="Fotografía de \${escapeHtml(business.nombre || "negocio")}" loading="lazy">\` : ""}</a>\` : "";
         return `<article class="publication-card${isRecommendation ? " publication-card-recommendation" : ""}" data-publication-id="${escapeHtml(p.id)}">
             <div class="publication-author">
                 ${avatarHtml(p.author)}
@@ -491,6 +493,13 @@ async function loadBusinessContext() {
 }
 
 function applyUrlShortcut() { const params = new URLSearchParams(window.location.search); const type = params.get("type"); const create = params.get("create") === "1"; deepLinkedPublicationId = params.get("publicacion"); if (type && TYPE_LABELS[type]) { const input = document.querySelector(`.type-option input[value="${CSS.escape(type)}"]`); if (input) { input.checked = true; document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); } currentFilter = type; document.querySelectorAll(".filter-btn").forEach(o => o.classList.toggle("active", o.dataset.filter === type)); } if (create) setTimeout(openComposer, 100); }
-async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) { publicBusinessesById = new Map((publicBusinessesResult.data || []).map(business => [business.id, business])); } renderBusinessRail(); startBusinessRail(); renderHeaderAvatar(); applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
+async function initialize() { try { const { data, error } = await supabase.auth.getUser(); if (error) throw error; currentUser = data.user || null; if (!currentUser) { window.location.href = "login.html"; return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) {
+            const businesses = publicBusinessesResult.data || [];
+            await Promise.all(businesses.map(async business => {
+                const mediaResult = await BusinessMediaService.getPublicBusinessMedia(business.id);
+                business.referencePhoto = (mediaResult.data || []).find(item => item.url)?.url || "";
+            }));
+            publicBusinessesById = new Map(businesses.map(business => [business.id, business]));
+        } renderBusinessRail(); startBusinessRail(); renderHeaderAvatar(); applyUrlShortcut(); await loadPublications(); } catch (error) { renderError(error); } }
 window.addEventListener("keydown", event => { if (event.key === "Escape" && !editModal.hidden) closeEditPublication(); });
 initialize();
