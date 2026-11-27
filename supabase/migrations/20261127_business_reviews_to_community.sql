@@ -16,7 +16,7 @@ create unique index if not exists business_reviews_publication_id_uidx
   on public.business_reviews(publication_id)
   where publication_id is not null;
 
-create or replace function public.create_business_review_with_publication(
+create or replace function private.create_business_review_with_publication(
   p_business_id uuid,
   p_stars integer,
   p_comment text
@@ -100,13 +100,31 @@ begin
 end;
 $$;
 
+create or replace function public.create_business_review_with_publication(
+  p_business_id uuid,
+  p_stars integer,
+  p_comment text
+)
+returns jsonb
+language sql
+security invoker
+set search_path = ''
+as $wrapper$
+  select private.create_business_review_with_publication(p_business_id, p_stars, p_comment);
+$wrapper$;
+
+grant usage on schema private to authenticated;
+revoke all on function private.create_business_review_with_publication(uuid, integer, text)
+  from public, anon, authenticated;
+grant execute on function private.create_business_review_with_publication(uuid, integer, text)
+  to authenticated;
 revoke all on function public.create_business_review_with_publication(uuid, integer, text)
   from public, anon, authenticated;
 grant execute on function public.create_business_review_with_publication(uuid, integer, text)
   to authenticated;
 
 comment on function public.create_business_review_with_publication(uuid, integer, text)
-  is 'Crea una reseña y su publicación RECOMENDACION de forma atómica; valida usuario, perfil y negocio activo.';
+  is 'Entrada autenticada para crear una reseña y su publicación comunitaria; la operación privilegiada queda en esquema privado.';
 
 -- Las reseñas históricas no se atribuyen automáticamente.
 -- Su autoría solo se migrará con identificadores de cuenta confirmados.
