@@ -97,6 +97,44 @@ async function enrichPublications(publications) {
 }
 function avatarHtml(profile, className = "author-avatar") { return `<div class="${className}">${profile?.photo ? `<img src="${escapeHtml(profile.photo)}" alt="Foto de perfil" loading="lazy">` : `<span>${escapeHtml(initials(profile?.name))}</span>`}</div>`; }
 
+async function loadHistoricalReviewPublications(publications) {
+    const businesses = [...publicBusinessesById.values()];
+    if (!businesses.length) return publications;
+    const results = await Promise.all(businesses.map(async business => {
+        const result = await BusinessService.getPublicBusinessReviews(business.id);
+        return (result.data || []).map(review => ({ business, review }));
+    }));
+    const existing = new Set((publications || [])
+        .filter(item => item.type === "RECOMENDACION" && item.business_id)
+        .map(item => `${item.business_id}|${String(item.body || "").split(/\\n|[\\r\\n]/).slice(1).join(" ").trim().toLocaleLowerCase()}`));
+    const historical = [];
+    results.flat().forEach(({ business, review }) => {
+        const comment = String(review.comentario || "").trim();
+        if (!comment) return;
+        const key = `${business.id}|${comment.toLocaleLowerCase()}`;
+        if (existing.has(key)) return;
+        existing.add(key);
+        const rating = Math.max(1, Math.min(5, Number(review.estrellas) || 1));
+        historical.push({
+            id: `legacy-review-${review.id}`,
+            author_id: null,
+            author: { name: String(review.nombre || "").trim() || "Miembro de la comunidad", photo: null },
+            business_id: business.id,
+            type: "RECOMENDACION",
+            title: `Experiencia en ${business.nombre || "este negocio"}`,
+            body: `${"★".repeat(rating)}${"☆".repeat(5 - rating)}\\n${comment}`,
+            status: "PUBLICADA",
+            created_at: review.created_at,
+            updated_at: review.created_at,
+            images: [],
+            commentCount: 0,
+            isLegacyReview: true
+        });
+    });
+    return [...(publications || []), ...historical].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+}
+
+
 let businessRailIndex = 0;
 let businessRailTimer = null;
 
@@ -275,7 +313,7 @@ function renderPublications(publications) {
     renderCommunitySidebars(publications);
     if (!publications.length) return renderEmpty();
     const renderPublication = p => {
-        const isMine = p.author_id === currentUser.id;
+        const isMine = !p.isLegacyReview && p.author_id === currentUser.id;
         const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
         const commentCount = Number(p.commentCount || 0);
@@ -295,7 +333,7 @@ function renderPublications(publications) {
                 ${avatarHtml(p.author)}
                 <div class="author-info">
                     <strong>${escapeHtml(p.author.name)}</strong>
-                    <span>Miembro de neXsv · ${escapeHtml(formatDate(p.created_at))}${p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
+                    <span>${p.isLegacyReview ? "Reseña histórica · " : "Miembro de neXsv · "}${escapeHtml(formatDate(p.created_at))}${!p.isLegacyReview && p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
                 </div>
                 <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
@@ -304,10 +342,10 @@ function renderPublications(publications) {
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
-                ${canManage
+                ${p.isLegacyReview ? `<span class="legacy-review-label"><i class="fa-regular fa-clock"></i> Reseña anterior a la comunidad</span>` : (canManage
                     ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>`
-                    : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-handshake"></i> Me interesa</button>`}
-                <button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comment"></i> ${commentCount ? commentCount : "Comentar"}</button>
+                    : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-handshake"></i> Me interesa</button>`)}
+                ${!p.isLegacyReview ? `<button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comment"></i> ${commentCount ? commentCount : "Comentar"}</button>` : ""}
             </div>
             <div class="publication-comments" id="comments-${escapeHtml(p.id)}" hidden>
                 <div class="comments-header"><div><strong>Comentarios</strong><span>Pregunta, comenta o comparte tu experiencia con tu comunidad.</span></div></div>
