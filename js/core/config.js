@@ -5,7 +5,7 @@
  * ==========================================================
  */
 
-const isPreviewEnvironment = /(^localhost$|\\.vercel\\.app$)/i.test(window.location.hostname);
+const isPreviewEnvironment = /(^localhost$|\.vercel\.app$)/i.test(window.location.hostname);
 
 const SUPABASE_ENVIRONMENTS = {
     production: {
