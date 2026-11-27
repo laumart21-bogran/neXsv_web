@@ -167,6 +167,20 @@
     </form>
   </section>
 </div>
+<section class="community-confirm-modal" id="deletePublicationModal" hidden role="dialog" aria-modal="true" aria-labelledby="deletePublicationTitle">
+  <div class="community-confirm-backdrop" data-close-delete></div>
+  <div class="community-confirm-card">
+    <button type="button" class="community-confirm-x" aria-label="Cerrar" data-close-delete><i class="fa-solid fa-xmark"></i></button>
+    <div class="community-confirm-icon"><i class="fa-regular fa-trash-can"></i></div>
+    <h2 id="deletePublicationTitle">¿Eliminar publicación?</h2>
+    <p>Dejará de mostrarse en la comunidad. Esta acción no se puede deshacer.</p>
+    <p class="community-confirm-error" id="deletePublicationMessage" role="alert"></p>
+    <div class="community-confirm-actions">
+      <button type="button" class="community-confirm-cancel" data-close-delete>Cancelar</button>
+      <button type="button" class="community-confirm-submit" id="confirmDeletePublication"><i class="fa-regular fa-trash-can"></i> Eliminar publicación</button>
+    </div>
+  </div>
+</section>
 <section class="recommendation-invite-modal" id="recommendationInviteModal" hidden role="dialog" aria-modal="true" aria-labelledby="recommendationInviteTitle">
   <div class="recommendation-invite-backdrop" data-close-recommendation-invite></div>
   <div class="recommendation-invite-card">
