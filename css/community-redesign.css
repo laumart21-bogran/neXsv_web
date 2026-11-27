@@ -695,3 +695,29 @@
   border-color:#3155B6 !important;
 }
 #publicationList .publication-actions > button:disabled{opacity:.55}
+
+
+/* Tipografía editorial unificada: lectura cómoda, peso ligero y proporción equilibrada */
+#publicationList .publication-card .publication-body,
+#publicationList .publication-card-recommendation .recommendation-review-copy p{
+  font-family:inherit !important;
+  font-size:16px !important;
+  font-weight:400 !important;
+  line-height:1.55 !important;
+  letter-spacing:0 !important;
+  color:#34466F !important;
+}
+#publicationList .publication-card .publication-body{
+  margin-top:8px;
+}
+#publicationList .publication-card-recommendation .recommendation-review-copy p{
+  margin:0;
+}
+@media(max-width:650px){
+  #publicationList .publication-card .publication-body,
+  #publicationList .publication-card-recommendation .recommendation-review-copy p{
+    font-size:15px !important;
+    line-height:1.5 !important;
+    font-weight:400 !important;
+  }
+}
