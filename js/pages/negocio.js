@@ -436,7 +436,7 @@ async function init(){
 
  reviews=publicReviewsResult.data||[];
  services=servicesResult.data||[];
- publications=publicationsResult.data||[];
+ publications=(publicationsResult.data||[]).filter(item=>item.type!=="RECOMENDACION");
  refreshView();
 
  if(ownerResult.data===true){
