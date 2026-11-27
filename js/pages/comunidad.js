@@ -287,25 +287,40 @@ function renderFeedBusinessCard(business) {
 
 function buildCommunityFeedSequence(publications) {
     if (currentFilter !== "TODAS") return publications.map(publication => ({ kind: "publication", publication }));
+
     const recommendations = publications.filter(item => item.type === "RECOMENDACION");
     const general = publications.filter(item => item.type !== "RECOMENDACION");
     const businesses = shuffleItems([...publicBusinessesById.values()]);
     const sequence = [];
-    let recommendationIndex = 0, generalIndex = 0, businessIndex = 0;
+    let recommendationIndex = 0;
+    let generalIndex = 0;
+    let businessIndex = 0;
+
+    // Cadencia editorial: 2 recomendaciones → 1 negocio → 1 publicación general.
     while (recommendationIndex < recommendations.length || generalIndex < general.length || businessIndex < businesses.length) {
-        let first = 0;
-        while (first < 2 && recommendationIndex < recommendations.length) {
+        let recommendationsAdded = 0;
+        while (recommendationsAdded < 2 && recommendationIndex < recommendations.length) {
             sequence.push({ kind: "publication", publication: recommendations[recommendationIndex++] });
-            first++;
+            recommendationsAdded++;
         }
-        if (first === 0) {
-            while (first < 2 && generalIndex < general.length) {
+
+        // Si ya no quedan recomendaciones, mantenemos el feed activo con publicaciones generales.
+        if (recommendationsAdded === 0) {
+            let generalAdded = 0;
+            while (generalAdded < 2 && generalIndex < general.length) {
                 sequence.push({ kind: "publication", publication: general[generalIndex++] });
-                first++;
+                generalAdded++;
             }
         }
-        if (businessIndex < businesses.length) sequence.push({ kind: "business", business: businesses[businessIndex++] });
-        if (generalIndex < general.length) sequence.push({ kind: "publication", publication: general[generalIndex++] });
+
+        if (businessIndex < businesses.length) {
+            sequence.push({ kind: "business", business: businesses[businessIndex++] });
+        }
+
+        // Una publicación general completa cada ciclo.
+        if (generalIndex < general.length) {
+            sequence.push({ kind: "publication", publication: general[generalIndex++] });
+        }
     }
     return sequence;
 }
@@ -334,7 +349,7 @@ function renderPublications(publications) {
                 ${avatarHtml(p.author)}
                 <div class="author-info">
                     <strong>${escapeHtml(p.author.name)}</strong>
-                    <span>${p.isLegacyReview ? "Reseña histórica · " : "Miembro de neXsv · "}${escapeHtml(formatDate(p.created_at))}${!p.isLegacyReview && p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
+                    <span>${p.isLegacyReview ? "" : "Miembro de neXsv · "}${escapeHtml(formatDate(p.created_at))}${!p.isLegacyReview && p.updated_at && p.updated_at !== p.created_at ? " · Editada" : ""}</span>
                 </div>
                 <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
@@ -343,7 +358,7 @@ function renderPublications(publications) {
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
-                ${p.isLegacyReview ? `<span class="legacy-review-label"><i class="fa-regular fa-clock"></i> Reseña anterior a la comunidad</span>` : (canManage
+                ${p.isLegacyReview ? "" : (canManage
                     ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>`
                     : `<button class="interest-btn" type="button" data-interest="${escapeHtml(p.id)}" data-author="${escapeHtml(p.author_id)}"><i class="fa-regular fa-handshake"></i> Me interesa</button>`)}
                 ${!p.isLegacyReview ? `<button class="comment-toggle-btn${commentCount ? " has-comments" : ""}" type="button" data-comments="${escapeHtml(p.id)}"><i class="fa-regular fa-comment"></i> ${commentCount ? commentCount : "Comentar"}</button>` : ""}
