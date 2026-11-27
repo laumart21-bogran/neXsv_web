@@ -514,3 +514,8 @@
 .recommendation-invite-whatsapp:hover{background:#438d5a}
 .recommendation-invite-skip{display:block;width:100%;margin-top:14px;padding:10px;border:0;background:transparent;color:#748094;font:inherit;font-size:13px;cursor:pointer}
 @media(max-width:600px){.recommendation-invite-card{padding:21px 18px;border-radius:18px}.recommendation-invite-heading h2{font-size:19px}.recommendation-invite-card h3{font-size:16px}.recommendation-invite-card p{font-size:14px}}
+
+.recommendation-invite-x{position:absolute;top:13px;right:13px;width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:50%;background:#f1f4f8;color:#66738a;font-size:17px;cursor:pointer;transition:background .18s ease,color .18s ease}
+.recommendation-invite-x:hover{background:#e4eaf2;color:#233a72}
+.recommendation-invite-x:focus-visible{outline:3px solid rgba(85,161,108,.35);outline-offset:2px}
+.recommendation-invite-heading{padding-right:34px}
