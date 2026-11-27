@@ -6,10 +6,20 @@
  */
 
 const previewHost = window.location.hostname.toLowerCase();
-const isPreviewEnvironment = previewHost === "localhost"
+const isProductionHost = [
+    "nexsv.com",
+    "www.nexsv.com",
+    "ne-xsv-web.vercel.app",
+    "ne-xsv-web-laumart21-bograns-projects.vercel.app",
+    "ne-xsv-web-git-main-laumart21-bograns-projects.vercel.app",
+    "ne-xsv-o9nmh23mr-laumart21-bograns-projects.vercel.app"
+].includes(previewHost);
+const isPreviewEnvironment = !isProductionHost && (
+    previewHost === "localhost"
     || /^ne-xsv-[a-z0-9]{8,}-laumart21-bograns-projects\.vercel\.app$/.test(previewHost)
-    || previewHost === "ne-xsv-web-git-feature-commun-dddaee-laumart21-bograns-projects.vercel.app";
-    || previewHost === "ne-xsv-web-git-release-commun-1c1dde-laumart21-bograns-projects.vercel.app";
+    || previewHost === "ne-xsv-web-git-feature-commun-dddaee-laumart21-bograns-projects.vercel.app"
+    || previewHost === "ne-xsv-web-git-release-commun-1c1dde-laumart21-bograns-projects.vercel.app"
+);
 
 const SUPABASE_ENVIRONMENTS = {
     production: {
