@@ -9,6 +9,7 @@ const previewHost = window.location.hostname.toLowerCase();
 const isPreviewEnvironment = previewHost === "localhost"
     || /^ne-xsv-[a-z0-9]{8,}-laumart21-bograns-projects\.vercel\.app$/.test(previewHost)
     || previewHost === "ne-xsv-web-git-feature-commun-dddaee-laumart21-bograns-projects.vercel.app";
+    || previewHost === "ne-xsv-web-git-release-commun-1c1dde-laumart21-bograns-projects.vercel.app";
 
 const SUPABASE_ENVIRONMENTS = {
     production: {
