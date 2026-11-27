@@ -16,6 +16,10 @@ create unique index if not exists business_reviews_publication_id_uidx
   on public.business_reviews(publication_id)
   where publication_id is not null;
 
+create schema if not exists private;
+revoke all on schema private from public;
+grant usage on schema private to authenticated;
+
 create or replace function private.create_business_review_with_publication(
   p_business_id uuid,
   p_stars integer,
