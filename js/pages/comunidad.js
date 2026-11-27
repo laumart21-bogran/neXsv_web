@@ -32,6 +32,34 @@ let activeBusiness = null;
 let publicBusinessesById = new Map();
 
 const TYPE_LABELS = { VENTA: "Vendo", INTERCAMBIO: "Intercambio", BUSCO: "Busco", REGALO: "Regalo", RECOMENDACION: "Recomiendo", OFERTA: "Ofrezco", EVENTO: "Evento" };
+const WEEKLY_QUESTIONS = [
+    "¿Qué academia de natación recomiendan para niños?",
+    "¿Qué actividad extracurricular ha disfrutado más tu familia?",
+    "¿Qué lugar recomiendan para celebrar un cumpleaños infantil?",
+    "¿Qué servicio de apoyo escolar les ha funcionado mejor?",
+    "¿Qué restaurante familiar recomendarían para salir con niños?",
+    "¿Qué deporte o actividad ha motivado más a sus hijos?",
+    "¿Qué curso o taller les gustaría encontrar cerca de su colegio?",
+    "¿Qué consejo les ha facilitado organizar las mañanas escolares?",
+    "¿Qué lugar recomiendan para una salida familiar de fin de semana?",
+    "¿Qué servicio para el hogar les ha dado una buena experiencia?",
+    "¿Qué libro o recurso educativo recomiendan para niños?",
+    "¿Qué actividad ayuda más a sus hijos a desarrollar nuevas habilidades?"
+];
+let activeWeeklyQuestion = "";
+function chooseWeeklyQuestion() {
+    activeWeeklyQuestion = WEEKLY_QUESTIONS[Math.floor(Math.random() * WEEKLY_QUESTIONS.length)];
+    const heading = document.getElementById("weeklyQuestionText");
+    if (heading) heading.textContent = activeWeeklyQuestion;
+}
+function shuffleItems(items) {
+    const shuffled = [...items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
 function escapeHtml(value) { return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
 function initials(name = "Miembro") { return String(name).trim().split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]?.toUpperCase()).join("") || "M"; }
 function formatDate(value) { const date = new Date(value); if (Number.isNaN(date.getTime())) return ""; return new Intl.DateTimeFormat("es-SV", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }).format(date); }
@@ -153,13 +181,13 @@ function renderHeaderAvatar() {
 function renderFeaturedBusiness() {
     const container = document.getElementById("featuredBusinessCard");
     if (!container) return;
-    const business = [...publicBusinessesById.values()][0];
+    const business = shuffleItems([...publicBusinessesById.values()])[0];
     if (!business) {
         container.innerHTML = `<div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Negocio destacado</strong></div><p class="side-card-muted">Pronto habrá negocios destacados de tu comunidad.</p>`;
         return;
     }
     container.innerHTML = `
-      <div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Nuevo negocio en neXsv</strong></div>
+      <div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Negocio destacado en neXsv</strong></div>
       ${businessLogoHtml(business, "featured-logo")}
       <span class="featured-badge">En neXsv</span>
       <h3>${escapeHtml(business.nombre || "Negocio")}</h3>
@@ -170,7 +198,9 @@ function renderFeaturedBusiness() {
 function renderRecommendedBusinesses() {
     const container = document.getElementById("communityRecommendedBusinesses");
     if (!container) return;
-    const businesses = [...publicBusinessesById.values()].slice(1, 4);
+    const featuredHref = document.querySelector("#featuredBusinessCard a.featured-action")?.getAttribute("href") || "";
+    const featuredId = new URLSearchParams(featuredHref.split("?")[1] || "").get("id");
+    const businesses = shuffleItems([...publicBusinessesById.values()].filter(business => business.id !== featuredId)).slice(0, 3);
     if (!businesses.length) {
         container.innerHTML = `<p class="side-card-muted">Estamos incorporando más negocios para ti.</p>`;
         return;
@@ -344,9 +374,9 @@ document.getElementById("weeklyQuestionBtn")?.addEventListener("click", () => {
     }
     const titleField = document.getElementById("publicationTitle");
     const bodyField = document.getElementById("publicationBody");
-    if (titleField && !titleField.value.trim()) titleField.value = "Recomendación: academia de natación";
+    if (titleField && !titleField.value.trim()) titleField.value = "Recomendación de la comunidad";
     if (bodyField && !bodyField.value.trim()) {
-        bodyField.value = "En respuesta a la pregunta de la semana: ¿Qué academia de natación recomiendas para niños?\n\n";
+        bodyField.value = `En respuesta a la pregunta: ${activeWeeklyQuestion || "¿Qué recomiendas a otras familias?"}\n\n`;
     }
     openComposer();
 });
@@ -497,7 +527,7 @@ async function loadBusinessContext() {
 }
 
 function applyUrlShortcut() { const params = new URLSearchParams(window.location.search); const type = params.get("type"); const create = params.get("create") === "1"; deepLinkedPublicationId = params.get("publicacion"); if (type && TYPE_LABELS[type]) { const input = document.querySelector(`.type-option input[value="${CSS.escape(type)}"]`); if (input) { input.checked = true; document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked)); } currentFilter = type; document.querySelectorAll(".filter-btn").forEach(o => o.classList.toggle("active", o.dataset.filter === type)); } if (create) setTimeout(openComposer, 100); }
-async function initialize() { try { const { data, error } = await supabase.auth.getSession(); if (error) throw error; currentUser = data.session?.user || null; if (!currentUser) { const returnTo = window.location.pathname + window.location.search; window.location.href = "/acceso/login-usuario.html?return=" + encodeURIComponent(returnTo); return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) {
+async function initialize() { try { chooseWeeklyQuestion(); const { data, error } = await supabase.auth.getSession(); if (error) throw error; currentUser = data.session?.user || null; if (!currentUser) { const returnTo = window.location.pathname + window.location.search; window.location.href = "/acceso/login-usuario.html?return=" + encodeURIComponent(returnTo); return; } await loadBusinessContext(); const publicBusinessesResult = await BusinessService.getPublicBusinessDirectory(); if (!publicBusinessesResult.error) {
             const businesses = publicBusinessesResult.data || [];
             await Promise.all(businesses.map(async business => {
                 const mediaResult = await BusinessMediaService.getPublicBusinessMedia(business.id);
