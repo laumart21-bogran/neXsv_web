@@ -220,6 +220,8 @@ function renderPublications(publications) {
         const isBusinessRecommendation = isRecommendation && Boolean(business);
         const recommendationParts = isBusinessRecommendation ? String(p.body || "").split(/\\n|[\r\n]/, 2) : [];
         const recommendationStars = isBusinessRecommendation ? (recommendationParts[0] || "").trim() : "";
+        const recommendationRating = isBusinessRecommendation ? Math.max(1, Math.min(5, (recommendationStars.match(/★/g) || []).length)) : 0;
+        const recommendationLabel = ({5:"¡Súper recomendado!",4:"¡Recomendado!",3:"Medianamente recomendado",2:"Poco recomendado",1:"No recomendado"})[recommendationRating] || "Recomendación";
         const recommendationText = isBusinessRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
         const businessPhoto = isBusinessRecommendation ? (business?.referencePhoto || "") : "";
         const businessLink = business ? `<a class="publication-business-link${isBusinessRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}"><span class="recommendation-business-info">${businessLogoHtml(business, "publication-business-logo")}<span class="recommendation-business-copy"><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></span>${businessPhoto ? `<img class="recommendation-business-photo" src="${escapeHtml(businessPhoto)}" alt="Fotografía de ${escapeHtml(business.nombre || "negocio")}" loading="lazy">` : ""}</a>` : "";
@@ -232,8 +234,8 @@ function renderPublications(publications) {
                 </div>
                 <span class="publication-type">${isRecommendation ? '<i class="fa-regular fa-heart"></i> Recomendación' : escapeHtml(TYPE_LABELS[p.type] || p.type)}</span>
             </div>
-            ${p.title ? `<h2>${escapeHtml(p.title)}</h2>` : ""}
-            ${isBusinessRecommendation ? `<div class="recommendation-review-copy">${recommendationStars ? `<span class="recommendation-stars" aria-label="Calificación">${escapeHtml(recommendationStars)}</span>` : ""}<p>${escapeHtml(recommendationText)}</p></div>` : `<p class="publication-body">${escapeHtml(p.body)}</p>`}
+            ${isBusinessRecommendation ? `<h2 class="recommendation-rating-title">${recommendationLabel}</h2><div class="recommendation-review-copy"><div class="recommendation-rating-line"><span class="recommendation-stars" aria-label="${recommendationRating} de 5 estrellas">${escapeHtml(recommendationStars)}</span><span class="recommendation-rating-number">${recommendationRating} de 5</span></div><p>${escapeHtml(recommendationText)}</p></div>` : (p.title ? `<h2>${escapeHtml(p.title)}</h2>` : "")}
+            ${!isBusinessRecommendation ? `<p class="publication-body">${escapeHtml(p.body)}</p>` : ""}
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
             <div class="publication-actions">
