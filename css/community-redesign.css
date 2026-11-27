@@ -491,3 +491,26 @@
   border-radius:999px;
   background:#f2f5f8;
 }
+
+
+/* Invitación opcional después de publicar una recomendación */
+.recommendation-business-field{display:grid;gap:6px;margin:10px 0}
+.recommendation-business-field[hidden]{display:none!important}
+.recommendation-business-field label{font-size:13px;font-weight:750;color:#26364b}
+.recommendation-business-field input{width:100%;padding:12px 14px;border:1px solid #dce5ef;border-radius:11px;font:inherit}
+.recommendation-business-field small{color:#7a8799;font-size:11px}
+.recommendation-invite-modal[hidden]{display:none!important}
+.recommendation-invite-modal{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:18px}
+.recommendation-invite-backdrop{position:absolute;inset:0;background:rgba(13,24,39,.58);backdrop-filter:blur(3px)}
+.recommendation-invite-card{position:relative;width:min(100%,540px);padding:26px;border:1px solid #e4e9ef;border-radius:22px;background:#fff;box-shadow:0 24px 80px rgba(13,24,39,.22);color:#26364b}
+.recommendation-invite-heading{display:flex;align-items:center;gap:11px}
+.recommendation-invite-heading i{color:#c69a2b;font-size:22px}
+.recommendation-invite-heading h2{margin:0;color:#233a72;font-size:22px}
+.recommendation-invite-card p{margin:14px 0;color:#526177;font-size:15px;line-height:1.5}
+.recommendation-invite-card h3{margin:18px 0 8px;color:#233a72;font-size:17px;line-height:1.4}
+.recommendation-invite-detail{margin-top:0!important}
+.recommendation-invite-business{display:block;margin:10px 0;color:#233a72;font-size:14px}
+.recommendation-invite-whatsapp{display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px;margin-top:18px;padding:12px 18px;border-radius:13px;background:#55a16c;color:#fff;text-decoration:none;font-size:16px;font-weight:800}
+.recommendation-invite-whatsapp:hover{background:#438d5a}
+.recommendation-invite-skip{display:block;width:100%;margin-top:14px;padding:10px;border:0;background:transparent;color:#748094;font:inherit;font-size:13px;cursor:pointer}
+@media(max-width:600px){.recommendation-invite-card{padding:21px 18px;border-radius:18px}.recommendation-invite-heading h2{font-size:19px}.recommendation-invite-card h3{font-size:16px}.recommendation-invite-card p{font-size:14px}}
