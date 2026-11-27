@@ -358,6 +358,8 @@ function renderPublications(publications) {
         const canManage = isMine;
         const images = (p.images || []).map(image => `<img src="${escapeHtml(image.public_url)}" alt="Imagen de publicación" loading="lazy">`).join("");
         const commentCount = Number(p.commentCount || 0);
+        const likeCount = Number(p.likeCount || 0);
+        const likedByMe = Boolean(p.likedByMe);
         const isRecommendation = p.type === "RECOMENDACION";
         const business = p.business_id ? publicBusinessesById.get(p.business_id) : null;
         // Solo las recomendaciones vinculadas a un negocio (reseñas) usan la tarjeta editorial especial.
@@ -382,6 +384,7 @@ function renderPublications(publications) {
             ${!isBusinessRecommendation ? `<p class="publication-body">${escapeHtml(p.body)}</p>` : ""}
             ${businessLink}
             ${images ? `<div class="publication-images">${images}</div>` : ""}
+            ${!p.isLegacyReview ? `<div class="publication-reaction-row"><button type="button" class="publication-like-btn${likedByMe ? " is-liked" : ""}" data-like="${escapeHtml(p.id)}" data-liked="${likedByMe ? "true" : "false"}" aria-label="${likedByMe ? "Quitar me gusta" : "Me gusta"}" aria-pressed="${likedByMe}"><i class="${likedByMe ? "fa-solid" : "fa-regular"} fa-heart"></i></button><span class="publication-like-count" data-like-count="${escapeHtml(p.id)}">${likeCount ? `${likeCount} Me gusta` : "Me gusta"}</span></div>` : ""}
             <div class="publication-actions">
                 ${p.isLegacyReview ? "" : (canManage
                     ? `<button type="button" class="edit-publication-btn" data-edit="${escapeHtml(p.id)}"><i class="fa-regular fa-pen-to-square"></i> Editar</button><button type="button" class="delete-publication-btn" data-delete="${escapeHtml(p.id)}"><i class="fa-regular fa-trash-can"></i> Eliminar</button>`
@@ -398,6 +401,7 @@ function renderPublications(publications) {
     const feedSequence = buildCommunityFeedSequence(publications);
     publicationList.innerHTML = feedSequence.map(item => item.kind === "business" ? renderFeedBusinessCard(item.business) : renderPublication(item.publication)).join("");
 
+    publicationList.querySelectorAll("[data-like]").forEach(button => button.addEventListener("click", () => togglePublicationLike(button)));
     publicationList.querySelectorAll("[data-interest]").forEach(button => button.addEventListener("click", () => startConversation(button)));
     publicationList.querySelectorAll("[data-edit]").forEach(button => button.addEventListener("click", () => openEditPublication(button.dataset.edit)));
     publicationList.querySelectorAll("[data-delete]").forEach(button => button.addEventListener("click", () => deletePublication(button.dataset.delete)));
@@ -428,6 +432,9 @@ async function loadPublications() {
             return terms.some(term => haystack.includes(term));
         });
     }
+    const { data: likeData, error: likeError } = await CommunityService.getLikeData(publications.filter(p => !p.isLegacyReview).map(p => p.id), currentUser?.id);
+    if (likeError) console.warn("No se pudieron cargar los me gusta:", likeError);
+    publications.forEach(p => { const metrics = likeData?.[p.id] || { count: 0, likedByMe: false }; p.likeCount = Number(metrics.count || 0); p.likedByMe = Boolean(metrics.likedByMe); });
     const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
     if (commentCountError) console.warn("No se pudieron cargar los conteos de comentarios:", commentCountError);
     publications.forEach(p => { p.commentCount = Number(commentCounts?.[p.id] || 0); });
@@ -439,6 +446,37 @@ async function loadPublications() {
         return;
     }
     renderPublications(feedPublications);
+}
+
+async function togglePublicationLike(button) {
+    const publicationId = button.dataset.like;
+    if (!publicationId || button.disabled) return;
+    const wasLiked = button.dataset.liked === "true";
+    const nextLiked = !wasLiked;
+    const card = button.closest(".publication-card");
+    const countElement = card?.querySelector(`[data-like-count="${CSS.escape(publicationId)}"]`);
+    const previousCount = Number(card?.dataset.likeCount || countElement?.dataset.count || 0);
+    button.disabled = true;
+    button.dataset.liked = String(nextLiked);
+    button.classList.toggle("is-liked", nextLiked);
+    button.innerHTML = `<i class="${nextLiked ? "fa-solid" : "fa-regular"} fa-heart"></i>`;
+    button.setAttribute("aria-pressed", String(nextLiked));
+    button.setAttribute("aria-label", nextLiked ? "Quitar me gusta" : "Me gusta");
+    try {
+        const { data, error } = await CommunityService.setPublicationLike(publicationId, nextLiked);
+        if (error) throw error;
+        if (countElement) { countElement.textContent = data.count ? `${data.count} Me gusta` : "Me gusta"; countElement.dataset.count = String(data.count); }
+        if (card) card.dataset.likeCount = String(data.count);
+    } catch (error) {
+        console.error("No se pudo actualizar el me gusta:", error);
+        button.dataset.liked = String(wasLiked);
+        button.classList.toggle("is-liked", wasLiked);
+        button.innerHTML = `<i class="${wasLiked ? "fa-solid" : "fa-regular"} fa-heart"></i>`;
+        button.setAttribute("aria-pressed", String(wasLiked));
+        button.setAttribute("aria-label", wasLiked ? "Quitar me gusta" : "Me gusta");
+        if (countElement) countElement.textContent = previousCount ? `${previousCount} Me gusta` : "Me gusta";
+        alert(error.message || "No pudimos registrar tu reacción. Inténtalo nuevamente.");
+    } finally { button.disabled = false; }
 }
 
 async function startConversation(button) {
