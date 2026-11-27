@@ -721,3 +721,45 @@
     font-weight:400 !important;
   }
 }
+
+
+/* Botones compactos del feed: menos volumen y más aire visual */
+#publicationList .publication-card .publication-actions{
+  gap:10px !important;
+  padding:12px 20px 16px !important;
+}
+#publicationList .publication-card .publication-actions > button,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn{
+  min-height:36px !important;
+  height:36px !important;
+  padding:6px 12px !important;
+  gap:6px !important;
+  border-radius:10px !important;
+  font-size:13px !important;
+  line-height:1.15 !important;
+  font-weight:600 !important;
+  letter-spacing:0 !important;
+}
+#publicationList .publication-card .publication-actions > button i,
+#publicationList .publication-card .publication-actions > .publication-engagement-btn i{
+  font-size:14px !important;
+  line-height:1 !important;
+}
+@media(max-width:650px){
+  #publicationList .publication-card .publication-actions{
+    gap:7px !important;
+    padding:10px 14px 13px !important;
+  }
+  #publicationList .publication-card .publication-actions > button,
+  #publicationList .publication-card .publication-actions > .publication-engagement-btn{
+    min-height:33px !important;
+    height:33px !important;
+    padding:5px 9px !important;
+    font-size:12px !important;
+    border-radius:9px !important;
+  }
+  #publicationList .publication-card .publication-actions > button i,
+  #publicationList .publication-card .publication-actions > .publication-engagement-btn i{
+    font-size:13px !important;
+  }
+}
