@@ -98,6 +98,7 @@ async function enrichPublications(publications) {
 function avatarHtml(profile, className = "author-avatar") { return `<div class="${className}">${profile?.photo ? `<img src="${escapeHtml(profile.photo)}" alt="Foto de perfil" loading="lazy">` : `<span>${escapeHtml(initials(profile?.name))}</span>`}</div>`; }
 
 async function loadHistoricalReviewPublications(publications) {
+    if (currentFilter !== "TODAS" && currentFilter !== "RECOMENDACION") return publications;
     const businesses = [...publicBusinessesById.values()];
     if (!businesses.length) return publications;
     const results = await Promise.all(businesses.map(async business => {
