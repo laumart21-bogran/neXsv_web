@@ -21,16 +21,16 @@ class BusinessMediaService {
 
         if (error) return { data: [], error };
 
-        const items = (data || []).filter(item => item.storage_path);
+        const items = (data || []).filter(item => item.storage_path || item.public_url);
         if (!items.length) return { data: [], error: null };
 
-        // Estas imágenes son públicas por diseño: no generamos URLs firmadas.
+        // Preferimos la URL pública registrada; si no existe, resolvemos la ruta del bucket.
         const bucket = supabase.storage.from(BUCKET);
         return {
             data: items.map(item => ({
                 ...item,
-                url: bucket.getPublicUrl(item.storage_path).data.publicUrl
-            })),
+                url: item.public_url || (item.storage_path ? bucket.getPublicUrl(item.storage_path).data.publicUrl : null)
+            })).filter(item => item.url),
             error: null
         };
     }

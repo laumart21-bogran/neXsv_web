@@ -25,13 +25,14 @@
     <link rel="stylesheet" href="css/community-business-context.css?v=20260914-1">
     <link rel="stylesheet" href="css/community-engagement.css?v=20260916-1">
     <link rel="stylesheet" href="css/member-notifications-saved.css">
+    <link rel="stylesheet" href="css/community-redesign.css?v=20261127-15">
 </head>
 <body>
 <header class="community-topbar">
   <a href="comunidad.html" class="community-logo" aria-label="neXsv Comunidad"><img src="logo.png" alt="neXsv"></a>
   <button class="community-menu-toggle" id="communityMenuToggle" type="button" aria-expanded="false" aria-controls="communityMainNav" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
   <nav class="community-nav" id="communityMainNav" aria-label="Navegación principal">
-    <a href="comunidad.html"><i class="fa-solid fa-users"></i><span>Comunidad</span></a>
+    <a class="active" href="comunidad.html" aria-current="page"><i class="fa-solid fa-users"></i><span>Comunidad</span></a>
     <a href="negocios.html"><i class="fa-solid fa-store"></i><span>Negocios</span></a>
 
   </nav>
@@ -47,10 +48,20 @@
 </header>
 
 <main class="community-page">
+  <section class="community-hero-banner" id="communityHeroBanner" aria-label="Descubre neXsv">
+    <button class="community-banner-arrow prev" id="communityBannerPrev" type="button" aria-label="Banner anterior"><i class="fa-solid fa-chevron-left"></i></button>
+    <div class="community-banner-copy">
+      <h1 id="communityBannerTitle">Conecta con familias de tu comunidad</h1>
+      <p id="communityBannerDescription">Recomienda, pregunta, comparte y descubre grandes oportunidades.</p>
+      <a id="communityBannerLink" href="negocios.html">Explora negocios <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="community-banner-dots" id="communityBannerDots" aria-label="Seleccionar banner"></div>
+    <button class="community-banner-arrow next" id="communityBannerNext" type="button" aria-label="Siguiente banner"><i class="fa-solid fa-chevron-right"></i></button>
+  </section>
   <section class="community-business-rail" aria-label="Negocios de tu comunidad">
     <div class="community-rail-heading">
       <span class="community-rail-icon"><i class="fa-solid fa-location-dot"></i></span>
-      <div><h1>Negocios de tu comunidad</h1><p>Descubre negocios que forman parte de neXsv.</p></div>
+      <div><h1>Negocios de tu comunidad</h1><p>Servicios y negocios recomendados por familias como tú.</p></div>
     </div>
     <button type="button" class="community-rail-arrow" data-business-slide="prev" aria-label="Negocios anteriores"><i class="fa-solid fa-chevron-left"></i></button>
     <div class="community-business-viewport"><div id="communityBusinessRail" class="community-business-track"></div></div>
@@ -70,17 +81,14 @@
   </section>
 
   <section class="community-layout">
-    <aside class="community-sidebar community-sidebar-left" aria-label="Descubrimientos">
-      <article id="featuredBusinessCard" class="community-side-card community-featured-business"></article>
-      <article class="community-side-card community-discover-card">
-        <div class="side-card-title"><i class="fa-solid fa-compass"></i><strong>Descubre en tu comunidad</strong></div>
-        <p>Encuentra recomendaciones, oportunidades y actividades compartidas por personas de tu entorno.</p>
-        <div class="discover-links">
-          <button type="button" data-side-filter="RECOMENDACION">Recomendaciones <i class="fa-solid fa-arrow-right"></i></button>
-          <button type="button" data-side-filter="BUSCO">Oportunidades <i class="fa-solid fa-arrow-right"></i></button>
-          <button type="button" data-side-filter="EVENTO">Eventos <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
+    <aside class="community-sidebar community-sidebar-left" aria-label="Participa en tu comunidad">
+      <article class="community-side-card community-weekly-question">
+        <div class="side-card-title"><i class="fa-solid fa-star"></i><strong>Pregunta para la comunidad</strong></div>
+        <h2 id="weeklyQuestionText">¿Qué academia de natación recomiendan para niños?</h2>
+        <p>Comparte tu experiencia y ayuda a otras familias.</p>
+        <button id="weeklyQuestionBtn" class="weekly-question-action" type="button">Responder <i class="fa-solid fa-arrow-right"></i></button>
       </article>
+      <article id="featuredBusinessCard" class="community-side-card community-featured-business"></article>
     </aside>
 
     <section class="community-feed-column">
@@ -116,15 +124,17 @@
       <section id="publicationList" class="publication-list" aria-live="polite"></section>
     </section>
 
-    <aside class="community-sidebar community-sidebar-right" aria-label="Tu comunidad">
-      <article class="community-side-card community-users-card">
-        <div class="side-card-title"><i class="fa-solid fa-users"></i><strong>Usuarios destacados</strong></div>
-        <div id="communityUsersList"></div>
-      </article>
-      <article class="community-side-card community-recommended-businesses">
-        <div class="side-card-title"><i class="fa-solid fa-store"></i><strong>Negocios recomendados cerca de ti</strong></div>
-        <div id="communityRecommendedBusinesses"></div>
-        <a href="negocios.html" class="side-card-footer">Explorar todos los negocios <i class="fa-solid fa-arrow-right"></i></a>
+    <aside class="community-sidebar community-sidebar-right" aria-label="Temas de la comunidad">
+      <article class="community-side-card community-popular-topics">
+        <div class="side-card-title"><i class="fa-solid fa-fire"></i><strong>Temas populares</strong></div>
+        <div class="popular-topic-list">
+          <button type="button" class="popular-topic-row" data-community-topic="salud"><span class="popular-topic-icon"><i class="fa-solid fa-stethoscope"></i></span><span><strong>Salud y bienestar</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="ninos"><span class="popular-topic-icon"><i class="fa-solid fa-star"></i></span><span><strong>Actividades para niños</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="educacion"><span class="popular-topic-icon"><i class="fa-solid fa-graduation-cap"></i></span><span><strong>Educación y academias</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+          <button type="button" class="popular-topic-row" data-community-topic="restaurantes"><span class="popular-topic-icon"><i class="fa-solid fa-utensils"></i></span><span><strong>Restaurantes y sabores</strong><small>Ver publicaciones del tema</small></span><i class="fa-solid fa-chevron-right topic-arrow"></i></button>
+        </div>
+        <button type="button" class="popular-topic-clear" id="clearCommunityTopic" hidden>Quitar filtro <i class="fa-solid fa-xmark"></i></button>
+        <a href="negocios.html" class="side-card-footer">Explorar negocios <i class="fa-solid fa-arrow-right"></i></a>
       </article>
     </aside>
   </section>
@@ -154,7 +164,7 @@
 </div>
 <script type="module" src="js/app.js"></script>
 <script type="module" src="js/pages/comunidad-runtime.js"></script>
-<script type="module" src="js/pages/comunidad.js?v=20260929-2"></script>
+<script type="module" src="js/pages/comunidad.js?v=20261127-15"></script>
 <script type="module" src="js/pages/community-replies.js"></script>
 <script type="module" src="js/pages/publication-link.js"></script>
 <script type="module" src="js/pages/community-business-context.js?v=20260928-1"></script>

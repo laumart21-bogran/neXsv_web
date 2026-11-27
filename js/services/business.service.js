@@ -33,6 +33,21 @@ class BusinessService {
         };
     }
 
+    async createBusinessReview({ businessId, estrellas, comentario }) {
+        const cleanComment = String(comentario || "").trim();
+        const rating = Number(estrellas);
+        if (!businessId) return { data: null, error: new Error("Negocio no válido.") };
+        if (!Number.isInteger(rating) || rating < 1 || rating > 5) return { data: null, error: new Error("Selecciona una calificación válida.") };
+        if (!cleanComment || cleanComment.length > 1200) return { data: null, error: new Error("Escribe un comentario de hasta 1200 caracteres.") };
+        const { data: userResult, error: authError } = await supabase.auth.getUser();
+        if (authError || !userResult?.user) return { data: null, error: new Error("Usuario no autenticado.") };
+        return await supabase.rpc("create_business_review_with_publication", {
+            p_business_id: businessId,
+            p_stars: rating,
+            p_comment: cleanComment
+        });
+    }
+
     async getPublicBusinessReviews(businessId) {
         const { data, error } = await supabase
             .from("business_reviews")
