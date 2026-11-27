@@ -48,7 +48,11 @@ const WEEKLY_QUESTIONS = [
 ];
 let activeWeeklyQuestion = "";
 function chooseWeeklyQuestion() {
-    activeWeeklyQuestion = WEEKLY_QUESTIONS[Math.floor(Math.random() * WEEKLY_QUESTIONS.length)];
+    let previousQuestion = "";
+    try { previousQuestion = localStorage.getItem("nexsv_last_weekly_question") || ""; } catch (_) {}
+    const options = WEEKLY_QUESTIONS.filter(question => question !== previousQuestion);
+    activeWeeklyQuestion = options[Math.floor(Math.random() * options.length)] || WEEKLY_QUESTIONS[0];
+    try { localStorage.setItem("nexsv_last_weekly_question", activeWeeklyQuestion); } catch (_) {}
     const heading = document.getElementById("weeklyQuestionText");
     if (heading) heading.textContent = activeWeeklyQuestion;
 }
