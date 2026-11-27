@@ -101,18 +101,27 @@ async function loadHistoricalReviewPublications(publications) {
     if (currentFilter !== "TODAS" && currentFilter !== "RECOMENDACION") return publications;
     const businesses = [...publicBusinessesById.values()];
     if (!businesses.length) return publications;
+    const normalizeReviewText = value => String(value || "")
+        .replace(/^[★☆\\s]+(?=\\r?$)/gm, "")
+        .replace(/^[★☆\\s]+/, "")
+        .replace(/\\s+/g, " ")
+        .trim()
+        .toLocaleLowerCase("es");
+    const recommendationKey = item => {
+        if (item.type !== "RECOMENDACION" || !item.business_id) return "";
+        const text = normalizeReviewText(item.body);
+        return text ? String(item.business_id) + "|" + text : "";
+    };
+    const existing = new Set((publications || []).map(recommendationKey).filter(Boolean));
+    const historical = [];
     const results = await Promise.all(businesses.map(async business => {
         const result = await BusinessService.getPublicBusinessReviews(business.id);
         return (result.data || []).map(review => ({ business, review }));
     }));
-    const existing = new Set((publications || [])
-        .filter(item => item.type === "RECOMENDACION" && item.business_id)
-        .map(item => `${item.business_id}|${String(item.body || "").split(/\\n|[\\r\\n]/).slice(1).join(" ").trim().toLocaleLowerCase()}`));
-    const historical = [];
     results.flat().forEach(({ business, review }) => {
         const comment = String(review.comentario || "").trim();
         if (!comment) return;
-        const key = `${business.id}|${comment.toLocaleLowerCase()}`;
+        const key = String(business.id) + "|" + normalizeReviewText(comment);
         if (existing.has(key)) return;
         existing.add(key);
         const rating = Math.max(1, Math.min(5, Number(review.estrellas) || 1));
@@ -132,7 +141,19 @@ async function loadHistoricalReviewPublications(publications) {
             isLegacyReview: true
         });
     });
-    return [...(publications || []), ...historical].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    const unique = [];
+    const seenIds = new Set();
+    const seenRecommendations = new Set();
+    [...(publications || []), ...historical].forEach(item => {
+        const id = String(item.id || "");
+        if (id && seenIds.has(id)) return;
+        const key = recommendationKey(item);
+        if (key && seenRecommendations.has(key)) return;
+        if (id) seenIds.add(id);
+        if (key) seenRecommendations.add(key);
+        unique.push(item);
+    });
+    return unique.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
 }
 
 
