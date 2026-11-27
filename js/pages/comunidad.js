@@ -215,7 +215,7 @@ function renderPublications(publications) {
         const commentCount = Number(p.commentCount || 0);
         const isRecommendation = p.type === "RECOMENDACION";
         const business = p.business_id ? publicBusinessesById.get(p.business_id) : null;
-        const recommendationParts = isRecommendation ? String(p.body || "").split(/\\\\n|[\\r\\n]/, 2) : [];
+        const recommendationParts = isRecommendation ? String(p.body || "").split(/\\n|[\r\n]/, 2) : [];
         const recommendationStars = isRecommendation ? (recommendationParts[0] || "").trim() : "";
         const recommendationText = isRecommendation ? (recommendationParts.length > 1 ? recommendationParts[1] : p.body || "") : p.body;
         const businessLink = business ? `<a class="publication-business-link${isRecommendation ? " recommendation-business-link" : ""}" href="negocio.html?id=${encodeURIComponent(business.id)}">${businessLogoHtml(business, "publication-business-logo")}<span><strong>${escapeHtml(business.nombre || "Negocio")}</strong><small>${escapeHtml(business.categoria || "Negocio de la comunidad")}</small></span><em>Ver negocio <i class="fa-solid fa-arrow-right"></i></em></a>` : "";
