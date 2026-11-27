@@ -29,6 +29,39 @@ class CommunityService {
         return { data: { ...data, images: images || [] }, error: null };
     }
 
+    async getLikeData(publicationIds = [], userId = null) {
+        const ids = [...new Set((publicationIds || []).filter(Boolean))];
+        if (!ids.length) return { data: {}, error: null };
+        const { data, error } = await supabase
+            .from("community_publication_likes")
+            .select("publication_id, user_id")
+            .in("publication_id", ids);
+        if (error) return { data: {}, error };
+        const result = {};
+        (data || []).forEach(row => {
+            if (!result[row.publication_id]) result[row.publication_id] = { count: 0, likedByMe: false };
+            result[row.publication_id].count++;
+            if (userId && row.user_id === userId) result[row.publication_id].likedByMe = true;
+        });
+        return { data: result, error: null };
+    }
+
+    async setPublicationLike(publicationId, liked) {
+        const { data: userResult, error: userError } = await supabase.auth.getUser();
+        const userId = userResult?.user?.id;
+        if (userError || !userId) return { data: null, error: userError || new Error("Inicia sesión para reaccionar.") };
+        const mutation = liked
+            ? await supabase.from("community_publication_likes").insert({ publication_id: publicationId, user_id: userId })
+            : await supabase.from("community_publication_likes").delete().eq("publication_id", publicationId).eq("user_id", userId);
+        if (mutation.error) return { data: null, error: mutation.error };
+        const { count, error } = await supabase
+            .from("community_publication_likes")
+            .select("user_id", { count: "exact", head: true })
+            .eq("publication_id", publicationId);
+        if (error) return { data: null, error };
+        return { data: { count: Number(count || 0), likedByMe: liked }, error: null };
+    }
+
     async getComments(publicationId, limit = 50) {
         const withReplies = await supabase.from("community_publication_comments").select("id, publication_id, author_id, parent_id, body, status, created_at, updated_at").eq("publication_id", publicationId).eq("status", "PUBLICADO").order("created_at", { ascending: true }).limit(limit);
         if (!withReplies.error) return { data: withReplies.data || [], error: null };
