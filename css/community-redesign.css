@@ -175,3 +175,6 @@
  .publication-card-recommendation .recommendation-business-link em{font-size:10px;padding:7px 9px}
  .publication-card-recommendation .publication-actions{padding:12px 14px;flex-wrap:wrap}
 }
+
+/* No mostrar el bloque de publicaciones del negocio cuando solo existen reseñas. */
+.business-publications-section[hidden]{display:none!important}
