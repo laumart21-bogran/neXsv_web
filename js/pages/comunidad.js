@@ -85,7 +85,7 @@ function showRecommendationInvite(businessName) {
     if (!modal || !link) return;
     const cleanName = String(businessName || "").trim();
     if (name) name.textContent = cleanName;
-    const message = `¡Hola! Quería recomendarte que conozcas neXsv. Una familia de nuestra comunidad recomendó a ${cleanName} y creemos que más familias podrían descubrir sus servicios a través de esta red privada de oportunidades. ¿Te gustaría conocer cómo formar parte? Puedes visitar https://nexsv.com`;
+    const message = `¡Hola! 😊 Les cuento que recomendé a ${cleanName} en neXsv. Es una red privada de familias de comunidades educativas donde compartimos recomendaciones y descubrimos negocios y servicios de confianza. Me pareció que podría interesarles formar parte. Si quieren conocer cómo funciona, pueden visitar https://nexsv.com. ¡Un saludo!`;
     link.href = `https://wa.me/?text=${encodeURIComponent(message)}`;
     modal.hidden = false;
     modal.querySelector("[data-close-recommendation-invite]")?.focus();
