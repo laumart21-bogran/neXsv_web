@@ -612,3 +612,46 @@
   .publication-actions .save-publication-btn,
   .publication-actions .share-publication-btn{min-height:38px;padding:8px 10px;font-size:12px}
 }
+
+
+/* Estandarización final del feed: mismas etiquetas, acciones y lectura */
+.publication-card .publication-author .publication-type,
+.publication-card .publication-author .publication-type-recommendation,
+.publication-card-recommendation .publication-author .publication-type{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9 !important;
+}
+.publication-card .publication-body,
+.publication-card-recommendation .recommendation-review-copy p{
+  color:#34466F !important;
+  font-size:15px !important;
+  font-weight:500 !important;
+  line-height:1.5 !important;
+}
+.publication-card .publication-actions > button,
+.publication-card .publication-actions > button.edit-publication-btn,
+.publication-card .publication-actions > button.delete-publication-btn,
+.publication-card .publication-actions > button.interest-btn,
+.publication-card .publication-actions > button.comment-toggle-btn,
+.publication-card .publication-actions > button.save-publication-btn,
+.publication-card .publication-actions > button.share-publication-btn{
+  background:#EAF7F5 !important;
+  color:#16877F !important;
+  border:1px solid #D5EEE9 !important;
+  box-shadow:none !important;
+}
+.publication-card .publication-actions > button:hover,
+.publication-card .publication-actions > button:focus-visible{
+  background:#DFF1EE !important;
+  color:#116E69 !important;
+  border-color:#B9E2DA !important;
+}
+.publication-card .publication-actions > button i{color:inherit !important}
+@media(max-width:650px){
+  .publication-card .publication-body,
+  .publication-card-recommendation .recommendation-review-copy p{
+    font-size:14px !important;
+    line-height:1.45 !important;
+  }
+}
