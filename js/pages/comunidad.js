@@ -391,13 +391,14 @@ async function loadPublications() {
     const { data: commentCounts, error: commentCountError } = await CommunityService.getCommentCounts(publications.map(p => p.id));
     if (commentCountError) console.warn("No se pudieron cargar los conteos de comentarios:", commentCountError);
     publications.forEach(p => { p.commentCount = Number(commentCounts?.[p.id] || 0); });
+    const feedPublications = await loadHistoricalReviewPublications(publications);
     if (activeCommunityTopic && !publications.length) {
         const labels = {salud:"Salud y bienestar",ninos:"Actividades para niños",educacion:"Educación y academias",restaurantes:"Restaurantes y sabores"};
         publicationList.innerHTML = `<div class="community-topic-empty"><strong>Aún no encontramos publicaciones sobre ${labels[activeCommunityTopic]}.</strong><p>Prueba otro tema o comparte la primera experiencia.</p><button type="button" id="emptyTopicClear">Ver todas las publicaciones</button></div>`;
         document.getElementById("emptyTopicClear")?.addEventListener("click", clearCommunityTopic);
         return;
     }
-    renderPublications(publications);
+    renderPublications(feedPublications);
 }
 
 async function startConversation(button) {
