@@ -579,6 +579,7 @@ initializeCommunityBanner();
 document.querySelectorAll(".type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll(".type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
 document.querySelectorAll("#typeOptions input[name='type']").forEach(input => input.addEventListener("change", updateRecommendationBusinessField));
 document.getElementById("recommendationInviteClose")?.addEventListener("click", closeRecommendationInvite);
+document.getElementById("recommendationInviteWhatsapp")?.addEventListener("click", closeRecommendationInvite);
 document.querySelectorAll("[data-close-recommendation-invite]").forEach(element => element.addEventListener("click", closeRecommendationInvite));
 document.getElementById("recommendationInviteModal")?.addEventListener("click", event => { if (event.target === event.currentTarget) closeRecommendationInvite(); });
 document.querySelectorAll("#editTypeOptions .type-option input").forEach(input => input.addEventListener("change", () => document.querySelectorAll("#editTypeOptions .type-option").forEach(o => o.classList.toggle("active", o.querySelector("input")?.checked))));
